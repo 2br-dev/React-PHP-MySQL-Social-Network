@@ -1,0 +1,15 @@
+{"url":"\/login","sql":6,"files":112,"time":"0.063","memory":"3.876","memory_peak":"3.966"}
+{"url":"\/password-recovery","sql":7,"files":112,"time":"0.067","memory":"3.880","memory_peak":"3.970"}
+{"url":"\/password-recovery","sql":7,"files":112,"time":"0.065","memory":"3.880","memory_peak":"3.970"}
+{"url":"\/obratnaya-svyaz","sql":7,"files":134,"time":"0.134","memory":"4.492","memory_peak":"4.582"}
+{"url":"\/obratnaya-svyaz","sql":7,"files":115,"time":"0.053","memory":"4.036","memory_peak":"4.126"}
+{"url":"\/","sql":13,"files":116,"time":"0.162","memory":"4.024","memory_peak":"4.114"}
+{"url":"\/cart","sql":7,"files":112,"time":"0.052","memory":"3.883","memory_peak":"3.973"}
+{"url":"\/","sql":13,"files":116,"time":"0.063","memory":"4.025","memory_peak":"4.115"}
+{"url":"\/","sql":13,"files":117,"time":"0.227","memory":"4.011","memory_peak":"4.101"}
+{"url":"\/","sql":13,"files":116,"time":"0.063","memory":"4.010","memory_peak":"4.100"}
+{"url":"\/","sql":13,"files":116,"time":"0.058","memory":"4.010","memory_peak":"4.100"}
+{"url":"\/","sql":13,"files":116,"time":"0.053","memory":"4.010","memory_peak":"4.100"}
+{"url":"\/testovaya-stranica\/potomok","sql":6,"files":112,"time":"0.052","memory":"3.878","memory_peak":"3.968"}
+{"url":"\/testovaya-stranica\/potomok","sql":6,"files":112,"time":"0.046","memory":"3.879","memory_peak":"3.969"}
+{"url":"\/testovaya-stranica\/potomok","sql":6,"files":112,"time":"0.050","memory":"3.879","memory_peak":"3.969"}

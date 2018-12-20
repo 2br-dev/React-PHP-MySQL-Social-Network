@@ -1,0 +1,11 @@
+AddDefaultCharset utf-8
+
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /cp/
+
+	RewriteCond %{REQUEST_FILENAME} !-f
+
+	RewriteCond $1 !^\.(web|css|js|png|jpg|gif|woff|eot|svg|ttf|robots\.txt)
+	RewriteRule ^(.*)$ index.php [L,QSA]
+</IfModule>

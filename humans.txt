@@ -1,0 +1,14 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+  Edik Bulikyan <ed.proff@gmail.com> -- Creator / Developer -- https://celebro.ru
+
+# THANKS
+
+  <name>
+
+# TECHNOLOGY COLOPHON
+
+  PHP, HTML5, CSS3, Javascript

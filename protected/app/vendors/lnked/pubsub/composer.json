@@ -1,0 +1,27 @@
+{
+    "name": "lnked/pubsub",
+    "description": "",
+    "keywords": [
+        "events",
+        "subscribe"
+    ],
+    "license" : "MIT",
+    "type": "library",
+    "authors" : [
+        {
+            "name": "Edik Bulikyan",
+            "email": "ed.proff@gmail.com",
+            "homepage": "https://celebro.ru"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "PS\\": "src/"
+        },
+        "files": ["src/pubsub.php"]
+    },
+    "minimum-stability": "stable"
+}

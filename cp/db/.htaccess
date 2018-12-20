@@ -1,0 +1,15 @@
+AddDefaultCharset UTF-8
+
+php_value memory_limit 2224M
+php_value post_max_size 2224M
+php_value upload_max_filesize 2224M
+php_value max_execution_time 2000
+php_value max_input_time 20000
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteCond $1 !^\.(web|css|js|png|jpg|gif|woff|eot|svg|ttf)
+RewriteRule ^(.*)$ index.php [L,QSA]

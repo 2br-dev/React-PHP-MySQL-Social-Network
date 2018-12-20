@@ -1,0 +1,105 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Fastest\Core\Modules;
+
+final class {name}Module extends \Fastest\Core\Modules\Module
+{
+    public function router()
+    {
+        if (isset($this->arguments[1]))
+        {
+            return $this->errorPage;
+        }
+
+        if (isset($this->arguments[0]))
+        {
+            return $this->itemMethod(intval($this->arguments[0]));
+        }
+
+        return $this->listMethod();
+    }
+
+    public function listMethod()
+    {
+        # Пагинация
+        #
+        $pager = $this->pager($this->countItem(), $this->limit);
+
+        $cache = 'module.{name}.list';
+
+        # Получение списка
+        #
+        if (!(${name} = $this->compiled($cache)))
+        {
+            ${name} = Q("SELECT * FROM `#_mdd_{name}` WHERE `visible`=1 ORDER BY STR_TO_DATE(`date`, '%d.%m.%Y') DESC, `ord` DESC")->all();
+
+            if (!empty(${name}))
+            {
+                foreach (${name} as &${name}_item)
+                {
+                    ${name}_item['date'] = Dates(${name}_item['date'], $this->locale);
+                }
+            }
+
+            $this->cache->setCache($cache, ${name});
+        }
+
+        # Мета теги
+        #
+        $meta = $this->metaData(${name});
+
+        return [
+            'meta'              =>  $meta,
+            'pager'             =>  $pager,
+            '{name}'         =>  ${name},
+            'template'          =>  'list'
+        ];
+    }
+
+    public function itemMethod($system = '')
+    {
+        $cache = 'module.{name}.item.'.$system;
+
+        if (!(${name} = $this->compiled($cache)))
+        {
+            ${name} = Q("SELECT * FROM `#_mdd_{name}` WHERE `visible`='1' AND `system` LIKE ?s LIMIT 1", [ $system ])->row();
+
+            ${name}['link'] = $this->linkCreate(${name}['system']);
+            ${name}['date'] = Dates(${name}['date'], $this->locale);
+
+            $file = new Files;
+
+            if (isset(${name}['photo']))
+            {
+                ${name}['photo'] = $file->getFilesByGroup(${name}['photo'], ['sm', 'original'], ['id', 'title', 'file', 'ord', 'created'], true);
+            }
+
+            $this->cache->setCache($cache, ${name});
+        }
+
+        # Мета теги
+        #
+        $meta = $this->metaData(${name});
+
+        # Хлебные крошки
+        #
+        $this->addBreadCrumbs(${name}, [ 'id', 'id', 'name', 'system' ]);
+
+        return [
+            'meta'              =>  $meta,
+            'page'              =>  [ 'name' => '' ],
+            '{name}'     =>  ${name},
+            'breadcrumbs'       =>  $this->breadcrumbs,
+            'template'          =>  'item'
+        ];
+    }
+
+    public function blockMethod()
+    {
+        return [
+            'template' => 'block'
+        ];
+    }
+}

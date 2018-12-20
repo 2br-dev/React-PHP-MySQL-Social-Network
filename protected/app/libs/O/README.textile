@@ -1,0 +1,59 @@
+h1. O
+
+Object wrapper based on Q
+
+h2. Create object
+
+bc. require 'path/to/O.php';
+require 'path/to/Q/Q.php';
+QF('mysql://user:pass@host/dbname')->connect()->alias('default')->tablePrefix('project__'); // connect to database
+$data = array(
+    'title' => 'Some news title',
+    'e:created' => 'NOW()',
+    'i:user_id' => @$_POST['user_id'],
+    'preview' => 'Text text text',
+    'content' => 'Text text text. Text text text.',
+    'status' => 'DRAFTS'
+);
+// all fields will have types 'x' - its mean type will be autodetected from value type
+// e: - configure field type exactly to 'eval' and i: - to int
+$id = O('news')->create($data); // create new object and return insert_id
+
+h2. Update object
+
+*Update object by id*
+
+bc. $data = array(
+    'status' => 'PUBLISHED'
+);
+O('news', $id)->update($data);
+
+*Update object by conditions*
+
+bc. // condition (status = 'PUBLISHED' AND id <= 10)
+O('news:status&&id <= ', 'PUBLISHED', 10)->update(array(
+    'status' => 'DRAFTS'
+));
+
+bc. // (id = 15 OR other_id = 20 OR str LIKE '%Test%')
+O('table:id || other_id || str LIKE', 15, 20, '%Test%')->update(array(
+    'other_id' => 10
+));
+
+h2. Delete object
+
+bc. // (user_id = 10 AND other_id = 20)
+O('table:id&&other_id', 10, 20)->delete();
+
+bc. // or you can write condition inside
+O('news:id = 20')->delete();
+
+h2. Find objects
+
+_(TODO: add order, limit)_
+
+bc. // find object by id
+$object = O('news', $id)->find()->row();
+
+bc. // find objects by condition
+$objects = O('news:user_id && status', array(10, 'DRAFTS'))->find()->all();

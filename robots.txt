@@ -1,0 +1,36 @@
+User-agent: *
+Disallow: /*?
+Disallow: /fonts/
+Disallow: /images/
+Disallow: /upload_dir/
+Disallow: /*?utm_source*
+Disallow: /*?utm_medium*
+Disallow: /*?utm_campaign*
+Disallow: /*?utm_content*
+
+Crawl-delay: 3
+Sitemap: https://cms.celebro.ru/sitemap.xml
+
+User-agent: Yandex
+Disallow: /*?
+Disallow: /fonts/
+Disallow: /images/
+Disallow: /upload_dir/
+Disallow: /*?utm_source*
+Disallow: /*?utm_medium*
+Disallow: /*?utm_campaign*
+Disallow: /*?utm_content*
+
+Crawl-delay: 3
+Host: https://cms.celebro.ru
+
+User-agent: msnbot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Crawl-delay: 10
+
+User-agent: AhrefsBot
+Disallow: /
+
+

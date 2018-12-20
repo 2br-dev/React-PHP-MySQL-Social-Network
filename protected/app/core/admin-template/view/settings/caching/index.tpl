@@ -1,0 +1,5 @@
+{strip}
+
+caching
+
+{/strip}

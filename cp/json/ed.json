@@ -1,0 +1,16 @@
+{
+    "name":     "CKEditor",
+    "system":   "ckeditor",
+    "path":      "/wysiwyg/ckeditor/",
+    "lib":      {
+        "style": [
+            "plugins/tableselection/dialog.css",
+            "plugins/tabletools/dialog.css",
+            "skins/moono-lisa/dialog.css",
+            "skins/moono-lisa/editor.css"
+        ],
+        "script": [
+            "ckeditor.js"
+        ]
+    }
+},

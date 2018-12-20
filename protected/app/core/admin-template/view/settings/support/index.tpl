@@ -1,0 +1,4 @@
+{strip}
+support
+
+{/strip}

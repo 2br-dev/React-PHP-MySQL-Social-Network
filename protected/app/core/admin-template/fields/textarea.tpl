@@ -1,0 +1,1 @@
+<textarea name="{$name}" tabindex="{$index}">{$value|escape}</textarea>

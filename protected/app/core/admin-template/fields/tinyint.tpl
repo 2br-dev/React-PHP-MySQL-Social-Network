@@ -1,0 +1,1 @@
+<input name="{$name}" value="{$value|escape}" class="integer {$class_name}" tabindex="{$index}">

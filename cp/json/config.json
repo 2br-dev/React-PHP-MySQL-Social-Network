@@ -1,0 +1,118 @@
+{
+    "redactor": [
+        {
+            "name":     "Redactor3",
+            "system":   "imperavi",
+            "path":     "/wysiwyg/redactor-3/",
+            "lib":      {
+                "style": [
+                    "redactor.min.css",
+                    "plugins/clips/clips.min.css",
+                    "plugins/handle/handle.min.css",
+                    "plugins/pagebreak/pagebreak.css",
+                    "plugins/filemanager/filemanager.min.css",
+                    "plugins/inlinestyle/inlinestyle.min.css"
+                ],
+                "script": [
+                    "redactor.min.js",
+                    "lang/ru.js",
+                    "plugins/alignment/alignment.min.js",
+                    "plugins/beyondgrammar/beyondgrammar.min.js",
+                    "plugins/clips/clips.min.js",
+                    "plugins/counter/counter.min.js",
+                    "plugins/definedlinks/definedlinks.min.js",
+                    "plugins/filemanager/filemanager.min.js",
+                    "plugins/fontcolor/fontcolor.min.js",
+                    "plugins/fontfamily/fontfamily.min.js",
+                    "plugins/fontsize/fontsize.min.js",
+                    "plugins/fullscreen/fullscreen.min.js",
+                    "plugins/handle/handle.min.js",
+                    "plugins/imagemanager/imagemanager.min.js",
+                    "plugins/inlinestyle/inlinestyle.min.js",
+                    "plugins/limiter/limiter.min.js",
+                    "plugins/pagebreak/pagebreak.js",
+                    "plugins/properties/properties.min.js",
+                    "plugins/specialchars/specialchars.min.js",
+                    "plugins/table/table.min.js",
+                    "plugins/textexpander/textexpander.min.js",
+                    "plugins/video/video.min.js",
+                    "plugins/widget/widget.min.js"
+                ]
+            },
+            "default":  "1"
+        },
+        {
+            "name":     "Tinymce",
+            "system":   "tinymce",
+            "path":      "/wysiwyg/tinymce/",
+            "lib":      {
+                "script": [
+                    "tinymce.min.js"
+                ]
+            }
+        },
+        {
+            "name":     "Ckeditor5",
+            "system":   "ckeditor5",
+            "path":      "/wysiwyg/ckeditor5/",
+            "lib":      {
+                "script": [
+                    "classic.js"
+                ]
+            }
+        },
+        {
+            "name":     "Quill",
+            "system":   "quill",
+            "path":      "/wysiwyg/quill/",
+            "lib":      {
+                "script": [
+                    "quill.min.js"
+                ],
+                "style": [
+                    "quill.snow.css",
+                    "quill.bubble.css"
+                ]
+            }
+        },
+        {
+            "name":     "Cleditor",
+            "system":   "cleditor",
+            "path":      "/wysiwyg/cleditor/",
+            "lib":      {
+                "style": [
+                    "jquery.cleditor.css"
+                ],
+                "script": [
+                    "jquery.cleditor.min.js"
+                ]
+            }
+        }
+    ],
+
+    "editor_mode": [
+        "htmlmixed",
+        "php",
+        "css",
+        "sql",
+        "xml",
+        "jsx",
+        "nginx",
+        "javascript",
+        "markdown",
+        "smarty",
+        "scheme",
+        "shell",
+        "sass"
+    ],
+
+    "editor": [
+        {
+            "name":     "Codemirror",
+            "system":   "codemirror",
+            "default":  "1"
+        }
+    ],
+
+    "themes": []
+}
