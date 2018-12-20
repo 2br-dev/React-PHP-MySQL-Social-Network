@@ -32,11 +32,16 @@ class RegisterForm extends Component {
       }
     }
   }
+
+  validateEmail(email) {
+    const regExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    regExp.test(email) ? this.setState({isEmailValid: true}) : this.setState({isEmailValid: false}); 
+  }
   
   handleSubmit(e) {
     e.preventDefault(); 
 
-    if (this.state.username !== '' && this.state.login !== '' && this.state.isEmailValid && this.state.username !== '' && this.state.phone != '' && this.state.password !== '') {
+    if (this.state.username !== '' && this.state.login !== '' && this.state.isEmailValid && this.state.username !== '' && this.state.phone !== '' && this.state.password !== '') {
       const formData = new FormData();
         
       formData.append('login',    $('input[name="login"]').val());
@@ -54,20 +59,15 @@ class RegisterForm extends Component {
         success: function(res) {
           let response = (JSON.parse(res)).result;
           response === 1 ? alert('успех!') : alert('fail!');
+          window.location.href = '/';
         },
         error: function(err) {
           alert('fail!' + err.code);
         }
       });
-
     } else {
       alert('пожалуйста, заполните все поля корректно!');
     }
-  }
-
-  validateEmail(email) {
-    const regExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    regExp.test(email) ? this.setState({isEmailValid: true}) : this.setState({isEmailValid: false}); 
   }
 
   render() {

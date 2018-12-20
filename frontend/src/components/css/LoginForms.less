@@ -1,9 +1,3 @@
-input:focus, button:active, input:active {
-  outline: none;
-  border: none;
-}
-
-
 .login-screen {
   position: absolute;
   top: 0;
@@ -85,10 +79,10 @@ input:focus, button:active, input:active {
   border-radius: 10px;
   text-align: center; 
   padding: 10px 15px;
-  position: absolute;
+  position: relative;
   left: 0;
   right: 0;
-  bottom: 30px;
+  bottom: 0;
   margin: auto;
   width: fit-content;
   text-transform: uppercase;
@@ -97,6 +91,10 @@ input:focus, button:active, input:active {
     transition: .5s ease;
     background: lighten(#00a8ff, 10%);
   }
+}
+.form-container .btn {
+  position: absolute;
+  bottom: 30px;
 }
 label {
   font-size: 18px;

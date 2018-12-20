@@ -13,6 +13,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
 }
+input:focus,
+button:active,
+input:active {
+  outline: none;
+  border: none;
+}
 * {
   box-sizing: border-box;
+}
+.container {
+  width: 1000px;
+  margin: 0 auto;
 }

@@ -3,7 +3,5 @@
 
 {$_page.content}
 
-<div id="root"></div>
-
 {include file="./components/scripts.tpl"}
 {/strip}

@@ -39,6 +39,7 @@ class SignupForm extends Component {
           console.log(res);
           let response = (JSON.parse(res)).result;
           response === 1 ? alert('успех!') : alert('fail!');
+          window.location.href = '/';
         },
         error: function(err) {
           alert('fail!' + err.code);

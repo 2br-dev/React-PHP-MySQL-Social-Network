@@ -63,13 +63,14 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 						if ($row_cnt == 0) {
 							echo json_encode( array( 'result' => 0 ), 64 | 256 );
 						} else {
-							echo json_encode( array( 'result' => 1 ), 64 | 256 ); 
+							$_SESSION['username'] = $username;
+							echo json_encode( array( 'result' => 1 ), 64 | 256 );
 						}
 					}			
 				} else {
+					$_SESSION['username'] = $username;
 					echo json_encode( array( 'result' => 1 ), 64 | 256 ); 
 				}
-		
 				/* закрытие выборки */
 				mysqli_free_result($result);
 			}
