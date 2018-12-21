@@ -79,11 +79,12 @@ class User{
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
      
         // set values to object properties
-        $this->username = $row['username'];
-        $this->login    = $row['login'];
-        $this->email    = $row['email'];
-        $this->password = $row['password'];
-        $this->admin    = $row['admin'];
+        $this->username     = $row['username'];
+        $this->login        = $row['login'];
+        $this->position     = $row['position'];
+        $this->avatar       = $row['avatar'];
+        $this->background   = $row['background'];
+        $this->id           = $row['id'];
     }
     // update the product
     function update(){

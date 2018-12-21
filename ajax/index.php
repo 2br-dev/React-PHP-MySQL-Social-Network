@@ -44,7 +44,7 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		$username 	= DB_USER;
 		$password 	= DB_PASS;
 		$dbname 		= DB_BASE;
-		
+	
 		// Create connection
 		$conn = new mysqli($servername, $username, $password, $dbname);
 		// Check connection
@@ -64,12 +64,14 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 							echo json_encode( array( 'result' => 0 ), 64 | 256 );
 						} else {
 							$_SESSION['username'] = $username;
-							echo json_encode( array( 'result' => 1 ), 64 | 256 );
+							$user_id = Q("SELECT `id` FROM `#_mdd_users` WHERE `login` = '$login' AND `password` = '$pass'",array())->row('id');
+							echo json_encode( array( 'result' => 1, 'user_id' => intval($user_id) ), 64 | 256 );	 
 						}
 					}			
 				} else {
 					$_SESSION['username'] = $username;
-					echo json_encode( array( 'result' => 1 ), 64 | 256 ); 
+					$user_id = Q("SELECT `id` FROM `#_mdd_users` WHERE `login` = '$login' AND `password` = '$pass'",array())->row('id');
+					echo json_encode( array( 'result' => 1, 'user_id' => intval($user_id) ), 64 | 256 );	 
 				}
 				/* закрытие выборки */
 				mysqli_free_result($result);

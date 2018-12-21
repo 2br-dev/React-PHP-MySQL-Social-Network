@@ -49,11 +49,11 @@
 
 # Allow cross-origin access to web fonts.
 
-<IfModule mod_headers.c>
-    <FilesMatch "\.(eot|otf|tt[cf]|woff2?)$">
-        Header set Access-Control-Allow-Origin "*"
-    </FilesMatch>
-</IfModule>
+#<IfModule mod_headers.c>
+#    <FilesMatch "\.(eot|otf|tt[cf]|woff2?)$">
+#        Header set Access-Control-Allow-Origin "*"
+#    </FilesMatch>
+#</IfModule>
 
 # ----------------------------------------------------------------------
 # | Cross-origin resource timing                                       |
@@ -477,18 +477,18 @@ AddDefaultCharset utf-8
 
 </IfModule>
 
-<IfModule mod_headers.c>
+#<IfModule mod_headers.c>
     # Header add X-Content-Type-Options nosniff
     # Header add Access-Control-Allow-Origin: *
     # Header add Access-Control-Allow-Credentials: true
     # Header add Access-Control-Allow-Headers: "origin, x-requested-with, content-type"
     # Header add Access-Control-Allow-Methods: "PUT, GET, POST, DELETE, OPTIONS"
 
-    Header always set Access-Control-Allow-Origin: "*"
-    Header always set Access-Control-Allow-Methods "PUT, GET, POST, HEAD, TRACE, PATCH, DELETE, OPTIONS"
-    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
-    Header always set Access-Control-Allow-Credentials "true"
-</IfModule>
+    #Header always set Access-Control-Allow-Origin: "*"
+    #Header always set Access-Control-Allow-Methods "PUT, GET, POST, HEAD, TRACE, PATCH, DELETE, OPTIONS"
+    #Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+    #Header always set Access-Control-Allow-Credentials "true"
+#</IfModule>
 
 # ----------------------------------------------------------------------
 # | Content Security Policy (CSP)                                      |

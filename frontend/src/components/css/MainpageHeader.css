@@ -42,3 +42,8 @@
 .upload-cover {
   margin: 0 !important;
 }
+.cropit-preview {
+  /* You can specify preview size in CSS */
+  width: 960px;
+  height: 540px;
+}

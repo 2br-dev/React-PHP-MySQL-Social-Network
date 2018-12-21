@@ -26,15 +26,14 @@ $user->readOne();
 if($user->login!=null){
     // create array
     $user_arr = array(
-        "id" =>  $user->id,
-        "login" => $user->login,
-        "username" => $user->username,
-        "email" => $user->email,
-        "password" => $user->password,
-        "admin" => $user->admin
- 
+        "id"         => $user->id,
+        "login"      => $user->login,
+        "username"   => $user->username,
+        "position"   => $user->position,
+        "avatar"     => $user->avatar,
+        "background" => $user->background
     );
- 
+
     // set response code - 200 OK
     http_response_code(200);
  

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import Cookie from './functions/Cookie';
 
 class SignupForm extends Component {
   constructor(props) {
@@ -38,7 +39,12 @@ class SignupForm extends Component {
         success: function(res) {
           console.log(res);
           let response = (JSON.parse(res)).result;
+          let user_id = (JSON.parse(res)).user_id;
+          let cookie = new Cookie();
+          
           response === 1 ? alert('успех!') : alert('fail!');
+          if (response === 1) cookie.setCookie('user_id', user_id, 30);
+
           window.location.href = '/';
         },
         error: function(err) {
