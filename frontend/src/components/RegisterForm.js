@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import Cookie from './functions/Cookie';
 
 class RegisterForm extends Component {
   constructor(props) {
@@ -51,15 +52,19 @@ class RegisterForm extends Component {
       formData.append('phone',    $('input[name="phone"]').val());
 
       $.ajax({
-        url         : '/ajax/registration',
+        url         : 'http://akvatory.local/api/user/register.php',
         data        : formData,
         processData : false,
         contentType : false,
         type: 'POST',        
         success: function(res) {
-          let response = (JSON.parse(res)).result;
+          const response = res.result;
+          const user_id = res.user_id;  
           response === 1 ? alert('успех!') : alert('fail!');
-          window.location.href = '/';
+
+          const cookie = new Cookie();
+          if (response === 1) cookie.setCookie('user_id', user_id, 30);
+          window.location.href = `/id${user_id}`;
         },
         error: function(err) {
           alert('fail!' + err.code);

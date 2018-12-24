@@ -31,21 +31,21 @@ class SignupForm extends Component {
       formData.append('password', $('input[name="password"]').val());
 
       $.ajax({
-        url         : '/ajax/signup',
+        url         : 'http://akvatory.local/api/user/signup.php',
         data        : formData,
         processData : false,
         contentType : false,
         type: 'POST',
         success: function(res) {
           console.log(res);
-          let response = (JSON.parse(res)).result;
-          let user_id = (JSON.parse(res)).user_id;
+          let response = res.result;
+          let user_id = res.user_id;
           let cookie = new Cookie();
           
           response === 1 ? alert('успех!') : alert('fail!');
           if (response === 1) cookie.setCookie('user_id', user_id, 30);
 
-          window.location.href = '/';
+          window.location.href = `/id${user_id}`;
         },
         error: function(err) {
           alert('fail!' + err.code);

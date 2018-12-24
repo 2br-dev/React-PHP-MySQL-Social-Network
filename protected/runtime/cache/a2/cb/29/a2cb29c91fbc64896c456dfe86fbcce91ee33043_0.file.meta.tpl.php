@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-20 17:04:41
+/* Smarty version 3.1.32, created on 2018-12-24 10:54:45
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\fields\meta.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c1ba179cb56e3_81560068',
+  'unifunc' => 'content_5c2090c5c8b5b2_67965943',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -22,7 +22,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:system/controll.tpl' => 7,
   ),
 ),false)) {
-function content_5c1ba179cb56e3_81560068 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c2090c5c8b5b2_67965943 (Smarty_Internal_Template $_smarty_tpl) {
 ?><table class="t1 table table-toggle-trigger" id="meta_data"><col width="200"><col><thead><tr class="th"><th colspan="2"><a href="#" class="table_hdr table_u js-table-toggle" data-toggle-init="true" data-toggle="meta_data"><i class="icon"></i> Мета данные</a></th></tr></thead><tbody><tr class="th"><td class="h hl va_m">Заголовок</td><td><div class="count-number-block clearfix"><span class="count-number-block-count<?php if (isset($_smarty_tpl->tpl_vars['title']->value) && mb_strlen($_smarty_tpl->tpl_vars['title']->value) > 65) {?> unlim<?php }?>" data-recomend="65"><?php if (isset($_smarty_tpl->tpl_vars['title']->value)) {
 echo mb_strlen($_smarty_tpl->tpl_vars['title']->value);
 } else { ?>0<?php }?>/65</span><input name="meta_title" placeholder="META title" value="<?php if (isset($_smarty_tpl->tpl_vars['title']->value)) {

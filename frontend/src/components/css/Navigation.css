@@ -1,0 +1,41 @@
+.navigation-container {
+  width: 30%;
+  padding-top: 20px;
+  margin: 0;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.navigation-container a {
+  text-decoration: none;
+}
+.navigation-item {
+  width: 130px;
+  height: 130px;
+  margin-top: 20px;
+  border-radius: 50%;
+  background: #00c5fe;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.navigation-item p {
+  width: 80px;
+  margin-top: 8px;
+  font-size: 16px;
+  text-align: center;
+}
+.navigation-item:hover {
+  cursor: pointer;
+  transition: .3s ease;
+  background: #65dcff;
+}
+.active {
+  background: #65dcff;
+  pointer-events: none;
+}
+.disabled-link {
+  pointer-events: none;
+}

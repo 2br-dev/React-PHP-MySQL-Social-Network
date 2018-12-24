@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-20 17:04:42
+/* Smarty version 3.1.32, created on 2018-12-24 10:54:46
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\view\structure\_fields_structure.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c1ba17a472c40_38979081',
+  'unifunc' => 'content_5c2090c6347449_08593899',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -23,7 +23,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:fields/datetime.tpl' => 1,
   ),
 ),false)) {
-function content_5c1ba17a472c40_38979081 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c2090c6347449_08593899 (Smarty_Internal_Template $_smarty_tpl) {
 ?><input type="hidden" name="_backuri" value="<?php echo $_smarty_tpl->tpl_vars['_backuri']->value;?>
 "><table class="t1 table table-toggle-trigger" id="page_data"><col width="200"><col><thead><tr class="th"><th colspan="2"><a href="#" class="table_hdr table_u js-table-toggle" data-toggle="page_data"><i class="icon"></i> Настройки страницы</a></th></tr></thead><tbody><tr style="display: none;"><td class="h hl va_m">Название в меню <span class="ness_color">*</span></td><td><input name="stc_menuname" class="ness<?php if (isset($_smarty_tpl->tpl_vars['stc_errors']->value) && in_array('menuname',$_smarty_tpl->tpl_vars['stc_errors']->value)) {?> error<?php }?>" value="<?php if (isset($_smarty_tpl->tpl_vars['stc_page']->value['menuname'])) {
 echo htmlspecialchars($_smarty_tpl->tpl_vars['stc_page']->value['menuname'], ENT_QUOTES, 'UTF-8', true);
