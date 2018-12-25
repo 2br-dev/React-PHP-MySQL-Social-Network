@@ -1,0 +1,106 @@
+@orange: #ff4800;
+
+.news {
+  margin-top: 40px;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 3px 5px rgba(0,0,0,.06), 0 3px 5px rgba(0,0,0,.12);
+  &-important {
+    box-shadow: inset @orange 0 0 5px;
+  }
+  &-btns {
+    button {
+      width: 50%;
+      height: 40px;
+      line-height: 40px;
+      background: #fff;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      pointer-events: none;
+    }
+    &-enabled {
+      background: #f0f8f6 !important;
+      text-decoration: underline;
+      pointer-events: all !important;
+    }
+  }
+  &-item {
+    padding: 15px;
+    border-bottom: 1.5px solid #f0f8f6;
+    p {
+      margin: 0;
+    }
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      &__author {
+        text-decoration: underline;
+      }
+      &__date {
+        font-weight: 700;
+      }
+    }
+    &-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: 20px;
+      text-decoration: underline;
+      color: @orange;
+      cursor: pointer;
+    }
+    &-text {
+      margin-top: 20px;
+      max-height: 150px;
+      overflow: auto;
+      &::-webkit-scrollbar {
+        width: 10px;
+      }
+     
+      &::-webkit-scrollbar-track {
+        background-color: #ebebeb;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+      }
+    
+      &::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        background: @orange; 
+      }
+    }
+    &-comment {
+      margin-top: 20px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      &:hover {
+        transition: .3s ease;
+        cursor: pointer;    
+      }
+      p {
+        margin-left: 10px;
+        text-decoration: underline;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+  &-button {
+    width: 100%;
+    border: none;
+    outline: none;
+    height: 45px;
+    background: @orange;
+    color: white;
+    font-weight: 700;
+    margin-top: -2px;
+    &:hover {
+      cursor: pointer;
+      background: lighten(@orange, 8%);
+      transition: .3s ease;
+    }
+  }
+}

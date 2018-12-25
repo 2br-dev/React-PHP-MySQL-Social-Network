@@ -1,0 +1,126 @@
+.personal-header {
+  padding-left: 20px;
+  padding-top: 30px;
+  display: flex;
+}
+.personal-header__photo {
+  text-align: center;
+  width: 200px;
+}
+.personal-header__photo img {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+}
+.personal-header__photo a {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.personal-header__photo a:hover {
+  text-decoration: none;
+}
+.personal-header__div {
+  margin-bottom: 10px;
+}
+.personal-header__info label {
+  display: inline-block;
+  width: 150px;
+  text-align: right;
+  font-size: 14px;
+}
+.personal-header__info-input {
+  margin-left: 15px;
+  background: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 6px 10px;
+}
+.personal-header__info-input:active,
+.personal-header__info-input:focus {
+  outline: none;
+  border: none;
+}
+.personal-header__info p {
+  margin-left: 170px;
+  font-size: 14px;
+}
+.personal-separator {
+  font-size: 18px;
+  margin: 40px 0;
+  padding-left: 40px;
+}
+.personal-section {
+  padding-left: 20px;
+}
+.personal-section__header {
+  display: flex;
+  align-items: center;
+}
+.personal-section__header p {
+  font-size: 18px;
+  margin-right: 5px;
+  font-weight: semi-bold;
+}
+.personal-section__header hr {
+  width: 92%;
+  height: 1px;
+  background: #a7a7a7;
+  border: none;
+}
+.personal-section__data label {
+  display: inline-block;
+  width: 140px;
+  min-width: 140px;
+  text-align: right;
+  font-size: 16px;
+}
+.personal-section__data input {
+  padding: 6px 10px;
+  background: #fff;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  margin-left: 10px;
+}
+.personal-section__data div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.personal-section__data-childrens {
+  align-items: flex-start !important;
+}
+.personal-section__data-childrens a {
+  width: 100%;
+  text-decoration: underline;
+  text-align: right;
+  font-size: 18px;
+  cursor: pointer;
+}
+.personal-section__data-childrens a:hover {
+  text-decoration: none;
+}
+.personal-section__data-childrens span {
+  margin-top: 10px;
+}
+.personal-section__data-childrens span input {
+  width: 40%;
+}
+.personal-section__childrens {
+  display: flex;
+  flex-direction: column;
+}
+.react-date-picker__clear-button {
+  display: none;
+}
+.react-date-picker__wrapper {
+  border: none;
+  margin-left: 15px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 0 5px;
+}
+.react-date-picker__button {
+  outline: none;
+  border: none;
+}

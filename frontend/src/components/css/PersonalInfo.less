@@ -1,0 +1,134 @@
+.personal {
+  &-header {
+    padding-left: 20px;
+    padding-top: 30px;
+    display: flex;
+    &__photo {
+      text-align: center;
+      width: 200px;
+      img {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+      }
+      a {
+        text-decoration: underline;
+        cursor: pointer;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+    &__div {
+      margin-bottom: 10px;
+    }
+    &__info {
+      label {
+        display: inline-block;
+        width: 150px;
+        text-align: right;
+        font-size: 14px;
+      }
+      &-input {
+        margin-left: 15px;
+        background: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 6px 10px;
+        &:active, &:focus {
+          outline: none;
+          border: none;
+        }
+      }
+      p {
+        margin-left: 170px;
+        font-size: 14px;
+      }
+    }
+  }
+  &-separator {
+    font-size: 18px;
+    margin: 40px 0;
+    padding-left: 40px;
+  }
+  &-section {
+    padding-left: 20px;
+    &__header {
+      display: flex;
+      align-items: center;
+      p {
+        font-size: 18px;
+        margin-right: 5px;
+        font-weight: semi-bold;
+      }
+      hr {
+        width: 92%;
+        height: 1px;
+        background: #a7a7a7;
+        border: none;
+      }
+    }
+    &__data {
+      label {
+        display: inline-block;
+        width: 140px;
+        min-width: 140px;
+        text-align: right;
+        font-size: 16px;
+      }
+      input {
+        padding: 6px 10px;
+        background: #fff;
+        border-radius: 10px;
+        border: none; 
+        outline: none;
+        margin-left: 10px;
+      }
+      div {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      &-childrens {
+        align-items: flex-start !important;
+        a {
+          width: 100%;
+          text-decoration: underline;
+          text-align: right;
+          font-size: 18px;
+          cursor: pointer;
+          &:hover {
+            text-decoration: none;
+          }
+        }
+        span {
+          margin-top: 10px;
+        }
+        span input {
+          width: 40%;
+        }
+      }
+    }
+    &__childrens {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+
+
+.react-date-picker__clear-button  {
+  display: none;
+}
+.react-date-picker__wrapper {
+  border: none;
+  margin-left: 15px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 0 5px;
+}
+.react-date-picker__button {
+  outline: none;
+  border: none;
+}

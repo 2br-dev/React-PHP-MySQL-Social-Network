@@ -9,7 +9,7 @@ class Navigation extends Component {
     this.state = {
       sections: [
         {
-          section: 'my',
+          section: `id${this.props.user_logged_id}`,
           alt: 'Моя страница',
           img: 'my-page.png',
         },
@@ -59,7 +59,7 @@ class Navigation extends Component {
         {this.state.sections.map((section, i) => {                    
           return (
             <Link key={i}
-              to={`/id${this.props.user_logged_id}`} 
+              to={`/${section.section}`} 
               className={this.props.user_id === this.props.user_logged_id && this.props.section == section.section ? 'disabled-link' : ''}
               onClick={this.props.handleChangeUrl}
             >
@@ -73,7 +73,7 @@ class Navigation extends Component {
             </Link>
           ) 
         })}
-        <SideNews />
+        <SideNews handleChangeSection={this.props.handleChangeSection} />
       </div>
     )
   };

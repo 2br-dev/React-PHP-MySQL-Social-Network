@@ -5,6 +5,7 @@ import MainpageHeader from './MainpageHeader';
 import Navigation from './Navigation';
 import Cookie from './functions/Cookie';
 import NavFriends from './NavFriends';
+import PersonalInfo from './PersonalInfo'
 
 class MainPage extends Component {
   constructor(props) {
@@ -14,11 +15,12 @@ class MainPage extends Component {
       user_logged_id: 0,
       user: [],
       noAvatar: true,
-      section: 'my',
+      section: window.location.pathname.slice(1),
     }
     this.handleChangeUrl      = this.handleChangeUrl.bind(this);  
     this.handleChangeSection  = this.handleChangeSection.bind(this);  
-    this.handleChangeUserId   = this.handleChangeUserId.bind(this);  
+    this.handleChangeUserId   = this.handleChangeUserId.bind(this);
+    this.switchComponent      = this.switchComponent.bind(this);  
   }
 
   handleChangeUrl() { 
@@ -58,48 +60,32 @@ class MainPage extends Component {
       .then(response => response.json())
       .then(user => this.setState({ user }))
 
-    if (this.state.user.avatar == '') this.setState({ noAvatar: !this.state.noAvatar });
+    if (this.state.user.avatar == '') this.setState({ noAvatar: !this.state.noAvatar })
   }
 
   switchComponent(){
     switch(this.state.section) {
-      case 'my':
-        return (
-          <div className="main-page-container">my</div>
-        )
+      case `id${this.state.user_id}`:
+        return <PersonalInfo />
       case 'messages':
-        return (
-          <div className="main-page-container">messages</div>
-        )
+        return 'messages';
       case 'news':
-        return (
-          <div className="main-page-container">news</div>
-        )
+        return 'news';
       case 'tasks':
-        return (
-          <div className="main-page-container">tasks</div>
-        )
+        return 'tasks';
       case 'colleagues':
         return (
-          <div className="main-page-container">
             <NavFriends 
               handleChangeUserId={this.handleChangeUserId} 
               user_logged_id={this.state.user_logged_id}
             />
-          </div>
         )
       case 'learnings':
-        return (
-          <div className="main-page-container">learnings</div>
-        )
+        return 'learnings';
       case 'gallery':
-        return (
-          <div className="main-page-container">gallery</div>
-        )
+        return 'gallery';
       case 'favourites':
-        return (
-          <div className="main-page-container">favourites</div>
-        )
+        return 'favourites';
     }
   }
   
@@ -123,8 +109,10 @@ class MainPage extends Component {
           handleChangeSection={this.handleChangeSection}
           section={section}
         />
-        {this.switchComponent()}
-        </section>  
+        <div className="main-page-container">
+          {this.switchComponent()}
+        </div>
+      </section>  
       </div>
     );
   }
