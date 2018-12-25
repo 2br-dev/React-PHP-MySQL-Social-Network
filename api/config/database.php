@@ -4,7 +4,6 @@ include_once '../../define.php';
 
 class Database{
 
-    // specify your own database credentials
     private $host     = DB_HOST;
     private $db_name  = DB_BASE;
     private $username = DB_USER;

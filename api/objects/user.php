@@ -12,6 +12,21 @@ class User{
     public $password;
     public $email;
     public $admin;
+    public $position;
+    public $name;
+    public $surname;
+    public $background;
+    public $phone;
+    public $birthday;
+    public $status;
+    public $city;
+    public $district;
+    public $adress;
+    public $fakultet;
+    public $vuz;
+    public $army_country;
+    public $army_type;
+    public $avatar;
  
     // constructor with $db as database connection
     public function __construct($db){
@@ -84,7 +99,36 @@ class User{
         $this->position     = $row['position'];
         $this->avatar       = $row['avatar'];
         $this->background   = $row['background'];
+        $this->id           = $row['id']; 
+    }
+    function readPersonal(){
+        // query to read single record
+        $query = "SELECT * FROM " . $this->table_name . "  WHERE `id` = ? LIMIT 0,1";
+        // prepare query statement
+        $stmt = $this->conn->prepare( $query );
+        // bind id of product to be updated
+        $stmt->bindParam(1, $this->id);
+        // execute query
+        $stmt->execute();
+        // get retrieved row
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        // set values to object properties
         $this->id           = $row['id'];
+        $this->position     = $row['position'];
+        $this->name         = $row['name'];
+        $this->surname      = $row['surname'];
+        $this->background   = $row['background'];
+        $this->phone        = $row['phone']; 
+        $this->birthday     = $row['birthday'];
+        $this->status       = $row['status'];
+        $this->city         = $row['city'];
+        $this->district     = $row['district'];
+        $this->adress       = $row['adress'];
+        $this->fakultet     = $row['fakultet']; 
+        $this->vuz          = $row['vuz'];
+        $this->army_country = $row['army_country'];
+        $this->avatar       = $row['avatar'];
+        $this->army_type    = $row['army_type'];
     }
     // update the product
     function update(){

@@ -38,7 +38,7 @@ class MainPage extends Component {
   }
 
   handleChangeUserId(id) {
-    this.setState({ user_id: id})
+    this.setState({ user_id: id, section: `id${id}`})
     fetch(`http://akvatory.local/api/user/read_one.php?id=${id}`)
       .then(response => response.json())
       .then(user => this.setState({ user }))
@@ -66,7 +66,7 @@ class MainPage extends Component {
   switchComponent(){
     switch(this.state.section) {
       case `id${this.state.user_id}`:
-        return <PersonalInfo />
+        return <PersonalInfo user_id={this.state.user_id} />
       case 'messages':
         return 'messages';
       case 'news':

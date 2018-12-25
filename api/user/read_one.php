@@ -27,7 +27,6 @@ if($user->login!=null){
     // create array
     $user_arr = array(
         "id"         => $user->id,
-        "login"      => $user->login,
         "username"   => $user->username,
         "position"   => $user->position,
         "avatar"     => $user->avatar,

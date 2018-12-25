@@ -7,13 +7,19 @@ class PersonalInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      date: new Date(),
+      userInfo: [],
     }
   }
 
-  onChange = date => this.setState({ date })
+  componentWillUpdate() {
+    fetch(`http://akvatory.local/api/user/info.php?id=${this.props.user_id}`)
+      .then(response => response.json())
+      .then(userInfo => this.setState({ userInfo }))
+  }
 
   render() {
+    const { userInfo } = this.state;
+
     return (
     <section className="personal">
       <div className="personal-header">
@@ -24,22 +30,19 @@ class PersonalInfo extends Component {
         <div className="personal-header__info">
           <div className="personal-header__div">
             <label>Имя</label>
-            <input className="personal-header__info-input" onChange={this.onChange} type="text" value="Sergey" />
+            <input className="personal-header__info-input" type="text" value={userInfo.name} />
           </div>
           <div className="personal-header__div">
             <label>Фамилия</label>
-            <input className="personal-header__info-input" onChange={this.onChange} type="text" value="Alekyan" />
+            <input className="personal-header__info-input" type="text" value={userInfo.surname} />
           </div>
           <div className="personal-header__div">
             <label>Должность</label>
-            <input className="personal-header__info-input" onChange={this.onChange} type="text" value="full stack developer"/>
+            <input className="personal-header__info-input"  type="text" value={userInfo.position}/>
           </div>
           <div className="personal-header__div">
             <label>Дата рождения</label>
-            <DatePicker 
-              onChange={this.onChange}
-              value={this.state.date}
-            />
+            <input className="personal-header__info-input"  type="text" value={userInfo.birthday}/>
           </div>
           <p>Год рождения будет виден только руководству</p>  
         </div>  
@@ -57,18 +60,31 @@ class PersonalInfo extends Component {
         <div className="personal-section__data">
           <div>
             <label>Статус</label>
-            <input type="text" value="Не замужем" />
+            <input type="text" value={userInfo.status} />
           </div>
+          
           <div className="personal-section__data-childrens">
             <label>Дети</label>
-            <div className="personal-section__childrens">
-              <input type="text" value="Алена" />
-              <span>
-                <input type="text" value="2000" /> г.р
-              </span>
-            </div>
+              {userInfo.childrens ? (
+              <div className="personal-section__childrens">
+                <input type="text" value="Алена" /> имя
+                <span>
+                  <input type="text" value="2000" /> г.р
+                </span>
+              </div>
+              ) : (
+                <div className="personal-section__childrens">
+                  <span>
+                    <input type="text" value="" /> имя
+                  </span>
+                  <span>
+                    <input type="text" value="" /> г.р
+                  </span>
+                </div>
+                ) }  
             <a>+ Добавить</a>
-          </div>    
+          </div> 
+          
         </div>
       </div>
       <div className="personal-section">
@@ -79,17 +95,17 @@ class PersonalInfo extends Component {
         <div className="personal-section__data">
           <div>
             <label>Родной город:</label>
-            <input type="text" value="Moscow" />
+            <input type="text" value={userInfo.city} />
             <label>Области/края:</label>
-            <input type="text" value="Moscow district" />
+            <input type="text" value={userInfo.district} />
           </div>
           <div>
             <label>Актуальный адрес:</label>
-            <input style={{'width':'100%'}} type="text" value="Krasnodarish city" />
+            <input style={{'width':'100%'}} type="text" value={userInfo.adress} />
           </div>
           <div>
             <label>Номер телефона:</label>
-            <input style={{'width':'100%'}} type="text" value="+7-999-037-37-37" />
+            <input style={{'width':'100%'}} type="text" value={userInfo.phone} />
           </div>
         </div>
       </div>
@@ -100,9 +116,9 @@ class PersonalInfo extends Component {
         </div>
         <div className="personal-section__data">
           <label>ВУЗ:</label>
-          <input type="text" value="КубГУ" />
+          <input type="text" value={userInfo.vuz} />
           <label>Факультет:</label>
-          <input type="text" value="Туризм" />
+          <input type="text" value={userInfo.fakultet} />
         </div>
       </div>
       <div className="personal-section">
@@ -112,9 +128,9 @@ class PersonalInfo extends Component {
         </div>
         <div className="personal-section__data">
           <label>Страна:</label>
-          <input type="text" value="Egypt" />
+          <input type="text" value={userInfo.army_country} />
           <label>Род войск:</label>
-          <input type="text" value="Cybernetic" />
+          <input type="text" value={userInfo.army_type} />
         </div>
       </div>
     </section>  

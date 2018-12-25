@@ -88,7 +88,7 @@
   margin-bottom: 20px;
 }
 .personal-section__data-childrens {
-  align-items: flex-start !important;
+  align-items: baseline !important;
 }
 .personal-section__data-childrens a {
   width: 100%;
@@ -104,11 +104,12 @@
   margin-top: 10px;
 }
 .personal-section__data-childrens span input {
-  width: 40%;
+  width: 75%;
 }
 .personal-section__childrens {
   display: flex;
   flex-direction: column;
+  width: 400px;
 }
 .react-date-picker__clear-button {
   display: none;

@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-24 17:02:40
+/* Smarty version 3.1.32, created on 2018-12-25 18:15:10
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\fields\int.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c20e7005c8774_76494092',
+  'unifunc' => 'content_5c22497ed4a7c2_84263844',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c20e7005c8774_76494092 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c22497ed4a7c2_84263844 (Smarty_Internal_Template $_smarty_tpl) {
 ?><input name="<?php echo $_smarty_tpl->tpl_vars['name']->value;?>
 " value="<?php echo htmlspecialchars($_smarty_tpl->tpl_vars['value']->value, ENT_QUOTES, 'UTF-8', true);?>
 " class="integer <?php echo $_smarty_tpl->tpl_vars['class_name']->value;?>
