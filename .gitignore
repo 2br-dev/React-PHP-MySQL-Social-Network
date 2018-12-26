@@ -1,0 +1,11 @@
+node_modules
+frontend/build/
+apps/
+cp/
+cp_setup/
+upload_dir/
+static/
+src/
+js/
+.idea
+.vscode
