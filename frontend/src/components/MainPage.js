@@ -5,7 +5,8 @@ import MainpageHeader from './MainpageHeader';
 import Navigation from './Navigation';
 import Cookie from './functions/Cookie';
 import NavFriends from './NavFriends';
-import PersonalInfo from './PersonalInfo'
+import PersonalInfo from './PersonalInfo';
+import Tasks from './Tasks';
 
 class MainPage extends Component {
   constructor(props) {
@@ -72,7 +73,7 @@ class MainPage extends Component {
       case 'news':
         return 'news';
       case 'tasks':
-        return 'tasks';
+        return <Tasks />;
       case 'colleagues':
         return (
             <NavFriends 

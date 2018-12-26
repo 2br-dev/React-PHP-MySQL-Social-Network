@@ -8,6 +8,7 @@ class Database{
     private $db_name  = DB_BASE;
     private $username = DB_USER;
     private $password = DB_PASS;
+    
     public $conn;
     // get the database connection
     public function getConnection(){

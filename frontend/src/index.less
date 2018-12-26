@@ -5,6 +5,8 @@
   font-weight: normal;
   font-style: normal;
 }
+@maincolor: #00c5fe;
+
 body {
   margin: 0;
   padding: 0;
@@ -13,7 +15,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
 }
-input:focus, button:active, input:active {
+input:focus, button:active, button:focus, button, input:active {
   outline: none;
   border: none;
 }
@@ -23,4 +25,40 @@ input:focus, button:active, input:active {
 .container {
   width: 1000px;
   margin: 0 auto;
+}
+.black-wrapper {
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.5);
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: fixed;
+}
+.close {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.5;
+  z-index: 20;
+}
+.close:hover {
+  opacity: 1;
+}
+.close:before, .close:after {
+  z-index: 20;
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 25px;
+  width: 7px;
+  background-color: @maincolor;
+}
+.close:before {
+  transform: rotate(45deg);
+}
+.close:after {
+  transform: rotate(-45deg);
 }

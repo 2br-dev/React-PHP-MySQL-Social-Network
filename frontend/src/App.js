@@ -28,53 +28,53 @@ class App extends Component {
       <BrowserRouter>
         <Switch>
 
-              <Route exact path={'/id:user_id'} render={ ()=> 
+              <Route path={'/id:user_id'} render={ ()=> 
                 <div className="container">
                   <MainPage />
                 </div>
               }/>
-              <Route exact path={'/friends'} render={ ()=> 
+              <Route path={'/friends'} render={ ()=> 
                 <div className="container">
                   <MainPage />
                 </div>
               }/>
-              <Route exact path={'/colleagues'} render={ ()=> 
+              <Route path={'/colleagues'} render={ ()=> 
                 <div className="container">
                   <MainPage />
                 </div>
               }/>
-              <Route exact path={'/favourites'} render={ ()=> 
+              <Route path={'/favourites'} render={ ()=> 
                 <div className="container">
                   <MainPage />
                 </div>
               }/>
-              <Route exact path={'/gallery'} render={ ()=> 
+              <Route path={'/gallery'} render={ ()=> 
                 <div className="container">
                   <MainPage />
                 </div>
               }/>
-              <Route exact path={'/tasks'} render={ ()=> 
+              <Route path={'/tasks'} render={ ()=> 
                 <div className="container">
                   <MainPage />
                 </div>
               }/>
-              <Route exact path={'/learnings'} render={ ()=> 
+              <Route path={'/learnings'} render={ ()=> 
                 <div className="container">
                   <MainPage />
                 </div>
               }/>
-              <Route exact path={'/messages'} render={ ()=> 
+              <Route path={'/messages'} render={ ()=> 
                 <div className="container">
                   <MainPage />
                 </div>
               }/>
-              <Route exact path={'/news'} render={ ()=> 
+              <Route path={'/news'} render={ ()=> 
                 <div className="container">
                   <MainPage />
                 </div>
               }/>
 
-          <Route exact path="/login" render={ ()=> 
+          <Route path="/login" render={ ()=> 
             <LoginForm />
           }/>
         </Switch> 

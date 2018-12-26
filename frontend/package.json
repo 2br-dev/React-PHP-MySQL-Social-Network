@@ -8,6 +8,7 @@
     "cropit": "^0.5.1",
     "dropzone": "^5.5.1",
     "jquery": "^3.3.1",
+    "material-ui": "^0.20.2",
     "moment": "^2.23.0",
     "normalize": "^0.3.1",
     "react": "^16.6.3",
@@ -15,7 +16,8 @@
     "react-calendar": "^2.17.5",
     "react-date-picker": "^7.1.1",
     "react-dom": "^16.6.3",
-    "react-dropzone": "^8.0.2",
+    "react-dropzone": "^8.0.3",
+    "react-easy-crop": "^1.6.0",
     "react-moment": "^0.8.4",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1"
