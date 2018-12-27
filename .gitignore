@@ -7,5 +7,6 @@ upload_dir/
 static/
 src/
 js/
+img/
 .idea
 .vscode

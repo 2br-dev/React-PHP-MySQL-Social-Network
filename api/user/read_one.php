@@ -27,10 +27,12 @@ if($user->login!=null){
     // create array
     $user_arr = array(
         "id"         => $user->id,
-        "username"   => $user->username,
+        "login"      => $user->login,
         "position"   => $user->position,
         "avatar"     => $user->avatar,
-        "background" => $user->background
+        "background" => $user->background,
+        "name"       => $user->name,
+        "surname"    => $user->surname,
     );
 
     // set response code - 200 OK

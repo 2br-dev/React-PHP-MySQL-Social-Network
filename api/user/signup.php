@@ -34,26 +34,53 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 } 
 
-if (isset($login) && isset($password)) {
-  if ($result = mysqli_query($conn, "SELECT * FROM `db_mdd_users` WHERE `login` = '$login' AND `password` = '$pass'")) {
+if (isset($login) && isset($password)) 
+{
+  if ($result = mysqli_query($conn, "SELECT * FROM `db_mdd_users` WHERE `login` = '$login' AND `password` = '$pass'")) 
+  {
     /* определение числа рядов в выборке */
     $row_cnt = mysqli_num_rows($result);
 
-    if ($row_cnt == 0) {
-      if ($result = mysqli_query($conn, "SELECT * FROM `db_mdd_users` WHERE `email` = '$login' AND `password` = '$pass'")) {
+    if ($row_cnt == 0) 
+    {
+      if ($result = mysqli_query($conn, "SELECT * FROM `db_mdd_users` WHERE `email` = '$login' AND `password` = '$pass'")) 
+      {
         $row_cnt = mysqli_num_rows($result);
-        if ($row_cnt == 0) {
+        
+        if ($row_cnt == 0) 
+        {
           echo json_encode( array( 'result' => 0 ), 64 | 256 );
-        } else {
-          $_SESSION['username'] = $username;
-          $user_id = Q("SELECT `id` FROM `#_mdd_users` WHERE `login` = '$login' AND `password` = '$pass'",array())->row('id');
-          echo json_encode( array( 'result' => 1, 'user_id' => intval($user_id) ), 64 | 256 );	 
+        } 
+          else
+        {
+          $is_approved = Q("SELECT `approved` FROM `#_mdd_users` WHERE `login` = '$login' AND `password` = '$pass'",array())->row('approved');
+          if ($is_approved == 1) 
+          {
+            $_SESSION['username'] = $login;
+            $user_id = Q("SELECT `id` FROM `#_mdd_users` WHERE `login` = '$login' AND `password` = '$pass'",array())->row('id');
+            echo json_encode( array( 'result' => 1, 'user_id' => intval($user_id) ), 64 | 256 );	
+          } 
+            else 
+          {
+            echo json_encode( array( 'result' => 0.5 ), 64 | 256 );	
+          }
         }
       }			
-    } else {
-      $_SESSION['username'] = $username;
-      $user_id = Q("SELECT `id` FROM `#_mdd_users` WHERE `login` = '$login' AND `password` = '$pass'",array())->row('id');
-      echo json_encode( array( 'result' => 1, 'user_id' => intval($user_id) ), 64 | 256 );	 
+    } 
+      else
+    {  
+      $is_approved = Q("SELECT `approved` FROM `#_mdd_users` WHERE `login` = '$login' AND `password` = '$pass'",array())->row('approved');
+      
+      if ($is_approved == 1) 
+      {
+        $_SESSION['username'] = $login;
+        $user_id = Q("SELECT `id` FROM `#_mdd_users` WHERE `login` = '$login' AND `password` = '$pass'",array())->row('id');
+        echo json_encode( array( 'result' => 1, 'user_id' => intval($user_id) ), 64 | 256 );	
+      } 
+        else 
+      {
+        echo json_encode( array( 'result' => 0.5 ), 64 | 256 );	
+      }	 
     }
     /* закрытие выборки */
     mysqli_free_result($result);

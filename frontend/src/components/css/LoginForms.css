@@ -99,3 +99,22 @@
 label {
   font-size: 18px;
 }
+.registerForm .register-buttons {
+  padding-top: 40px;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+}
+.registerForm .register-buttons a {
+  font-size: 16px;
+  text-decoration: underline;
+}
+.registerForm .register-buttons a:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+.registerForm .btn {
+  position: unset;
+  bottom: 0;
+  margin: unset;
+}

@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-17 17:05:52
+/* Smarty version 3.1.32, created on 2018-12-27 15:37:23
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\view\settings\index\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c17ad40927761_51521992',
+  'unifunc' => 'content_5c24c783d306c3_72190891',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:system/group.tpl' => 3,
   ),
 ),false)) {
-function content_5c17ad40927761_51521992 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c24c783d306c3_72190891 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\OpenServer\\domains\\akvatory.local\\protected\\app\\libs\\smarty.plugins\\modifier.capi.php','function'=>'smarty_modifier_capi',),));
 ?><form action="/<?php echo $_smarty_tpl->tpl_vars['ADMIN_DIR']->value;?>
 /settings" method="POST"><input type="hidden" name="action" value="save_setting"><table class="table"><col width="200"><col><thead><tr><th colspan="2"><?php echo smarty_modifier_capi($_smarty_tpl->tpl_vars['locale']->value['site_settings']);?>

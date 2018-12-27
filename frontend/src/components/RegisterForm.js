@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
-import Cookie from './functions/Cookie';
 
 class RegisterForm extends Component {
   constructor(props) {
@@ -9,8 +8,6 @@ class RegisterForm extends Component {
       email: '',
       login: '',
       password: '',
-      phone: '',
-      username: '',
       isEmailValid: '',
     };
     this.handleChange      =   this.handleChange.bind(this);
@@ -18,8 +15,10 @@ class RegisterForm extends Component {
     this.handleSubmit      =   this.handleSubmit.bind(this);
   }
 
+  
   // динамически обрабатываем изменения полей
   handleChange(event) {
+    $('.user-exists').fadeOut();
     // ставим стейт исходя из именя поля и вводимого значения
     this.setState({
       [event.target.name]: event.target.value
@@ -40,16 +39,15 @@ class RegisterForm extends Component {
   }
   
   handleSubmit(e) {
+    var self = this;
     e.preventDefault(); 
 
-    if (this.state.username !== '' && this.state.login !== '' && this.state.isEmailValid && this.state.username !== '' && this.state.phone !== '' && this.state.password !== '') {
+    if (this.state.login !== '' && this.state.isEmailValid && this.state.password !== '') {
       const formData = new FormData();
         
       formData.append('login',    $('input[name="login"]').val());
       formData.append('password', $('input[name="password"]').val());
       formData.append('email',    $('input[name="email"]').val());
-      formData.append('username', $('input[name="username"]').val());
-      formData.append('phone',    $('input[name="phone"]').val());
 
       $.ajax({
         url         : 'http://akvatory.local/api/user/register.php',
@@ -59,12 +57,21 @@ class RegisterForm extends Component {
         type: 'POST',        
         success: function(res) {
           const response = res.result;
-          const user_id = res.user_id;  
-          response === 1 ? alert('успех!') : alert('fail!');
-
-          const cookie = new Cookie();
-          if (response === 1) cookie.setCookie('user_id', user_id, 30);
-          window.location.href = `/id${user_id}`;
+  
+          switch(response) {
+            case 0:
+              alert('fail!');
+              break;
+            case 1:
+              alert('Вы успешно зарегистрировались, как только вашу учетную запись подтвердят - вы сможете начать пользоваться сервисом. Вы получите уведомление по указанной вами почте.');
+              break;
+            case 2:
+              $('.user-exists').show();
+              break;
+          }
+          $('input[name="email"]').val('');
+          $('input[name="password"]').val('');
+          $('input[name="login"]').val('');
         },
         error: function(err) {
           alert('fail!' + err.code);
@@ -80,18 +87,17 @@ class RegisterForm extends Component {
       <div className="form-container">
         <form id="register" action="" method="POST" onSubmit={this.handleSubmit}>
           <div className="form-group">
-            <label htmlFor="username">Имя и фамилия</label>
+            <label htmlFor="login">Логин</label>
             <input
               className="form-control"
-              id="username"
-              name="username"
+              id="login"
+              name="login"
               type="text"
-              value={this.state.username}
+              value={this.state.login}
               onChange={this.handleChange}
               required
             />    
           </div>
-
           <div className="form-group">
             <label htmlFor="password">Пароль</label>
             <input
@@ -118,35 +124,9 @@ class RegisterForm extends Component {
               required
             />
           {!this.state.isEmailValid && this.state.isEmailValid !== '' ? <p className="invalid-form-result">Пожалуйста, введите настоящий email адрес</p> : ''} 
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="login">Логин</label>
-            <input
-              className="form-control"
-              id="login"
-              name="login"
-              type="text"
-              value={this.state.login}
-              onChange={this.handleChange}
-              required
-            />    
-          </div>
-      
-          <div className="form-group">
-            <label htmlFor="phone">Номер телефона</label>
-            <input
-              className="form-control"
-              id="phone"
-              name="phone"
-              type="text"
-              value={this.state.phone}
-              onChange={this.handleChange}
-              required
-            />    
-          </div>
-
-          <button className="btn btn-success btn-block">Зарегистрироваться</button>           
+          </div>     
+          <p className="user-exists" style={{'display':'none'}}>Пользователь с таким логином или email уже существует.</p>
+          <button className="btn btn-success btn-block">Зарегистрироваться</button> 
         </form>
       </div>
     )

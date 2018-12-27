@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import MainPage from './components/MainPage';
 import LoginForm from './components/LoginForm';
+import Approved from './components/Approved';
+import Restore from './components/Restore';
 
 class App extends Component {
 /*   constructor(props) {
@@ -74,9 +76,9 @@ class App extends Component {
                 </div>
               }/>
 
-          <Route path="/login" render={ ()=> 
-            <LoginForm />
-          }/>
+          <Route path="/login" component={LoginForm}/>
+          <Route path="/approved" component={Approved}/>
+          <Route path="/restore" component={Restore}/>
         </Switch> 
       </BrowserRouter> 
     );

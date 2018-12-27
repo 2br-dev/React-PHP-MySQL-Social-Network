@@ -19,25 +19,29 @@
   padding-right: 20px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+  z-index: 10;
 }
 .header-date {
   position: absolute;
   right: 0;
   height: 37px;
-  width: 185px;
+  width: 35%;
   font-size: 14px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 10px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   line-height: 37px;
+  z-index: 10;
+}
+.header-date span {
+  margin-left: 10px;
 }
 .absolute-header {
   position: fixed;
   top: 10px;
   left: 0;
   right: 0;
-  z-index: 10;
 }

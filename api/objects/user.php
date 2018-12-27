@@ -1,4 +1,7 @@
 <?php
+include_once '../../define.php';
+include_once '../config/database.php';
+
 class User{
  
     // database connection and table name
@@ -27,6 +30,7 @@ class User{
     public $army_country;
     public $army_type;
     public $avatar;
+    public $approved;
  
     // constructor with $db as database connection
     public function __construct($db){
@@ -94,12 +98,13 @@ class User{
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
      
         // set values to object properties
-        $this->username     = $row['username'];
         $this->login        = $row['login'];
         $this->position     = $row['position'];
         $this->avatar       = $row['avatar'];
         $this->background   = $row['background'];
         $this->id           = $row['id']; 
+        $this->name         = $row['name']; 
+        $this->surname      = $row['id']; 
     }
     function readPersonal(){
         // query to read single record
@@ -243,4 +248,57 @@ class User{
     
         return $row['total_rows'];
     }    
+
+    public function send_message(){
+        $domen = str_replace([ 'http://', 'www.', 'www' ], '', $_SERVER['SERVER_NAME']);
+        $subject = "Восстановление пароля, на сайте " . $domen;
+       
+        $body  = '<h2 style="color:#000000; margin: 0;">Здравствуйте,</h2>';
+        $body .= '<p style="color: #444444; font-size: 14px;">Вы получили это письмо, потому что было запрошено восстановление пароля для этого аккаунта.</p>';
+        $body .= '<a href="'.$_SERVER['SERVER_NAME'].'/restore">восстановить пароль можете по ссылке</a>';
+        $body .= '<p style="color: #444444; font-size: 14px;">Если вы не запрашивали восстановление, то просто проигнорируйте это письмо.</p>';
+        $body .= '<p style="color: #444444; font-size: 14px;">С уважением, <i>Искусственный Интеллект.</i></p>'; 
+    
+        // Create the Transport
+        $transport = (new \Swift_SmtpTransport('smtp.mail.ru', 465, 'ssl'))
+         ->setUsername('prog@2-br.ru')
+         ->setPassword('123123prog');
+    
+        // Create the Mailer using your created Transport
+        $mailer = new \Swift_Mailer($transport);
+         // Create a message
+        $message = (new \Swift_Message($subject))
+         ->setFrom(['prog@2-br.ru' => 'akvatory-robot'])
+         ->setTo('alekyansn@gmail.com')
+         ->setBody($body, 'text/html');
+        
+        if ($mailer->send($message)) {
+            echo json_encode( array( 'send' => 1, 'result' => 1 ), 64 | 256 );
+        } else {
+            echo json_encode( array( 'send' => 0, 'result' => 0 ), 64 | 256 );
+        } 
+    }
+
+    public function approve_user(){
+        $query = "UPDATE " . $this->table_name . "
+        SET `approved` = :approved WHERE `id` = :id";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->approved=htmlspecialchars(strip_tags($this->approved));
+        $this->id=htmlspecialchars(strip_tags($this->id));
+
+        // bind new values
+        $stmt->bindParam(':approved', $this->approved);
+        $stmt->bindParam(':id', $this->id);
+
+        // execute the query
+        if($stmt->execute()){
+            return true;
+        }
+
+        return false;
+    }
 }

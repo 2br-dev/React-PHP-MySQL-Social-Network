@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import Cookie from './functions/Cookie';
+import ForgetPassword from './ForgetPassword';
 
 class SignupForm extends Component {
   constructor(props) {
@@ -8,6 +9,7 @@ class SignupForm extends Component {
     this.state = {
       login: '',
       password: '',
+      isForget: '',
     }
     this.handleChange      =   this.handleChange.bind(this);
     this.handleSubmit      =   this.handleSubmit.bind(this);
@@ -20,6 +22,8 @@ class SignupForm extends Component {
       [event.target.name]: event.target.value
     })
   }
+
+  forgetPassword = () => this.setState({ isForget: !this.state.isForget });
 
   handleSubmit(e) {
     e.preventDefault(); 
@@ -42,10 +46,19 @@ class SignupForm extends Component {
           let user_id = res.user_id;
           let cookie = new Cookie();
           
-          response === 1 ? alert('успех!') : alert('fail!');
-          if (response === 1) cookie.setCookie('user_id', user_id, 30);
-
-          window.location.href = `/id${user_id}`;
+          switch(response) {
+            case   0:
+              alert('fail!');
+              break;
+            case 0.5:
+              alert('К сожалению, ваша учетная запись ещё не подтверждена, попробуйте войти позже.');
+              break;
+            case   1:
+              alert('успех!');
+              cookie.setCookie('user_id', user_id, 30);
+              window.location.href = `/id${user_id}`;
+              break;
+          }
         },
         error: function(err) {
           alert('fail!' + err.code);
@@ -59,8 +72,8 @@ class SignupForm extends Component {
 
   render() {
     return (
-      <div className="form-container">
-        <form id="register" action="" method="POST" onSubmit={this.handleSubmit}>
+      <div className="form-container" style={{'paddingBottom':'45px'}}>
+        <form className="registerForm" id="register" action="" method="POST" onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label htmlFor="login">Логин или email</label><br />
             <input
@@ -87,9 +100,11 @@ class SignupForm extends Component {
             />
              {this.state.password.length < 8 && this.state.password !== '' ? <p className="invalid-form-result">Пароль должен быть не менее 8 символов</p> : ''}
           </div>
-
-          <button className="btn">Войти</button>
-
+          <div className="register-buttons">
+            <a onClick={this.forgetPassword} className="forgive-password">Забыли пароль?</a>
+            <button className="btn">Войти</button>
+          </div>
+          {this.state.isForget ? <ForgetPassword forgetPassword={this.forgetPassword} /> : null}
         </form>  
       </div>  
     )
