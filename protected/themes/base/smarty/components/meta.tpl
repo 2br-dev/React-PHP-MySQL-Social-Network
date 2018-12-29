@@ -19,8 +19,8 @@
 	<!-- CSS -->
 	<link type="text/css" rel="stylesheet" href="/css/normalize.css" >
 	<link type="text/css" rel="stylesheet" href="/css/style.css" >
-	<link type="text/css" rel="stylesheet" href="/frontend/build/static/css/1.5a1cbd87.chunk.css" >
-	<link type="text/css" rel="stylesheet" href="/frontend/build/static/css/main.73a8a5f5.chunk.css" >
+	<link type="text/css" rel="stylesheet" href="/frontend/build/static/css/1.19baa6a9.chunk.css" >
+	<link type="text/css" rel="stylesheet" href="/frontend/build/static/css/main.345b0c5e.chunk.css" >
 
 </head>
 <body class="page-{$_page.system}">

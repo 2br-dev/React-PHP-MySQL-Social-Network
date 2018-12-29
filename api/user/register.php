@@ -36,7 +36,7 @@ if (isset($login) && isset($email) && isset($password)) {
   }
 
   $result = Q("INSERT INTO `#_mdd_users` SET `login`=?s, `password`=?s, `email`=?s, `admin`=?i, `created`=NOW()", 
-    array($login, md5( $password ), $email, 0));
+    array($login, md5( $password ), $email, 0,));
 
   $user_id = Q("SELECT `id` FROM `#_mdd_users` WHERE `login`=?s",array($login))->row('id');
 

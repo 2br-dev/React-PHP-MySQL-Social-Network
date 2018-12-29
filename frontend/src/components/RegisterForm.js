@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import ModalWindow from './Modal';
 
 class RegisterForm extends Component {
   constructor(props) {
@@ -9,13 +10,18 @@ class RegisterForm extends Component {
       login: '',
       password: '',
       isEmailValid: '',
+      modalText: '',
+      modal: false,
     };
+    this.openModal         =   this.openModal.bind(this);
     this.handleChange      =   this.handleChange.bind(this);
     this.validateEmail     =   this.validateEmail.bind(this);
     this.handleSubmit      =   this.handleSubmit.bind(this);
   }
 
-  
+  openModal(text) {
+    this.setState({ modal: true, modalText: text});
+  }
   // динамически обрабатываем изменения полей
   handleChange(event) {
     $('.user-exists').fadeOut();
@@ -40,6 +46,7 @@ class RegisterForm extends Component {
   
   handleSubmit(e) {
     var self = this;
+    self.setState({ modal: false });
     e.preventDefault(); 
 
     if (this.state.login !== '' && this.state.isEmailValid && this.state.password !== '') {
@@ -50,7 +57,7 @@ class RegisterForm extends Component {
       formData.append('email',    $('input[name="email"]').val());
 
       $.ajax({
-        url         : 'http://akvatory.local/api/user/register.php',
+        url         : window.location.origin + '/api/user/register.php',
         data        : formData,
         processData : false,
         contentType : false,
@@ -63,27 +70,26 @@ class RegisterForm extends Component {
               alert('fail!');
               break;
             case 1:
-              alert('Вы успешно зарегистрировались, как только вашу учетную запись подтвердят - вы сможете начать пользоваться сервисом. Вы получите уведомление по указанной вами почте.');
+              self.openModal("Вы успешно зарегистрировались, как только вашу учетную запись подтвердят - вы сможете начать пользоваться сервисом. Вы получите уведомление по указанной при регистрации почте.");
+              document.getElementById('register').reset();
               break;
             case 2:
-              $('.user-exists').show();
+              self.openModal("Пользователь с таким логином или email уже существует.");
               break;
           }
-          $('input[name="email"]').val('');
-          $('input[name="password"]').val('');
-          $('input[name="login"]').val('');
         },
         error: function(err) {
-          alert('fail!' + err.code);
+          self.openModal("Ошибка авторизации.");
         }
       });
     } else {
-      alert('пожалуйста, заполните все поля корректно!');
+      self.openModal("Пожалуйста, заполните все поля корректно.");
     }
   }
 
   render() {
     return (
+      <>
       <div className="form-container">
         <form id="register" action="" method="POST" onSubmit={this.handleSubmit}>
           <div className="form-group">
@@ -125,10 +131,12 @@ class RegisterForm extends Component {
             />
           {!this.state.isEmailValid && this.state.isEmailValid !== '' ? <p className="invalid-form-result">Пожалуйста, введите настоящий email адрес</p> : ''} 
           </div>     
-          <p className="user-exists" style={{'display':'none'}}>Пользователь с таким логином или email уже существует.</p>
           <button className="btn btn-success btn-block">Зарегистрироваться</button> 
         </form>
+        
       </div>
+      {this.state.modal ? <ModalWindow text={this.state.modalText} /> : null}
+      </>
     )
   }
 }

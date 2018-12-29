@@ -31,6 +31,7 @@ class User{
     public $army_type;
     public $avatar;
     public $approved;
+    public $code;
  
     // constructor with $db as database connection
     public function __construct($db){
@@ -249,13 +250,15 @@ class User{
         return $row['total_rows'];
     }    
 
-    public function send_message(){
+    public function forget(){
+
         $domen = str_replace([ 'http://', 'www.', 'www' ], '', $_SERVER['SERVER_NAME']);
         $subject = "Восстановление пароля, на сайте " . $domen;
-       
+
+
         $body  = '<h2 style="color:#000000; margin: 0;">Здравствуйте,</h2>';
         $body .= '<p style="color: #444444; font-size: 14px;">Вы получили это письмо, потому что было запрошено восстановление пароля для этого аккаунта.</p>';
-        $body .= '<a href="'.$_SERVER['SERVER_NAME'].'/restore">восстановить пароль можете по ссылке</a>';
+        $body .= '<a href="'.$_SERVER['SERVER_NAME'].'/restore?auth='.$user->code.'">восстановить пароль можете по ссылке</a>';
         $body .= '<p style="color: #444444; font-size: 14px;">Если вы не запрашивали восстановление, то просто проигнорируйте это письмо.</p>';
         $body .= '<p style="color: #444444; font-size: 14px;">С уважением, <i>Искусственный Интеллект.</i></p>'; 
     
@@ -282,6 +285,28 @@ class User{
     public function approve_user(){
         $query = "UPDATE " . $this->table_name . "
         SET `approved` = :approved WHERE `id` = :id";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->approved=htmlspecialchars(strip_tags($this->approved));
+        $this->id=htmlspecialchars(strip_tags($this->id));
+
+        // bind new values
+        $stmt->bindParam(':approved', $this->approved);
+        $stmt->bindParam(':id', $this->id);
+
+        // execute the query
+        if($stmt->execute()){
+            return true;
+        }
+
+        return false;
+    }
+    public function restore(){
+        $query = "UPDATE " . $this->table_name . "
+        SET `password` = :password WHERE `code` = :code";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);

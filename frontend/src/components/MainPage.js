@@ -94,7 +94,7 @@ class MainPage extends Component {
     const { user_id, user_logged_id, user, noAvatar, section } = this.state;
     
     return (
-      <div>
+      <div className="container">
         <Header />
         <MainpageHeader 
           user_id={user_id}

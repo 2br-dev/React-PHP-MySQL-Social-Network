@@ -4,81 +4,28 @@ import MainPage from './components/MainPage';
 import LoginForm from './components/LoginForm';
 import Approved from './components/Approved';
 import Restore from './components/Restore';
+import Page404 from './components/Page404';
 
 class App extends Component {
-/*   constructor(props) {
-    super(props);
-    this.state = {
-      routes: [
-        "/id:user_id", 
-        "/friends",
-        "/colleagues",
-        "/favourites",
-        "/gallery",
-        "/learnings",
-        "/tasks",
-        "/news",
-        "/messages",
-      ],
-    };
-  } */
-
   render() {
-    /* const { routes } = this.state; */
-
     return (
       <BrowserRouter>
         <Switch>
-
-              <Route path={'/id:user_id'} render={ ()=> 
-                <div className="container">
-                  <MainPage />
-                </div>
-              }/>
-              <Route path={'/friends'} render={ ()=> 
-                <div className="container">
-                  <MainPage />
-                </div>
-              }/>
-              <Route path={'/colleagues'} render={ ()=> 
-                <div className="container">
-                  <MainPage />
-                </div>
-              }/>
-              <Route path={'/favourites'} render={ ()=> 
-                <div className="container">
-                  <MainPage />
-                </div>
-              }/>
-              <Route path={'/gallery'} render={ ()=> 
-                <div className="container">
-                  <MainPage />
-                </div>
-              }/>
-              <Route path={'/tasks'} render={ ()=> 
-                <div className="container">
-                  <MainPage />
-                </div>
-              }/>
-              <Route path={'/learnings'} render={ ()=> 
-                <div className="container">
-                  <MainPage />
-                </div>
-              }/>
-              <Route path={'/messages'} render={ ()=> 
-                <div className="container">
-                  <MainPage />
-                </div>
-              }/>
-              <Route path={'/news'} render={ ()=> 
-                <div className="container">
-                  <MainPage />
-                </div>
-              }/>
-
+          
+            <Route path={'/id:user_id'} component={MainPage}/>
+            <Route path={'/friends'} component={MainPage}/>
+            <Route path={'/colleagues'} component={MainPage}/>
+            <Route path={'/favourites'} component={MainPage}/>
+            <Route path={'/gallery'} component={MainPage}/>
+            <Route path={'/tasks'} component={MainPage}/>
+            <Route path={'/learnings'} component={MainPage}/>
+            <Route path={'/messages'} component={MainPage}/>
+            <Route path={'/news'} component={MainPage}/>
+          
           <Route path="/login" component={LoginForm}/>
           <Route path="/approved" component={Approved}/>
           <Route path="/restore" component={Restore}/>
+          <Route path="/404" component={Page404}/>
         </Switch> 
       </BrowserRouter> 
     );

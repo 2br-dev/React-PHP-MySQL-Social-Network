@@ -10,9 +10,11 @@ class MainpageHeader extends Component {
       dropzone: false,
       dropzoneWindow: false,
       cropWindow: false,
+      modal: false,
     }
     this.toggleDropzone         = this.toggleDropzone.bind(this);
     this.toggleDropzoneWindow   = this.toggleDropzoneWindow.bind(this);
+    this.offEverything          = this.offEverything.bind(this);
   }
 
   toggleDropzone = () => this.setState({ dropzone: !this.state.dropzone, dropzoneWindow: !this.state.dropzoneWindow });
@@ -45,7 +47,7 @@ class MainpageHeader extends Component {
             dropzoneWindow={this.state.dropzoneWindow} 
             cropWindow={this.state.cropWindow} 
             offEverything={this.offEverything}
-            toggleDropzoneWindow={this.toggleDropzoneWindow} /> ) : null}
+            toggleDropzoneWindow={this.toggleDropzoneWindow} /> ) : null}       
       </section>
     )
   }

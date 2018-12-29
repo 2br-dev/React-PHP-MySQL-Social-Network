@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import Cookie from './functions/Cookie';
 import ForgetPassword from './ForgetPassword';
+import ModalWindow from './Modal';
 
 class SignupForm extends Component {
   constructor(props) {
@@ -10,9 +11,12 @@ class SignupForm extends Component {
       login: '',
       password: '',
       isForget: '',
+      modalText: '',
+      modal: false,
     }
     this.handleChange      =   this.handleChange.bind(this);
     this.handleSubmit      =   this.handleSubmit.bind(this);
+    this.openModal         =   this.openModal.bind(this);
   }
 
   // динамически обрабатываем изменения полей
@@ -23,9 +27,15 @@ class SignupForm extends Component {
     })
   }
 
+  openModal(text) {
+    this.setState({ modal: true, modalText: text});
+  }
+
   forgetPassword = () => this.setState({ isForget: !this.state.isForget });
 
   handleSubmit(e) {
+    var self = this;
+    self.setState({ modal: false });
     e.preventDefault(); 
 
     if (this.state.login !== '' && this.state.password !== '') {
@@ -48,31 +58,32 @@ class SignupForm extends Component {
           
           switch(response) {
             case   0:
-              alert('fail!');
+              self.openModal('Не удалось войти. Проверьте правильность введенных данных');
               break;
             case 0.5:
-              alert('К сожалению, ваша учетная запись ещё не подтверждена, попробуйте войти позже.');
+              self.openModal('К сожалению, ваша учетная запись ещё не подтверждена, попробуйте войти позже.');
               break;
             case   1:
-              alert('успех!');
               cookie.setCookie('user_id', user_id, 30);
               window.location.href = `/id${user_id}`;
               break;
           }
         },
         error: function(err) {
-          alert('fail!' + err.code);
+          self.openModal('Ошибка авторизации.');
         }
       });
 
     } else {
-      alert('пожалуйста, заполните все поля корректно!');
+      self.openModal('Пожалуйста, заполните все поля.');
     }
   }
 
   render() {
     return (
-      <div className="form-container" style={{'paddingBottom':'45px'}}>
+      <>
+      {this.state.modal ? <ModalWindow text={this.state.modalText} /> : null}
+      <div className="form-container" style={{'paddingBottom':'45px'}}>   
         <form className="registerForm" id="register" action="" method="POST" onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label htmlFor="login">Логин или email</label><br />
@@ -86,7 +97,6 @@ class SignupForm extends Component {
               required
             />    
           </div>
-
           <div className="form-group">
             <label htmlFor="password">Пароль</label><br />
             <input
@@ -106,7 +116,8 @@ class SignupForm extends Component {
           </div>
           {this.state.isForget ? <ForgetPassword forgetPassword={this.forgetPassword} /> : null}
         </form>  
-      </div>  
+      </div> 
+      </>
     )
   }
 }
