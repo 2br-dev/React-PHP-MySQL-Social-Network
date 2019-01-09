@@ -105,11 +105,19 @@ class User{
         $this->background   = $row['background'];
         $this->id           = $row['id']; 
         $this->name         = $row['name']; 
-        $this->surname      = $row['id']; 
+        $this->surname      = $row['surname']; 
     }
     function readPersonal(){
         // query to read single record
-        $query = "SELECT * FROM " . $this->table_name . "  WHERE `id` = ? LIMIT 0,1";
+        /* $query = "SELECT *
+            FROM db_mdd_users u
+            LEFT JOIN db_mdd_childrens c
+            ON u.id = c.child_parent
+            WHERE u.id = ? LIMIT 0,50";  */
+
+        $query = "SELECT * FROM " . $this->table_name . " WHERE `id` = ? LIMIT 0,1"; 
+        $childs = Q("SELECT `child_name`, `child_birthyear` FROM `#_mdd_childrens` WHERE `child_parent` = ?i", array($this->id))->all();
+
         // prepare query statement
         $stmt = $this->conn->prepare( $query );
         // bind id of product to be updated
@@ -135,6 +143,8 @@ class User{
         $this->army_country = $row['army_country'];
         $this->avatar       = $row['avatar'];
         $this->army_type    = $row['army_type'];
+        $this->sex          = $row['sex'];
+        $this->childs       = json_encode( $childs, JSON_UNESCAPED_UNICODE );
     }
     // update the product
     function update(){
@@ -142,29 +152,56 @@ class User{
         // update query
         $query = "UPDATE " . $this->table_name . "
                 SET
-                    username = :username,
-                    login = :login,
-                    password = :password,
-                    email = :email
+                    adress = :adress,
+                    army_country = :army_country,
+                    army_type = :army_type,
+                    birthday = :birthday,
+                    city = :city,
+                    district = :district,
+                    fakultet = :fakultet,
+                    name = :name,
+                    phone = :phone,
+                    position = :position,
+                    status = :status,
+                    surname = :surname,
+                    vuz = :vuz
                 WHERE
                     id = :id";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);
-    
+        
         // sanitize
-        $this->name=htmlspecialchars(strip_tags($this->username));
-        $this->price=htmlspecialchars(strip_tags($this->login));
-        $this->description=htmlspecialchars(strip_tags($this->password));
-        $this->category_id=htmlspecialchars(strip_tags($this->email));
         $this->id=htmlspecialchars(strip_tags($this->id));
-    
+        $this->adress=htmlspecialchars(strip_tags($this->adress));
+        $this->army_country=htmlspecialchars(strip_tags($this->army_country));
+        $this->army_type=htmlspecialchars(strip_tags($this->army_type));
+        $this->birthday=htmlspecialchars(strip_tags($this->birthday));
+        $this->district=htmlspecialchars(strip_tags($this->district));
+        $this->fakultet=htmlspecialchars(strip_tags($this->fakultet));
+        $this->name=htmlspecialchars(strip_tags($this->name));
+        $this->phone=htmlspecialchars(strip_tags($this->phone));
+        $this->position=htmlspecialchars(strip_tags($this->position));
+        $this->status=htmlspecialchars(strip_tags($this->status));
+        $this->surname=htmlspecialchars(strip_tags($this->surname));
+        $this->vuz=htmlspecialchars(strip_tags($this->vuz));
+        $this->city=htmlspecialchars(strip_tags($this->city));
+        
         // bind new values
-        $stmt->bindParam(':username', $this->username);
-        $stmt->bindParam(':login', $this->login);
-        $stmt->bindParam(':password', $this->password);
-        $stmt->bindParam(':email', $this->email);
         $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(':adress', $this->adress);
+        $stmt->bindParam(':army_country', $this->army_country);
+        $stmt->bindParam(':army_type', $this->army_type);
+        $stmt->bindParam(':birthday', $this->birthday);
+        $stmt->bindParam(':district', $this->district);
+        $stmt->bindParam(':fakultet', $this->fakultet);
+        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':phone', $this->phone);
+        $stmt->bindParam(':position', $this->position);
+        $stmt->bindParam(':status', $this->status);
+        $stmt->bindParam(':surname', $this->surname);
+        $stmt->bindParam(':vuz', $this->vuz);
+        $stmt->bindParam(':city', $this->city);  
     
         // execute the query
         if($stmt->execute()){
@@ -258,7 +295,7 @@ class User{
 
         $body  = '<h2 style="color:#000000; margin: 0;">Здравствуйте,</h2>';
         $body .= '<p style="color: #444444; font-size: 14px;">Вы получили это письмо, потому что было запрошено восстановление пароля для этого аккаунта.</p>';
-        $body .= '<a href="'.$_SERVER['SERVER_NAME'].'/restore?auth='.$user->code.'">восстановить пароль можете по ссылке</a>';
+        $body .= '<a href="http://akvatory.local/login/restore?auth='.$user->code.'">восстановить пароль можете по ссылке</a>';
         $body .= '<p style="color: #444444; font-size: 14px;">Если вы не запрашивали восстановление, то просто проигнорируйте это письмо.</p>';
         $body .= '<p style="color: #444444; font-size: 14px;">С уважением, <i>Искусственный Интеллект.</i></p>'; 
     

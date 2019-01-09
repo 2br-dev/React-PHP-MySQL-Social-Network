@@ -20,7 +20,7 @@ $user = new User($db);
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
  
-$pass				= md5(__post('password'));
+$pass				= password_hash(md5( __post('password') . md5($user_login)), PASSWORD_DEFAULT);
 $user_code  = __post('auth');
 $servername = DB_HOST;
 $username 	= DB_USER;

@@ -48,6 +48,7 @@
 }
 .form-group {
   margin-top: 20px;
+  position: relative;
 }
 .form-container {
   position: relative;
@@ -117,4 +118,15 @@ label {
   position: unset;
   bottom: 0;
   margin: unset;
+}
+.password-eye {
+  position: absolute;
+  background: url('../img/icons/eye.png') no-repeat center / cover;
+  width: 20px;
+  height: 20px;
+  z-index: 10;
+  right: 10px;
+  top: 29px;
+  opacity: .5;
+  cursor: pointer;
 }

@@ -13,10 +13,12 @@ class SignupForm extends Component {
       isForget: '',
       modalText: '',
       modal: false,
+      isPassHidden: true,
     }
     this.handleChange      =   this.handleChange.bind(this);
     this.handleSubmit      =   this.handleSubmit.bind(this);
     this.openModal         =   this.openModal.bind(this);
+    this.showPassword      =   this.showPassword.bind(this);
   }
 
   // динамически обрабатываем изменения полей
@@ -45,7 +47,9 @@ class SignupForm extends Component {
       formData.append('password', $('input[name="password"]').val());
 
       $.ajax({
+        
         url         : 'http://akvatory.local/api/user/signup.php',
+        /* url         : window.location.origin + '/api/user/signup.php', */
         data        : formData,
         processData : false,
         contentType : false,
@@ -79,6 +83,10 @@ class SignupForm extends Component {
     }
   }
 
+  showPassword() {
+    this.setState({ isPassHidden: !this.state.isPassHidden});
+  }
+
   render() {
     return (
       <>
@@ -103,11 +111,11 @@ class SignupForm extends Component {
               className="form-control"
               id="password"
               name="password"
-              type="password"
+              type={this.state.isPassHidden ? 'password' : 'text'}
               value={this.state.password}
               onChange={this.handleChange}
               required
-            />
+            /><span className="password-eye" onClick={this.showPassword}></span>
              {this.state.password.length < 8 && this.state.password !== '' ? <p className="invalid-form-result">Пароль должен быть не менее 8 символов</p> : ''}
           </div>
           <div className="register-buttons">

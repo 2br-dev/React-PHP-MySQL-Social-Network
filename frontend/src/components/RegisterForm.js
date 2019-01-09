@@ -9,14 +9,17 @@ class RegisterForm extends Component {
       email: '',
       login: '',
       password: '',
+      confirmed: '',
       isEmailValid: '',
       modalText: '',
       modal: false,
+      isPassHidden: true,
     };
     this.openModal         =   this.openModal.bind(this);
     this.handleChange      =   this.handleChange.bind(this);
     this.validateEmail     =   this.validateEmail.bind(this);
     this.handleSubmit      =   this.handleSubmit.bind(this);
+    this.showPassword      =   this.showPassword.bind(this);
   }
 
   openModal(text) {
@@ -87,6 +90,10 @@ class RegisterForm extends Component {
     }
   }
 
+  showPassword() {
+    this.setState({ isPassHidden: !this.state.isPassHidden});
+  }
+
   render() {
     return (
       <>
@@ -110,13 +117,27 @@ class RegisterForm extends Component {
               className="form-control"
               id="password"
               name="password"
-              type="password"
+              type={this.state.isPassHidden ? 'password' : 'text'}
               value={this.state.password}
               onChange={this.handleChange}
               required
-            />
+            /><span className="password-eye" onClick={this.showPassword}></span>
              {this.state.password.length < 8 && this.state.password !== '' ? <p className="invalid-form-result">Пароль должен быть не менее 8 символов</p> : ''}
           </div>
+
+          <div className="form-group">
+            <label htmlFor="confirmed">Повторите пароль</label><br />
+            <input
+              className="form-control"
+              id="confirmed"
+              type="password"
+              name="confirmed"
+              value={this.state.confirmed}
+              onChange={this.handleChange}
+              required
+            />
+            {this.state.password !== this.state.confirmed && this.state.confirmed !== '' ? <p className="invalid-form-result">Пароли должны совпадать</p> : null}
+          </div> 
 
           <div className="form-group">
             <label htmlFor="email">Электронная почта</label>

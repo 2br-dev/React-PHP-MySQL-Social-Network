@@ -56,7 +56,7 @@ if (isset($credentials)) {
           $subject = "Восстановление пароля, на сайте " . $domen;
           $body  = '<h2 style="color:#000000; margin: 0;">Здравствуйте,</h2>';
           $body .= '<p style="color: #444444; font-size: 14px;">Вы получили это письмо, потому что было запрошено восстановление пароля для этого аккаунта.</p>';
-          $body .= '<a href="'.$_SERVER['SERVER_NAME'].'/restore?auth='.$code.'">восстановить пароль можете по ссылке</a>';
+          $body .= '<a href="http://akvatory.local/restore?auth='.$code.'">восстановить пароль можете по ссылке</a>';
           $body .= '<p style="color: #444444; font-size: 14px;">Если вы не запрашивали восстановление, то просто проигнорируйте это письмо.</p>';
           $body .= '<p style="color: #444444; font-size: 14px;">С уважением, <i>Искусственный Интеллект.</i></p>'; 
       
@@ -96,7 +96,7 @@ if (isset($credentials)) {
       $subject = "Восстановление пароля, на сайте " . $domen;
       $body  = '<h2 style="color:#000000; margin: 0;">Здравствуйте,</h2>';
       $body .= '<p style="color: #444444; font-size: 14px;">Вы получили это письмо, потому что было запрошено восстановление пароля для этого аккаунта.</p>';
-      $body .= '<a href="'.$_SERVER['SERVER_NAME'].'/restore?auth='.$code.'">восстановить пароль можете по ссылке</a>';
+      $body .= '<a href="http://akvatory.local/restore?auth='.$code.'">восстановить пароль можете по ссылке</a>';
       $body .= '<p style="color: #444444; font-size: 14px;">Если вы не запрашивали восстановление, то просто проигнорируйте это письмо.</p>';
       $body .= '<p style="color: #444444; font-size: 14px;">С уважением, <i>Искусственный Интеллект.</i></p>'; 
   

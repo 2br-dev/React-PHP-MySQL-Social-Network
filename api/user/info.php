@@ -41,7 +41,9 @@ if($user->id!=null){
         "fakultet"    => $user->fakultet,
         "vuz"         => $user->vuz,
         "army_country"=> $user->army_country,
-        "army_type"   => $user->army_type
+        "army_type"   => $user->army_type,
+        "sex"         => $user->sex,
+        "childs"      => $user->childs,
     );
 
     // set response code - 200 OK

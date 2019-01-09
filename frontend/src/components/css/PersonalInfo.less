@@ -22,6 +22,14 @@
     &__div {
       margin-bottom: 10px;
     }
+    &__select {
+      border: none;
+      background: #fff;
+      padding: 6px 10px;
+      margin-left: 10px;
+      border-radius: 10px;
+      outline: none;
+    }
     &__info {
       label {
         display: inline-block;
@@ -39,10 +47,22 @@
           outline: none;
           border: none;
         }
+        &-disabled {
+          margin-left: 15px;
+          padding: 6px 10px;
+          border: none;
+          pointer-events: none;
+          background: transparent !important;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          text-indent: 1px;
+          text-overflow: '';
+        }
       }
       p {
         margin-left: 170px;
-        font-size: 14px;
+        font-size: 11px;
+        opacity: .75;
       }
     }
   }
@@ -116,20 +136,8 @@
     }
   }
 }
-
-
-
-.react-date-picker__clear-button  {
-  display: none;
+#personal-info .btn {
+  margin-top: 25px;
+  position: absolute;
 }
-.react-date-picker__wrapper {
-  border: none;
-  margin-left: 15px;
-  background: #fff;
-  border-radius: 10px;
-  padding: 0 5px;
-}
-.react-date-picker__button {
-  outline: none;
-  border: none;
-}
+

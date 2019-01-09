@@ -67,7 +67,7 @@ class MainPage extends Component {
   switchComponent(){
     switch(this.state.section) {
       case `id${this.state.user_id}`:
-        return <PersonalInfo user_id={this.state.user_id} />
+        return <PersonalInfo user_id={this.state.user_id} user_logged_id={this.state.user_logged_id} />
       case 'messages':
         return 'messages';
       case 'news':

@@ -215,7 +215,7 @@ function createRandomCode() {
     srand(intval((double)microtime()*1000000)); 
     $i = 0; 
     $pass = '' ; 
-    while ($i <= 18) { 
+    while ($i <= 32) { 
         $num = rand() % 33; 
         $tmp = substr($chars, $num, 1); 
         $pass = $pass . $tmp; 
