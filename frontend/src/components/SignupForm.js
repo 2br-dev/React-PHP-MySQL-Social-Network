@@ -69,7 +69,7 @@ class SignupForm extends Component {
               break;
             case   1:
               cookie.setCookie('user_id', user_id, 30);
-              window.location.href = `/id${user_id}`;
+              window.location.href = `/`;
               break;
           }
         },

@@ -111,6 +111,7 @@
       }
       &-childrens {
         align-items: baseline !important;
+        
         a {
           width: 100%;
           text-decoration: underline;
@@ -121,9 +122,6 @@
             text-decoration: none;
           }
         }
-        span {
-          margin-top: 10px;
-        }
         span input {
           width: 75%;
         }
@@ -132,7 +130,71 @@
     &__childrens {
       display: flex;
       flex-direction: column;
-      width: 400px;
+      width: 200px;
+      position: relative;
+      a {
+        position: absolute;
+        content: '';
+        width: 10px;
+        height: 10px;
+        opacity: .37;
+        cursor: pointer;
+        right: -6px;
+        top: 9px;
+        z-index: 5;
+        background: url(../img/icons/red-cross-icon-8.jpg) no-repeat center/cover;
+        &:hover {
+          opacity: 1;
+          transition: .37s ease;
+        }
+      }
+      input {
+        width: 150px;
+        background: #f0f8f6;
+        pointer-events: none;
+      }
+      &-container {
+        display: flex;
+        flex-wrap: wrap;
+        width: 300%;
+        &-add {
+          position: relative;
+          .personal-section__childrens {
+            margin-left: 140px;
+            margin-top: -30px;
+            &-remove {
+              position: absolute;
+              right: 0;
+              top: -23px;
+              text-decoration: underline;
+              cursor: pointer;
+              &:hover {
+                text-decoration: none;
+              }
+            }
+            span {
+              width: 100%;
+            }
+            a {
+              background: url('../img/icons/green-ok-png-icon-12.png') no-repeat center/cover;
+              opacity: .5;
+              width: 20px;
+              height: 20px;
+              right: -15px;
+              top: 6px;
+              &:hover {
+                opacity: 1;
+                transition: .37s ease;
+              }
+            }
+          }
+          input {
+            background: #fff;
+            margin-top: 5px; 
+            pointer-events: all;         
+          }
+        }
+      }
     }
   }
 }
@@ -140,4 +202,11 @@
   margin-top: 25px;
   position: absolute;
 }
-
+input::-webkit-clear-button { /* Removes blue cross */
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=date]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  display: none;
+}

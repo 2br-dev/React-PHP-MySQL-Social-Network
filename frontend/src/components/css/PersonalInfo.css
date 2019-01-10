@@ -120,18 +120,88 @@
 .personal-section__data-childrens a:hover {
   text-decoration: none;
 }
-.personal-section__data-childrens span {
-  margin-top: 10px;
-}
 .personal-section__data-childrens span input {
   width: 75%;
 }
 .personal-section__childrens {
   display: flex;
   flex-direction: column;
-  width: 400px;
+  width: 200px;
+  position: relative;
+}
+.personal-section__childrens a {
+  position: absolute;
+  content: '';
+  width: 10px;
+  height: 10px;
+  opacity: .37;
+  cursor: pointer;
+  right: -6px;
+  top: 9px;
+  z-index: 5;
+  background: url(../img/icons/red-cross-icon-8.jpg) no-repeat center / cover;
+}
+.personal-section__childrens a:hover {
+  opacity: 1;
+  transition: .37s ease;
+}
+.personal-section__childrens input {
+  width: 150px;
+  background: #f0f8f6;
+  pointer-events: none;
+}
+.personal-section__childrens-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 300%;
+}
+.personal-section__childrens-container-add {
+  position: relative;
+}
+.personal-section__childrens-container-add .personal-section__childrens {
+  margin-left: 140px;
+  margin-top: -30px;
+}
+.personal-section__childrens-container-add .personal-section__childrens-remove {
+  position: absolute;
+  right: 0;
+  top: -23px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.personal-section__childrens-container-add .personal-section__childrens-remove:hover {
+  text-decoration: none;
+}
+.personal-section__childrens-container-add .personal-section__childrens span {
+  width: 100%;
+}
+.personal-section__childrens-container-add .personal-section__childrens a {
+  background: url('../img/icons/green-ok-png-icon-12.png') no-repeat center / cover;
+  opacity: .5;
+  width: 20px;
+  height: 20px;
+  right: -15px;
+  top: 6px;
+}
+.personal-section__childrens-container-add .personal-section__childrens a:hover {
+  opacity: 1;
+  transition: .37s ease;
+}
+.personal-section__childrens-container-add input {
+  background: #fff;
+  margin-top: 5px;
+  pointer-events: all;
 }
 #personal-info .btn {
   margin-top: 25px;
   position: absolute;
+}
+input::-webkit-clear-button {
+  /* Removes blue cross */
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=date]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  display: none;
 }

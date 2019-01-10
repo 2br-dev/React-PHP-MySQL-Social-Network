@@ -116,7 +116,7 @@ class User{
             WHERE u.id = ? LIMIT 0,50";  */
 
         $query = "SELECT * FROM " . $this->table_name . " WHERE `id` = ? LIMIT 0,1"; 
-        $childs = Q("SELECT `child_name`, `child_birthyear` FROM `#_mdd_childrens` WHERE `child_parent` = ?i", array($this->id))->all();
+        $childs = Q("SELECT `child_name`, `child_birthyear`, `id` FROM `#_mdd_childrens` WHERE `child_parent` = ?i", array($this->id))->all();
 
         // prepare query statement
         $stmt = $this->conn->prepare( $query );

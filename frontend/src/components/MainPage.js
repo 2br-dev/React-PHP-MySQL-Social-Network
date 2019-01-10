@@ -30,7 +30,7 @@ class MainPage extends Component {
     fetch(`http://akvatory.local/api/user/read_one.php?id=${this.state.user_logged_id}`)
       .then(response => response.json())
       .then(user => this.setState({ user }))
-
+ 
     if (this.state.user.avatar == '') this.setState({ noAvatar: true });
   }
 
@@ -92,6 +92,8 @@ class MainPage extends Component {
   
   render() {
     const { user_id, user_logged_id, user, noAvatar, section } = this.state;
+    
+    if (user.error === 1) { window.location.href = '/404';}
     
     return (
       <div className="container">

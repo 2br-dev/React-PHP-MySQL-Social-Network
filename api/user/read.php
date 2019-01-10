@@ -27,12 +27,10 @@ if($num>0){
         extract($row);
  
         $user_item=array(
-            "id" => $id,
-            "username" => $username,
-            "login" => $login,
-            "password" => $password,
-            "email" => $email,
-            "admin" => $admin
+            "id"      => $id,
+            "login"   => $login,
+            "name"    => $name,
+            "surname" => $surname
         );
  
         array_push($users_arr["records"], $user_item);
@@ -51,4 +49,6 @@ if($num>0){
   echo json_encode(
       array("message" => "No users found.")
   );
+
+  header('location:/404');
 }

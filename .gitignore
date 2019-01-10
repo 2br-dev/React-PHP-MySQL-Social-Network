@@ -8,5 +8,6 @@ static/
 src/
 js/
 img/
+protected/runtime/
 .idea
 .vscode

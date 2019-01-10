@@ -26,7 +26,7 @@ class NavFriends extends Component {
               to={`id${friend.id}`}
               onClick={() => this.props.handleChangeUserId(friend.id)}
             >
-              <li>{friend.username}</li>
+              {friend.name !== '' ? <li>`${friend.name} ${friend.surname}`</li> : <li>{friend.login}</li> }
             </Link>
           ) 
         } 

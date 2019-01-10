@@ -12,11 +12,20 @@ class PersonalInfo extends Component {
       userInfo: {},
       modalText: '',
       modal: false,
+      newChildInput: false,
+      childName: '',
+      childBirthyear: ''
     }
     this.handleSubmit      =   this.handleSubmit.bind(this);
+    this.handleChange      =   this.handleChange.bind(this);
     this.openModal         =   this.openModal.bind(this);
     this.handleChange      =   this.handleChange.bind(this);
     this.fetchUserInfo     =   this.fetchUserInfo.bind(this);
+    this.deleteChild       =   this.deleteChild.bind(this);
+    this.prepareChild      =   this.prepareChild.bind(this);
+    this.handleChild       =   this.handleChild.bind(this);
+    this.addChild          =   this.addChild.bind(this);
+    this.removeInput       =   this.removeInput.bind(this);
   }
 
   fetchUserInfo() {
@@ -27,7 +36,7 @@ class PersonalInfo extends Component {
 
   // делаем запрос перед рендером
   componentWillMount() {
-    this.fetchUserInfo();
+    this.fetchUserInfo(); 
   }
   // делаем запрос перед получением пропсов
   componentWillReceiveProps() {
@@ -45,6 +54,73 @@ class PersonalInfo extends Component {
     userInfo[event.target.name] = event.target.value;                        
     this.setState({userInfo});
   }
+
+  prepareChild() {
+    this.setState({ newChildInput: true})
+  }
+
+  handleChild(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+
+  addChild(e) {
+    e.preventDefault();
+    if ($('input[name="childName"]').val() != '' && $('input[name="childBirthyear"]').val() != '') {  
+      var self = this;
+      self.setState({ modal: false });
+      const formData = new FormData();
+      formData.append('name', $('input[name="childName"]').val());
+      formData.append('year', $('input[name="childBirthyear"]').val());
+      formData.append('parent', self.props.user_logged_id);
+
+      $.ajax({ 
+        // DEV
+        url         : 'http://akvatory.local/api/child/add.php',
+        /* url         : window.location.origin + '/api/child/add.php', */
+        data        : formData,
+        processData : false,
+        contentType : false,
+        type: 'POST',
+        success: function(res) {
+          self.fetchUserInfo();
+          self.setState({ newChildInput: false, childBirthyear: '', childName: ''});
+          console.log(res);
+        },
+        error: function(err) {
+          self.openModal('Что-то пошло не так, попробуйте обновить страницу.');
+        }
+      });
+    }
+  }
+
+  deleteChild(e) {
+    var self = this;
+    self.setState({ modal: false });
+    e.preventDefault(); 
+    const formData = new FormData();
+    formData.append('id', e.target.id);
+
+    $.ajax({ 
+      // DEV
+      url         : 'http://akvatory.local/api/child/delete.php',
+      /* url         : window.location.origin + '/api/child/delete.php', */
+      data        : formData,
+      processData : false,
+      contentType : false,
+      type: 'POST',
+      success: function(res) {
+        self.fetchUserInfo();
+        console.log(res);
+      },
+      error: function(err) {
+        self.openModal('Что-то пошло не так, попробуйте обновить страницу.');
+      }
+    });
+  }
+
+  removeInput = () => this.setState({ newChildInput: false });
 
   handleSubmit(e) {
     var self = this;
@@ -96,11 +172,17 @@ class PersonalInfo extends Component {
   }
 
   render() {
-    const { userInfo } = this.state;
+    const { userInfo, newChildInput, childName, childBirthyear } = this.state;
     const { user_id, user_logged_id } = this.props;
+    
+    let childrens = {};
+    if (userInfo.childs) {
+      childrens = JSON.parse(userInfo.childs.replace(/\//g,''));
+    }
 
     return (
     <section className="personal">
+          
       {this.state.modal ? <ModalWindow text={this.state.modalText} /> : null}
       <form id="personal-info" action="" method="POST" onSubmit={this.handleSubmit}>
       <div className="personal-header">
@@ -159,7 +241,7 @@ class PersonalInfo extends Component {
         </div>
         <div className="personal-section__data">
           <div>
-            <label>Семейное положение</label>
+            <label>Семейное положение:</label>
             <select name="status" onChange={this.handleChange} className={user_logged_id === user_id ? 'personal-header__select' : 'personal-header__info-input-disabled'} >
               <option value={userInfo.status} default hidden>{userInfo.status}</option>
               {userInfo.sex === 'женский' ? 
@@ -173,33 +255,55 @@ class PersonalInfo extends Component {
           </div>
           
           <div className="personal-section__data-childrens">
-            <label>Дети</label>
-              {userInfo.childrens ? (
-              <div className="personal-section__childrens">
-                  <input 
-                    type="text" 
-                    className={user_logged_id === user_id ? null : 'personal-header__info-input-disabled'} 
-                    value="Алена" /> имя
+            <label>Дети:</label>
+            <div className="personal-section__childrens-container">
+            {Object.keys(childrens).map((child, i)=> {
+              return (
+              <div className="personal-section__childrens" key={childrens[child].id}>
                 <span>
                   <input 
                     type="text" 
                     className={user_logged_id === user_id ? null : 'personal-header__info-input-disabled'} 
-                    value="2000" /> г.р
+                    value={childrens[child].child_name} /> имя
+                </span>
+                {user_logged_id === user_id ? <a href="#" onClick={this.deleteChild} id={childrens[child].id}></a> : null}  
+                <span style={{ 'width': '100%' }}>
+                  <input 
+                    type="date" 
+                    className={user_logged_id === user_id ? null : 'personal-header__info-input-disabled'} 
+                    value={childrens[child].child_birthyear} /> г.р
                 </span>
               </div>
-              ) : (
-                <div className="personal-section__childrens">
-                  <span>
-                    <input type="text" className={user_logged_id === user_id ? null : 'personal-header__info-input-disabled'} value="" /> имя
-                  </span>
-                  <span>
-                    <input type="text" className={user_logged_id === user_id ? null : 'personal-header__info-input-disabled'} value="" /> г.р
-                  </span>
-                </div>
-                ) }  
-            <a>+ Добавить</a>
+            )})} 
+            </div>            
+            {user_logged_id === user_id ? <a onClick={this.prepareChild} className="personal-section__childrens-add">+ Добавить</a> : null}
           </div> 
-          
+
+          {newChildInput ?        
+          <div className="personal-section__childrens-container-add">
+            <div className="personal-section__childrens">
+              <span>
+                <input 
+                  name='childName'
+                  type='text'
+                  onChange={this.handleChild}
+                  className={user_logged_id === user_id ? null : 'personal-header__info-input-disabled'} 
+                  value={childName} /> имя
+              </span>
+              {user_logged_id === user_id ? <a href="#" onClick={this.addChild}></a> : null}  
+              <span style={{ 'width': '100%' }}>
+                <input 
+                  name='childBirthyear'
+                  type='date'
+                  onChange={this.handleChild} 
+                  className={user_logged_id === user_id ? null : 'personal-header__info-input-disabled'} 
+                  value={childBirthyear} /> г.р
+              </span>
+            </div>
+            <a onClick={this.removeInput} className="personal-section__childrens-remove">Отменить</a>
+          </div>  
+          : null }          
+           
         </div>
       </div>
       <div className="personal-section">
@@ -291,17 +395,17 @@ class PersonalInfo extends Component {
             onChange={this.handleChange}
             value={userInfo.army_type} />
         </div>
-        {user_logged_id === user_id ?
-          <div style={{'width': '100%', 'height': '60px', 'position': 'relative'}}><button className="btn" onClick={this.handleSubmit}>Обновить данные</button> </div> :
-          null 
-        }   
-      </div>
-      : null }
+      </div> : null }
+      {user_logged_id === user_id ?
+        (<div style={{'width': '100%', 'height': '60px', 'position': 'relative'}}><button className="btn" onClick={this.handleSubmit}>Обновить данные</button></div>)
+        : null 
+      }      
       </form>
     </section>  
    )
   }
 
 }
+
 
 export default PersonalInfo;

@@ -31,7 +31,12 @@ if(!isset($_SESSION['username']) && $_SERVER['REQUEST_URI'] != '/login') {
 // редирект на главную страницу залогиненного профиля.
 if ($_SERVER['REQUEST_URI'] == '/') {
   $id = $_COOKIE['user_id'];
-  header('location:/id'.$id);
+  $sex = Q("SELECT `sex` FROM `#_mdd_users` WHERE `id` = ?i",array($id))->row('sex');
+  if($sex == '') {
+    header('location:/settings');
+  } else {
+    header('location:/id'.$id);
+  }  
 }
 
 # Load time

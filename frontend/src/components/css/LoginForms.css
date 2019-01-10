@@ -13,6 +13,9 @@
   top: 15%;
   z-index: 2;
 }
+.login-screen .modal {
+  top: 200px;
+}
 .login-screen-button {
   position: relative;
   z-index: 2;
