@@ -62,7 +62,7 @@ class MainPage extends Component {
       .then(response => response.json())
       .then(user => this.setState({ user }))
 
-    if (this.state.user.avatar == '') this.setState({ noAvatar: !this.state.noAvatar })
+    if (this.state.user.avatar === '') this.setState({ noAvatar: !this.state.noAvatar })
   }
 
   switchComponent(){
