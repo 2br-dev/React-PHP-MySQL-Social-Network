@@ -1,5 +1,4 @@
 node_modules
-frontend/build/
 apps/
 cp/
 cp_setup/
@@ -8,6 +7,6 @@ static/
 src/
 js/
 img/
-protected/runtime/
+protected/runtime
 .idea
 .vscode

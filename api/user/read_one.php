@@ -33,6 +33,7 @@ if($user->login!=null){
         "background" => $user->background,
         "name"       => $user->name,
         "surname"    => $user->surname,
+        'liked'      => $user->liked
     );
 
     // set response code - 200 OK

@@ -188,7 +188,7 @@ class PersonalInfo extends Component {
       <div className="personal-header">
         <div className="personal-header__photo">
           <img src={window.location.origin + `/img/photos/images.png`} alt='' />
-          <a>Изменить фото профиля</a>
+          {user_logged_id === user_id ? <a>Изменить фото профиля</a> : null}
         </div>
         <div className="personal-header__info">
           <div className="personal-header__div">

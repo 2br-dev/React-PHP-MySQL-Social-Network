@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-25 17:10:12
+/* Smarty version 3.1.32, created on 2019-01-14 12:19:52
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\view\modules\_fields_module_add.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c223a44e59991_89991786',
+  'unifunc' => 'content_5c3c54388787d9_32832472',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -22,7 +22,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:system/controll.tpl' => 3,
   ),
 ),false)) {
-function content_5c223a44e59991_89991786 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c3c54388787d9_32832472 (Smarty_Internal_Template $_smarty_tpl) {
 ?><table class="t1 table module-table" id="mdd_fields"><col><col width="150"><col width="240"><col width="320"><col width="85"><col width="80"><col width="35"><col width="35"><col width="35"><thead><tr><th colspan="9">Добавление полей</th></tr></thead><tbody><tr><td class="h">Название поля</td><td class="h">Системное имя</td><td class="h">Тип поля</td><td class="h">Дополнительно</td><td class="h">Порядок</td><td class="h">В списке</td><td class="h"><span class="mysql-index"></span></td><td class="h"><span class="mysql-unique"></span></td><td class="h"></td></tr><tr id="tr1"><td class="va_t"><input name="f_name[1]" class="ness"></td><td class="va_t"><input name="f_sys_name[1]" class="ness"></td><td class="va_t"><select name="f_type[1]" data-placeholder="Тип поля" class="ness" id="fieldtype_1" onchange="select_type(this)"><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['mmd_fields_type']->value, 'item');
 if ($_from !== null) {

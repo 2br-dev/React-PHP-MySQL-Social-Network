@@ -106,6 +106,7 @@ class User{
         $this->id           = $row['id']; 
         $this->name         = $row['name']; 
         $this->surname      = $row['surname']; 
+        $this->liked        = $row['liked'];
     }
     function readPersonal(){
         // query to read single record
@@ -164,7 +165,8 @@ class User{
                     position = :position,
                     status = :status,
                     surname = :surname,
-                    vuz = :vuz
+                    vuz = :vuz,
+                    sex = :sex
                 WHERE
                     id = :id";
     
@@ -186,6 +188,7 @@ class User{
         $this->surname=htmlspecialchars(strip_tags($this->surname));
         $this->vuz=htmlspecialchars(strip_tags($this->vuz));
         $this->city=htmlspecialchars(strip_tags($this->city));
+        $this->sex=htmlspecialchars(strip_tags($this->sex));
         
         // bind new values
         $stmt->bindParam(':id', $this->id);
@@ -201,7 +204,8 @@ class User{
         $stmt->bindParam(':status', $this->status);
         $stmt->bindParam(':surname', $this->surname);
         $stmt->bindParam(':vuz', $this->vuz);
-        $stmt->bindParam(':city', $this->city);  
+        $stmt->bindParam(':city', $this->city); 
+        $stmt->bindParam(':sex', $this->sex);  
     
         // execute the query
         if($stmt->execute()){
@@ -210,6 +214,41 @@ class User{
     
         return false;
     }
+
+    function settings() {
+        $query = "UPDATE " . $this->table_name . "
+                SET
+                    birthday = :birthday,
+                    name = :name,
+                    position = :position,
+                    surname = :surname,
+                    sex = :sex
+                WHERE
+                    id = :id";
+
+        $stmt = $this->conn->prepare($query);
+        
+        $this->id=htmlspecialchars(strip_tags($this->id));
+        $this->birthday=htmlspecialchars(strip_tags($this->birthday));
+        $this->name=htmlspecialchars(strip_tags($this->name));
+        $this->position=htmlspecialchars(strip_tags($this->position));
+        $this->surname=htmlspecialchars(strip_tags($this->surname));
+        $this->sex=htmlspecialchars(strip_tags($this->sex));
+        
+        $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(':birthday', $this->birthday);
+        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':position', $this->position);
+        $stmt->bindParam(':surname', $this->surname);
+        $stmt->bindParam(':sex', $this->sex);  
+    
+        if($stmt->execute()){
+            return true;
+        }
+    
+        return false;
+    }
+
     function delete(){
  
         // delete query

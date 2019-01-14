@@ -7,6 +7,7 @@ import Cookie from './functions/Cookie';
 import NavFriends from './NavFriends';
 import PersonalInfo from './PersonalInfo';
 import Tasks from './Tasks';
+import News from './News';
 
 class MainPage extends Component {
   constructor(props) {
@@ -71,7 +72,7 @@ class MainPage extends Component {
       case 'messages':
         return 'messages';
       case 'news':
-        return 'news';
+        return <News user={this.state.user} />;
       case 'tasks':
         return <Tasks />;
       case 'colleagues':

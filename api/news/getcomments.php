@@ -15,33 +15,30 @@ $db = $database->getConnection();
 $news = new News($db);
  
 // query news
-$stmt = $news->read();
+$stmt = $news->readComments();
 $num = $stmt->rowCount();
  
 // check if more than 0 record found
 if($num>0){
-    $news_arr=array();
-    $news_arr["records"]=array();
+    $comments_arr=array();
+    $comments_arr["records"]=array();
  
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
         extract($row);
  
-        $news_item=array(
+        $comments=array(
             "id"          => $id,
-            "author"      => $author,
-            "title"       => $title,
+            "news_id"     => $news_id,
+            "who"         => $who,
             "text"        => $text,
-            "date"        => $date,
-            "importance"  => $importance,
-            'likes'       => $likes,
         );
  
-        array_push($news_arr["records"], $news_item);
+        array_push($comments_arr["records"], $comments);
     }
     http_response_code(200);
  
     // show news data in json format
-    echo json_encode($news_arr);
+    echo json_encode($comments_arr);
 }
  else
 {

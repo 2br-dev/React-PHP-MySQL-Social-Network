@@ -12,6 +12,7 @@ class News{
     public $title;
     public $text;
     public $importance;
+    public $likes;
  
     // constructor with $db as database connection
     public function __construct($db){
@@ -20,7 +21,19 @@ class News{
 
     function read(){
         $query = "SELECT * FROM `db_mdd_news` ORDER BY `ord` DESC";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
      
+        // execute query
+        $stmt->execute();
+     
+        return $stmt;
+    }
+
+    function readComments() {
+        $query = "SELECT * FROM `db_mdd_comments` ORDER BY `ord` DESC";
+    
         // prepare query statement
         $stmt = $this->conn->prepare($query);
      
