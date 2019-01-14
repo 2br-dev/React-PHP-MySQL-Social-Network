@@ -19,7 +19,7 @@
 	<!-- CSS -->
 	<link type="text/css" rel="stylesheet" href="/css/normalize.css" >
 	<link type="text/css" rel="stylesheet" href="/css/style.css" >
-	<link type="text/css" rel="stylesheet" href="/frontend/build/static/css/main.21b209ea.chunk.css" >
+	<link type="text/css" rel="stylesheet" href="/frontend/build/static/css/main.0eaaf773.chunk.css" >
 
 </head>
 <body class="page-{$_page.system}">

@@ -1,15 +1,15 @@
 {
-  "main.css": "/static/css/main.21b209ea.chunk.css",
-  "main.js": "/static/js/main.b0d40341.chunk.js",
-  "main.js.map": "/static/js/main.b0d40341.chunk.js.map",
-  "static/js/1.08b43f55.chunk.js": "/static/js/1.08b43f55.chunk.js",
-  "static/js/1.08b43f55.chunk.js.map": "/static/js/1.08b43f55.chunk.js.map",
+  "main.css": "/static/css/main.0eaaf773.chunk.css",
+  "main.js": "/static/js/main.6cee1e3a.chunk.js",
+  "main.js.map": "/static/js/main.6cee1e3a.chunk.js.map",
+  "static/js/1.b63a7c02.chunk.js": "/static/js/1.b63a7c02.chunk.js",
+  "static/js/1.b63a7c02.chunk.js.map": "/static/js/1.b63a7c02.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.229c360f.js",
   "runtime~main.js.map": "/static/js/runtime~main.229c360f.js.map",
-  "static/media/index.css": "/static/media/calibri.2a4d815e.eot",
+  "static/media/index.css": "/static/media/calibri.b0f61b94.woff",
   "static/media/MainpageHeader.css": "/static/media/cosmic_rose_essence_by_ellysiumn-dcccim4.99b91fa2.jpg",
-  "static/css/main.21b209ea.chunk.css.map": "/static/css/main.21b209ea.chunk.css.map",
+  "static/css/main.0eaaf773.chunk.css.map": "/static/css/main.0eaaf773.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.068ead468d27a2ea69d2a9db10a77b4b.js": "/precache-manifest.068ead468d27a2ea69d2a9db10a77b4b.js",
+  "precache-manifest.2ad178e6440d9d5dfa650cabf81e6532.js": "/precache-manifest.2ad178e6440d9d5dfa650cabf81e6532.js",
   "service-worker.js": "/service-worker.js"
 }

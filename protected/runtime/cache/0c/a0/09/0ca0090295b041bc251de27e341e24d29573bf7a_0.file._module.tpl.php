@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-14 12:52:16
+/* Smarty version 3.1.32, created on 2019-01-14 18:28:30
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\view\modules\_module.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c3c5bd039d3c8_40477556',
+  'unifunc' => 'content_5c3caa9e99e369_25631744',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:system/group.tpl' => 3,
   ),
 ),false)) {
-function content_5c3c5bd039d3c8_40477556 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c3caa9e99e369_25631744 (Smarty_Internal_Template $_smarty_tpl) {
 ?><table class="table" id="meta_data"><col><col><col width="150"><col width="100"><col width="148"><col width="190"><col width="125"><col width="195"><thead><tr><th colspan="8">Добавление модуля</th></tr></thead><tbody><tr><td class="h"><?php echo t('titles.name');?>
  <span class="ness_color">*</span></td><td class="h">Системное имя  <span class="ness_color">*</span></td><td class="h">Тип таблицы</td><td class="h">Pager</td><td class="h">Тип</td><td class="h">Поле сортировки</td><td class="h">Порядок</td><td class="h">Статус</td></tr><tr><td class="va_t"><input name="name" value="<?php if (isset($_smarty_tpl->tpl_vars['mdd_module']->value['name'])) {
 echo $_smarty_tpl->tpl_vars['mdd_module']->value['name'];
