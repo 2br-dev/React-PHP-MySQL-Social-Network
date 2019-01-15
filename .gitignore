@@ -3,7 +3,6 @@ apps/
 cp/
 cp_setup/
 upload_dir/
-src/
 img/
 protected/runtime
 .idea

@@ -1,0 +1,21 @@
+.restore-container {
+  padding-bottom: 45px;
+  z-index: 20;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 20%;
+  margin: auto;
+  height: 380px;
+}
+.restore-container-head {
+  margin-bottom: 5px;
+  font-size: 22px;
+}
+.restore-container-note {
+  font-size: 13px;
+  color: #525252;
+}
+.restore-container .btn {
+  padding: 10px 80px;
+}
