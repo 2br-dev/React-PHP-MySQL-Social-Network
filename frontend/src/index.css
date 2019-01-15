@@ -26,6 +26,9 @@ input:active {
 * {
   box-sizing: border-box;
 }
+.invalid {
+  border: 2px solid #ffb5b0 !important;
+}
 .container {
   width: 1000px;
   margin: 0 auto;

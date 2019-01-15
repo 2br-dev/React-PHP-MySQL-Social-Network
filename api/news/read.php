@@ -29,6 +29,7 @@ if($num>0){
         $news_item=array(
             "id"          => $id,
             "author"      => $author,
+            'author_id'   => $author_id,
             "title"       => $title,
             "text"        => $text,
             "date"        => $date,
