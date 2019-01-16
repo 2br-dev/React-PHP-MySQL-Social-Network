@@ -5,5 +5,7 @@ cp_setup/
 upload_dir/
 img/
 protected/runtime
+protected/config
+protected/config/db
 .idea
 .vscode

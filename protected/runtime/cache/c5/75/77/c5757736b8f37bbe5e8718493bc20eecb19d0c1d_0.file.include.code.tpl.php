@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-14 18:28:30
+/* Smarty version 3.1.32, created on 2019-01-16 15:47:41
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\system\include.code.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c3caa9edfdf85_26552060',
+  'unifunc' => 'content_5c3f27ed202f91_62460664',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c3caa9edfdf85_26552060 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c3f27ed202f91_62460664 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div id="clipsmodal" style="display: none;">
     <section>
         <ul class="redactor_clips_box">

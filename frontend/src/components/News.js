@@ -302,7 +302,9 @@ export default class News extends Component {
               showNews={this.showNews} 
               closeNews={this.closeNews.bind(this)}  
               singleNewsId={singleNewsId}
-              comments={comments} />
+              comments={comments}
+              news={news}
+              user={user} />
             : null}
       </div>
     )

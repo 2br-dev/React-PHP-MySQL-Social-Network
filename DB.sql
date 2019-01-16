@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Дек 25 2018 г., 18:50
+-- Время создания: Янв 16 2019 г., 15:54
 -- Версия сервера: 5.6.34
 -- Версия PHP: 7.0.14
 
@@ -39,6 +39,76 @@ CREATE TABLE `db_mdd_childrens` (
   `gid` int(10) UNSIGNED NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Дамп данных таблицы `db_mdd_childrens`
+--
+
+INSERT INTO `db_mdd_childrens` (`id`, `child_name`, `child_birthyear`, `child_parent`, `ord`, `visible`, `created`, `updated`, `uid`, `gid`) VALUES
+(2, 'Серёжа', '2019-01-01', '62', 20, 1, 1547045671, 1547045671, 2, 0),
+(27, 'Ольга', '213213-03-12', '62', 0, 0, 0, 0, 0, 0),
+(6, 'Серёжа', '2019-01-01', '61', 60, 1, 1547105979, 1547105979, 2, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `db_mdd_comments`
+--
+
+CREATE TABLE `db_mdd_comments` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `time` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `text` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `who` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `news_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `date` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ord` int(10) UNSIGNED NOT NULL,
+  `visible` tinyint(3) UNSIGNED NOT NULL,
+  `created` int(10) UNSIGNED NOT NULL,
+  `updated` int(10) UNSIGNED NOT NULL,
+  `uid` int(10) UNSIGNED NOT NULL,
+  `gid` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Дамп данных таблицы `db_mdd_comments`
+--
+
+INSERT INTO `db_mdd_comments` (`id`, `time`, `text`, `who`, `news_id`, `date`, `ord`, `visible`, `created`, `updated`, `uid`, `gid`) VALUES
+(1, '', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.', 'Serj', '5', '31.12.2018', 10, 1, 1547452848, 1547452848, 2, 0),
+(2, '', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.', 'Olya', '5', '31.12.2119', 20, 1, 1547452866, 1547452866, 2, 0),
+(3, '', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.', 'Nastya', '5', '05.12.2018', 30, 1, 1547452878, 1547452878, 2, 0),
+(4, '', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.', 'Anton', '5', '05.12.2018', 40, 1, 1547452892, 1547452892, 2, 0),
+(5, '13:28', 'sdadasdas', 'Anastasiya Nastya', '43', '2019.01.16', 0, 1, 0, 0, 0, 0),
+(6, '13:29', 'sdads', 'Anastasiya Nastya', '43', '2019.01.16', 0, 1, 0, 0, 0, 0),
+(7, '13:29', 'dasdasd', 'Anastasiya Nastya', '43', '2019.01.16', 0, 1, 0, 0, 0, 0),
+(8, '13:29', 'dasdas', 'Anastasiya Nastya', '43', '2019.01.16', 0, 1, 0, 0, 0, 0),
+(9, '13:29', 'cascasd', 'Anastasiya Nastya', '43', '2019.01.16', 0, 1, 0, 0, 0, 0),
+(10, '13:29', 'sdasd', 'Anastasiya Nastya', '43', '2019.01.16', 0, 1, 0, 0, 0, 0),
+(11, '13:31', 'asdasdasd', 'Anastasiya Nastya', '4', '2019.01.16', 0, 1, 0, 0, 0, 0),
+(12, '13:32', 'sadas', 'Anastasiya Nastya', '43', '2019.01.16', 0, 1, 0, 0, 0, 0),
+(13, '13:32', 'asdasd', 'Anastasiya Nastya', '43', '2019.01.16', 0, 1, 0, 0, 0, 0),
+(14, '13:33', 'sds', 'Anastasiya Nastya', '5', '2019.01.16', 0, 1, 0, 0, 0, 0),
+(15, '13:33', 'asdasd', 'Anastasiya Nastya', '5', '2019.01.16', 0, 1, 0, 0, 0, 0),
+(16, '13:33', 'asdasd', 'Anastasiya Nastya', '5', '2019.01.16', 0, 1, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `db_mdd_likes`
+--
+
+CREATE TABLE `db_mdd_likes` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `news_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `user` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ord` int(10) UNSIGNED NOT NULL,
+  `visible` tinyint(3) UNSIGNED NOT NULL,
+  `created` int(10) UNSIGNED NOT NULL,
+  `updated` int(10) UNSIGNED NOT NULL,
+  `uid` int(10) UNSIGNED NOT NULL,
+  `gid` int(10) UNSIGNED NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -47,6 +117,10 @@ CREATE TABLE `db_mdd_childrens` (
 
 CREATE TABLE `db_mdd_news` (
   `id` int(10) UNSIGNED NOT NULL,
+  `comments` int(10) UNSIGNED NOT NULL,
+  `author_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `liked_by` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `likes` int(10) UNSIGNED NOT NULL,
   `author` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `date` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -64,12 +138,13 @@ CREATE TABLE `db_mdd_news` (
 -- Дамп данных таблицы `db_mdd_news`
 --
 
-INSERT INTO `db_mdd_news` (`id`, `author`, `date`, `title`, `text`, `importance`, `ord`, `visible`, `created`, `updated`, `uid`, `gid`) VALUES
-(1, 'Сергей Алекян', '31.12.2018', 'Where does it come from?', '<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.</p>\n<p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>', '1', 10, 1, 1545659720, 1545659720, 2, 0),
-(2, 'Святослав Евгеньевич', '05.12.2018', 'What is Lorem Ipsum?', '<p><strong></strong><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>', '1', 20, 1, 1545659910, 1545659910, 2, 0),
-(3, 'Директор Акватории', '15.12.2018', 'Важнейшая Новость епта', '<p>вывавыпы</p><p>впваыпвапвап</p><p>вапвапвапвапвап</p><p>апвапва<br><br>вывавып</p>\n<p>ывпваыпвапвапвапв</p><p>апвапвапвапвапв<br><br>вывавыпывпва</p>\n<p>ыпвапвапвапвапвапва</p><p>пвапвапв<br><br></p>', '0', 30, 1, 1545659985, 1545659985, 2, 0),
-(4, 'Сергей Алекян', '31.12.2018', 'С Новым годом, товарищи!!!', '<p><strong>HAPPY NEW YEAR GUYS</strong></p>', '1', 40, 1, 1545660086, 1545660086, 2, 0),
-(5, 'Иисус Христос', '31.12.2119', 'Не важная новость.', '<p>&nbsp;ITS ALL AN ILLUSION ILLUMINATIS IS COMING ILON MASK IS REPTILOED PLEASE STANLEY KUBRIC FORGIVE US FASTER</p>', '0', 50, 1, 1545660159, 1545660159, 2, 0);
+INSERT INTO `db_mdd_news` (`id`, `comments`, `author_id`, `liked_by`, `likes`, `author`, `date`, `title`, `text`, `importance`, `ord`, `visible`, `created`, `updated`, `uid`, `gid`) VALUES
+(1, 0, '', ', 62', 1, 'Сергей Алекян', '31.12.2018', 'Where does it come from?', '<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.</p>\n<p>The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>', '1', 10, 1, 1545659720, 1545659720, 2, 0),
+(2, 0, '', ', 62', 3, 'Святослав Евгеньевич', '05.12.2018', 'What is Lorem Ipsum?', '<p><strong></strong><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>', '1', 20, 1, 1545659910, 1545659910, 2, 0),
+(3, 0, '', ', 62', 1, 'Директор Акватории', '15.12.2018', 'Важнейшая Новость епта', '<p>вывавыпы</p><p>впваыпвапвап</p><p>вапвапвапвапвап</p><p>апвапва<br><br>вывавып</p>\n<p>ывпваыпвапвапвапв</p><p>апвапвапвапвапв<br><br>вывавыпывпва</p>\n<p>ыпвапвапвапвапвапва</p><p>пвапвапв<br><br></p>', '0', 30, 1, 1545659985, 1545659985, 2, 0),
+(4, 1, '', ', 62', 2, 'Сергей Алекян', '31.12.2018', 'С Новым годом, товарищи!!!', '<p><strong>HAPPY NEW YEAR GUYS</strong></p>', '1', 40, 1, 1545660086, 1545660086, 2, 0),
+(5, 3, '', ', 62', 3, 'Иисус Христос', '31.12.2119', 'Не важная новость.', '<p>&nbsp;ITS ALL AN ILLUSION ILLUMINATIS IS COMING ILON MASK IS REPTILOED PLEASE STANLEY KUBRIC FORGIVE US FASTER</p>', '0', 50, 1, 1545660159, 1545660159, 2, 0),
+(43, 7, '62', ', 62', 1, 'Anastasiya Nastya', '2019.01.16', 'Новая новость', 'В Финляндии минимальную пенсию увеличили до €785 в мес (60 000 руб). Такая пенсия гарантируется всем финнам с низкими доходами. В России средняя пенсия в 5 раз меньше - 13 345 руб. Но и с выплатой даже этой мизерной пенсии государство не справилось - повысили пенсионный возраст', '0', 0, 0, 4294967295, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -79,6 +154,10 @@ INSERT INTO `db_mdd_news` (`id`, `author`, `date`, `title`, `text`, `importance`
 
 CREATE TABLE `db_mdd_users` (
   `id` int(10) UNSIGNED NOT NULL,
+  `liked` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `sex` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `code` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `approved` int(10) UNSIGNED NOT NULL,
   `adress` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `army_type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `army_country` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -111,17 +190,9 @@ CREATE TABLE `db_mdd_users` (
 -- Дамп данных таблицы `db_mdd_users`
 --
 
-INSERT INTO `db_mdd_users` (`id`, `adress`, `army_type`, `army_country`, `fakultet`, `vuz`, `district`, `city`, `status`, `birthday`, `surname`, `name`, `position`, `background`, `avatar`, `username`, `phone`, `login`, `password`, `email`, `admin`, `ord`, `visible`, `created`, `updated`, `uid`, `gid`) VALUES
-(15, '', '', '', '', '', '', '', '', '', '', '', 'Бог', '', '', 'ыуккык', '999999999', '1', '1bbd886460827015e5d605ed44252251', 'alekyansn@gmail.com', 0, 0, 0, 4294967295, 0, 0, 0),
-(16, 'K-city', 'Best', 'Russsian Army', 'Geographical', 'KubGU', 'Saint Peter', 'Moscow', 'не женат', '29.12.2018', 'Алекян', 'Сергей', 'Machiner', '', '', 'Сергей Алекян', '9996503943', 'admin', '1bbd886460827015e5d605ed44252251', 'alekyansn@gmail.com', 0, 0, 0, 4294967295, 0, 2, 0),
-(17, '', '', '', '', '', '', '', '', '', '', '', 'Full Stack God', '', '', 'Сергей Алекян', '+7(999) 650-3943', '037', '94b8cea57c49a3007225a0c70c475450', 'alekyansn@gmail.com', 0, 0, 0, 4294967295, 0, 0, 0),
-(19, 'IKEA', 'Подушечные', 'Казахстан', 'Шитья подушек', 'NO', 'Ох, дагестан', 'Бирюлевео', 'жената', '31.12.2018', 'Душка', 'По', 'Подушка', '', '', 'Amazing Pillow 3.0', '222222-22', '255', 'The best pillow for amazing programmers.', 'roflemail@.com', 0, 0, 0, 0, 0, 2, 0),
-(20, '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Сергей Алекян', '1223', '1', '1bbd886460827015e5d605ed44252251', 'alekyansn@gmail.com', 0, 0, 0, 4294967295, 0, 0, 0),
-(21, '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Сергей Алекян', '1223', '1', '1bbd886460827015e5d605ed44252251', 'alekyansn@gmail.com', 0, 0, 0, 4294967295, 0, 0, 0),
-(22, '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Сергей Алекян', '1223', '1', '1bbd886460827015e5d605ed44252251', 'alekyansn@gmail.com', 0, 0, 0, 4294967295, 0, 0, 0),
-(23, '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'БАТЯ', '1111111111', 'batya', '1bbd886460827015e5d605ed44252251', 'serallek@gmail.com', 0, 0, 0, 4294967295, 0, 0, 0),
-(24, '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'asd', '123213', 'asdasdasdasd', '198162450afafd4f3b62e5a76f55af52', 'alekyansn@gmail.com', 0, 0, 0, 4294967295, 0, 0, 0),
-(25, '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Ольга Кононович', '1111111111', 'Olya boss', '1bbd886460827015e5d605ed44252251', 'kononovich@mail.ru', 0, 0, 0, 4294967295, 0, 0, 0);
+INSERT INTO `db_mdd_users` (`id`, `liked`, `sex`, `code`, `approved`, `adress`, `army_type`, `army_country`, `fakultet`, `vuz`, `district`, `city`, `status`, `birthday`, `surname`, `name`, `position`, `background`, `avatar`, `username`, `phone`, `login`, `password`, `email`, `admin`, `ord`, `visible`, `created`, `updated`, `uid`, `gid`) VALUES
+(62, '', 'женский', '', 1, 'asdasd', 'undefined', 'undefined', '12dsa', 'dsadas', 'asdasd', 'asdasd', 'Замужем', '7676-03-29', 'Nastya', 'Anastasiya', 'Designerdad', '', '', 'Анастасия Анастасия', '+7 (213) 21-32-121', 'admin', '$2y$10$VhyxDmELPVlVNtlKwbcMCekAwj2HlIUSl2CEu3dvzr1u9v0U.Q7rC', 'serallek@gmail.com', 0, 0, 0, 4294967295, 0, 2, 0),
+(63, '', 'мужской', '', 1, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'serhserhserh', '$2y$10$YnFE37EfdW0IOZvVGf3.keF9dMWDmi8jNY7KPhfdKNVycX0CsKpGy', 'alekyansn@gmail.com', 0, 0, 0, 4294967295, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1174,7 +1245,36 @@ INSERT INTO `db__mdd_fields` (`id`, `module_id`, `f_name`, `f_sys_name`, `f_defa
 (1015, 62, 'ВУЗ', 'vuz', '', 'input', 100, '', 0, 0, 170, 0),
 (1016, 62, 'Факультет', 'fakultet', '', 'input', 100, '', 0, 0, 180, 0),
 (1017, 62, 'Страна службы', 'army_country', '', 'input', 100, '', 0, 0, 190, 0),
-(1018, 62, 'Род войск', 'army_type', '', 'input', 100, '', 0, 0, 200, 0);
+(1018, 62, 'Род войск', 'army_type', '', 'input', 100, '', 0, 0, 200, 0),
+(1019, 62, 'Подтвержден?', 'approved', '', 'int', 100, '', 0, 0, 210, 0),
+(1020, 62, 'Код подтверждения', 'code', '', 'input', 100, '', 0, 0, 220, 0),
+(1021, 62, 'Пол', 'sex', '', 'input', 100, '', 0, 0, 230, 0),
+(1022, 38, 'ID', 'id', '', 'int', 0, NULL, 0, 0, 0, 0),
+(1023, 38, 'Сортировка', 'ord', '0', 'int', 0, NULL, 0, 0, 1000, 1),
+(1024, 38, 'Отображать', 'visible', '', 'tinyint', 0, NULL, 0, 0, 1010, 1),
+(1025, 38, 'Дата создания', 'created', 'NULL', 'int', 0, NULL, 0, 0, 1020, 0),
+(1026, 38, 'Дата изменения', 'updated', 'NULL', 'int', 0, NULL, 0, 0, 1030, 0),
+(1027, 38, 'Пользователь', 'uid', 'NULL', 'int', 0, 'a:2:{s:12:\"f_table_name\";s:12:\"db__usr_users\";s:13:\"f_table_field\";s:4:\"name\";}', 0, 0, 1040, 0),
+(1028, 38, 'Группа', 'gid', 'NULL', 'int', 0, 'a:2:{s:12:\"f_table_name\";s:13:\"db__usr_groups\";s:13:\"f_table_field\";s:4:\"name\";}', 0, 0, 1050, 0),
+(1029, 38, 'Текст комментарий', 'text', '', 'input', 100, '', 0, 0, 0, 0),
+(1030, 38, 'От кого комментарий', 'who', '', 'input', 100, '', 0, 0, 20, 1),
+(1031, 38, 'ID новости', 'news_id', '', 'input', 100, '', 0, 0, 30, 0),
+(1032, 38, 'Дата комментария', 'date', '', 'input', 100, '', 0, 0, 40, 1),
+(1033, 1, 'Количество лайков', 'likes', '', 'int', 100, '', 0, 0, 60, 0),
+(1034, 64, 'ID', 'id', '', 'int', 0, NULL, 0, 0, 0, 0),
+(1035, 64, 'Сортировка', 'ord', '0', 'int', 0, NULL, 0, 0, 1000, 1),
+(1036, 64, 'Отображать', 'visible', '', 'tinyint', 0, NULL, 0, 0, 1010, 1),
+(1037, 64, 'Дата создания', 'created', 'NULL', 'int', 0, NULL, 0, 0, 1020, 0),
+(1038, 64, 'Дата изменения', 'updated', 'NULL', 'int', 0, NULL, 0, 0, 1030, 0),
+(1039, 64, 'Пользователь', 'uid', 'NULL', 'int', 0, 'a:2:{s:12:\"f_table_name\";s:12:\"db__usr_users\";s:13:\"f_table_field\";s:4:\"name\";}', 0, 0, 1040, 0),
+(1040, 64, 'Группа', 'gid', 'NULL', 'int', 0, 'a:2:{s:12:\"f_table_name\";s:13:\"db__usr_groups\";s:13:\"f_table_field\";s:4:\"name\";}', 0, 0, 1050, 0),
+(1041, 64, 'ID новости', 'news_id', '', 'input', 100, '', 0, 0, 0, 0),
+(1042, 64, 'Юзер', 'user', '', 'input', 100, '', 0, 0, 20, 1),
+(1043, 62, 'Лайкнутые посты', 'liked', '', 'input', 100, '', 0, 0, 240, 0),
+(1044, 1, 'Лайкнувшие пользователи', 'liked_by', '', 'input', 100, '', 0, 0, 70, 0),
+(1045, 1, 'ID автора', 'author_id', '', 'input', 100, '', 0, 0, 80, 0),
+(1046, 38, 'Время комментария', 'time', '', 'input', 100, '', 0, 0, 50, 0),
+(1047, 1, 'Комментарии', 'comments', '', 'int', 100, '', 0, 0, 90, 0);
 
 -- --------------------------------------------------------
 
@@ -1324,7 +1424,8 @@ INSERT INTO `db__mdd_modules` (`id`, `name`, `sys_name`, `type`, `pager`, `addit
 (60, 'Календарь', 'calendar', 1, 10, NULL, 'InnoDB', 'ASC', 'created', 1, 10),
 (61, 'akvatory', 'akvatory', 1, 10, NULL, 'MyISAM', 'ASC', 'created', 1, 10),
 (62, 'Пользователи', 'users', 1, 10, NULL, 'InnoDB', 'ASC', 'created', 1, 10),
-(63, 'Дети', 'childrens', 1, 10, NULL, 'MyISAM', 'ASC', 'sort', 1, 10);
+(63, 'Дети', 'childrens', 1, 10, NULL, 'MyISAM', 'ASC', 'sort', 1, 10),
+(64, 'Лайки', 'likes', 1, 10, NULL, 'MyISAM', 'ASC', 'created', 1, 10);
 
 -- --------------------------------------------------------
 
@@ -2212,7 +2313,7 @@ CREATE TABLE `db__sys_log` (
 --
 
 INSERT INTO `db__sys_log` (`id`, `type`, `msg`, `desc`, `server`, `date`, `group`) VALUES
-(12, 'auth', 'Удачная авторизация', 'a:6:{s:19:\"Хост/Домен\";s:14:\"akvatory.local\";s:14:\"Браузер\";s:113:\"Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36\";s:27:\"Страница сайта\";s:25:\"http://akvatory.local/cp/\";s:28:\"Внешний ip адрес\";s:9:\"127.0.0.1\";s:28:\"ip адрес подсети\";N;s:24:\"Пользователь\";N;}', 'a:46:{s:15:\"REDIRECT_STATUS\";s:3:\"200\";s:9:\"HTTP_HOST\";s:14:\"akvatory.local\";s:14:\"HTTP_X_REAL_IP\";s:9:\"127.0.0.1\";s:22:\"HTTP_X_FORWARDED_PROTO\";s:4:\"http\";s:15:\"HTTP_CONNECTION\";s:5:\"close\";s:14:\"CONTENT_LENGTH\";s:2:\"34\";s:18:\"HTTP_CACHE_CONTROL\";s:9:\"max-age=0\";s:11:\"HTTP_ORIGIN\";s:21:\"http://akvatory.local\";s:30:\"HTTP_UPGRADE_INSECURE_REQUESTS\";s:1:\"1\";s:12:\"CONTENT_TYPE\";s:33:\"application/x-www-form-urlencoded\";s:15:\"HTTP_USER_AGENT\";s:113:\"Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36\";s:11:\"HTTP_ACCEPT\";s:85:\"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\";s:12:\"HTTP_REFERER\";s:25:\"http://akvatory.local/cp/\";s:20:\"HTTP_ACCEPT_ENCODING\";s:13:\"gzip, deflate\";s:20:\"HTTP_ACCEPT_LANGUAGE\";s:35:\"ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7\";s:11:\"HTTP_COOKIE\";s:149:\"module_limit_62=10; addition_data_toogle_a7aad8c23323b4e3cff62a9ac03076a8=show; user_idds=16; module_limit_1=10; PHPSESSID=jqd6i42f0slo09imhq9p7rak93\";s:4:\"PATH\";s:485:\"c:\\openserver\\modules\\php\\PHP-7.0-x64\\ext;c:\\openserver\\modules\\php\\PHP-7.0-x64\\pear;c:\\openserver\\modules\\php\\PHP-7.0-x64\\pear\\bin;c:\\openserver\\modules\\php\\PHP-7.0-x64;c:\\openserver\\modules\\wget\\bin;c:\\openserver\\modules\\database\\MySQL-5.6-x64\\bin;c:\\openserver\\modules\\memcached\\Memcached-1.4;c:\\openserver\\modules\\http\\Apache-PHP-7-x64+Nginx-1.10\\bin;c:\\openserver\\modules\\http\\Apache-PHP-7-x64+Nginx-1.10;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\system32\\Wbem;C:\\Windows\\SysWOW64\";s:10:\"SystemRoot\";s:10:\"C:\\Windows\";s:7:\"COMSPEC\";s:27:\"C:\\Windows\\system32\\cmd.exe\";s:7:\"PATHEXT\";s:53:\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC\";s:6:\"WINDIR\";s:10:\"C:\\Windows\";s:16:\"SERVER_SIGNATURE\";s:0:\"\";s:15:\"SERVER_SOFTWARE\";s:6:\"Apache\";s:11:\"SERVER_NAME\";s:14:\"akvatory.local\";s:11:\"SERVER_ADDR\";s:9:\"127.0.0.1\";s:11:\"SERVER_PORT\";s:2:\"80\";s:11:\"REMOTE_ADDR\";s:9:\"127.0.0.1\";s:13:\"DOCUMENT_ROOT\";s:36:\"C:/OpenServer/domains/akvatory.local\";s:14:\"REQUEST_SCHEME\";s:4:\"http\";s:14:\"CONTEXT_PREFIX\";s:0:\"\";s:21:\"CONTEXT_DOCUMENT_ROOT\";s:36:\"C:/OpenServer/domains/akvatory.local\";s:12:\"SERVER_ADMIN\";s:18:\"[no address given]\";s:15:\"SCRIPT_FILENAME\";s:49:\"C:/OpenServer/domains/akvatory.local/cp/index.php\";s:11:\"REMOTE_PORT\";s:4:\"1852\";s:12:\"REDIRECT_URL\";s:4:\"/cp/\";s:17:\"GATEWAY_INTERFACE\";s:7:\"CGI/1.1\";s:15:\"SERVER_PROTOCOL\";s:8:\"HTTP/1.0\";s:14:\"REQUEST_METHOD\";s:4:\"POST\";s:12:\"QUERY_STRING\";s:0:\"\";s:11:\"REQUEST_URI\";s:4:\"/cp/\";s:11:\"SCRIPT_NAME\";s:13:\"/cp/index.php\";s:8:\"PHP_SELF\";s:13:\"/cp/index.php\";s:18:\"REQUEST_TIME_FLOAT\";d:1545747005.405;s:12:\"REQUEST_TIME\";i:1545747005;s:4:\"argv\";a:0:{}s:4:\"argc\";i:0;}', '2018-12-25 17:10:05', 0);
+(23, 'auth', 'Удачная авторизация', 'a:6:{s:19:\"Хост/Домен\";s:14:\"akvatory.local\";s:14:\"Браузер\";s:113:\"Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36\";s:27:\"Страница сайта\";s:25:\"http://akvatory.local/cp/\";s:28:\"Внешний ip адрес\";s:9:\"127.0.0.1\";s:28:\"ip адрес подсети\";N;s:24:\"Пользователь\";N;}', 'a:46:{s:15:\"REDIRECT_STATUS\";s:3:\"200\";s:9:\"HTTP_HOST\";s:14:\"akvatory.local\";s:14:\"HTTP_X_REAL_IP\";s:9:\"127.0.0.1\";s:22:\"HTTP_X_FORWARDED_PROTO\";s:4:\"http\";s:15:\"HTTP_CONNECTION\";s:5:\"close\";s:14:\"CONTENT_LENGTH\";s:2:\"34\";s:18:\"HTTP_CACHE_CONTROL\";s:9:\"max-age=0\";s:11:\"HTTP_ORIGIN\";s:21:\"http://akvatory.local\";s:30:\"HTTP_UPGRADE_INSECURE_REQUESTS\";s:1:\"1\";s:12:\"CONTENT_TYPE\";s:33:\"application/x-www-form-urlencoded\";s:15:\"HTTP_USER_AGENT\";s:113:\"Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36\";s:11:\"HTTP_ACCEPT\";s:85:\"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\";s:12:\"HTTP_REFERER\";s:25:\"http://akvatory.local/cp/\";s:20:\"HTTP_ACCEPT_ENCODING\";s:13:\"gzip, deflate\";s:20:\"HTTP_ACCEPT_LANGUAGE\";s:35:\"ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7\";s:11:\"HTTP_COOKIE\";s:201:\"module_limit_62=10; addition_data_toogle_a7aad8c23323b4e3cff62a9ac03076a8=show; user_idds=16; module_limit_1=10; module_limit_63=10; PHPSESSID=bravlo46j2jsti568eclkc7p80; module_limit_38=10; user_id=63\";s:4:\"PATH\";s:485:\"c:\\openserver\\modules\\php\\PHP-7.0-x64\\ext;c:\\openserver\\modules\\php\\PHP-7.0-x64\\pear;c:\\openserver\\modules\\php\\PHP-7.0-x64\\pear\\bin;c:\\openserver\\modules\\php\\PHP-7.0-x64;c:\\openserver\\modules\\wget\\bin;c:\\openserver\\modules\\database\\MySQL-5.6-x64\\bin;c:\\openserver\\modules\\memcached\\Memcached-1.4;c:\\openserver\\modules\\http\\Apache-PHP-7-x64+Nginx-1.10\\bin;c:\\openserver\\modules\\http\\Apache-PHP-7-x64+Nginx-1.10;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\system32\\Wbem;C:\\Windows\\SysWOW64\";s:10:\"SystemRoot\";s:10:\"C:\\Windows\";s:7:\"COMSPEC\";s:27:\"C:\\Windows\\system32\\cmd.exe\";s:7:\"PATHEXT\";s:53:\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC\";s:6:\"WINDIR\";s:10:\"C:\\Windows\";s:16:\"SERVER_SIGNATURE\";s:0:\"\";s:15:\"SERVER_SOFTWARE\";s:6:\"Apache\";s:11:\"SERVER_NAME\";s:14:\"akvatory.local\";s:11:\"SERVER_ADDR\";s:9:\"127.0.0.1\";s:11:\"SERVER_PORT\";s:2:\"80\";s:11:\"REMOTE_ADDR\";s:9:\"127.0.0.1\";s:13:\"DOCUMENT_ROOT\";s:36:\"C:/OpenServer/domains/akvatory.local\";s:14:\"REQUEST_SCHEME\";s:4:\"http\";s:14:\"CONTEXT_PREFIX\";s:0:\"\";s:21:\"CONTEXT_DOCUMENT_ROOT\";s:36:\"C:/OpenServer/domains/akvatory.local\";s:12:\"SERVER_ADMIN\";s:18:\"[no address given]\";s:15:\"SCRIPT_FILENAME\";s:49:\"C:/OpenServer/domains/akvatory.local/cp/index.php\";s:11:\"REMOTE_PORT\";s:5:\"28007\";s:12:\"REDIRECT_URL\";s:4:\"/cp/\";s:17:\"GATEWAY_INTERFACE\";s:7:\"CGI/1.1\";s:15:\"SERVER_PROTOCOL\";s:8:\"HTTP/1.0\";s:14:\"REQUEST_METHOD\";s:4:\"POST\";s:12:\"QUERY_STRING\";s:0:\"\";s:11:\"REQUEST_URI\";s:4:\"/cp/\";s:11:\"SCRIPT_NAME\";s:13:\"/cp/index.php\";s:8:\"PHP_SELF\";s:13:\"/cp/index.php\";s:18:\"REQUEST_TIME_FLOAT\";d:1547632780.3889999;s:12:\"REQUEST_TIME\";i:1547632780;s:4:\"argv\";a:0:{}s:4:\"argc\";i:0;}', '2019-01-16 12:59:40', 0);
 
 -- --------------------------------------------------------
 
@@ -2434,6 +2535,26 @@ INSERT INTO `db__usr_users` (`id`, `gid`, `name`, `email`, `login`, `password`, 
 -- Индексы таблицы `db_mdd_childrens`
 --
 ALTER TABLE `db_mdd_childrens`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `visible` (`visible`),
+  ADD KEY `ord` (`ord`),
+  ADD KEY `created` (`created`),
+  ADD KEY `updated` (`updated`);
+
+--
+-- Индексы таблицы `db_mdd_comments`
+--
+ALTER TABLE `db_mdd_comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `visible` (`visible`),
+  ADD KEY `ord` (`ord`),
+  ADD KEY `created` (`created`),
+  ADD KEY `updated` (`updated`);
+
+--
+-- Индексы таблицы `db_mdd_likes`
+--
+ALTER TABLE `db_mdd_likes`
   ADD PRIMARY KEY (`id`),
   ADD KEY `visible` (`visible`),
   ADD KEY `ord` (`ord`),
@@ -2928,17 +3049,27 @@ ALTER TABLE `db__usr_users`
 -- AUTO_INCREMENT для таблицы `db_mdd_childrens`
 --
 ALTER TABLE `db_mdd_childrens`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+--
+-- AUTO_INCREMENT для таблицы `db_mdd_comments`
+--
+ALTER TABLE `db_mdd_comments`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+--
+-- AUTO_INCREMENT для таблицы `db_mdd_likes`
+--
+ALTER TABLE `db_mdd_likes`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT для таблицы `db_mdd_news`
 --
 ALTER TABLE `db_mdd_news`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 --
 -- AUTO_INCREMENT для таблицы `db_mdd_users`
 --
 ALTER TABLE `db_mdd_users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 --
 -- AUTO_INCREMENT для таблицы `db__auth_tokens`
 --
@@ -3003,7 +3134,7 @@ ALTER TABLE `db__mdd_binds`
 -- AUTO_INCREMENT для таблицы `db__mdd_fields`
 --
 ALTER TABLE `db__mdd_fields`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1019;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1048;
 --
 -- AUTO_INCREMENT для таблицы `db__mdd_fields_type`
 --
@@ -3023,7 +3154,7 @@ ALTER TABLE `db__mdd_lists`
 -- AUTO_INCREMENT для таблицы `db__mdd_modules`
 --
 ALTER TABLE `db__mdd_modules`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 --
 -- AUTO_INCREMENT для таблицы `db__ogp_module`
 --
@@ -3173,7 +3304,7 @@ ALTER TABLE `db__sys_filesdocs`
 -- AUTO_INCREMENT для таблицы `db__sys_log`
 --
 ALTER TABLE `db__sys_log`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT для таблицы `db__sys_meta`
 --

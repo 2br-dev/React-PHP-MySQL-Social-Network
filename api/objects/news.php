@@ -16,6 +16,7 @@ class News{
     public $liked_by;
     public $created;
     public $author_id;
+    public $who;
 
     // constructor with $db as database connection
     public function __construct($db){
@@ -190,5 +191,6 @@ class News{
         }
     
         return false;
-    }    
+    }  
+    
 }
