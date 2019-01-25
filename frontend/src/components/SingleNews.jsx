@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
 import DefaultAvatar from './img/photos/images.png';
-import Comment from './img/icons/comment.png';
-import Like from './img/icons/like.png';
-import Liked from './img/icons/liked.png';
-import Message from './img/icons/mail.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default class SingleNews extends Component {
   constructor(props) {
@@ -30,9 +27,59 @@ export default class SingleNews extends Component {
       .then(thisComments => this.setState({ thisComments, loadedComments: !this.state.loadedComments }))
   }
 
-  handleChange = e => {
-    this.setState({commentText: e.target.value});
-  }
+  handleChange = e => this.setState({commentText: e.target.value});
+
+  // добавляем лайк
+  addLike = (id, e) => {
+    var self = this;
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('id', id);
+    formData.append('liked_by', this.props.user.id);
+    console.log(id);
+    
+    $.ajax({ 
+      // DEV
+      url         : 'http://akvatory.local/api/news/addlike.php',
+      /* url         : window.location.origin + '/api/news/addlike.php', */
+      data        : formData,
+      processData : false,
+      contentType : false,
+      type: 'POST',
+      success: function(res) {
+        self.props.reloadComponent();
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    });
+  } 
+
+  // убираем лайк
+  removeLike = (id, e) => {
+    const self = this;
+    e.preventDefault();  
+
+    const formData = new FormData();
+    formData.append('id', id);
+    formData.append('liked_by', this.props.user.id);
+      
+    $.ajax({ 
+      // DEV
+      url         : 'http://akvatory.local/api/news/removelike.php',
+      /* url         : window.location.origin + '/api/news/removelike.php', */
+      data        : formData,
+      processData : false,
+      contentType : false,
+      type: 'POST',
+      success: function(res) {
+        self.props.reloadComponent();
+      },
+        error: function(err) {
+        console.log(err);
+      }
+    });
+  } 
 
   submitComment = e => {
     var self = this;
@@ -66,18 +113,12 @@ export default class SingleNews extends Component {
   getNoun(number) {
     number = Math.abs(number);
     number %= 100;
-    if (number >= 5 && number <= 20) {
-        return 'отметок';
-    }
+    if (number >= 5 && number <= 20) return 'отметок';
     number %= 10;
-    if (number == 1) {
-        return 'отметка';
-    }
-    if (number >= 2 && number <= 4) {
-        return 'отметки';
-    }
+    if (number == 1) return 'отметка';
+    if (number >= 2 && number <= 4) return 'отметки';
     return 'отметок';
-} 
+  } 
 
   render() {
     const { closeNews, singleNewsId, comments, news, user } = this.props;
@@ -113,9 +154,23 @@ export default class SingleNews extends Component {
           </PostLikes>  
 
           <PostActions>
-            {Object.keys(thisComments).length}   <img src={Comment} /> 
-            {newsElement[0].likes}          <img src={Like} />
-                                            <img src={Message} />  
+            {Object.keys(thisComments).length} 
+            <FontAwesomeIcon icon="comments" /> 
+            
+            {!newsElement[0].liked_by.includes(` ${user.id}`) 
+              ?
+              <React.Fragment>
+                <span>{newsElement[0].likes}</span>
+                <FontAwesomeIcon onClick={e => this.addLike(newsElement[0].id, e)} icon="heart" />
+              </React.Fragment> 
+              :
+              <React.Fragment>
+                <span>{newsElement[0].likes}</span>
+                <FontAwesomeIcon onClick={e => this.removeLike(newsElement[0].id, e)} icon="heart" style={{ color: 'red' }} />
+              </React.Fragment>   
+            }
+                                                            
+            <FontAwesomeIcon icon="envelope" style={{marginLeft: '25px'}}  /> 
           </PostActions>   
 
           <NewComment>

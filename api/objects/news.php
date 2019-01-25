@@ -36,7 +36,7 @@ class News{
     }
 
     function readComments() {
-        $query = "SELECT * FROM `db_mdd_comments` ORDER BY `ord` DESC";
+        $query = "SELECT * FROM `db_mdd_comments` ORDER BY `ord` DESC LIMIT 0,50 ";
     
         // prepare query statement
         $stmt = $this->conn->prepare($query);

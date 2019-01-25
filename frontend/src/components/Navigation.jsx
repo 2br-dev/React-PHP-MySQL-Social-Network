@@ -73,7 +73,7 @@ class Navigation extends Component {
             </Link>
           ) 
         })}
-        <SideNews handleChangeSection={this.props.handleChangeSection} />
+        <SideNews handleChangeSection={this.props.handleChangeSection} user={this.props.user} />
       </div>
     )
   };

@@ -32,7 +32,7 @@ class MainPage extends Component {
       .then(response => response.json())
       .then(user => this.setState({ user }))
  
-    if (this.state.user.avatar == '') this.setState({ noAvatar: true });
+    if (this.state.user.avatar === '') this.setState({ noAvatar: true });
   }
 
   handleChangeSection(section) {
@@ -88,6 +88,7 @@ class MainPage extends Component {
         return 'gallery';
       case 'favourites':
         return 'favourites';
+      default: return null;
     }
   }
   
@@ -108,6 +109,7 @@ class MainPage extends Component {
       <section className="main-section">
         <Navigation 
           user_id={user_id}
+          user={user}
           user_logged_id={user_logged_id} 
           handleChangeUrl={this.handleChangeUrl} 
           handleChangeSection={this.handleChangeSection}

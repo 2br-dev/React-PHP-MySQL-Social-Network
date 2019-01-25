@@ -1,5 +1,5 @@
 .news {
-  margin-top: 40px;
+  margin-top: 5px;
   width: 100%;
   background: #fff;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.06), 0 3px 5px rgba(0, 0, 0, 0.12);
@@ -7,16 +7,11 @@
 .news-important {
   box-shadow: inset #ff4800 0 0 5px;
 }
-.news-btns button {
-  width: 50%;
-  height: 40px;
-  line-height: 40px;
-  background: #fff;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  font-size: 16px;
-  pointer-events: none;
+.news-btns {
+  margin-top: 40px;
+  width: 100%;
+  text-align: right;
+  font-weight: bold;
 }
 .news-btns-enabled {
   background: #f0f8f6 !important;

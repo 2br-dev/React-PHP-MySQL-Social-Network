@@ -142,3 +142,16 @@ input[name="password"] {
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+
+.svg-inline--fa {
+  color: #00c5fe;
+  opacity: .85;
+  margin: 0 10px;
+  cursor: pointer;
+  height: 18px;
+  width: auto;
+}
+.svg-inline--fa:hover {
+  opacity: 1;
+  transition: .37s ease;
+}

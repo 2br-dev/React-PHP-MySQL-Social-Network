@@ -50,7 +50,6 @@ class Restore extends Component {
       formData.append('password',    $('input[name="pw"]').val());
       formData.append('auth', getUrlVars()['auth']) 
 
-      console.log(formData);
       $.ajax({
         url         : window.location.origin + '/api/user/restore.php',
         data        : formData,
@@ -69,6 +68,7 @@ class Restore extends Component {
               self.openModal("Поздравляем, удалось успешно сменить пароль - теперь вы можете войти в систему.");
               window.location.href = 'login';
               break;
+            default: return null;
             }
           },
         error: function(err) {

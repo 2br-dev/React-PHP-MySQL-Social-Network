@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 class NavFriends extends Component {
   constructor(props) {
@@ -19,14 +19,14 @@ class NavFriends extends Component {
     return (
       <ul>
       {this.state.friends.map((friend, i) => {
-        if (friend.id != this.props.user_logged_id) {                   
+        if (+friend.id !== this.props.user_logged_id) {                  
           return (
             <Link 
               key={i}
               to={`id${friend.id}`}
               onClick={() => this.props.handleChangeUserId(friend.id)}
             >
-              {friend.name !== '' ? <li>`${friend.name} ${friend.surname}`</li> : <li>{friend.login}</li> }
+              <li>{friend.name} {friend.surname}</li>
             </Link>
           ) 
         } 

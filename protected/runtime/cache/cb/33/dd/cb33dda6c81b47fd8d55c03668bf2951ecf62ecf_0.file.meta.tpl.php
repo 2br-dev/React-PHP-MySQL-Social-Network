@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-16 12:59:28
+/* Smarty version 3.1.32, created on 2019-01-24 13:57:15
   from 'C:\OpenServer\domains\akvatory.local\protected\themes\base\smarty\components\meta.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c3f0080253d94_22566545',
+  'unifunc' => 'content_5c499a0ba9c2f4_23215689',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'cb33dda6c81b47fd8d55c03668bf2951ecf62ecf' => 
     array (
       0 => 'C:\\OpenServer\\domains\\akvatory.local\\protected\\themes\\base\\smarty\\components\\meta.tpl',
-      1 => 1547562931,
+      1 => 1547643430,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c3f0080253d94_22566545 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c499a0ba9c2f4_23215689 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html class="no-js" itemscope="itemscope" itemtype="http://schema.org/<?php if (!isset($_smarty_tpl->tpl_vars['uri']->value[1])) {?>WebPage<?php } else { ?>ItemPage<?php }?>" lang="<?php echo $_smarty_tpl->tpl_vars['_page']->value['lang'];?>
 "><head><title itemprop="name"><?php echo $_smarty_tpl->tpl_vars['_meta']->value['title'];?>
@@ -30,6 +30,6 @@ function content_5c3f0080253d94_22566545 (Smarty_Internal_Template $_smarty_tpl)
 " name="description" itemprop="description"><?php if (isset($_smarty_tpl->tpl_vars['pagination']->value['prev']) && $_smarty_tpl->tpl_vars['pagination']->value['prev'] !== '') {?><link rel="prev" href="?page=<?php echo $_smarty_tpl->tpl_vars['pagination']->value['prev'];?>
 "><?php }
 if (isset($_smarty_tpl->tpl_vars['pagination']->value['next']) && $_smarty_tpl->tpl_vars['pagination']->value['next'] !== '') {?><link rel="next" href="?page=<?php echo $_smarty_tpl->tpl_vars['pagination']->value['next'];?>
-"><?php }?><link rel="home" href="/"><!-- CSS --><link type="text/css" rel="stylesheet" href="/css/normalize.css" ><link type="text/css" rel="stylesheet" href="/css/style.css" ><link type="text/css" rel="stylesheet" href="/frontend/build/static/css/main.f118b5a4.chunk.css" ></head><body class="page-<?php echo $_smarty_tpl->tpl_vars['_page']->value['system'];?>
+"><?php }?><link rel="home" href="/"><!-- CSS --><link type="text/css" rel="stylesheet" href="/css/normalize.css" ><link type="text/css" rel="stylesheet" href="/css/style.css" ><link type="text/css" rel="stylesheet" href="/frontend/build/static/css/main.337b5a20.chunk.css" ></head><body class="page-<?php echo $_smarty_tpl->tpl_vars['_page']->value['system'];?>
 "><?php }
 }

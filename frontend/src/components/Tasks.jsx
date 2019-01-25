@@ -1,26 +1,19 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './css/Tasks.css';
 
 class Tasks extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-
-    }
-  }
-
   render() {
     return (
       <section className="tasks">
         <nav className="tasks-header">
           <ul>
-            <li className="task-active"><a>Все задачи</a></li>
-            <li><a>Переданные</a></li>
-            <li><a>Выполненные</a></li>
+            <li className="task-active"> Все задачи</li>
+            <li> Переданные</li>
+            <li> Выполненные</li>
           </ul>
         </nav>
         <div className="tasks-item">
-          <p className="tasks-item__from">От <a>Алекян Сергей</a></p>
+          <p className="tasks-item__from">ОтАлекян Сергей</p>
           <div className="tasks-item__all">
             <div className="tasks-item__all-when">
               <p>Получено:</p>
@@ -44,16 +37,16 @@ class Tasks extends Component {
           </div>
           <nav className="tasks-footer">
             <ul>
-              <li><a>Удалить</a></li>
-              <li><a>Изменить</a></li>
-              <li className="tasks-footer-trans"><a>Передать другому</a></li>
-              <li className="tasks-footer-transfered">Передана <a>Алекян 037</a></li> 
+              <li> Удалить</li>
+              <li> Изменить</li>
+              <li className="tasks-footer-trans"> Передать другому</li>
+              <li className="tasks-footer-transfered">ПереданаАлекян 037</li>
               <button>Выполнено</button>
             </ul>
           </nav>
         </div>
         <div className="tasks-item important-task">
-          <p className="tasks-item__from">От <a>Алекян Сергей</a></p>
+          <p className="tasks-item__from">ОтАлекян Сергей</p>
           <div className="tasks-item__all">
             <div className="tasks-item__all-when">
               <p>Получено:</p>
@@ -77,16 +70,16 @@ class Tasks extends Component {
           </div>
           <nav className="tasks-footer">
             <ul>
-              <li><a>Удалить</a></li>
-              <li><a>Изменить</a></li>
-              <li className="tasks-footer-trans"><a>Передать другому</a></li>
-              <li className="tasks-footer-transfered">Передана <a>Алекян 037</a></li> 
+              <li> Удалить</li>
+              <li> Изменить</li>
+              <li className="tasks-footer-trans"> Передать другому</li>
+              <li className="tasks-footer-transfered">ПереданаАлекян 037</li>
               <button>Выполнено</button>
             </ul>
           </nav>
         </div>
         <div className="tasks-item transfered-task">
-          <p className="tasks-item__from">От <a>Алекян Сергей</a></p>
+          <p className="tasks-item__from">ОтАлекян Сергей</p>
           <div className="tasks-item__all">
             <div className="tasks-item__all-when">
               <p>Получено:</p>
@@ -110,16 +103,16 @@ class Tasks extends Component {
           </div>
           <nav className="tasks-footer">
             <ul>
-              <li><a>Удалить</a></li>
-              <li><a>Изменить</a></li>
-              <li className="tasks-footer-trans"><a>Передать другому</a></li>
-              <li className="tasks-footer-transfered">Передана <a>Алекян 037</a></li> 
+              <li> Удалить</li>
+              <li> Изменить</li>
+              <li className="tasks-footer-trans"> Передать другому</li>
+              <li className="tasks-footer-transfered">ПереданаАлекян 037</li>
               <button>Выполнено</button>
             </ul>
           </nav>
         </div>
         <div className="tasks-item done-task">
-          <p className="tasks-item__from">От <a>Алекян Сергей</a></p>
+          <p className="tasks-item__from">ОтАлекян Сергей</p>
           <div className="tasks-item__all">
             <div className="tasks-item__all-when">
               <p>Получено:</p>
@@ -143,10 +136,10 @@ class Tasks extends Component {
           </div>
           <nav className="tasks-footer">
             <ul>
-              <li><a>Удалить</a></li>
-              <li className="tasks-footer-change"><a>Изменить</a></li>
-              <li className="tasks-footer-trans"><a>Передать другому</a></li>
-              <li className="tasks-footer-transfered">Передана <a>Алекян 037</a></li> 
+              <li> Удалить</li>
+              <li className="tasks-footer-change"> Изменить</li>
+              <li className="tasks-footer-trans"> Передать другому</li>
+              <li className="tasks-footer-transfered">ПереданаАлекян 037</li>
               <button>Выполнено</button>
             </ul>
           </nav>

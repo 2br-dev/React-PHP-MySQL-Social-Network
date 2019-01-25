@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-27 15:36:40
+/* Smarty version 3.1.32, created on 2019-01-18 18:17:02
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\view\users\index\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c24c75854dcb6_63199976',
+  'unifunc' => 'content_5c41edee615531_46985502',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:system/pager.tpl' => 1,
   ),
 ),false)) {
-function content_5c24c75854dcb6_63199976 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c41edee615531_46985502 (Smarty_Internal_Template $_smarty_tpl) {
 ?><table class="table"><col><col><col><col width="200"><col width="75"><col width="155"><col width="65"><thead><tr><th>Пользователь</th><th>Логин</th><th>Группа</th><th>E-mail</th><th>Активен</th><th>Дата регистрации</th><th></th></tr></thead><tbody><?php if (!empty($_smarty_tpl->tpl_vars['usersList']->value)) {
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['usersList']->value, 'item', false, NULL, 'i', array (
 ));

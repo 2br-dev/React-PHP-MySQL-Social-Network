@@ -33,7 +33,7 @@ class MainpageHeader extends Component {
             <div className="person-image" style={noAvatar ? defaultAvatar : uploadedAvatar}></div>
             <div className="person-info">
               <div className="person-info__container">
-                <p className="person-info__name">{user.name == '' ? user.login : `${user.name} ${user.surname}`}</p>
+                <p className="person-info__name">{user.name === '' ? user.login : `${user.name} ${user.surname}`}</p>
                 <p className="person-info__position">{user.position}</p>
               </div>
               <a href="logout.php"><button className="btn person-logout">Выйти</button></a>

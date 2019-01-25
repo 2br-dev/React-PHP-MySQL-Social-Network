@@ -15,7 +15,7 @@ class Modal extends Component {
       {this.state.visible ? ( 
         <>
         <div id="modal" className="modal bounceInDown animated">
-          <a href="#" className="close" onClick={this.toggleVisible.bind(this)}></a>
+          <span className="close" onClick={this.toggleVisible.bind(this)}></span>
           <p>{this.props.text}</p>
         </div>
         <div className="black-wrapper" onClick={this.toggleVisible.bind(this)}></div></>) 

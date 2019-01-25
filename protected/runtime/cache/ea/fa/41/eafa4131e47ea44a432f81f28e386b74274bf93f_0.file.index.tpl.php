@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-27 15:36:57
+/* Smarty version 3.1.32, created on 2019-01-18 18:17:12
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\view\lists\edit\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c24c769b1da56_26039632',
+  'unifunc' => 'content_5c41edf8cea157_01342132',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -22,7 +22,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:system/buttons.tpl' => 1,
   ),
 ),false)) {
-function content_5c24c769b1da56_26039632 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c41edf8cea157_01342132 (Smarty_Internal_Template $_smarty_tpl) {
 if (isset($_GET['msg']) && $_GET['msg'] == "apply") {?><div class="apply">Данные были успешно сохранены!</div><?php }?><form action="" method="post"><input type="hidden" name="form_action" value="edit_list">	<table class="table"><thead><tr><th colspan="2">Редактировать список</th></tr></thead><tbody><tr><td class="h w50">Название списка на русском</td><td class="h w50">Системное имя ( латин. символы )</td></tr><tr><td><input name="name" value="<?php echo $_smarty_tpl->tpl_vars['mdd_list']->value[0]['name'];?>
 " placeholder="Например: Субъекты федерации"></td><td><input name="list_name" value="<?php echo $_smarty_tpl->tpl_vars['mdd_list']->value[0]['list_name'];?>
 " placeholder="Например: regions"></td></tr></tbody></table>	<table class="table"><col><col><col width="120"><col width="120"><col width="55"><thead><tr><th colspan="5">Список значений</th></tr></thead><tbody><tr><td class="h"><?php echo t('titles.name');?>

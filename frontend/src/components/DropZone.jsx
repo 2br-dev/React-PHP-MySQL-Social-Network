@@ -4,7 +4,7 @@ import _ from 'lodash';
 import {ProgressBar} from 'react-icons-kit';
 import './css/Dropzone.css';
 
-class DropZone extends React.Component {
+class DropZone extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +30,6 @@ class DropZone extends React.Component {
           isUploading: false
         });
       }, 3000);
-  
     });
   }
 
@@ -74,7 +73,7 @@ class DropZone extends React.Component {
       //filter through all items but the one needs to be removed
       let newLoadedFiles = _.filter(loadedFiles, (ldFile) => {
         //return all elements but the file we want to remove (to get a new array without the target image file)
-        return ldFile != file;
+        return ldFile !== file;
       });
         //Return loadedFiles to update the state 
       return {loadedFiles: newLoadedFiles};
@@ -91,7 +90,7 @@ class DropZone extends React.Component {
       const loadedFiles = [...prevState.loadedFiles];
         //Find target file to be updated (oldFile)
       _.find(loadedFiles, (file, idx) => {
-        if (file == oldFile) 
+        if (file === oldFile) 
             //This is it! Update it with the new file object
           loadedFiles[idx] = newFile;
         }
@@ -144,7 +143,7 @@ class DropZone extends React.Component {
       <div className="files-preview-container ip-scrollbar">
       {loadedFiles.map((file, idx) => {
         return <div className="file" key={idx}>
-          <img src={file.data}/>
+          <img alt='' src={file.data}/>
           <div className="container">
             <span className="progress-bar">
               {file.isUploading && <ProgressBar/>}

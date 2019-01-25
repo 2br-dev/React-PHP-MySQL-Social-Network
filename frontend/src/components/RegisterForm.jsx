@@ -33,10 +33,10 @@ class RegisterForm extends Component {
       [event.target.name]: event.target.value
     })
     // если вводится е-мэйл то прогоняем через функцию
-    if ([event.target.name] == 'email') {
+    if ([event.target.name] === 'email') {
       this.validateEmail(event.target.value);
       // если вводимое значение пустое - то убираем подсказку 
-      if (event.target.value == '') {
+      if (event.target.value === '') {
         this.setState({ isEmailValid: '' });
       }
     }
@@ -79,6 +79,7 @@ class RegisterForm extends Component {
             case 2:
               self.openModal("Пользователь с таким логином или email уже существует.");
               break;
+            default: return null; 
           }
         },
         error: function(err) {

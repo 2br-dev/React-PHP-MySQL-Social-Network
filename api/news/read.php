@@ -35,7 +35,8 @@ if($num>0){
             "date"        => $date,
             "importance"  => $importance,
             'likes'       => $likes,
-            'liked_by'    => $liked_by
+            'liked_by'    => $liked_by,
+            'comments'    => $comments,
         );
  
         array_push($news_arr["records"], $news_item);

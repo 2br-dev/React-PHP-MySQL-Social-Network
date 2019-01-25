@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
-import Like from './img/icons/like.png';
-import Liked from './img/icons/liked.png';
-import Message from './img/icons/mail.png';
-import Edit from './img/icons/edit-512.png';
 import SingleNews from './SingleNews';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default class News extends Component {
   constructor(props){
@@ -23,28 +20,28 @@ export default class News extends Component {
       singleNewsId: ''
     }
 
-    this.countComments = this.countComments.bind(this);
-    this.addLike = this.addLike.bind(this);
+    this.countComments   = this.countComments.bind(this);
+    this.addLike         = this.addLike.bind(this);
     this.reloadComponent = this.reloadComponent.bind(this);
-    this.removeLike = this.removeLike.bind(this);
-    this.addNews = this.addNews.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.submitNews = this.submitNews.bind(this);
-    this.removeNews = this.removeNews.bind(this);
-    this.editNews = this.editNews.bind(this);
-    this.prepareNews = this.prepareNews.bind(this);
-    this.showNews = this.showNews.bind(this);
+    this.removeLike      = this.removeLike.bind(this);
+    this.addNews         = this.addNews.bind(this);
+    this.handleChange    = this.handleChange.bind(this);
+    this.submitNews      = this.submitNews.bind(this);
+    this.removeNews      = this.removeNews.bind(this);
+    this.editNews        = this.editNews.bind(this);
+    this.prepareNews     = this.prepareNews.bind(this);
+    this.showNews        = this.showNews.bind(this);
   }
 
   componentDidMount() {
     this.reloadComponent();       
   }
 
-  reloadComponent = () => {
-    fetch(`http://akvatory.local/api/news/read.php`)
+  async reloadComponent()  {
+    await fetch(`http://akvatory.local/api/news/read.php`)
       .then(response => response.json())
       .then(news => this.setState({ news: news.records }))
-    fetch(`http://akvatory.local/api/news/getcomments.php`)
+    await fetch(`http://akvatory.local/api/news/getcomments.php`)
       .then(response => response.json())
       .then(comments => this.setState({ comments: comments.records }))
   }
@@ -58,12 +55,13 @@ export default class News extends Component {
   countComments = (id) => (this.state.comments.filter((comment) => comment.news_id === id)).length;
  
   // добавляем лайк
-  addLike = (e) => {
+  addLike = (id, e) => {
     var self = this;
     e.preventDefault();
     const formData = new FormData();
-    formData.append('id', $(e.target).data("id"));
+    formData.append('id', id);
     formData.append('liked_by', this.props.user.id);
+    console.log(id);
     
     $.ajax({ 
       // DEV
@@ -83,30 +81,31 @@ export default class News extends Component {
   } 
 
   // убираем лайк
-  removeLike = (e) => {
-    var self = this;
-    e.preventDefault();
-      const formData = new FormData();
-      formData.append('id', $(e.target).data("id"));
-      formData.append('liked_by', this.props.user.id);
+  removeLike = (id, e) => {
+    const self = this;
+    e.preventDefault();  
+
+    const formData = new FormData();
+    formData.append('id', id);
+    formData.append('liked_by', this.props.user.id);
       
-      $.ajax({ 
-        // DEV
-        url         : 'http://akvatory.local/api/news/removelike.php',
-        /* url         : window.location.origin + '/api/news/removelike.php', */
-        data        : formData,
-        processData : false,
-        contentType : false,
-        type: 'POST',
-        success: function(res) {
-          self.reloadComponent();
-          self.setState({ newNews: false });
+    $.ajax({ 
+      // DEV
+      url         : 'http://akvatory.local/api/news/removelike.php',
+      /* url         : window.location.origin + '/api/news/removelike.php', */
+      data        : formData,
+      processData : false,
+      contentType : false,
+      type: 'POST',
+      success: function(res) {
+        self.reloadComponent();
+        self.setState({ newNews: false });
           /*  */
-        },
+      },
         error: function(err) {
-          console.log(err);
-        }
-      });
+        console.log(err);
+      }
+    });
   } 
 
   submitNews = (e) => {
@@ -206,11 +205,13 @@ export default class News extends Component {
   
   addNews = () => this.setState({ editing: '', newNews: !this.state.newNews, newNewsText: '', newNewsTopic: ''});
 
-  showNews = id => {
-    this.setState({ singleNews: true, singleNewsId: id });
+  showNews = id => this.setState({ singleNews: true, singleNewsId: id });
+  
+  // закрываем новость 
+  closeNews = () => {
+    this.setState({ singleNews: false, singleNewsId: '' });
+    this.reloadComponent();
   }
-
-  closeNews = () => this.setState({ singleNews: false, singleNewsId: '' });
   
 
   render() {
@@ -225,41 +226,50 @@ export default class News extends Component {
               <UserAvatar src={window.location.origin + `/img/photos/images.png`} /> 
               
               <div onClick={editing === '' ? () => this.showNews(item.id) : null }>
-              <NewsInfo>
-                {user.id === item.author_id ?
-                <><p><strong>Вы</strong> {item.date}</p> <button onClick={this.removeNews} data-id={item.id} className="btn">Удалить</button></> :
-                <p><strong>{item.author}</strong> {item.date}</p> }
-              </NewsInfo>
-              {editing !== item.id ?
-              <><NewsTitle>{item.title}</NewsTitle>
-              <div dangerouslySetInnerHTML={{__html: item.text}}></div></>
-              : 
-              <form id='edit-news' action="" method="POST" onSubmit={this.editNews}>
-                <NewsTitle>
-                  <input name='newNewsTopic' value={newNewsTopic} 
-                    onChange={this.handleChange} />
-                </NewsTitle>
-                <textarea name='newNewsText' value={newNewsText} 
-                  onChange={this.handleChange} 
-                >{item.text}</textarea>
-                <button onClick={this.editNews}
-                  data-id={item.id} type='submit' className="btn" style={{'marginTop':'5px'}}>Изменить</button>
-              </form> }
+                <NewsInfo>
+                  {user.id === item.author_id ?
+                  <><p><strong>Вы</strong> {item.date}</p> <button onClick={this.removeNews} data-id={item.id} className="btn">Удалить</button></> :
+                  <p><strong>{item.author}</strong> {item.date}</p> }
+                </NewsInfo>
+                {editing !== item.id ?
+                <><NewsTitle>{item.title}</NewsTitle>
+                <div dangerouslySetInnerHTML={{__html: item.text}}></div></>
+                : 
+                <form id='edit-news' action="" method="POST" onSubmit={this.editNews}>
+                  <NewsTitle>
+                    <input name='newNewsTopic' value={newNewsTopic} 
+                      onChange={this.handleChange} />
+                  </NewsTitle>
+                  <textarea name='newNewsText' value={newNewsText} 
+                    onChange={this.handleChange} 
+                  >{item.text}</textarea>
+                  <button onClick={this.editNews}
+                    data-id={item.id} type='submit' className="btn" style={{'marginTop':'5px'}}>Изменить</button>
+                </form> }
               </div>
 
               <Actions>
-                <p>{this.countComments(item.id)}</p> <Icon src={window.location.origin + `/img/icons/comment.png`} /> 
+                <p>{this.countComments(item.id)}</p> 
+                <FontAwesomeIcon onClick={editing === '' ? () => this.showNews(item.id) : null } icon="comments" />  
                 <p>{item.likes}</p> 
-                  {item.liked_by.indexOf(` ${user.id}`) === -1 ?
-                  <Icon data-id={item.id} onClick={this.addLike} src={Like} /> :
-                  <Icon data-id={item.id} onClick={this.removeLike} src={Liked} />
-                  }
 
-                <Icon src={Message} /> 
-                {user.id === item.author_id ? 
-                <Icon data-id={item.id} onClick={this.prepareNews} src={Edit} /> 
-                  : null}    
+                {!item.liked_by.includes(` ${user.id}`) 
+                  ?
+                  <FontAwesomeIcon onClick={e => this.addLike(item.id, e)} icon="heart" /> 
+                  :
+                  <FontAwesomeIcon onClick={e => this.removeLike(item.id, e)} icon="heart" style={{ color: 'red' }} />
+                }
+
+                <FontAwesomeIcon data-id={item.id} onClick={this.addLike} icon="envelope" style={{ marginLeft: '25px' }} />
+                
+                {user.id === item.author_id 
+                  ? 
+                  <FontAwesomeIcon data-id={item.id} onClick={this.prepareNews} icon="edit" style={{ marginLeft: '25px' }} />
+                  : 
+                  null
+                }    
               </Actions>
+
             </NewsContainer> 
             )
           }
@@ -275,7 +285,10 @@ export default class News extends Component {
             <div className="newNews-header">Новая новость <button className='close' onClick={() => this.setState({ newNews: !this.state.newNews })}></button></div>
             <div className='newNews-content'>
               <form action="" method="POST" onSubmit={this.submitNews}>
-                {user.avatar === '' ? <img src={window.location.origin + `/img/photos/images.png`} /> : <img src={`${window.location.origin}${user.avatar}`} /> }
+                {user.avatar === '' 
+                  ? <img alt='' src={window.location.origin + `/img/photos/images.png`} /> 
+                  : <img alt='' src={`${window.location.origin}${user.avatar}`} /> 
+                }
                 <input 
                   onChange={this.handleChange} required
                   name='newNewsTopic' type='text' placeholder='Заголовок' value={newNewsTopic} />
@@ -297,15 +310,18 @@ export default class News extends Component {
           ) 
           : null}
 
-          {singleNews ? 
+          {singleNews 
+          ? 
             <SingleNews 
               showNews={this.showNews} 
               closeNews={this.closeNews.bind(this)}  
               singleNewsId={singleNewsId}
               comments={comments}
               news={news}
-              user={user} />
-            : null}
+              user={user}
+              reloadComponent={this.reloadComponent} />
+          : 
+            null}
       </div>
     )
   }
@@ -367,18 +383,6 @@ const UserAvatar = styled.img`
   top: 37px;
   border-radius: 50%;
   width: 80px;
-`;
-
-const Icon = styled.img`
-  opacity: .75;
-  width: 15px;
-  height: 15px; 
-  margin-right: 50px;
-
-  :hover {
-    opacity: 1;
-    transition: .37s ease;
-  }
 `;
 
 const Actions = styled.div`
