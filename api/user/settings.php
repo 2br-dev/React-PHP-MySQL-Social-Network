@@ -23,6 +23,7 @@ $user->name         = __post('name');
 $user->position     = __post('position');
 $user->surname      = __post('surname');
 $user->sex          = __post('sex');
+$user->avatar       = __post('avatar');
 
 // update the user
 if($user->settings()){

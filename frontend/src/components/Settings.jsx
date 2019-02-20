@@ -1,9 +1,77 @@
 import React, { Component } from 'react';
-import Cookie from './functions/Cookie';
 import ModalWindow from './Modal';
 import $ from 'jquery';
-import './css/Settings.css';
-import DropZone from './DropZone';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import BgBubbles from './BgBubbles';
+import Icon from '@material-ui/core/Icon';
+import DefaultAvatar from './img/photos/images.png';
+
+if (window.location.pathname === '/settings') {
+  $(document.body).css({
+    background: 'linear-gradient(to bottom right,#00c5fe,#9de3dc,#0d11b4)'
+  })
+}
+
+const styles = {
+  default: {
+    width: '600px',
+    margin: '0 auto',
+    position: 'relative',
+    padding: '20px 40px 80px',
+    zIndex: 37
+  },
+  input: {
+    width: '100%',
+  },
+  button: {
+    background: '#00c5fe',
+    color: 'white',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    width: 120,
+    bottom: 25,
+    margin: 'auto'
+  },
+  upload: {
+    background: '#ef6c00',
+    color: 'white',
+    margin: 'auto',
+    position: 'relative'
+  },
+  hiddenInput: {
+    opacity: 0, 
+    position: 'absolute', 
+    left: 0, right: 0, bottom: 0, top: 0
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    marginBottom: 15
+  },
+  header: {
+    marginTop: 100, 
+    marginBottom: 12,
+    color: '#fff', 
+    textAlign: 'center', 
+    fontWeight: 500
+  }
+};  
+
+const genders = [
+  {
+    value: 'мужской',
+    label: 'мужской'
+  },
+  {
+    value: 'женский',
+    label: 'женский',
+  }
+];
 
 class Settings extends Component {
   constructor(props) {
@@ -11,16 +79,52 @@ class Settings extends Component {
     this.state = {
       user: [],
       modal: false,
-      modalText: ''
+      modalText: '',
+      selectedFile: null,
+      user_id: '',
+      uploadedAvatar: ''
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.openModal    = this.openModal.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentWillMount = () => {
-    const cookie = new Cookie();
-    const id = cookie.getCookie('user_id');
+  fileSelect = event => {
+    if (event.target.files[0].size < 2 * 1024 * 1024) {
+      this.setState({ selectedFile: event.target.files[0] })
+      this.uploadAvatar(event.target.files[0]);
+    } else {
+      this.openModal('Файл слишком большой, размер должен не превышать 2МБ')
+    }
+  }
+
+  uploadAvatar = (file) => {
+    let fd = new FormData();
+    let files = file;
+    let self = this;
+    fd.append('file',files);
+    fd.append('id', this.state.user_id);
+
+    $.ajax({
+        url: 'http://akvatory.local/api/user/upload.php',
+        type: 'post',
+        data: fd,
+        contentType: false,
+        processData: false,
+        success: function(res){
+          if (window.location.host.includes('localhost')) {
+            self.setState({ uploadedAvatar: res.location.slice(22) })
+          } else {
+            self.setState({ uploadedAvatar: res.location.slice(6) })
+          }
+          console.log(res);
+        },
+    });   
+  }
+
+  componentDidMount = () => {
+    const id = localStorage.getItem('user_id');
+    this.setState({ user_id: id });
     fetch(`http://akvatory.local/api/user/info.php?id=${id}`)
       .then(response => response.json())
       .then(user => this.setState({ user }))
@@ -46,8 +150,9 @@ class Settings extends Component {
     formData.append('surname',    $('input[name="surname"]').val());
     formData.append('name',    $('input[name="name"]').val());
     formData.append('birthday',    $('input[name="birthday"]').val());
-    formData.append('sex',    $('select[name="sex"]').val());
+    formData.append('sex',    $('input[name="sex"]').val());
     formData.append('position',    $('input[name="position"]').val());
+    formData.append('avatar',    self.state.uploadedAvatar);
 
     $.ajax({ 
       // DEV
@@ -69,96 +174,116 @@ class Settings extends Component {
             break;
         }
       },
-      error: function(err) {
+      error: function() {
         self.openModal('Что-то пошло не так, попробуйте обновить страницу.');
       }
     });
   }
 
   render() {
-    const { user, modalText, modal } = this.state;
+    const { user, modalText, modal, uploadedAvatar } = this.state;
 
     return (
-      <div className="container">
+      <React.Fragment>
 
-        <DropZone />
+      <Typography variant="h5" style={{ ...styles.header }}>Начните заполнять персональные данные</Typography>
       
-        {modal ? <ModalWindow text={modalText} /> : null}
+      <Paper style={{ ...styles.default }} elevation={1}>
         
-        <section className="settings">
-        <h2>Начните заполнять персональные данные</h2>
-        <form id="personal-info" action="" method="POST">
+        <form id="personal-info" action="" method="POST" encType="multipart/form-data">
+          <div style={{ ...styles.avatar, background: `url(${uploadedAvatar ? uploadedAvatar : DefaultAvatar}) no-repeat center/cover`  }}></div>
+          <Button variant="contained" style={{ ...styles.upload }}>
+            Загрузить фото профиля
+            <Icon style={{ marginLeft: 10 }}>cloud_upload</Icon>
+            <input
+              id='avatar'
+              accept="image/*"
+              style={{ ...styles.hiddenInput }}
+              type="file"
+              name='avatar'
+              onChange={this.fileSelect}
+            />
+          </Button>
 
-
-        <div className='settings-container'>
-          <label>Имя</label>
-          <input 
-              type="text" 
-              name="name"
-              onChange={this.handleChange}
-              required
-              value={user.name} />
-        </div>      
-
-        <div className='settings-container'>
-          <label>Фамилия</label>
-          <input 
-              type="text" 
-              name="surname"
-              onChange={this.handleChange}
-              required
-              value={user.surname} />
-        </div>      
-
-        <div className='settings-container'>
-          <label htmlFor='sex'>Выберите пол</label>
-          <select name="sex" onChange={this.handleChange} required >
-            {user.sex 
-            ? <>
-              <option value={user.sex} default hidden>{user.sex}</option>
-              <option value="женский">Женский</option>
-              <option value="мужской">Мужской</option></>
-            : <>
-              <option value='' default hidden></option>
-              <option value="женский">Женский</option>
-              <option value="мужской">Мужской</option></>
-            }
-          </select>  
-        </div>          
-
-        <div className='settings-container'>
-          <label>Должность</label>
-          <input 
+          <TextField
             required
-              type="text"
-              name="position"
-              onChange={this.handleChange}
-              value={user.position}/>
-        </div>
+            label="Ваше имя"
+            name='name'
+            InputLabelProps={{ shrink: true }}
+            margin="normal"
+            onChange={this.handleChange}
+            value={user.name}
+            style={{ ...styles.input }}
+          />     
 
-        <div className='settings-container'>
-          <label>Дата рождения</label>
-          <input 
-              required
-              type="date"
-              name="birthday"
-              onChange={this.handleChange}
-              value={user.birthday}/>
-        </div>
-        <p className='settings-container-note'>*Дата рождения будет видна только руководству</p>
+          <TextField
+            required
+            label="Фамилия"
+            name='surname'
+            InputLabelProps={{ shrink: true }}
+            margin="normal"
+            onChange={this.handleChange}
+            value={user.surname}
+            style={{ ...styles.input }}
+          />   
+    
+          <TextField
+            select
+            required
+            label="Пол"
+            InputLabelProps={{ shrink: true }}
+            value={user.sex}
+            onChange={this.handleChange}
+            helperText="Пожалуйста, выберите пол"
+            margin="normal"
+            name='sex'
+            style={{ ...styles.input }}
+          >
+            {genders.map(option => (
+              <MenuItem name='sex' key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+      
+          <TextField
+            required
+            label="Должность"
+            name="position"
+            InputLabelProps={{ shrink: true }}
+            margin="normal"
+            onChange={this.handleChange}
+            value={user.position}
+            style={{ ...styles.input }}
+          />    
 
-         {/*  <label>Аватар</label>
-          <input 
-              type="file" 
-              name="avatar"
-              onChange={this.handleChange}
-              value={user.avatar} /> */}
+          <TextField
+            required
+            label="Дата рождения"
+            name="birthday"
+            InputLabelProps={{ shrink: true }}
+            margin="normal"
+            type='date'
+            onChange={this.handleChange}
+            value={user.birthday}
+            style={{ ...styles.input }}
+          />  
 
-          <button onClick={this.handleSubmit} className="btn">Вперёд!</button>
+          <Typography variant="caption" gutterBottom>
+            *Дата рождения будет видна только руководству
+          </Typography>
+
+          <Button variant="contained" style={{ ...styles.button }} onClick={this.handleSubmit}>
+            Вперёд!
+          </Button>
 
         </form>
-        </section> }
-      </div>     
+      </Paper>
+      
+      <BgBubbles />
+      {modal ? <ModalWindow text={modalText} /> : null}
+
+    </React.Fragment>  
     )
   }
 }

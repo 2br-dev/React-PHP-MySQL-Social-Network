@@ -222,7 +222,8 @@ class User{
                     name = :name,
                     position = :position,
                     surname = :surname,
-                    sex = :sex
+                    sex = :sex,
+                    avatar = :avatar
                 WHERE
                     id = :id";
 
@@ -234,6 +235,7 @@ class User{
         $this->position=htmlspecialchars(strip_tags($this->position));
         $this->surname=htmlspecialchars(strip_tags($this->surname));
         $this->sex=htmlspecialchars(strip_tags($this->sex));
+        $this->avatar=htmlspecialchars(strip_tags($this->avatar));
         
         $stmt->bindParam(':id', $this->id);
         $stmt->bindParam(':birthday', $this->birthday);
@@ -241,6 +243,7 @@ class User{
         $stmt->bindParam(':position', $this->position);
         $stmt->bindParam(':surname', $this->surname);
         $stmt->bindParam(':sex', $this->sex);  
+        $stmt->bindParam(':avatar', $this->avatar);  
     
         if($stmt->execute()){
             return true;

@@ -14,7 +14,7 @@
   height: 130px;
   margin-top: 20px;
   border-radius: 50%;
-  background: #00c5fe;
+  background: #1976d2;
   color: #fff;
   display: flex;
   align-items: center;
@@ -30,10 +30,10 @@
 .navigation-item:hover {
   cursor: pointer;
   transition: .3s ease;
-  background: #65dcff;
+  background: #64a9ed;
 }
 .active {
-  background: #65dcff;
+  background: #64a9ed;
   pointer-events: none;
 }
 .disabled-link {

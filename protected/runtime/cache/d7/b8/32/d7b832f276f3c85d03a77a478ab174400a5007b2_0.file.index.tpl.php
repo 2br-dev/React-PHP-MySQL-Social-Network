@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-18 18:16:59
+/* Smarty version 3.1.32, created on 2019-02-20 13:14:26
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\view\dashboard\index\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c41edeb8c05a5_77780269',
+  'unifunc' => 'content_5c6d28823dd3b4_54726454',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c41edeb8c05a5_77780269 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c6d28823dd3b4_54726454 (Smarty_Internal_Template $_smarty_tpl) {
 if (isset($_smarty_tpl->tpl_vars['permissions']->value) && !empty($_smarty_tpl->tpl_vars['permissions']->value)) {?><h4>Ошибки прав на папки:</h4><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['permissions']->value, 'item', false, 'id');
 if ($_from !== null) {

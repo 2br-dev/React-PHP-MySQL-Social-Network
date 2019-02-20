@@ -3,11 +3,11 @@
   width: fit-content;
   position: fixed;
   padding: 45px 80px 35px;
-  z-index: 20;
+  z-index: 100;
   left: 0;
   right: 0;
   margin: auto;
-  top: 200;
+  top: 200px;
   min-width: 300px;
   max-width: 650px;
   text-align: center;

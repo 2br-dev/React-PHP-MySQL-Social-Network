@@ -1,13 +1,15 @@
-import React, {Component} from 'react';
+import React, { Component, Fragment } from 'react';
 import './css/MainPage.css'
 import Header from './Header';
 import MainpageHeader from './MainpageHeader';
-import Navigation from './Navigation';
+import SideNews from './SideNews';
 import Cookie from './functions/Cookie';
-import NavFriends from './NavFriends';
+import FriendsList from './FriendsList/FriendsList';
 import PersonalInfo from './PersonalInfo';
 import Tasks from './Tasks';
 import News from './News';
+import Nav from './Navigation/Navigation';
+import styled from 'styled-components';
 
 class MainPage extends Component {
   constructor(props) {
@@ -16,7 +18,6 @@ class MainPage extends Component {
       user_id: 0,
       user_logged_id: 0,
       user: [],
-      noAvatar: true,
       section: window.location.pathname.slice(1),
     }
     this.handleChangeUrl      = this.handleChangeUrl.bind(this);  
@@ -31,8 +32,6 @@ class MainPage extends Component {
     fetch(`http://akvatory.local/api/user/read_one.php?id=${this.state.user_logged_id}`)
       .then(response => response.json())
       .then(user => this.setState({ user }))
- 
-    if (this.state.user.avatar === '') this.setState({ noAvatar: true });
   }
 
   handleChangeSection(section) {
@@ -61,14 +60,12 @@ class MainPage extends Component {
     fetch(`http://akvatory.local/api/user/read_one.php?id=${this.state.user_id}`)
       .then(response => response.json())
       .then(user => this.setState({ user }))
-
-    if (this.state.user.avatar === '') this.setState({ noAvatar: !this.state.noAvatar })
   }
 
   switchComponent(){
     switch(this.state.section) {
       case `id${this.state.user_id}`:
-        return <PersonalInfo user_id={this.state.user_id} user_logged_id={this.state.user_logged_id} />
+        return <PersonalInfo user_id={this.state.user_id} user_logged_id={this.state.user_logged_id} user={this.state.user} />
       case 'messages':
         return 'messages';
       case 'news':
@@ -77,51 +74,58 @@ class MainPage extends Component {
         return <Tasks />;
       case 'colleagues':
         return (
-            <NavFriends 
+            <FriendsList 
               handleChangeUserId={this.handleChangeUserId} 
-              user_logged_id={this.state.user_logged_id}
+              user_id={this.state.user_logged_id}
             />
         )
-      case 'learnings':
+ /*      case 'learnings':
         return 'learnings';
       case 'gallery':
         return 'gallery';
       case 'favourites':
-        return 'favourites';
+        return 'favourites'; */
       default: return null;
     }
   }
   
   render() {
-    const { user_id, user_logged_id, user, noAvatar, section } = this.state;
+    const { user_id, user_logged_id, user } = this.state;
     
     if (user.error === 1) { window.location.href = '/404';}
     
     return (
-      <div className="container">
-        <Header />
+      <Fragment>
         <MainpageHeader 
           user_id={user_id}
           user_logged_id={user_logged_id} 
           user={user}
-          noAvatar={noAvatar}
         />
-      <section className="main-section">
-        <Navigation 
-          user_id={user_id}
-          user={user}
-          user_logged_id={user_logged_id} 
-          handleChangeUrl={this.handleChangeUrl} 
-          handleChangeSection={this.handleChangeSection}
-          section={section}
-        />
-        <div className="main-page-container">
-          {this.switchComponent()}
+        <div className="container">
+          <Header />
+          <Nav 
+            user_logged_id={user_logged_id} 
+            handleChangeUrl={this.handleChangeUrl} 
+            handleChangeSection={this.handleChangeSection}
+          />
+          <MainSection>
+            <SideNews 
+              handleChangeSection={this.handleChangeSection} 
+              user={user} 
+            />
+            <div className="main-page-container">
+              {this.switchComponent()}
+            </div>
+          </MainSection>  
         </div>
-      </section>  
-      </div>
+      </Fragment>
     );
   }
 }
+
+const MainSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 export default MainPage;

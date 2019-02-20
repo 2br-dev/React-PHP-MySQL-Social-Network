@@ -21,7 +21,7 @@ $num = $stmt->rowCount();
 // check if more than 0 record found
 if($num>0){
     $users_arr=array();
-    $users_arr["records"]=array();
+    $users_arr["data"]=array();
  
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
         extract($row);
@@ -30,10 +30,12 @@ if($num>0){
             "id"      => $id,
             "login"   => $login,
             "name"    => $name,
-            "surname" => $surname
+            "surname" => $surname,
+            "position" => $position,
+            "avatar" => $avatar
         );
  
-        array_push($users_arr["records"], $user_item);
+        array_push($users_arr["data"], $user_item);
     }
     http_response_code(200);
  

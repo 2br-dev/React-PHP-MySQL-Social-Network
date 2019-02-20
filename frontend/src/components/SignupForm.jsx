@@ -3,6 +3,7 @@ import $ from 'jquery';
 import Cookie from './functions/Cookie';
 import ForgetPassword from './ForgetPassword';
 import ModalWindow from './Modal';
+import { connect } from 'react-redux';
 
 class SignupForm extends Component {
   constructor(props) {
@@ -69,6 +70,7 @@ class SignupForm extends Component {
               break;
             case   1:
               cookie.setCookie('user_id', user_id, 30);
+              localStorage.setItem('user_id', user_id);
               window.location.href = `/`;
               break;
           }
@@ -130,4 +132,13 @@ class SignupForm extends Component {
   }
 }
 
-export default SignupForm;
+export default connect(
+  state => ({
+    global: state
+  }),
+  dispatch => ({
+    login: (user) => {
+      dispatch({ type: 'LOGGED_IN', payload: user})
+    }     
+  })
+)(SignupForm);

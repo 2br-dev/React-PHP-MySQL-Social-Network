@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-14 11:01:24
+/* Smarty version 3.1.32, created on 2019-02-20 13:15:44
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\view\meta\module\add.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c3c41d4570962_22691459',
+  'unifunc' => 'content_5c6d28d0abe9d4_45329778',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -24,7 +24,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:system/buttons.tpl' => 1,
   ),
 ),false)) {
-function content_5c3c41d4570962_22691459 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c6d28d0abe9d4_45329778 (Smarty_Internal_Template $_smarty_tpl) {
 ?><form action="<?php echo $_smarty_tpl->tpl_vars['request_path']->value;?>
 " method="post" enctype="multipart/form-data" name="meta_form" class="dropzone"><input type="hidden" name="form_action" value="add"><?php if (is_array($_smarty_tpl->tpl_vars['meta_enable']->value) || $_smarty_tpl->tpl_vars['meta_enable']->value === true) {
 $_smarty_tpl->_subTemplateRender("file:fields/meta.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array('title'=>'','keywords'=>'','description'=>'','robots'=>''), 0, false);

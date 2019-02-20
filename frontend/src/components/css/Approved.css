@@ -14,7 +14,7 @@
 }
 .approved-container button {
   color: #fff;
-  background: #33b9ff;
+  background: #1976d2;
   border-radius: 10px;
   line-height: 20px;
   padding: 10px 50px;
@@ -25,6 +25,6 @@
   font-weight: 700;
 }
 .approved-container button:hover {
-  background: #0097e5;
+  background: #11508e;
   transition: .37s ease;
 }

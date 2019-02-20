@@ -77,7 +77,7 @@ main button {
 main button:hover {
   cursor: pointer;
   transition: .37s ease;
-  background: #008cff;
+  background: #1976d2;
 }
 @keyframes fadein {
   from {

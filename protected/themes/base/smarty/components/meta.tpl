@@ -19,7 +19,9 @@
 	<!-- CSS -->
 	<link type="text/css" rel="stylesheet" href="/css/normalize.css" >
 	<link type="text/css" rel="stylesheet" href="/css/style.css" >
-	<link type="text/css" rel="stylesheet" href="/frontend/build/static/css/main.b755cc5d.chunk.css" >
+	<link type="text/css" rel="stylesheet" href="/frontend/build/static/css/main.c942f705.chunk.css" >
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 </head>
 <body class="page-{$_page.system}">

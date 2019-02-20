@@ -11,7 +11,7 @@ class Header extends Component {
         <div className="header-date">
           <span>сегодня</span>
           <Moment element="span" format="DD.MM.YYYY">{date}</Moment>
-          <span id="header-date-day">{date.toLocaleString('ru', {weekday: 'short'})}</span>
+          <span id="header-date-day">{date.toLocaleString('ru', {weekday: 'long'})}</span>
         </div>
       </div>
     )

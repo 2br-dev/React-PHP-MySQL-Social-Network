@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-01-18 18:17:07
+/* Smarty version 3.1.32, created on 2019-02-20 13:16:15
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\system\group.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c41edf34a0744_00942299',
+  'unifunc' => 'content_5c6d28efa53ac7_32086102',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c41edf34a0744_00942299 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c6d28efa53ac7_32086102 (Smarty_Internal_Template $_smarty_tpl) {
 if (!$_smarty_tpl->tpl_vars['type']->value) {
 $_smarty_tpl->_assignInScope('type', 'radio');
 }?><div class="group"><?php

@@ -34,7 +34,7 @@ input:active {
   margin: 0 auto;
 }
 .black-wrapper {
-  z-index: 11;
+  z-index: 99;
   background: rgba(0, 0, 0, 0.5);
   left: 0;
   right: 0;
@@ -64,7 +64,7 @@ input:active {
   content: ' ';
   height: 25px;
   width: 7px;
-  background-color: #00c5fe;
+  background-color: #2196F3;
 }
 .close:before {
   transform: rotate(45deg);
@@ -144,7 +144,7 @@ input[name="password"] {
 }
 
 .svg-inline--fa {
-  color: #00c5fe;
+  color: #1976d2;
   opacity: .85;
   margin: 0 10px;
   cursor: pointer;

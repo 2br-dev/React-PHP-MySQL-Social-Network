@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
 import SingleNews from './SingleNews';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Fab from './Fab/Fab';
+import NewNews from './News/NewNews';
 
 export default class News extends Component {
   constructor(props){
@@ -13,7 +15,7 @@ export default class News extends Component {
       newNews: false,
       newNewsTopic: '',
       newNewsText: '',
-      newNewsImportance: 0,
+      newNewsImportance: false,
       editing: '',
       singleNews: false,
       singleNewsData: [],
@@ -31,6 +33,7 @@ export default class News extends Component {
     this.editNews        = this.editNews.bind(this);
     this.prepareNews     = this.prepareNews.bind(this);
     this.showNews        = this.showNews.bind(this);
+    this.changeImportance = this.changeImportance.bind(this)
   }
 
   componentDidMount() {
@@ -119,7 +122,7 @@ export default class News extends Component {
       formData.append('text', this.state.newNewsText);
       formData.append('date', new Date().toJSON().slice(0,10).replace(/-/g,'.'));
       formData.append('created', new Date().getTime());
-      formData.append('importance', this.state.newNewsImportance);
+      formData.append('importance', this.state.newNewsImportance ? 1 : 0);
       formData.append('author_id', this.props.user.id);
       
       $.ajax({ 
@@ -146,7 +149,7 @@ export default class News extends Component {
     }
   } 
 
-  changeImportance = () => this.state.newNewsImportance === 0 ? this.setState({newNewsImportance: 1}) : this.setState({newNewsImportance: 0});
+  changeImportance = () => this.setState({newNewsImportance: !this.state.newNewsImportance});
 
   removeNews = (e) => {
     var self = this;
@@ -209,13 +212,13 @@ export default class News extends Component {
   
   // закрываем новость 
   closeNews = () => {
-    this.setState({ singleNews: false, singleNewsId: '' });
+    this.setState({ singleNews: false, singleNewsId: '', newNews: false });
     this.reloadComponent();
   }
   
 
   render() {
-    const { news, newNews, newNewsText, newNewsTopic, editing, singleNews, singleNewsId, comments } = this.state;
+    const { news, newNews, newNewsText, newNewsTopic, editing, singleNews, singleNewsId, comments, newNewsImportance } = this.state;
     const { user } = this.props;
 
     return (
@@ -274,41 +277,20 @@ export default class News extends Component {
             )
           }
         )} 
-        <AddNews onClick={this.addNews}>
-          <img src={window.location.origin + '/img/icons/add.png'} alt='Добавить новость' title='Добавить новость' />
-          <p>Добавить новость</p>
-        </AddNews> 
 
-        {newNews ? (
-          <>
-          <NewNews>
-            <div className="newNews-header">Новая новость <button className='close' onClick={() => this.setState({ newNews: !this.state.newNews })}></button></div>
-            <div className='newNews-content'>
-              <form action="" method="POST" onSubmit={this.submitNews}>
-                {user.avatar === '' 
-                  ? <img alt='' src={window.location.origin + `/img/photos/images.png`} /> 
-                  : <img alt='' src={`${window.location.origin}${user.avatar}`} /> 
-                }
-                <input 
-                  onChange={this.handleChange} required
-                  name='newNewsTopic' type='text' placeholder='Заголовок' value={newNewsTopic} />
-                <textarea required name='newNewsText' onChange={this.handleChange} className='nawNews-text' value={newNewsText} />
-                <Checkbox>
-                  <label className="checkbox-container">Важная новость
-                    <input type="checkbox" name='importance' />
-                    <span onClick={this.changeImportance.bind(this)} className="checkbox-checkmark"></span>
-                  </label>
-                </Checkbox>
-                <button
-                  onClick={this.submitNews} 
-                  className='btn'>Добавить новость</button>
-              </form>  
-            </div>
-          </NewNews>
-          <Wrapper onClick={() => this.setState({ newNews: !this.state.newNews })}></Wrapper>
-          </>
-          ) 
-          : null}
+        <div onClick={this.addNews}><Fab title='Добавить новость' /></div>
+
+        {newNews ? 
+          <NewNews 
+            user={user}
+            newNewsTopic={newNewsTopic}
+            newNewsText={newNewsText}
+            submitNews={this.submitNews}
+            handleChange={this.handleChange}
+            changeImportance={this.changeImportance}
+            newNewsImportance={newNewsImportance}
+            closeNews={this.closeNews.bind(this)} 
+          /> : null}
 
           {singleNews 
           ? 
@@ -392,124 +374,5 @@ const Actions = styled.div`
   p {
     margin-right: 5px;
     color: #657786;
-  }
-`;
-
-const AddNews = styled.div`
-  width: 125px;
-  background: #00c5fe;
-  position: fixed;
-  right: 50px;
-  bottom: 50px;
-  border-radius: 50%;
-  height: 125px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  
-  p, img {
-    margin-left: 5px;
-  }
-  
-  &:hover {
-    cursor: pointer;
-    background: lighten(#00c5fe, 10%);
-    box-shadow: 0 7px 14px rgba(0,0,0,0.25), 0 5px 5px rgba(0,0,0,0.22);
-    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-  }
-`;
-
-const Wrapper = styled.div`
-  position: fixed;
-  background: rgba(0,0,0, .5);
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  z-index: 30;
-`;
-
-const NewNews = styled.div`
-  background: #f0f8f6;
-  width: 600px;
-  position: fixed;
-  top: 150px;
-  left: 0;
-  right: 0;
-  margin: auto;
-  border-radius: 20px;
-  z-index: 37;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-
-  .newNews-header {
-    border-bottom: 1px solid #e6ecf0;
-    text-align: center;
-    position: relative;
-    font-weight: 700;
-    font-size: 20px;
-    padding: 10px 0;
-  }
-
-  .newNews-content {
-    height: fit-content;
-    min-height: 150px;
-    padding: 10px;
-    background: #e6f7ff;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    position: relative;
-    padding-bottom: 70px;
-
-    input, .nawNews-text {
-      margin-left: 60px;
-      padding: 10px 5px;
-      border-radius: 10px;
-      width: 85%;
-      border: 2px solid #e6ecf0
-    }
-
-    input {
-      font-weight: bold;
-    }
-
-    .nawNews-text {
-      display: block;
-      margin-top: 10px;
-      min-height: 130px;
-      background: #fff;
-      resize: none;
-    }
-
-    .btn {
-      position: absolute;
-      left: unset;
-      right: 35px;
-      bottom: 20px;
-    }
-
-    img {
-      position: absolute;
-      left: 15px;
-      top: 10px;
-      width: 40px;
-      border-radius: 50%;
-    }
-
-  }
-
-  .close {
-    top: -5px;
-  }
-`;
-
-const Checkbox = styled.div`
-  label {
-    position: absolute;
-    left: 70px;
-    font-size: 16px;
-    bottom: 10px;
-    line-height: 25px;
   }
 `;

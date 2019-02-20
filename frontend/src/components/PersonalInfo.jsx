@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import ModalWindow from './Modal';
 import $ from 'jquery';
 import InputMask from 'react-input-mask'; 
-/* import Calendar from 'react-calendar'; */
 import './css/PersonalInfo.css';
 
 class PersonalInfo extends Component {
@@ -17,7 +16,6 @@ class PersonalInfo extends Component {
       childBirthyear: ''
     }
     this.handleSubmit      =   this.handleSubmit.bind(this);
-    this.handleChange      =   this.handleChange.bind(this);
     this.openModal         =   this.openModal.bind(this);
     this.handleChange      =   this.handleChange.bind(this);
     this.fetchUserInfo     =   this.fetchUserInfo.bind(this);
@@ -173,12 +171,15 @@ class PersonalInfo extends Component {
 
   render() {
     const { userInfo, newChildInput, childName, childBirthyear } = this.state;
-    const { user_id, user_logged_id } = this.props;
+    const { user_id, user_logged_id, user } = this.props;
     
     let childrens = {};
     if (userInfo.childs) {
       childrens = JSON.parse(userInfo.childs.replace(/\//g,''));
     }
+    let avatar = user.avatar;
+
+    if( !window.location.host.includes('localhost') ) avatar = `frontend/public/${avatar}`; 
 
     return (
     <section className="personal">
@@ -187,8 +188,7 @@ class PersonalInfo extends Component {
       <form id="personal-info" action="" method="POST" onSubmit={this.handleSubmit}>
       <div className="personal-header">
         <div className="personal-header__photo">
-          <img src={window.location.origin + `/img/photos/images.png`} alt='' />
-          {user_logged_id === user_id ? <a>Изменить фото профиля</a> : null}
+          <img src={avatar} alt='' />
         </div>
         <div className="personal-header__info">
           <div className="personal-header__div">
@@ -404,8 +404,20 @@ class PersonalInfo extends Component {
     </section>  
    )
   }
-
 }
 
+const styles = {
+  upload: {
+    background: '#ef6c00',
+    color: 'white',
+    margin: 'auto',
+    position: 'relative'
+  },
+  hiddenInput: {
+    opacity: 0, 
+    position: 'absolute', 
+    left: 0, right: 0, bottom: 0, top: 0
+  },
+};  
 
 export default PersonalInfo;

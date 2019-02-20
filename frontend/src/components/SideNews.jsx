@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './css/SideNews.css';
 import SingleNews from './SingleNews';
-import Switch from '@material-ui/core/Switch';
+import styled from 'styled-components';
+import { Typography, Paper, Switch, Button, Tooltip } from '@material-ui/core';
+import WarningIcon from '@material-ui/icons/Warning';
 
 class SideNews extends Component {
   constructor(props) {
@@ -19,7 +21,7 @@ class SideNews extends Component {
   }
 
   componentDidMount() {
-    this.reloadComponent();       
+    this.reloadComponent();
   }
 
   async reloadComponent() {
@@ -30,7 +32,7 @@ class SideNews extends Component {
       .then(response => response.json())
       .then(comments => this.setState({ comments: comments.records }))
   }
-  
+
   // переходим к конкретной новости
   goToSingleNews = id => this.setState({ singleNews: true, singleNewsId: id });
 
@@ -54,75 +56,150 @@ class SideNews extends Component {
 
   render() {
     const { news, importance, singleNews, singleNewsId, comments } = this.state;
-    const { user } = this.props;
     var NEWS_COUNTER = 0;
 
     return (
-      <>
-      <div className="news-btns">
-        Только важные новости
-        <Switch color='default' onClick={this.changeImportance.bind(this)}  /> 
-      </div>
-      <div className="news">
-        {news.map((item, i) => {
+      <Wrapper>
+        <Paper>
+          <NewsSwitch>
+            <Typography variant='subtitle2'>Только важное </Typography>
+            <Switch color='primary' onClick={this.changeImportance.bind(this)} />
+          </NewsSwitch>
+          <News>
+            {news.map((item, i) => {
 
-          if (importance) {
-            if (item.importance === '1' && NEWS_COUNTER < 3) {
-              NEWS_COUNTER++;
-              return (
-                <div key={i} className="news-item news-important">
-                  <div className="news-item-header">
-                    <p className="news-item-header__author">{item.author}</p>
-                    <p className="news-item-header__date">{item.date}</p>
-                  </div>
-                  <div className="news-item-title">{item.title}</div>
-                  <div className="news-item-text" dangerouslySetInnerHTML={{ __html: item.text }}></div>
-                  <div className="news-item-comment">
-                    <img alt='' src={window.location.origin + `/img/icons/comment.png`}></img><p>0 комментариев</p>
-                  </div>
-                </div>
-              )
-            }
-          } else {
-            if (i < 3) {
-              return (
-                <div key={i} className={item.importance === 1 ? "news-item news-important" : "news-item"}>
-                  <div className="news-item-header">
-                    <p className="news-item-header__author">{item.author}</p>
-                    <p className="news-item-header__date">{item.date}</p>
-                  </div>
-                  <div className="news-item-title">{item.title}</div>
-                  <div className="news-item-text" dangerouslySetInnerHTML={{ __html: item.text }}></div>
-                  <div
-                    onClick={() => this.goToSingleNews(item.id)}
-                    className="news-item-comment"
-                  >
-                    <FontAwesomeIcon icon='comments' />
-                    {item.comments} {this.getNoun(item.comments)}
-                  </div>
-                </div>
-              )
-            }
-          }
-        })}
-        <button className="news-button" onClick={() => { this.props.handleChangeSection('news'); window.scrollTo(0, 0) }}>КО ВСЕМ НОВОСТЯМ</button>
+              if (importance) {
+                if (item.importance === '1' && NEWS_COUNTER < 3) {
+                  NEWS_COUNTER++;
+                  return (
+                    <div key={i} className="news-item">
+                      <div className="news-item-header">
+                        <Typography variant='subtitle2'>{item.author}</Typography>
+                        <Typography variant='caption'>{item.date}</Typography>
+                      </div>
+                      <Typography variant='button' className='news-caption' onClick={() => this.goToSingleNews(item.id)}>
+                        {item.importance === '1' ? <Tooltip title='Важное!' placement="left"><WarningIcon /></Tooltip> : null}
+                        {item.title}
+                      </Typography>
+                      <div className="news-item-text">
+                        <Typography variant='body2'>{item.text}</Typography>
+                      </div>
+                      <Tooltip title="Перейти к комментариям" placement="top-start">
+                        <div
+                          onClick={() => this.goToSingleNews(item.id)}
+                          className="news-item-comment"
+                        >
+                          <FontAwesomeIcon icon='comments' />
+                          {item.comments} {this.getNoun(item.comments)}
+                        </div>
+                      </Tooltip>
+                    </div>
+                  )
+                }
+              } else {
+                while (i < 3) {
+                  return (
+                    <div key={i} className="news-item">
+                      <div className="news-item-header">
+                        <Typography variant='subtitle2'>{item.author}</Typography>
+                        <Typography variant='caption'>{item.date}</Typography>
+                      </div>
+                      <Typography variant='button' className='news-caption' onClick={() => this.goToSingleNews(item.id)}>
+                        {item.importance === '1' ? <Tooltip title='Важное!' placement="top-start"><WarningIcon /></Tooltip> : null}
+                        {item.title}
+                      </Typography>
+                      <div className="news-item-text">
+                        <Typography variant='body2'>{item.text}</Typography>
+                      </div>
+                      <Tooltip title="Перейти к комментариям" placement="top-start">
+                        <div
+                          onClick={() => this.goToSingleNews(item.id)}
+                          className="news-item-comment"
+                        >
+                          <FontAwesomeIcon icon='comments' />
+                          {item.comments} {this.getNoun(item.comments)}
+                        </div>
+                      </Tooltip>
+                    </div>
+                  )
+                }
+              }
+            })}
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={() => { this.props.handleChangeSection('news'); window.scrollTo(0, 0) }}
+            >
+              КО ВСЕМ НОВОСТЯМ
+            </Button>
 
-        {singleNews 
-          ?
-          <SingleNews
-            closeNews={this.closeNews.bind(this)}
-            singleNewsId={singleNewsId}
-            news={news}
-            user={this.props.user}
-            comments={comments}
-            reloadComponent={this.reloadComponent}
-          />
-          : null}
-        
-      </div>
-      </>
+            {singleNews
+              ?
+              <SingleNews
+                closeNews={this.closeNews.bind(this)}
+                singleNewsId={singleNewsId}
+                news={news}
+                user={this.props.user}
+                comments={comments}
+                reloadComponent={this.reloadComponent}
+              />
+              : null}
+
+          </News>
+        </Paper>
+      </Wrapper>
     )
   }
 }
+
+const Wrapper = styled.div`
+  width: 30%;
+`;
+const NewsSwitch = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const News = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  .news-item {
+    width: 100%;
+    padding-bottom: 0;
+  }
+  svg {
+    margin-left: 0;
+  }
+  .news-caption {
+    display: flex;
+    align-items: flex-start;
+    width: 111%;
+    cursor: pointer;
+    margin-left: -15px;
+    padding: 10px 15px 8px;
+    &:hover {
+      background: #1976d2;
+      color: #ffffff;
+      transition: .37s ease;
+    }
+    svg {
+      color: rgba(0,0,0,.15) !important;
+      margin-right: 8px;
+      font-size: 22px;
+    }
+  }
+
+  .news-item-comment {
+    width: 111%;
+    cursor: pointer;
+    margin-left: -15px;
+    padding: 12px 15px;
+    &:hover {
+      background: rgba(0,0,0,0.037);
+    }
+  }
+`;
 
 export default SideNews;

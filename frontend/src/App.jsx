@@ -19,24 +19,18 @@ class App extends Component {
             <Route path='/id:user_id' component={MainPage}/>
             <Route path='/friends'    component={MainPage}/>
             <Route path='/colleagues' component={MainPage}/>
-            <Route path='/favourites' component={MainPage}/>
-            <Route path='/gallery'    component={MainPage}/>
+           {/*  <Route path='/favourites' component={MainPage}/>
+            <Route path='/gallery'    component={MainPage}/> */}
             <Route path='/tasks'      component={MainPage}/>
-            <Route path='/learnings'  component={MainPage}/>
+           {/*  <Route path='/learnings'  component={MainPage}/> */}
             <Route path='/messages'   component={MainPage}/>
             <Route path='/news'       component={MainPage}/> 
-
             <Route path='/settings'   component={Settings}/>
-      
             <Route path="/login"      component={LoginForm}/>
-
             <Route path="/approved"   component={Approved}/>
-
             <Route path="/restore"    component={Restore}/>
-
             <Route path="/404"        component={Page404}/>
             <Route path="/:any"       component={Page404}/>
-
         </Switch> 
       </BrowserRouter> 
     );
