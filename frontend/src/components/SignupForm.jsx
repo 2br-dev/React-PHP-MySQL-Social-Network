@@ -73,6 +73,7 @@ class SignupForm extends Component {
               localStorage.setItem('user_id', user_id);
               window.location.href = `/`;
               break;
+            default: break;
           }
         },
         error: function(err) {
@@ -121,7 +122,7 @@ class SignupForm extends Component {
              {this.state.password.length < 8 && this.state.password !== '' ? <p className="invalid-form-result">Пароль должен быть не менее 8 символов</p> : ''}
           </div>
           <div className="register-buttons">
-            <a onClick={this.forgetPassword} className="forgive-password">Забыли пароль?</a>
+            <button onClick={this.forgetPassword} className="forgive-password">Забыли пароль?</button>
             <button className="btn">Войти</button>
           </div>
           {this.state.isForget ? <ForgetPassword forgetPassword={this.forgetPassword} /> : null}

@@ -49,7 +49,7 @@
   max-height: 150px;
   overflow: auto;
   padding: 10px 15px;
-  background: rgba(0, 0, 0, 0.037);
+  background: rgba(0, 0, 0, 0.015);
 }
 .news-item-text::-webkit-scrollbar {
   width: 10px;

@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-02-20 13:15:42
+/* Smarty version 3.1.32, created on 2019-02-22 10:01:17
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\view\meta\module\filter.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c6d28cecee313_38037677',
+  'unifunc' => 'content_5c6f9e3d6eaa66_09361470',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c6d28cecee313_38037677 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c6f9e3d6eaa66_09361470 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_assignInScope('pagerCookie', "module_limit_".((string)$_smarty_tpl->tpl_vars['module_id']->value));?><div class="button-container clearfix"><div class="button-container--right"><?php if ($_smarty_tpl->tpl_vars['meta_filter']->value) {
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['meta_filter']->value, 'filter', false, 'name');
 if ($_from !== null) {

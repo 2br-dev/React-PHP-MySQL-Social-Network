@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { Checkbox, Button, FormControlLabel, Typography, TextField } from '@material-ui/core';
 import defaultAvatar from '../img/photos/images.png';
-import NewIcon from '@material-ui/icons/NoteAdd';
 
 export default function NewNews(props) {
   let avatar = '';
@@ -16,7 +15,6 @@ export default function NewNews(props) {
     <Fragment>
       <Container>
         <Header>
-          <NewIcon />
           <Typography variant='button'>Новая новость</Typography> 
           <button className='close' onClick={props.closeNews}></button>
         </Header>
@@ -31,6 +29,7 @@ export default function NewNews(props) {
                 label="Заголовок"
                 value={props.newNewsTopic}
                 onChange={props.handleChange}
+                error={props.invalidTopic}
                 variant="outlined"
                 name='newNewsTopic'
                 type='text'
@@ -43,6 +42,7 @@ export default function NewNews(props) {
                 multiline
                 variant="outlined"
                 name='newNewsText'
+                error={props.invalidText}
                 onChange={props.handleChange}
                 value={props.newNewsText}
                 required
@@ -99,11 +99,6 @@ const Header = styled.div`
   height: 50px;
   align-items: center;
   justify-content: center;
-  svg {
-    margin-right: 5px;
-    margin-top: -5px;
-    color: #1976d2;
-  }
 `;
 const Body = styled.div`
   .image {
@@ -119,6 +114,8 @@ const Footer = styled.div`
   height: 90px;
   align-items: center;
   justify-content: space-between;
+  width: 85%;
+  margin-left: 15%;
 `;
 const Topic = styled.div`
   display: flex;

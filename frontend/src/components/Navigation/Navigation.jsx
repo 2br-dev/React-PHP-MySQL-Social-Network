@@ -3,19 +3,43 @@ import { Link } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import PhoneIcon from '@material-ui/icons/Phone';
+import Badge from '@material-ui/core/Badge';
 import sections from './sections';
 import styled from 'styled-components';
 import _ from 'lodash';
+import API from '../functions/API';
+import { connect } from 'react-redux';
+import moment from 'moment';
 
 const PATH = window.location.pathname;
-const urlValue = _.find(sections, ['section', PATH.includes('id') ? 'id' : PATH.slice(1)]).value;
+let urlValue = _.find(sections, ['section', PATH.includes('id') ? 'id' : PATH.slice(1)]);
+if (urlValue) urlValue = urlValue.value;
 
 class Navigation extends React.Component {
-  state = { value: urlValue };
+  state = {
+    value: urlValue
+  };
+
+  componentDidMount = () => {
+    fetch(`${API}/api/tasks/read.php?id=${this.props.user_logged_id}`)
+      .then(response => response.json())
+      .then(tasks => this.props.getTasks(tasks.data))
+      .catch(err => console.log(err))
+  }
 
   handleChange = (event, value) => this.setState({ value });
 
+  countTask = () => {
+    let counter = 0;
+    const now = moment(new Date()); //todays date
+    
+    this.props.store.tasks.forEach(task => {
+      const end = moment(task.until_date); // another date
+      const difference = moment.duration(end.diff(now))._milliseconds;
+      if (task.status === '0' && difference > 0) counter++;
+    })
+    return counter;
+  }
   render() {
     const { value } = this.state;
     const user = this.props;
@@ -32,7 +56,12 @@ class Navigation extends React.Component {
             {sections.map((section, i) =>
               <Tab
                 key={i}
-                label={section.label}
+                label={section.section === 'tasks' && this.countTask() > 0 ?
+                  <BadgeWrapper><Badge color="secondary" badgeContent={this.countTask()}>
+                    {section.label}
+                  </Badge></BadgeWrapper>
+                  : section.label
+                }
                 onClick={() => user.handleChangeSection(section.section !== 'id' ? section.section : `id${user.user_logged_id}`)}
                 component={Link}
                 to={section.section !== 'id' ? section.section : `id${user.user_logged_id}`}
@@ -45,7 +74,6 @@ class Navigation extends React.Component {
     );
   }
 }
-
 const Wrapper = styled.div`
   flex-grow: 1;
   width: 100%;
@@ -59,5 +87,19 @@ const Wrapper = styled.div`
     color: #1976d2;
   }
 `;
-
-export default Navigation;
+const BadgeWrapper = styled.div`
+  & > span > span {
+    top: -19px;
+    right: -5px;
+  }
+`;
+export default connect(
+  state => ({
+    store: state
+  }),
+  dispatch => ({
+    getTasks: (tasks) => {
+      dispatch({ type: 'FETCH_TASKS', payload: tasks})
+    }     
+  })
+)(Navigation);

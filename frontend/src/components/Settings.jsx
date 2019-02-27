@@ -51,7 +51,8 @@ const styles = {
   avatar: {
     width: 100,
     height: 100,
-    marginBottom: 15
+    marginBottom: 15,
+    borderRadius: '50%'
   },
   header: {
     marginTop: 100, 
@@ -172,6 +173,7 @@ class Settings extends Component {
           case   1:
             window.location.href = `id${self.state.user.id}`;
             break;
+          default: break;
         }
       },
       error: function() {
@@ -183,6 +185,13 @@ class Settings extends Component {
   render() {
     const { user, modalText, modal, uploadedAvatar } = this.state;
 
+    let avatar = null;
+    if (window.location.host.includes('localhost')) {
+      avatar = user.avatar;
+    } else {
+      avatar = `frontend/public/${user.avatar}`;
+    }
+
     return (
       <React.Fragment>
 
@@ -191,7 +200,9 @@ class Settings extends Component {
       <Paper style={{ ...styles.default }} elevation={1}>
         
         <form id="personal-info" action="" method="POST" encType="multipart/form-data">
-          <div style={{ ...styles.avatar, background: `url(${uploadedAvatar ? uploadedAvatar : DefaultAvatar}) no-repeat center/cover`  }}></div>
+          {uploadedAvatar ? 
+          <div style={{ ...styles.avatar, background: `url(${uploadedAvatar ? uploadedAvatar : DefaultAvatar}) no-repeat center/cover`  }}></div> :
+          <div style={{ ...styles.avatar, background: `url(${avatar}) no-repeat center/cover`  }}></div>}
           <Button variant="contained" style={{ ...styles.upload }}>
             Загрузить фото профиля
             <Icon style={{ marginLeft: 10 }}>cloud_upload</Icon>

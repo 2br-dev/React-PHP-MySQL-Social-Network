@@ -23,7 +23,13 @@ $user->name         = __post('name');
 $user->position     = __post('position');
 $user->surname      = __post('surname');
 $user->sex          = __post('sex');
-$user->avatar       = __post('avatar');
+
+if (__post('avatar') == '') {
+    $user->avatar = Q("SELECT `avatar` FROM `#_mdd_users` WHERE `id` = ?s", array(__post('id')))->row('avatar');
+} else {
+    $user->avatar = __post('avatar');
+}
+
 
 // update the user
 if($user->settings()){

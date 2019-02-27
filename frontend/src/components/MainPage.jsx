@@ -6,7 +6,7 @@ import SideNews from './SideNews';
 import Cookie from './functions/Cookie';
 import FriendsList from './FriendsList/FriendsList';
 import PersonalInfo from './PersonalInfo';
-import Tasks from './Tasks';
+import Tasks from './Tasks/Tasks';
 import News from './News';
 import Nav from './Navigation/Navigation';
 import styled from 'styled-components';
@@ -35,7 +35,8 @@ class MainPage extends Component {
   }
 
   handleChangeSection(section) {
-    this.setState({ section })
+    this.setState({ section });
+    this.handleChangeUrl();
   }
 
   handleChangeUserId(id) {
@@ -71,7 +72,7 @@ class MainPage extends Component {
       case 'news':
         return <News user={this.state.user} />;
       case 'tasks':
-        return <Tasks />;
+        return <Tasks user_logged_id={this.state.user_logged_id} />;
       case 'colleagues':
         return (
             <FriendsList 
@@ -97,13 +98,13 @@ class MainPage extends Component {
     return (
       <Fragment>
         <MainpageHeader 
-          user_id={user_id}
           user_logged_id={user_logged_id} 
           user={user}
         />
         <div className="container">
           <Header />
           <Nav 
+            user_id={user_id}
             user_logged_id={user_logged_id} 
             handleChangeUrl={this.handleChangeUrl} 
             handleChangeSection={this.handleChangeSection}

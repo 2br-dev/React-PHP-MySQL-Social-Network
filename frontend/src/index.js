@@ -6,6 +6,13 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+/* eslint-disable */
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import MomentUtils from '@date-io/moment';
+import moment from 'moment';
+import 'moment/locale/ru';
+
+moment.locale('ru');
 
 const theme = createMuiTheme({
   palette: {
@@ -18,7 +25,11 @@ const theme = createMuiTheme({
 function Root() {
   return (
     <MuiThemeProvider theme={theme}>
-      <Provider store={store}><App /></Provider>
+      <Provider store={store}>
+        <MuiPickersUtilsProvider utils={MomentUtils} moment={moment}>
+          <App />
+        </MuiPickersUtilsProvider>
+      </Provider>
     </MuiThemeProvider>
   );
 }

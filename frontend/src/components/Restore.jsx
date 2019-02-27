@@ -41,6 +41,7 @@ class Restore extends Component {
       
       function getUrlVars() {
         let vars = {};
+        // eslint-disable-next-line
         let parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
             vars[key] = value;
         });

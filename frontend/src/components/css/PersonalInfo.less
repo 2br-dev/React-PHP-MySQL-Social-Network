@@ -3,25 +3,48 @@
     padding-left: 20px;
     padding-top: 30px;
     display: flex;
+
+    &__info {
+      padding-right: 50px;
+      width: 80%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+
+      &>div {
+        width: 100%;
+      }
+
+      p {
+        text-align: right;
+      }
+    }
+
     &__photo {
       text-align: center;
       width: 200px;
-      img {
+
+      div {
         border-radius: 50%;
         width: 120px;
         height: 120px;
+        display: inline-block;
       }
+
       a {
         text-decoration: underline;
         cursor: pointer;
+
         &:hover {
           text-decoration: none;
         }
       }
     }
+
     &__div {
       margin-bottom: 10px;
     }
+
     &__select {
       border: none;
       background: #fff;
@@ -30,35 +53,8 @@
       border-radius: 10px;
       outline: none;
     }
+
     &__info {
-      label {
-        display: inline-block;
-        width: 150px;
-        text-align: right;
-        font-size: 14px;
-      }
-      &-input {
-        margin-left: 15px;
-        background: #fff;
-        border: none;
-        border-radius: 10px;
-        padding: 6px 10px;
-        &:active, &:focus {
-          outline: none;
-          border: none;
-        }
-        &-disabled {
-          margin-left: 15px;
-          padding: 6px 10px;
-          border: none;
-          pointer-events: none;
-          background: transparent !important;
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          text-indent: 1px;
-          text-overflow: '';
-        }
-      }
       p {
         margin-left: 170px;
         font-size: 11px;
@@ -66,21 +62,27 @@
       }
     }
   }
+
   &-separator {
     font-size: 18px;
     margin: 40px 0;
     padding-left: 40px;
   }
+
   &-section {
-    padding-left: 20px;
+    padding: 0 45px;
+    margin: 20px 0;
+
     &__header {
       display: flex;
       align-items: center;
+
       p {
         font-size: 18px;
         margin-right: 5px;
         font-weight: semi-bold;
       }
+
       hr {
         width: 92%;
         height: 1px;
@@ -88,124 +90,15 @@
         border: none;
       }
     }
-    &__data {
-      label {
-        display: inline-block;
-        width: 140px;
-        min-width: 140px;
-        text-align: right;
-        font-size: 16px;
-      }
-      input {
-        padding: 6px 10px;
-        background: #fff;
-        border-radius: 10px;
-        border: none; 
-        outline: none;
-        margin-left: 10px;
-      }
-      div {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-      }
-      &-childrens {
-        align-items: baseline !important;
-        
-        a {
-          width: 100%;
-          text-decoration: underline;
-          text-align: right;
-          font-size: 18px;
-          cursor: pointer;
-          &:hover {
-            text-decoration: none;
-          }
-        }
-        span input {
-          width: 75%;
-        }
-      }
-    }
-    &__childrens {
-      display: flex;
-      flex-direction: column;
-      width: 200px;
-      position: relative;
-      a {
-        position: absolute;
-        content: '';
-        width: 10px;
-        height: 10px;
-        opacity: .37;
-        cursor: pointer;
-        right: -6px;
-        top: 9px;
-        z-index: 5;
-        background: url(../img/icons/red-cross-icon-8.jpg) no-repeat center/cover;
-        &:hover {
-          opacity: 1;
-          transition: .37s ease;
-        }
-      }
-      input {
-        width: 150px;
-        background: #f0f8f6;
-        pointer-events: none;
-      }
-      &-container {
-        display: flex;
-        flex-wrap: wrap;
-        width: 300%;
-        &-add {
-          position: relative;
-          .personal-section__childrens {
-            margin-left: 140px;
-            margin-top: -30px;
-            &-remove {
-              position: absolute;
-              right: 0;
-              top: -23px;
-              text-decoration: underline;
-              cursor: pointer;
-              &:hover {
-                text-decoration: none;
-              }
-            }
-            span {
-              width: 100%;
-            }
-            a {
-              background: url('../img/icons/green-ok-png-icon-12.png') no-repeat center/cover;
-              opacity: .5;
-              width: 20px;
-              height: 20px;
-              right: -15px;
-              top: 6px;
-              &:hover {
-                opacity: 1;
-                transition: .37s ease;
-              }
-            }
-          }
-          input {
-            background: #fff;
-            margin-top: 5px; 
-            pointer-events: all;         
-          }
-        }
-      }
-    }
   }
 }
-#personal-info .btn {
-  margin-top: 25px;
-  position: absolute;
-}
-input::-webkit-clear-button { /* Removes blue cross */
+
+input::-webkit-clear-button {
+  /* Removes blue cross */
   -webkit-appearance: none;
   margin: 0;
 }
+
 input[type=date]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   display: none;

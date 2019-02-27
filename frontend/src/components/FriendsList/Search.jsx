@@ -13,6 +13,7 @@ function Search(props) {
         variant="outlined"
         type='text'
         label="Поиск"
+        margin='dense'
         value={props.searchValue}
         onChange={props.handleSearch}
         InputProps={{
@@ -20,9 +21,8 @@ function Search(props) {
             <InputAdornment position="end">
               <IconButton
                 aria-label="Искать в списке коллег"
-                onClick={props.handleSearch}
               >
-                <img src={SearchIcon} style={{ opacity: '.37' }} />
+                <img alt='Поиск' src={SearchIcon} style={{ opacity: '.37' }} />
               </IconButton>
             </InputAdornment>
           ),

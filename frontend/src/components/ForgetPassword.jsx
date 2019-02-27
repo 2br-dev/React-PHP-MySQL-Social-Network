@@ -59,7 +59,7 @@ class ForgetPassword extends Component {
     return (
       <>
         <div className="forget-wrapper">
-          <a className="close" onClick={this.props.forgetPassword}></a>
+          <button className="close" onClick={this.props.forgetPassword}></button>
           <div className="form-group">
             <p>Восстановление пароля.</p>
             <label htmlFor="forget-email">Введите e-mail или логин, на который был зарегистрирован аккаунт.</label>

@@ -1,13 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
 import SingleNews from './SingleNews';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Fab from './Fab/Fab';
 import NewNews from './News/NewNews';
+import API from './functions/API';
+import { Paper, Button, Typography, TextField, Tooltip } from '@material-ui/core';
+import { connect } from 'react-redux';
+import defaultAvatar from './img/photos/images.png';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-export default class News extends Component {
-  constructor(props){
+class News extends Component {
+  constructor(props) {
     super(props);
     this.state = {
       news: [],
@@ -19,44 +24,47 @@ export default class News extends Component {
       editing: '',
       singleNews: false,
       singleNewsData: [],
-      singleNewsId: ''
+      singleNewsId: '',
+      invalidText: false,
+      invalidTopic: false,
+      likedBy: []
     }
 
-    this.countComments   = this.countComments.bind(this);
-    this.addLike         = this.addLike.bind(this);
+    this.countComments = this.countComments.bind(this);
+    this.addLike = this.addLike.bind(this);
     this.reloadComponent = this.reloadComponent.bind(this);
-    this.removeLike      = this.removeLike.bind(this);
-    this.addNews         = this.addNews.bind(this);
-    this.handleChange    = this.handleChange.bind(this);
-    this.submitNews      = this.submitNews.bind(this);
-    this.removeNews      = this.removeNews.bind(this);
-    this.editNews        = this.editNews.bind(this);
-    this.prepareNews     = this.prepareNews.bind(this);
-    this.showNews        = this.showNews.bind(this);
+    this.removeLike = this.removeLike.bind(this);
+    this.addNews = this.addNews.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.submitNews = this.submitNews.bind(this);
+    this.removeNews = this.removeNews.bind(this);
+    this.editNews = this.editNews.bind(this);
+    this.prepareNews = this.prepareNews.bind(this);
+    this.showNews = this.showNews.bind(this);
     this.changeImportance = this.changeImportance.bind(this)
   }
 
   componentDidMount() {
-    this.reloadComponent();       
+    this.reloadComponent();
   }
 
-  async reloadComponent()  {
-    await fetch(`http://akvatory.local/api/news/read.php`)
+  async reloadComponent() {
+    await fetch(`${API}/api/news/read.php`)
       .then(response => response.json())
-      .then(news => this.setState({ news: news.records }))
-    await fetch(`http://akvatory.local/api/news/getcomments.php`)
+      .then(news => this.props.onAddNews(news.records || []))
+    await fetch(`${API}/api/news/getcomments.php`)
       .then(response => response.json())
       .then(comments => this.setState({ comments: comments.records }))
   }
 
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-    $(e.target).removeClass('invalid');
+    this.setState({ invalidText: false, invalidTopic: false });
   }
 
   // считает кол-во комментариев
   countComments = (id) => (this.state.comments.filter((comment) => comment.news_id === id)).length;
- 
+
   // добавляем лайк
   addLike = (id, e) => {
     var self = this;
@@ -64,307 +72,358 @@ export default class News extends Component {
     const formData = new FormData();
     formData.append('id', id);
     formData.append('liked_by', this.props.user.id);
-    console.log(id);
-    
-    $.ajax({ 
-      // DEV
-      url         : 'http://akvatory.local/api/news/addlike.php',
-      /* url         : window.location.origin + '/api/news/addlike.php', */
-      data        : formData,
-      processData : false,
-      contentType : false,
+
+    $.ajax({
+      url: `${API}/api/news/addlike.php`,
+      data: formData,
+      processData: false,
+      contentType: false,
       type: 'POST',
-      success: function(res) {
+      success: function (res) {
         self.reloadComponent();
       },
-      error: function(err) {
+      error: function (err) {
         console.log(err);
       }
     });
-  } 
+  }
 
   // убираем лайк
   removeLike = (id, e) => {
     const self = this;
-    e.preventDefault();  
+    e.preventDefault();
 
     const formData = new FormData();
     formData.append('id', id);
     formData.append('liked_by', this.props.user.id);
-      
-    $.ajax({ 
-      // DEV
-      url         : 'http://akvatory.local/api/news/removelike.php',
-      /* url         : window.location.origin + '/api/news/removelike.php', */
-      data        : formData,
-      processData : false,
-      contentType : false,
+
+    $.ajax({
+      url: `${API}/api/news/removelike.php`,
+      data: formData,
+      processData: false,
+      contentType: false,
       type: 'POST',
-      success: function(res) {
+      success: function (res) {
         self.reloadComponent();
         self.setState({ newNews: false });
-          /*  */
       },
-        error: function(err) {
+      error: function (err) {
         console.log(err);
       }
     });
-  } 
+  }
 
   submitNews = (e) => {
     var self = this;
     e.preventDefault();
-    if(self.state.newNewsTopic !== '' && self.state.newNewsText !== '') {
+    if (this.state.newNewsTopic !== '' && this.state.newNewsText !== '') {
       const formData = new FormData();
-    
+
       formData.append('author', `${this.props.user.name} ${this.props.user.surname}`);
       formData.append('title', this.state.newNewsTopic);
       formData.append('text', this.state.newNewsText);
-      formData.append('date', new Date().toJSON().slice(0,10).replace(/-/g,'.'));
+      formData.append('date', new Date().toJSON().slice(0, 10).replace(/-/g, '.'));
       formData.append('created', new Date().getTime());
       formData.append('importance', this.state.newNewsImportance ? 1 : 0);
       formData.append('author_id', this.props.user.id);
-      
-      $.ajax({ 
-        // DEV
-        url         : 'http://akvatory.local/api/news/submitnews.php',
-        /* url         : window.location.origin + '/api/news/submitnews.php', */
-        data        : formData,
-        processData : false,
-        contentType : false,
+
+      $.ajax({
+        url: `${API}/api/news/submitnews.php`,
+        data: formData,
+        processData: false,
+        contentType: false,
         type: 'POST',
-        success: function(res) {
+        success: function (res) {
+          console.log(res);
           self.reloadComponent();
-          self.setState({ newNews: !self.state.newNews, newNewsText: '', newNewsTopic: ''});
-          window.scrollTo(0,0);
+          self.setState({ newNews: !self.state.newNews, newNewsText: '', newNewsTopic: '' });
+          window.scrollTo(0, 0);
         },
-        error: function(err) {
+        error: function (err) {
           console.log(err);
         }
       });
     } else {
-      
-      if (self.state.newNewsTopic === '') $('input[name="newNewsTopic"]').addClass('invalid');
-      if (self.state.newNewsText === '') $('textarea').addClass('invalid');
+
+      if (self.state.newNewsTopic === '') this.setState({ invalidTopic: true });
+      if (self.state.newNewsText === '') this.setState({ invalidText: true });
     }
-  } 
+  }
 
-  changeImportance = () => this.setState({newNewsImportance: !this.state.newNewsImportance});
+  changeImportance = () => this.setState({ newNewsImportance: !this.state.newNewsImportance });
 
-  removeNews = (e) => {
+  removeNews = id => {
+    this.setState({ editing: true });
     var self = this;
-    e.preventDefault();
     const formData = new FormData();
-    formData.append('id', $(e.target).data("id"));
-      
-    $.ajax({ 
-      // DEV
-      url         : 'http://akvatory.local/api/news/delete.php',
-      /* url         : window.location.origin + '/api/news/delete.php', */
-      data        : formData,
-      processData : false,
-      contentType : false,
+    formData.append('id', id);
+
+    $.ajax({
+      url: `${API}/api/news/delete.php`,
+      data: formData,
+      processData: false,
+      contentType: false,
       type: 'POST',
-      success: function(res) {
+      success: function (res) {
         self.reloadComponent();
+        self.setState({ editing: '' });
       },
-      error: function(err) {
+      error: function (err) {
         console.log(err);
       }
     });
   };
 
-  prepareNews = e => {
-    let title = this.state.news.find(news => news.id === e.target.dataset.id).title;
-    let text = this.state.news.find(news => news.id === e.target.dataset.id).text;
-    this.setState({ editing: e.target.dataset.id, newNewsTopic: title, newNewsText: text});
-  } 
+  prepareNews = id => {
+    let title = this.state.news.find(news => news.id === id).title;
+    let text = this.state.news.find(news => news.id === id).text;
+    this.setState({ editing: id, newNewsTopic: title, newNewsText: text });
+  }
 
-  editNews = e => {
-    var self = this;
+  editNews = (e, id) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('id', $(e.target).data("id"));
-    formData.append('title', this.state.newNewsTopic);
-    formData.append('text', this.state.newNewsText);
-      
-    $.ajax({ 
-      // DEV
-      url         : 'http://akvatory.local/api/news/edit.php',
-      /* url         : window.location.origin + '/api/news/edit.php', */
-      data        : formData,
-      processData : false,
-      contentType : false,
-      type: 'POST',
-      success: function(res) {
-        self.reloadComponent();
-        self.setState({ editing: '' });
-      },
-      error: function(err) {
-        console.log(err);
+    var self = this;
+
+    if (this.state.newNewsTopic !== '' && this.state.newNewsText !== '') {
+      const formData = new FormData();
+      formData.append('id', id);
+      formData.append('title', this.state.newNewsTopic);
+      formData.append('text', this.state.newNewsText);
+
+      $.ajax({
+        url: `${API}/api/news/edit.php`,
+        data: formData,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function (res) {
+          self.reloadComponent();
+          setTimeout(() => self.setState({ editing: '' }), 200);
+        },
+        error: function (err) {
+          console.log(err);
+        }
+      });
+    } else {
+
+      if (self.state.newNewsTopic === '') this.setState({ invalidTopic: true });
+      if (self.state.newNewsText === '') this.setState({ invalidText: true });
+    }
+  }
+
+  addNews = () => this.setState({ editing: '', newNews: !this.state.newNews, newNewsText: '', newNewsTopic: '' });
+
+  showNews = id => {
+    setTimeout(() => {
+      if (this.state.editing === '') {
+        this.setState({ singleNews: true, singleNewsId: id });
+        this.getAvatars(id);
       }
+    }, 100)
+  }
+
+  // получаем аватарки лайкнувших пост
+  getAvatars = id => {
+    const likedBy = this.state.news.find(item => item.id === id.toString()).liked_by.split(', ').slice(1);
+    const formData = new FormData();
+    const self = this;
+    formData.append('likedBy', likedBy);
+
+    $.ajax({
+      url: `${API}/api/user/getAvatars.php`,
+      data: formData,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      success: res => self.setState({ likedBy: res }),
+      error: err => console.log(err),
     });
   }
-  
-  addNews = () => this.setState({ editing: '', newNews: !this.state.newNews, newNewsText: '', newNewsTopic: ''});
 
-  showNews = id => this.setState({ singleNews: true, singleNewsId: id });
-  
   // закрываем новость 
   closeNews = () => {
-    this.setState({ singleNews: false, singleNewsId: '', newNews: false });
+    this.setState({ singleNews: false, singleNewsId: '', newNews: false, likedBy: [] });
     this.reloadComponent();
   }
-  
 
   render() {
-    const { news, newNews, newNewsText, newNewsTopic, editing, singleNews, singleNewsId, comments, newNewsImportance } = this.state;
+    const { news, invalidText, invalidTopic, newNews, newNewsText, newNewsTopic, editing, singleNews, singleNewsId, comments, newNewsImportance } = this.state;
     const { user } = this.props;
+    let avatar = null;
+    window.location.host.includes('localhost') ? avatar = user.avatar : avatar = `frontend/public/${user.avatar}`;
+
+    if (this.state.news.length === 0) {
+      setTimeout(() => this.setState({ news: this.props.store.news }), 0);
+    } 
 
     return (
-      <div>
-        {news.map((item,i) => {  
+      <Paper>
+        {this.props.store.news.length > 0 && this.props.store.news ? this.props.store.news.map((item, i) => {
           return (
             <NewsContainer key={i}>
-              <UserAvatar src={window.location.origin + `/img/photos/images.png`} /> 
-              
-              <div onClick={editing === '' ? () => this.showNews(item.id) : null }>
+              <UserAvatar style={{ background: `url(${user.avatar === '' ? defaultAvatar : avatar}) no-repeat center/cover` }} />
+
+              <div>
                 <NewsInfo>
-                  {user.id === item.author_id ?
-                  <><p><strong>Вы</strong> {item.date}</p> <button onClick={this.removeNews} data-id={item.id} className="btn">Удалить</button></> :
-                  <p><strong>{item.author}</strong> {item.date}</p> }
+                  {user.id === item.author_id
+                    ?
+                    <Fragment>
+                      <Typography variant='caption'>
+                        <Typography variant='subtitle2'>Вы</Typography>
+                        {item.date}
+                      </Typography>
+                      <Icon>
+                        <Tooltip placement='left' title="Удалить">
+                          <DeleteIcon onClick={() => this.removeNews(item.id)} />
+                        </Tooltip>
+                      </Icon>
+                    </Fragment>
+                    :
+                    <Typography variant='caption'>
+                      <Typography variant='subtitle2'>{item.author}</Typography>
+                      {item.date}
+                    </Typography>}
                 </NewsInfo>
                 {editing !== item.id ?
-                <><NewsTitle>{item.title}</NewsTitle>
-                <div dangerouslySetInnerHTML={{__html: item.text}}></div></>
-                : 
-                <form id='edit-news' action="" method="POST" onSubmit={this.editNews}>
-                  <NewsTitle>
-                    <input name='newNewsTopic' value={newNewsTopic} 
-                      onChange={this.handleChange} />
-                  </NewsTitle>
-                  <textarea name='newNewsText' value={newNewsText} 
-                    onChange={this.handleChange} 
-                  >{item.text}</textarea>
-                  <button onClick={this.editNews}
-                    data-id={item.id} type='submit' className="btn" style={{'marginTop':'5px'}}>Изменить</button>
-                </form> }
+                  <Fragment>
+                    <Typography variant='button'>{item.title.replace(/&quot;/g, `"`)}</Typography>
+                    <Body><Typography variant='body2'>{item.text.replace(/&quot;/g, `"`)}</Typography></Body>
+                  </Fragment>
+                  :
+                  <form id='edit-news' action="" method="POST" onSubmit={() => this.editNews(item.id)} >
+                    <TextField
+                      label="Заголовок"
+                      value={newNewsTopic}
+                      onChange={this.handleChange}
+                      variant="outlined"
+                      name='newNewsTopic'
+                      type='text'
+                      error={this.state.invalidTopic}
+                      required
+                    />
+                    <TextArea>
+                      <TextField
+                        label="Текст новости"
+                        multiline
+                        variant="outlined"
+                        name='newNewsText'
+                        onChange={this.handleChange}
+                        value={newNewsText}
+                        error={this.state.invalidText}
+                        required
+                      />
+                    </TextArea>
+                    <Button onClick={(e) => this.editNews(e, item.id)} variant='contained' color='primary'>Изменить</Button>
+                  </form>}
               </div>
 
               <Actions>
-                <p>{this.countComments(item.id)}</p> 
-                <FontAwesomeIcon onClick={editing === '' ? () => this.showNews(item.id) : null } icon="comments" />  
-                <p>{item.likes}</p> 
+                <p>{this.countComments(item.id)}</p>
+                <FontAwesomeIcon onClick={editing === '' ? () => this.showNews(item.id) : null} icon="comments" />
+                <p>{item.likes}</p>
 
-                {!item.liked_by.includes(` ${user.id}`) 
+                {!item.liked_by.includes(` ${user.id}`)
                   ?
-                  <FontAwesomeIcon onClick={e => this.addLike(item.id, e)} icon="heart" /> 
+                  <FontAwesomeIcon onClick={e => this.addLike(item.id, e)} icon="heart" />
                   :
                   <FontAwesomeIcon onClick={e => this.removeLike(item.id, e)} icon="heart" style={{ color: 'red' }} />
                 }
 
                 <FontAwesomeIcon data-id={item.id} onClick={this.addLike} icon="envelope" style={{ marginLeft: '25px' }} />
-                
-                {user.id === item.author_id 
-                  ? 
-                  <FontAwesomeIcon data-id={item.id} onClick={this.prepareNews} icon="edit" style={{ marginLeft: '25px' }} />
-                  : 
+
+                {user.id === item.author_id
+                  ?
+                  <FontAwesomeIcon onClick={() => this.prepareNews(item.id)} icon="edit" style={{ marginLeft: '25px' }} />
+                  :
                   null
-                }    
+                }
+                <Button onClick={() => this.showNews(item.id)} variant='contained' color='primary' style={{ position: 'absolute', right: 40 }}>Читать</Button>
               </Actions>
 
-            </NewsContainer> 
-            )
-          }
-        )} 
+            </NewsContainer>
+          )
+        }
+        ) : <NoNews><Typography variant='h6'>нет новостей</Typography></NoNews>}
 
         <div onClick={this.addNews}><Fab title='Добавить новость' /></div>
 
-        {newNews ? 
-          <NewNews 
+        {newNews ?
+          <NewNews
             user={user}
             newNewsTopic={newNewsTopic}
             newNewsText={newNewsText}
+            invalidText={invalidText}
+            invalidTopic={invalidTopic}
             submitNews={this.submitNews}
             handleChange={this.handleChange}
             changeImportance={this.changeImportance}
             newNewsImportance={newNewsImportance}
-            closeNews={this.closeNews.bind(this)} 
+            closeNews={this.closeNews.bind(this)}
           /> : null}
 
-          {singleNews 
-          ? 
-            <SingleNews 
-              showNews={this.showNews} 
-              closeNews={this.closeNews.bind(this)}  
-              singleNewsId={singleNewsId}
-              comments={comments}
-              news={news}
-              user={user}
-              reloadComponent={this.reloadComponent} />
-          : 
-            null}
-      </div>
+        {singleNews
+          ?
+          <SingleNews
+            showNews={this.showNews}
+            closeNews={this.closeNews.bind(this)}
+            singleNewsId={singleNewsId}
+            comments={comments}
+            news={news}
+            user={user}
+            likedBy={this.state.likedBy}
+            reloadComponent={this.reloadComponent} />
+          :
+          null}
+      </Paper>
     )
   }
 }
 
 const NewsContainer = styled.div`
   position: relative;
-  padding: 20px 20px 20px 140px;
+  padding: 20px 40px 20px 120px;
   cursor: pointer;
   border-bottom: 1px solid #e6ecf0;
-
+  input {
+    padding: 10px 15px;
+  }
   :hover {
-    background: #e6f7ff;
+    background: rgba(0,0,0,0.015);
     transition: .37s ease;
   }
-
-  textarea {
-    border-bottom: 1px solid #e6ecf0;
-    resize: none;
-    width: 100%;
-    border-radius: 10px;
-    min-height: 100px;
-    padding: 5px 10px;
-  }
 `;
-
-const NewsTitle = styled.p`
-  font-size: 1.37rem;
-  input {
-    font-size: 16px;
-    padding: 5px 10px;
-    border-radius: 10px;
-    border: 1px solid #e6ecf0;
-  }
+const Body = styled.div`
+  padding: 10px 15px;
+  margin-top: 10px;
+  background: rgba(0,0,0,0.015);
 `;
-
 const NewsInfo = styled.div`
   position: relative;
-  
-  p {
-    color: #657786;
-  }
-  strong {
-    color: #000;
-    :after {
-      content: '\00b7';
-      margin-left: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+
+  span {
+    display: flex;
+    align-items: baseline;
+    h6 {
+      margin-right: 10px;
+      :after {
+        content: '\00b7';
+        margin-left: 10px;
+      }
     }
-  }
-  .btn {
-    position: absolute;
-    left: unset;
   }
 `;
 
-const UserAvatar = styled.img`
+const UserAvatar = styled.div`
   position: absolute;
-  left: 25px;
-  top: 37px;
+  left: 20px;
+  top: 30px;
   border-radius: 50%;
   width: 80px;
+  height: 80px;
 `;
 
 const Actions = styled.div`
@@ -376,3 +435,60 @@ const Actions = styled.div`
     color: #657786;
   }
 `;
+
+const TextArea = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin: 15px 0 10px;
+  height: 120px;
+
+  textarea {
+    max-height: 100px;
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+   
+    &::-webkit-scrollbar-track {
+      background-color: #ebebeb;
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+      background: #1976d2; 
+    }
+  }
+
+  & > div {
+    width: 100%;
+    & > div {
+      height: 100%;
+    }
+  }
+`;
+const NoNews = styled.div`
+  height: 254px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: .37;
+  margin-bottom: 20px;
+`;
+const Icon = styled.div`
+  svg {
+    color: rgba(0,0,0,0.54);
+  }
+`;
+
+export default connect(
+  state => ({
+    store: state,
+  }),
+  dispatch => ({
+    onAddNews: (news) => {
+      dispatch({ type: 'ADD_NEWS', payload: news })
+    }
+  })
+)(News);

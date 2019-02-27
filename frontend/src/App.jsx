@@ -6,8 +6,8 @@ import Approved from './components/Approved';
 import Restore from './components/Restore';
 import Page404 from './components/Page404';
 import Settings from './components/Settings';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faComments, faHeart, faEnvelope, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faComments, faHeart, faEnvelope, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 library.add(faComments, faHeart, faEnvelope, faEdit)
 

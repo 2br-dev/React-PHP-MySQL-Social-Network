@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-02-20 13:15:42
+/* Smarty version 3.1.32, created on 2019-02-22 10:01:17
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\view\meta\module\index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c6d28cec957c0_05661136',
+  'unifunc' => 'content_5c6f9e3d65db28_89572653',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:system/pager.tpl' => 1,
   ),
 ),false)) {
-function content_5c6d28cec957c0_05661136 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c6f9e3d65db28_89572653 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_checkPlugins(array(0=>array('file'=>'C:\\OpenServer\\domains\\akvatory.local\\protected\\app\\vendors\\smarty\\smarty\\libs\\plugins\\function.cycle.php','function'=>'smarty_function_cycle',),1=>array('file'=>'C:\\OpenServer\\domains\\akvatory.local\\protected\\app\\libs\\smarty.plugins\\modifier.add2query.php','function'=>'smarty_modifier_add2query',),));
 if ((isset($_smarty_tpl->tpl_vars['modules']->value) && !empty($_smarty_tpl->tpl_vars['modules']->value)) || (isset($_smarty_tpl->tpl_vars['groups']->value) && !empty($_smarty_tpl->tpl_vars['groups']->value))) {?><div class="button-container clearfix"><?php if (isset($_smarty_tpl->tpl_vars['groups']->value) && !empty($_smarty_tpl->tpl_vars['groups']->value)) {?><div class="mb40"></div><?php
 $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['groups']->value, 'item', false, NULL, 'item', array (

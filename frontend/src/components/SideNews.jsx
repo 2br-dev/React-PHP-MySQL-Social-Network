@@ -5,6 +5,7 @@ import SingleNews from './SingleNews';
 import styled from 'styled-components';
 import { Typography, Paper, Switch, Button, Tooltip } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
+import { connect } from 'react-redux';
 
 class SideNews extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class SideNews extends Component {
   async reloadComponent() {
     await fetch(`http://akvatory.local/api/news/read.php`)
       .then(response => response.json())
-      .then(news => this.setState({ news: news.records }))
+      .then(news => this.props.getNews( news.records || [] ))
     await fetch(`http://akvatory.local/api/news/getcomments.php`)
       .then(response => response.json())
       .then(comments => this.setState({ comments: comments.records }))
@@ -49,7 +50,7 @@ class SideNews extends Component {
     number %= 100;
     if (number >= 5 && number <= 20) return 'комментариев';
     number %= 10;
-    if (number == 1) return 'комментарий';
+    if (number === 1) return 'комментарий';
     if (number >= 2 && number <= 4) return 'комментария';
     return 'комментариев';
   }
@@ -57,6 +58,10 @@ class SideNews extends Component {
   render() {
     const { news, importance, singleNews, singleNewsId, comments } = this.state;
     var NEWS_COUNTER = 0;
+
+    if (this.state.news.length === 0) {
+      setTimeout(() => this.setState({ news: this.props.store.news }), 0);
+    } 
 
     return (
       <Wrapper>
@@ -66,7 +71,8 @@ class SideNews extends Component {
             <Switch color='primary' onClick={this.changeImportance.bind(this)} />
           </NewsSwitch>
           <News>
-            {news.map((item, i) => {
+            {/* eslint-disable-next-line */}
+            {news.length > 0 ? this.props.store.news.map((item, i) => {
 
               if (importance) {
                 if (item.importance === '1' && NEWS_COUNTER < 3) {
@@ -124,7 +130,9 @@ class SideNews extends Component {
                   )
                 }
               }
-            })}
+            }) : 
+              <NoNews><Typography variant='h6'>нет новостей</Typography></NoNews>
+            }
             <Button
               variant='contained'
               color='primary'
@@ -197,9 +205,25 @@ const News = styled.div`
     margin-left: -15px;
     padding: 12px 15px;
     &:hover {
-      background: rgba(0,0,0,0.037);
+      background: rgba(0,0,0,0.015);
     }
   }
 `;
-
-export default SideNews;
+const NoNews = styled.div`
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: .37;
+  margin-bottom: 20px;
+`;
+export default connect(
+  state => ({
+    store: state,
+  }),
+  dispatch => ({
+    getNews: (news) => {
+      dispatch({ type: 'FETCH_NEWS', payload: news })
+    }  
+  })
+)(SideNews);

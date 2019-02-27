@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2018-12-25 10:32:56
+/* Smarty version 3.1.32, created on 2019-02-22 10:02:17
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\system\redactor.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c21dd285273a7_79947427',
+  'unifunc' => 'content_5c6f9e795b3312_10112807',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c21dd285273a7_79947427 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c6f9e795b3312_10112807 (Smarty_Internal_Template $_smarty_tpl) {
 if (!isset($_smarty_tpl->tpl_vars['redactor_type']->value)) {?>
     <?php $_smarty_tpl->_assignInScope('redactor_type', "imperavi");
 }?>
