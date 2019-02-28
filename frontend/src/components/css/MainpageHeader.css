@@ -20,6 +20,7 @@
   border-radius: 10px;
   padding: 5px 15px;
   margin-bottom: 20px;
+  min-width: 150px;
 }
 .person-info__name {
   margin: 5px;

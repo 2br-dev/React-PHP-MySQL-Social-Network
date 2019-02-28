@@ -1,27 +1,31 @@
-import React, { Component } from 'react';
-import ModalWindow from './Modal';
+import React, { Component, Fragment } from 'react';
 import $ from 'jquery';
 import API from './functions/API';
 import InputMask from 'react-input-mask';
 import './css/PersonalInfo.css';
 import defaultAvatar from './img/photos/images.png';
-import { Typography, TextField, Tooltip, Paper, FormControl, FormHelperText, Button, MenuItem } from '@material-ui/core';
+import { Typography, TextField, Tooltip, Paper, FormControl, FormHelperText, Button, MenuItem, InputLabel } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Done';
 import Clear from '@material-ui/icons/Clear';
 import styled from 'styled-components';
+import SnackBar from './Snackbar/Snackbar';
+import InputBase from '@material-ui/core/InputBase';
+import Loader from './Loader/Loader';
 
 class PersonalInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
       userInfo: {},
-      modalText: '',
-      modal: false,
       newChildInput: false,
       nameError: true,
       yearError: true,
       childName: '',
-      childBirthyear: ''
+      childBirthyear: '',
+      snackBar: false,
+      snackBarMessage: '',
+      snackBarVariant: '',
+      loading: true
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -35,13 +39,16 @@ class PersonalInfo extends Component {
   }
 
   fetchUserInfo() {
+    this.setState({ loading: true })
     fetch(`${API}/api/user/info.php?id=${this.props.user_id}`)
       .then(response => response.json())
       .then(userInfo => this.setState({ userInfo }))
+      .then(() => this.setState({ loading: false }))
+      .catch(err => console.log(err))
   }
 
   // делаем запрос перед рендером
-  componentWillMount() {
+  componentDidMount() {
     this.fetchUserInfo();
   }
   // делаем запрос перед получением пропсов
@@ -75,8 +82,7 @@ class PersonalInfo extends Component {
 
   addChild(e) {
     e.preventDefault();
-    console.log('123')
-    if ($('input[name="childName"]').val() !== '' && $('input[name="childBirthyear"]').val() !== '') {
+    if (this.state.childName && this.state.childBirthyear) {
       var self = this;
       self.setState({ modal: false });
       const formData = new FormData();
@@ -93,12 +99,14 @@ class PersonalInfo extends Component {
         success: function (res) {
           self.fetchUserInfo();
           self.setState({ newChildInput: false, childBirthyear: '', childName: '' });
+          self.setState({ snackBar: true, snackBarMessage: 'Персональные данные были обновлены.', snackBarVariant: 'success' })
           console.log(res);
         },
         error: function (err) {
-          self.openModal('Что-то пошло не так, попробуйте обновить страницу.');
+          self.setState({ snackBar: true, snackBarMessage: 'Что-то пошло не так, попробуйте обновить страницу.', snackBarVariant: 'error' })
         }
       });
+      setTimeout(() => this.setState({ snackBar: false }), 5700);
     } else {
       if (!this.state.childBirthyear) this.setState({ yearError: false })
       if (!this.state.childName) this.setState({ nameError: false })
@@ -119,12 +127,14 @@ class PersonalInfo extends Component {
       type: 'POST',
       success: function (res) {
         self.fetchUserInfo();
+        self.setState({ snackBar: true, snackBarMessage: 'Персональные данные были обновлены.', snackBarVariant: 'success' });
         console.log(res);
       },
       error: function (err) {
-        self.openModal('Что-то пошло не так, попробуйте обновить страницу.');
+        self.setState({ snackBar: true, snackBarMessage: 'Что-то пошло не так, попробуйте обновить страницу.', snackBarVariant: 'error' })
       }
     });
+    setTimeout(() => this.setState({ snackBar: false }), 5700);
   }
 
   removeInput = () => this.setState({ newChildInput: false });
@@ -162,62 +172,116 @@ class PersonalInfo extends Component {
         let response = res.result;
         switch (response) {
           case 0:
-            self.openModal('Что-то пошло не так, попробуйте обновить страницу.');
+            self.setState({ snackBar: true, snackBarMessage: 'Что-то пошло не так, попробуйте обновить страницу.', snackBarVariant: 'error' })
             break;
           case 1:
             self.fetchUserInfo();
-            self.openModal('Успешно!');
+            self.setState({ snackBar: true, snackBarMessage: 'Персональные данные были обновлены.', snackBarVariant: 'success' });
+            self.addChild(e);
             break;
           default: break;
         }
       },
       error: function (err) {
-        self.openModal('Что-то пошло не так, попробуйте обновить страницу.');
+        self.setState({ snackBar: true, snackBarMessage: 'Что-то пошло не так, попробуйте обновить страницу.', snackBarVariant: 'error' })
       }
     });
+    setTimeout(() => this.setState({ snackBar: false }), 5700);
   }
 
   createInput = (label, value, name) => {
-    return (
-      <TextField
-        label={label}
-        value={value}
-        fullWidth={true}
-        name={name}
-        margin='dense'
-        disabled={this.props.user_logged_id !== this.props.user_id}
-        InputLabelProps={{ shrink: true }}
-        onChange={this.handleChange}
-        variant="outlined"
-      />
-    )
+    const { user_id, user_logged_id } = this.props;
+
+    if (user_id === user_logged_id) {
+      return (
+        <TextField
+          label={label}
+          value={value}
+          fullWidth={true}
+          name={name}
+          margin='dense'
+          InputLabelProps={{ shrink: true }}
+          onChange={this.handleChange}
+          variant="outlined"
+        />
+      )
+    } else {
+      return (
+        <Naked>
+          {name === 'name' || name === 'surname' || name === 'position' ? (
+            <FormControl>
+              <InputBase value={value} />
+            </FormControl>
+          ) : (
+            <FormControl>
+              <InputLabel htmlFor={name}>{label}</InputLabel>
+              <InputBase id={name} value={value} />
+            </FormControl>
+          )}
+        </Naked>
+      )
+    }
   }
 
-  render() {
-    const { userInfo, newChildInput, childName, childBirthyear, nameError, yearError } = this.state;
-    const { user_id, user_logged_id, user } = this.props;
-
-    let childrens = {};
-    if (userInfo.childs) {
-      childrens = JSON.parse(userInfo.childs.replace(/\//g, ''));
+  handleCloseSnackBar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
     }
 
+    this.setState({ snackBar: false });
+  };
+
+  render() {
+    const { loading, userInfo, newChildInput, childName, childBirthyear, nameError, yearError } = this.state;
+    const { user_id, user_logged_id, user } = this.props;
+    let childrens = {};
     let avatar = user.avatar;
+
+    if (userInfo.childs) childrens = JSON.parse(userInfo.childs.replace(/\//g, ''));
     if (!window.location.host.includes('localhost')) avatar = `frontend/public/${avatar}`;
+
     return (
       <Paper className="personal">
 
-        {this.state.modal ? <ModalWindow text={this.state.modalText} /> : null}
-
-        <Form id="personal-info" action="" method="POST" onSubmit={this.handleSubmit}>
+        {!loading ? <Form id="personal-info" action="" method="POST" onSubmit={this.handleSubmit}>
           <div className="personal-header">
             <div className="personal-header__photo">
               <div style={{ background: `url(${avatar ? avatar : defaultAvatar}) no-repeat center/cover` }}></div>
             </div>
-            <div className="personal-header__info">
-              {this.createInput('Имя', userInfo.name, 'name')}
-              {this.createInput('Фамилия', userInfo.surname, 'surname')}
-              {this.createInput('Должность', userInfo.position, 'position')}
+            <div className={user_logged_id === user_id ? 'personal-header__info' : null}>
+              {user_logged_id === user_id ? (
+                <Fragment>
+                  {this.createInput('Имя', userInfo.name, 'name')}
+                  {this.createInput('Фамилия', userInfo.surname, 'surname')}
+                  {this.createInput('Должность', userInfo.position, 'position')}    
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <InputBase className='user-header' value={userInfo.name + ' ' + userInfo.surname} />
+                  <span className='user-position'>{this.createInput('Должность', userInfo.position, 'position')}</span>
+                </Fragment>
+              )}
+
+
+              {user_logged_id === user_id ? (
+                <InputMask
+                  mask="+7 (999) 99-99-999"
+                  value={userInfo.phone}
+                  onChange={this.handleChange}
+                >
+                  {() => <TextField
+                    label='Номер телефона'
+                    name='phone'
+                    fullWidth={true}
+                    margin='dense'
+                    InputLabelProps={{ shrink: true }}
+                    variant="outlined"
+                  />}
+                </InputMask>) : (
+                  <Naked>
+                      <InputBase id='phone' style={{ pointerEvents: 'none', padding: 0 }} value={userInfo.phone} />
+                  </Naked>
+                )}
 
               {user_logged_id === user_id ? (
                 <FormControl >
@@ -229,7 +293,6 @@ class PersonalInfo extends Component {
                     margin='dense'
                     value={userInfo.birthday}
                     fullWidth={true}
-                    disabled={user_logged_id !== user_id}
                     InputLabelProps={{ shrink: true }}
                     onChange={this.handleChange}
                     aria-describedby="component-helper-text"
@@ -241,46 +304,59 @@ class PersonalInfo extends Component {
           </div>
           <div className="personal-section">
             <div className="personal-section__header">
-              <Typography variant='subtitle2'>Семья</Typography>
+              <Typography variant='h6' color='primary'>Семья</Typography>
               <hr />
             </div>
 
-            <TextField
-              select
-              label="Семейное положение"
-              name="status"
-              value={userInfo.status}
-              onChange={this.handleChange}
-              margin="dense"
-              variant='outlined'
-              fullWidth={true}
-              InputLabelProps={{ shrink: true }}
-            >
-              {userInfo.sex === 'женский' ?
-                <MenuItem value="Не замужем">Не замужем</MenuItem> :
-                <MenuItem value="Не женат">Не женат</MenuItem>
-              }
-              {userInfo.sex === 'женский' ?
-                <MenuItem value="Замужем">Замужем</MenuItem> :
-                <MenuItem value="Женат">Женат</MenuItem>
-              }
-              <MenuItem value="В гражданском браке">В гражданском браке</MenuItem>
-            </TextField>
+            {user_logged_id === user_id ? (
+              <TextField
+                select
+                label="Семейное положение"
+                name="status"
+                value={userInfo.status || ''}
+                onChange={this.handleChange}
+                margin="dense"
+                variant='outlined'
+                fullWidth={true}
+                InputLabelProps={{ shrink: true }}
+              >
+                {userInfo.sex === 'женский' ?
+                  <MenuItem value="Не замужем">Не замужем</MenuItem> :
+                  <MenuItem value="Не женат">Не женат</MenuItem>
+                }
+                {userInfo.sex === 'женский' ?
+                  <MenuItem value="Замужем">Замужем</MenuItem> :
+                  <MenuItem value="Женат">Женат</MenuItem>
+                }
+                <MenuItem value="В гражданском браке">В гражданском браке</MenuItem>
+              </TextField>
+            ) : (
+                <Naked>
+                  <FormControl>
+                    <InputLabel htmlFor='status'>Семейное положение</InputLabel>
+                    <InputBase id='status' value={userInfo.status} />
+                  </FormControl>
+                </Naked>
+              )}
           </div>
           <div className="personal-section">
-            <div className="personal-section__header">
-              <Typography variant='subtitle2'>Дети</Typography>
-              <hr />
-            </div>
-            <Childrens>
-              {Object.keys(childrens).map(child =>
-                <Children key={childrens[child].id}>
-                  <Typography variant='subtitle2'>Имя: {childrens[child].child_name} </Typography>
-                  <Typography variant='caption'>{childrens[child].child_birthyear} г.р.</Typography>
-                  <Tooltip title="Удалить" placement="right"><Clear onClick={() => this.deleteChild(childrens[child].id)} /></Tooltip>
-                </Children>
-              )}
-            </Childrens>
+            {childrens.length > 0 ? (
+              <Fragment>
+                <div className="personal-section__header">
+                  <Typography variant='h6' color='primary'>Дети</Typography>
+                  <hr />
+                </div>
+                <Childrens>
+                  {Object.keys(childrens).map(child =>
+                    <Children key={childrens[child].id}>
+                      <Typography variant='subtitle2'>Имя: {childrens[child].child_name} </Typography>
+                      <Typography variant='caption'>{childrens[child].child_birthyear} г.р.</Typography>
+                      <Tooltip title="Удалить" placement="right"><Clear onClick={() => this.deleteChild(childrens[child].id)} /></Tooltip>
+                    </Children>
+                  )}
+                </Childrens>
+              </Fragment>
+            ) : null}
 
             {newChildInput ? (<NewChild>
               <div>
@@ -292,7 +368,6 @@ class PersonalInfo extends Component {
                   margin='dense'
                   error={!nameError}
                   InputLabelProps={{ shrink: true }}
-                  disabled={user_logged_id !== user_id}
                   onChange={this.handleChild}
                   variant="outlined"
                 />
@@ -304,7 +379,6 @@ class PersonalInfo extends Component {
                   margin='dense'
                   type='date'
                   error={!yearError}
-                  disabled={user_logged_id !== user_id}
                   InputLabelProps={{ shrink: true }}
                   onChange={this.handleChild}
                   variant="outlined"
@@ -322,12 +396,12 @@ class PersonalInfo extends Component {
 
             {user_logged_id === user_id ? (
               <ChildBtns>
-                <Button variant='contained' color='primary' onClick={this.prepareChild}>Добавить</Button>
+                <Button variant='contained' color='primary' onClick={newChildInput ? this.addChild : this.prepareChild}>Добавить</Button>
               </ChildBtns>) : null}
           </div>
           <div className="personal-section">
             <div className="personal-section__header">
-              <Typography variant='subtitle2'>Контакты</Typography>
+              <Typography variant='h6' color='primary'>Контакты</Typography>
               <hr />
             </div>
 
@@ -335,26 +409,12 @@ class PersonalInfo extends Component {
             {this.createInput('Области/края', userInfo.district, 'district')}
             {this.createInput('Актуальный адрес', userInfo.adress, 'adress')}
 
-            <InputMask
-              mask="+7 (999) 99-99-999"
-              value={userInfo.phone}
-              onChange={this.handleChange}
-              disabled={user_logged_id !== user_id}
-            >
-              {() => <TextField
-                label='Номер телефона'
-                name='phone'
-                fullWidth={true}
-                margin='dense'
-                InputLabelProps={{ shrink: true }}
-                variant="outlined"
-                InputProps={{ disabled: user_logged_id !== user_id }}
-              />}
-            </InputMask>
+
+
           </div>
           <div className="personal-section">
             <div className="personal-section__header">
-              <Typography variant='subtitle2'>Образование</Typography>
+              <Typography variant='h6' color='primary'>Образование</Typography>
               <hr />
             </div>
 
@@ -365,7 +425,7 @@ class PersonalInfo extends Component {
           {userInfo.sex === 'мужской' ?
             <div className="personal-section">
               <div className="personal-section__header">
-                <Typography variant='subtitle2'>Служба</Typography>
+                <Typography variant='h6' color='primary'>Служба</Typography>
                 <hr />
               </div>
 
@@ -374,13 +434,43 @@ class PersonalInfo extends Component {
             </div> : null}
 
           {user_logged_id === user_id ? <Btn><Button type='submit' variant='contained' color='primary' onClick={this.handleSubmit}>Обновить данные</Button></Btn> : null}
-        </Form>
+        </Form> : <Loader minHeight={400} color='primary' />}
+
+        {/* Snackbar */}
+        <SnackBar
+          snackBar={this.state.snackBar}
+          variant={this.state.snackBarVariant}
+          message={this.state.snackBarMessage}
+          handleCloseSnackBar={this.handleCloseSnackBar.bind(this)}
+        />
       </Paper >
     )
   }
 }
 const Form = styled.form`
   padding-bottom: 30px;
+  label {
+    text-transform: lowercase;
+  }
+  .user-header {
+    color: #1976d2;
+    font-size: 20px;
+  }
+  .user-position {
+    display: block;
+    margin-top: -10px;
+    & > div > div {
+      margin: 0;
+      padding: 0;
+      & > div > input {
+        color: rgba(0,0,0,.54);
+        font-size: 14px;
+      }
+    }
+  }
+  fieldset {
+    border: none;
+  }
 `;
 const Btn = styled.div`
   display: flex;
@@ -435,6 +525,29 @@ const ChildBtns = styled.div`
   margin-top: 15px;
   button {
     margin-right: 15px;
+  }
+`;
+const Naked = styled.div`
+  width: 100%;
+  display: inline-block;
+  & > div {
+    display: block;
+    margin-bottom: 10px;
+    padding-left: 37px;
+  }
+  & > div > div {
+    display: block;
+    pointer-events: none;
+    margin-top: -5px;
+  }
+  label {
+    font-size: 12px;
+    position: relative;
+    text-transform: lowercase;
+  }
+  .inline-input {
+    display: inline-flex;
+    margin-left: 10px;
   }
 `;
 export default PersonalInfo;

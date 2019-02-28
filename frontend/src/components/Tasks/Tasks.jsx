@@ -125,7 +125,7 @@ class Tasks extends Component {
   }
 
   render() {
-    const { open, tasks, users, disabledButton } = this.state;
+    const { open, users, disabledButton } = this.state;
 
     if (this.state.initial.length === 0) {
       setTimeout(() => this.setState({ initial: this.props.store.tasks, tasks: this.props.store.tasks }), 0);
@@ -155,9 +155,9 @@ class Tasks extends Component {
               Выполненные
             </Button>
           </Filters>
-          {tasks.length > 0 
+          {this.props.store.tasks.length > 0 
           ? 
-            tasks.map(task => 
+            this.props.store.tasks.map(task => 
               <Task 
                 key={task.id} 
                 task={task} 

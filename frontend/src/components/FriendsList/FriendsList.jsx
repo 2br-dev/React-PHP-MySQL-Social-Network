@@ -6,12 +6,14 @@ import styled from 'styled-components';
 import Search from './Search';
 import { Link } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
+import Loader from '../Loader/Loader';
 
 export default class FriendList extends Component {
   state = { 
     friends: [], 
     initial: [],
-    searchValue: '' 
+    searchValue: '',
+    loading: true
   }
 
   componentDidMount() {
@@ -20,7 +22,8 @@ export default class FriendList extends Component {
       .then(friends => this.setState({ 
         friends: friends.data.filter(friend => friend.id !== this.props.user_id.toString()), 
         initial: friends.data.filter(friend => friend.id !== this.props.user_id.toString()), 
-      }))    
+      })) 
+      .then(() => this.setState({ loading: false }))   
   }
 
   handleSearch = (e) => {
@@ -39,25 +42,30 @@ export default class FriendList extends Component {
   render() {
     return (
       <Paper>
-      <FriendWrapper>
-        <Search 
-          handleSearch={this.handleSearch} 
-          searchValue={this.searchValue}
-        />
-        <List>
-          {this.state.friends.map(friend  => 
-            <Link 
-              key={friend.id} 
-              to={`id${friend.id}`}
-              onClick={() => this.props.handleChangeUserId(friend.id)}
-            >
-              <Friend  
-                friend={friend} 
-              />
-            </Link>
-          )} 
-        </List>
-      </FriendWrapper>
+        {
+          this.state.loading ? 
+            <Loader minHeight={370} color='primary' /> 
+          :
+            <FriendWrapper>
+            <Search 
+              handleSearch={this.handleSearch} 
+              searchValue={this.searchValue}
+            />
+            <List>
+              {this.state.friends.map(friend  => 
+                <Link 
+                  key={friend.id} 
+                  to={`id${friend.id}`}
+                  onClick={() => this.props.handleChangeUserId(friend.id)}
+                >
+                  <Friend  
+                    friend={friend} 
+                  />
+                </Link>
+              )} 
+            </List>
+          </FriendWrapper>
+        }
       </Paper>
     );
   }

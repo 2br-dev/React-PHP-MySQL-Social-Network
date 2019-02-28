@@ -32,8 +32,8 @@ class Navigation extends React.Component {
   countTask = () => {
     let counter = 0;
     const now = moment(new Date()); //todays date
-    
-    this.props.store.tasks.forEach(task => {
+    const filtered = this.props.store.tasks.filter(task => Number(task.from) !== this.props.user_logged_id);
+    filtered.forEach(task => {
       const end = moment(task.until_date); // another date
       const difference = moment.duration(end.diff(now))._milliseconds;
       if (task.status === '0' && difference > 0) counter++;

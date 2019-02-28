@@ -17,8 +17,11 @@
   text-align: right;
 }
 .personal-header__photo {
-  text-align: center;
   width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -20px;
 }
 .personal-header__photo div {
   border-radius: 50%;
@@ -61,6 +64,7 @@
 .personal-section__header {
   display: flex;
   align-items: center;
+  margin-bottom: 15px;
 }
 .personal-section__header p {
   font-size: 18px;
@@ -69,9 +73,10 @@
 }
 .personal-section__header hr {
   width: 92%;
-  height: 1px;
-  background: #a7a7a7;
+  height: 2px;
+  background: #1976d2;
   border: none;
+  margin-left: 20px;
 }
 input::-webkit-clear-button {
   /* Removes blue cross */

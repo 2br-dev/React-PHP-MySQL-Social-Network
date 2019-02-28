@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Typography, Paper, Switch, Button, Tooltip } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
 import { connect } from 'react-redux';
+import Loader from './Loader/Loader';
 
 class SideNews extends Component {
   constructor(props) {
@@ -16,7 +17,8 @@ class SideNews extends Component {
       singleNews: false,
       singleNewsData: [],
       singleNewsId: '',
-      comments: []
+      comments: [],
+      loading: true
     }
     this.reloadComponent = this.reloadComponent.bind(this);
   }
@@ -26,12 +28,14 @@ class SideNews extends Component {
   }
 
   async reloadComponent() {
+    await this.setState({ loading: true })
     await fetch(`http://akvatory.local/api/news/read.php`)
       .then(response => response.json())
       .then(news => this.props.getNews( news.records || [] ))
     await fetch(`http://akvatory.local/api/news/getcomments.php`)
       .then(response => response.json())
       .then(comments => this.setState({ comments: comments.records }))
+    await this.setState({ loading: false })
   }
 
   // переходим к конкретной новости
@@ -56,7 +60,7 @@ class SideNews extends Component {
   }
 
   render() {
-    const { news, importance, singleNews, singleNewsId, comments } = this.state;
+    const { news, importance, singleNews, singleNewsId, comments, loading } = this.state;
     var NEWS_COUNTER = 0;
 
     if (this.state.news.length === 0) {
@@ -66,11 +70,12 @@ class SideNews extends Component {
     return (
       <Wrapper>
         <Paper>
-          <NewsSwitch>
-            <Typography variant='subtitle2'>Только важное </Typography>
-            <Switch color='primary' onClick={this.changeImportance.bind(this)} />
-          </NewsSwitch>
+          {loading ? <Loader minHeight={250} color='primary' /> : 
           <News>
+            <NewsSwitch>
+              <Typography variant='subtitle2'>Только важное </Typography>
+              <Switch color='primary' onClick={this.changeImportance.bind(this)} />
+            </NewsSwitch>
             {/* eslint-disable-next-line */}
             {news.length > 0 ? this.props.store.news.map((item, i) => {
 
@@ -153,7 +158,7 @@ class SideNews extends Component {
               />
               : null}
 
-          </News>
+          </News>}
         </Paper>
       </Wrapper>
     )

@@ -18,7 +18,9 @@ class MainPage extends Component {
       user_id: 0,
       user_logged_id: 0,
       user: [],
+      initialUser: [],
       section: window.location.pathname.slice(1),
+      loading: true
     }
     this.handleChangeUrl      = this.handleChangeUrl.bind(this);  
     this.handleChangeSection  = this.handleChangeSection.bind(this);  
@@ -27,11 +29,12 @@ class MainPage extends Component {
   }
 
   handleChangeUrl() { 
-    this.setState({ user_id: this.state.user_logged_id});
-
+    this.setState({ user_id: this.state.user_logged_id });
+    
     fetch(`http://akvatory.local/api/user/read_one.php?id=${this.state.user_logged_id}`)
       .then(response => response.json())
       .then(user => this.setState({ user }))
+      .catch(err => console.log(err))
   }
 
   handleChangeSection(section) {
@@ -60,7 +63,9 @@ class MainPage extends Component {
   componentDidMount() {
     fetch(`http://akvatory.local/api/user/read_one.php?id=${this.state.user_id}`)
       .then(response => response.json())
-      .then(user => this.setState({ user }))
+      .then(user => this.setState({ user: user, initialUser: user }))
+      .then(() => this.setState({ loading: false }))
+      .catch(err => console.log(err))
   }
 
   switchComponent(){
@@ -91,15 +96,14 @@ class MainPage extends Component {
   }
   
   render() {
-    const { user_id, user_logged_id, user } = this.state;
+    const { user_id, user_logged_id, user, initialUser, loading } = this.state;
     
     if (user.error === 1) { window.location.href = '/404';}
     
     return (
       <Fragment>
         <MainpageHeader 
-          user_logged_id={user_logged_id} 
-          user={user}
+          user={initialUser} loading={loading}
         />
         <div className="container">
           <Header />

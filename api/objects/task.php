@@ -67,7 +67,8 @@ class Task
     function read()
     {
         $id = 'for' . $this->id;
-        $query = "SELECT * FROM `db_mdd_tasks` WHERE `for` LIKE '%$id%' ORDER BY `id` ASC";
+        $short = $this->id;
+        $query = "SELECT * FROM `db_mdd_tasks` WHERE `for` LIKE '%$id%' OR `from` LIKE '%$short%' ORDER BY `id` ASC";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);

@@ -5,15 +5,20 @@ import CloseIcon from '@material-ui/icons/Close';
 import API from '../functions/API';
 import Stepper from './Stepper';
 import $ from 'jquery';
+import { connect } from 'react-redux';
+import SnackBar from '../Snackbar/Snackbar';
 
-export default class NewTask extends Component {
+class NewTask extends Component {
   state = {
     selectedDate: new Date(),
     selectedTime: new Date(),
     users: [],
     multi: [],
     text: '',
-    importance: 0
+    importance: 0,
+    snackBar: false,
+    snackBarMessage: '',
+    snackBarVariant: ''
   }
 
   componentDidMount = () => {
@@ -41,6 +46,7 @@ export default class NewTask extends Component {
   handleSubmit = () => {
     const { multi, selectedTime, selectedDate, text, importance } = this.state;
     const formData = new FormData();
+    const self = this;
     let forWho = [];
     let date = new Date();
     multi.forEach(user => forWho.push(`for${user.value}`));
@@ -51,8 +57,8 @@ export default class NewTask extends Component {
     formData.append('time', `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`);
     formData.append('until_date', selectedDate.slice(0, 10));
     formData.append('text', text);
-    formData.append('until_time',  selectedTime.slice(11, 16));
-    formData.append('importance', importance ? '1' : '0'); 
+    formData.append('until_time', selectedTime.slice(11, 16));
+    formData.append('importance', importance ? '1' : '0');
 
     $.ajax({
       url: `${API}/api/tasks/add.php`,
@@ -60,36 +66,63 @@ export default class NewTask extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: res => console.log(res),
-      error: err => console.log(err)
+      success: res => {
+        console.log(res);
+        fetch(`${API}/api/tasks/read.php?id=${this.props.user_logged_id}`)
+          .then(response => response.json())
+          .then(tasks => self.props.onAddNewTask(tasks.data))
+          .then(() => self.setState({ snackBar: true, snackBarMessage: 'Задача была поставлена.', snackBarVariant: 'success' }))
+          .catch(err => console.log(err))
+      },
+      error: err => {
+        console.log(err);
+        self.setState({ snackBar: true, snackBarMessage: 'Что-то пошло не так, попробуйте обновить страницу.', snackBarVariant: 'error' })
+      }
     });
   }
 
+  handleCloseSnackBar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({ snackBar: false });
+  };
+  
   render() {
     const { users, multi, selectedTime, selectedDate, text } = this.state;
 
     return (
-      <Wrapper><Paper>
-        <span className='closeNewTask' onClick={this.props.handleClose}>
-          <Tooltip title="Закрыть" placement="left"><CloseIcon /></Tooltip>
-        </span>
-        <Typography variant='h5'>Новая Задача</Typography>
-        <Stepper
-          users={users}
-          multi={multi}
-          text={text}
-          selectedTime={selectedTime}
-          selectedDate={selectedDate}
-          handleChange={this.handleChange}
-          handleTextChange={this.handleTextChange}
-          handleDateChange={this.handleDateChange}
-          handleTimeChange={this.handleTimeChange}
-          changeImportance={this.changeImportance}
-          resetAll={this.resetAll}
-          handleClose={this.props.handleClose}
-          handleSubmit={this.handleSubmit}
+      <Wrapper>
+        <Paper>
+          <span className='closeNewTask' onClick={this.props.handleClose}>
+            <Tooltip title="Закрыть" placement="left"><CloseIcon /></Tooltip>
+          </span>
+          <Typography variant='h5'>Новая Задача</Typography>
+          <Stepper
+            users={users}
+            multi={multi}
+            text={text}
+            selectedTime={selectedTime}
+            selectedDate={selectedDate}
+            handleChange={this.handleChange}
+            handleTextChange={this.handleTextChange}
+            handleDateChange={this.handleDateChange}
+            handleTimeChange={this.handleTimeChange}
+            changeImportance={this.changeImportance}
+            resetAll={this.resetAll}
+            handleClose={this.props.handleClose}
+            handleSubmit={this.handleSubmit}
+          />
+        </Paper>
+        {/* Snackbar */}
+        <SnackBar
+          snackBar={this.state.snackBar}
+          variant={this.state.snackBarVariant}
+          message={this.state.snackBarMessage}
+          handleCloseSnackBar={this.handleCloseSnackBar.bind(this)}
         />
-      </Paper></Wrapper>
+      </Wrapper>
     )
   }
 }
@@ -147,3 +180,12 @@ const Wrapper = styled.div`
     }
   }
 `;
+
+export default connect(
+  state => ({ store: state }),
+  dispatch => ({
+    onAddNewTask: (task) => {
+      dispatch({ type: 'ADD_TASK', payload: task })
+    }
+  })
+)(NewTask);

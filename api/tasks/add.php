@@ -14,7 +14,7 @@ include_once '../objects/task.php';
  
 $database = new Database();
 $db = $database->getConnection();
- 
+
 $task = new Task($db);
  
 $task->from = __post('from');

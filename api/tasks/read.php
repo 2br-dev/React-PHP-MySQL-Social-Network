@@ -51,8 +51,6 @@ if ($num > 0) {
   // make it json format
   echo json_encode($task_arr);
 } else {
-  // set response code - 404 Not found
-  http_response_code(404);
 
   // tell the user product does not exist
   echo json_encode(array("message" => "No tasks."));

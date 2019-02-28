@@ -35,6 +35,20 @@ class News{
         return $stmt;
     }
 
+    function readOne(){
+        $query = "SELECT * FROM `db_mdd_news` WHERE id = :id";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+     
+        $this->id=htmlspecialchars(strip_tags($this->id));
+        $stmt->bindParam(':id', $this->id);
+        // execute query
+        $stmt->execute();
+     
+        return $stmt;
+    }
+
     function readComments() {
         $query = "SELECT * FROM `db_mdd_comments` ORDER BY `ord` DESC LIMIT 0,50 ";
     

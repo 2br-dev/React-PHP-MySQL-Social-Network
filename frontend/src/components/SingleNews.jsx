@@ -5,6 +5,8 @@ import DefaultAvatar from './img/photos/images.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Typography, Button, TextField, Tooltip } from '@material-ui/core';
 import API from './functions/API';
+import _ from 'lodash';
+import Loader from './Loader/Loader';
 
 export default class SingleNews extends Component {
   constructor(props) {
@@ -13,8 +15,22 @@ export default class SingleNews extends Component {
       currentUser: [],
       thisComments: [],
       loadedComments: false,
-      commentText: ''
+      commentText: '',
+      currentNews: [],
+      likedBy: [],
+      loading: true,
+      commentsLoading: false
     }
+  }
+
+  async componentDidMount() {
+    await fetch(`${API}/api/news/read_one.php?id=${this.props.singleNewsId}`)
+      .then(response => response.json())
+      .then(currentNews => this.setState({ currentNews }))
+    await this.fetchUserInfo(this.props.user.id);
+    await this.fetchComments(this.props.singleNewsId);
+    await this.getAvatars(this.props.singleNewsId);
+    await this.setState({ loading: false })
   }
 
   fetchUserInfo(id) {
@@ -29,6 +45,23 @@ export default class SingleNews extends Component {
       .then(thisComments => this.setState({ thisComments, loadedComments: !this.state.loadedComments }))
   }
 
+  // получаем аватарки лайкнувших пост
+  getAvatars = id => {
+    const likedBy = this.state.currentNews.liked_by.split(', ').slice(1);
+    const formData = new FormData();
+    const self = this;
+    formData.append('likedBy', likedBy);
+
+    $.ajax({
+      url: `${API}/api/user/getAvatars.php`,
+      data: formData,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      success: res => self.setState({ likedBy: res }),
+      error: err => console.log(err)
+    });
+  }
   handleChange = e => this.setState({ commentText: e.target.value });
 
   // добавляем лайк
@@ -38,7 +71,6 @@ export default class SingleNews extends Component {
     const formData = new FormData();
     formData.append('id', id);
     formData.append('liked_by', this.props.user.id);
-    console.log(id);
 
     $.ajax({
       url: `${API}/api/news/addlike.php`,
@@ -47,7 +79,11 @@ export default class SingleNews extends Component {
       contentType: false,
       type: 'POST',
       success: function (res) {
-        self.props.reloadComponent();
+        console.log(res);
+        fetch(`${API}/api/news/read_one.php?id=${self.props.singleNewsId}`)
+          .then(response => response.json())
+          .then(currentNews => self.setState({ currentNews }))
+          .then(() => self.getAvatars(self.props.singleNewsId))
       },
       error: function (err) {
         console.log(err);
@@ -71,7 +107,11 @@ export default class SingleNews extends Component {
       contentType: false,
       type: 'POST',
       success: function (res) {
-        self.props.reloadComponent();
+        console.log(res);
+        fetch(`${API}/api/news/read_one.php?id=${self.props.singleNewsId}`)
+          .then(response => response.json())
+          .then(currentNews => self.setState({ currentNews }))
+          .then(() => self.getAvatars(self.props.singleNewsId))
       },
       error: function (err) {
         console.log(err);
@@ -80,6 +120,7 @@ export default class SingleNews extends Component {
   }
 
   submitComment = e => {
+    this.setState({ commentsLoading: true });
     var self = this;
     e.preventDefault();
     const formData = new FormData();
@@ -99,6 +140,7 @@ export default class SingleNews extends Component {
       success: function (res) {
         self.setState({ commentText: '' });
         self.fetchComments();
+        setTimeout(() => self.setState({ commentsLoading: false }), 250);
       },
       error: function (err) {
         console.log(err);
@@ -117,9 +159,8 @@ export default class SingleNews extends Component {
   }
 
   render() {
-    const { closeNews, singleNewsId, user, likedBy } = this.props;
-    const { currentUser, thisComments, loadedComments, commentText } = this.state;
-    const newsElement = this.props.news.filter(item => item.id === singleNewsId);
+    const { closeNews, singleNewsId, user } = this.props;
+    const { currentUser, thisComments, loadedComments, commentText, currentNews, likedBy, loading, commentsLoading } = this.state;
 
     let avatar = null;
     if (window.location.host.includes('localhost')) {
@@ -134,89 +175,95 @@ export default class SingleNews extends Component {
       userAvatar = `frontend/public/${user.avatar}`;
     }
 
-    if (currentUser.length === 0) this.fetchUserInfo(newsElement[0].author_id);
+    if (currentUser.length === 0) this.fetchUserInfo(currentNews.author_id);
     if (!loadedComments) this.fetchComments(singleNewsId);
-
     return (
       <Fragment>
+
         <Single>
-          <button className='close' onClick={closeNews}></button>
+          {loading ? <Loader minHeight={500} color='primary' /> :
+            <Fragment>
+              <button className='close' onClick={closeNews}></button>
 
-          <PostHeader>
-            <Avatar style={{ background: `url(${currentUser.avatar ? avatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
-            <Typography variant='subtitle2'>{currentUser.name} {currentUser.surname}</Typography>
-          </PostHeader>
+              <PostHeader>
+                <Avatar style={{ background: `url(${currentUser.avatar ? avatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
+                <Typography variant='subtitle2'>{currentUser.name} {currentUser.surname}</Typography>
+              </PostHeader>
 
-          <PostContent>
-            <Typography variant='body1'>{newsElement[0].text}</Typography>
-            <Typography variant='caption'>{newsElement[0].date}</Typography>
-          </PostContent>
+              <PostContent>
+                <Typography variant='body1'>{currentNews.text}</Typography>
+                <Typography variant='caption'>{currentNews.date}</Typography>
+              </PostContent>
 
-          <PostLikes>
-            <Typography variant='subtitle2'>{newsElement[0].likes} {this.getNoun(newsElement[0].likes)} "Нравится"</Typography>
-            {/* eslint-disable-next-line*/}
-            {likedBy.map((user, i) => {
+              <PostLikes>
+                <Typography variant='subtitle2'>{currentNews.likes} {this.getNoun(currentNews.likes)} "Нравится"</Typography>
+                {/* eslint-disable-next-line*/}
+                {likedBy.map((user, i) => {
 
-              while (i < 7) {
-                return (
-                <Tooltip key={i} title={`${user.name} ${user.surname}`} placement="top">
-                  <Avatar style={{ background: `url(${user.avatar ? user.avatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
-                </Tooltip>
-            )}})}
-          </PostLikes>
+                  while (i < 7) {
+                    return (
+                      <Tooltip key={i} title={`${user.name} ${user.surname}`} placement="top">
+                        <Avatar style={{ background: `url(${user.avatar ? user.avatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
+                      </Tooltip>
+                    )
+                  }
+                })}
+              </PostLikes>
 
-          <PostActions>
-            {Object.keys(thisComments).length}
-            <FontAwesomeIcon icon='comments' />
+              <PostActions>
+                {Object.keys(thisComments).length}
+                <FontAwesomeIcon icon='comments' style={{ marginLeft: 10 }} />
 
-            {!newsElement[0].liked_by.includes(` ${user.id}`)
-              ?
-              <React.Fragment>
-                <span>{newsElement[0].likes}</span>
-                <FontAwesomeIcon onClick={e => this.addLike(newsElement[0].id, e)} icon='heart' />
-              </React.Fragment>
-              :
-              <React.Fragment>
-                <span>{newsElement[0].likes}</span>
-                <FontAwesomeIcon onClick={e => this.removeLike(newsElement[0].id, e)} icon='heart' style={{ color: 'red' }} />
-              </React.Fragment>
-            }
+                {!_.some(likedBy, ['id', user.id])
+                  ?
+                  <React.Fragment>
+                    <span>{currentNews.likes}</span>
+                    <FontAwesomeIcon onClick={e => this.addLike(currentNews.id, e)} icon='heart' style={{ marginLeft: 10 }} />
+                  </React.Fragment>
+                  :
+                  <React.Fragment>
+                    <span>{currentNews.likes}</span>
+                    <FontAwesomeIcon onClick={e => this.removeLike(currentNews.id, e)} icon='heart' style={{ color: 'red', marginLeft: 10 }} />
+                  </React.Fragment>
+                }
 
-            <FontAwesomeIcon icon='envelope' style={{ marginLeft: '25px' }} />
-          </PostActions>
+                <FontAwesomeIcon icon='envelope' style={{ marginLeft: '25px' }} />
+              </PostActions>
 
-          <NewComment>
-            <p className='newcomment-reply'>В ответ <a href={`${window.location.origin}/id${currentUser.id}`}>{currentUser.name} {currentUser.surname}</a></p>
-            <div className='newcomment-input'>
-              <Avatar style={{ background: `url(${user.avatar ? userAvatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
-              <TextArea>
-                <TextField
-                  label='Комментарий'
-                  multiline
-                  variant='outlined'
-                  name='commentText'
-                  onChange={this.handleChange}
-                  required
-                />
-              </TextArea>
-            </div>
-            <Button variant='contained' color='primary' onClick={this.submitComment} disabled={!commentText}>Отправить</Button>
-          </NewComment>
-
-          {thisComments.map((comment, i) => {
-            return (
-              <Comments key={i}>
-                <div className='comment-header'>
+              <NewComment>
+                <p className='newcomment-reply'>В ответ <a href={`${window.location.origin}/id${currentUser.id}`}>{currentUser.name} {currentUser.surname}</a></p>
+                <div className='newcomment-input'>
                   <Avatar style={{ background: `url(${user.avatar ? userAvatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
-                  <Typography variant='subtitle2'>{comment.who}</Typography>
-                  <Typography variant='caption' className='comment-date'>{comment.date}</Typography>
+                  <TextArea>
+                    <TextField
+                      label='Комментарий'
+                      multiline
+                      variant='outlined'
+                      name='commentText'
+                      value={commentText}
+                      onChange={this.handleChange}
+                      required
+                    />
+                  </TextArea>
                 </div>
-                <div className='comment-text'>{comment.text}</div>
-              </Comments>
-            )
-          })}
+                <Button variant='contained' color='primary' onClick={this.submitComment} disabled={!commentText}>Отправить</Button>
+              </NewComment>
 
+              {commentsLoading ? <Loader minHeight={280} color='primary' /> :
+                thisComments.map((comment, i) => {
+                  return (
+                    <Comments key={i}>
+                      <div className='comment-header'>
+                        <Avatar style={{ background: `url(${user.avatar ? userAvatar : DefaultAvatar}) no-repeat center/cover`, marginTop: 20 }}></Avatar>
+                        <Typography variant='subtitle2'>{comment.who}</Typography>
+                        <Typography variant='caption' className='comment-date'>{comment.date}</Typography>
+                      </div>
+                      <div className='comment-text'>{comment.text}</div>
+                    </Comments>
+                  )
+                })}
 
+            </Fragment>}
         </Single>
         <Wrapper onClick={closeNews}></Wrapper>
       </Fragment>
@@ -410,9 +457,9 @@ const NewComment = styled.div`
   }
 `;
 const Avatar = styled.div`
-  width: 30px;
+  min-width: 30px;
   border-radius: 50%;
-  height: 30px;
+  min-height: 30px;
   margin-right: 15px;
 `;
 const TextArea = styled.div`
