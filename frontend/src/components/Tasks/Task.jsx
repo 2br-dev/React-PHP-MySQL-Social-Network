@@ -72,7 +72,7 @@ export default class Task extends React.Component {
               <Typography variant='caption'>{this.props.users.length > 0 ? this.getUserNames(this.props.task.for).slice(0, -2) : null}</Typography>
               <Typography variant='subtitle2'>Выполнить до: {this.props.task.until_date.split('-').reverse().join('.')}, {this.props.task.until_time}</Typography>
             </div>
-            {this.props.task.status === '0' ?
+            {this.props.task.status === '0' && this.props.task.from.includes(`for${this.props.user_logged_id}`) ?
               difference < 0 ?
                 <Tooltip title="Нельзя выполнить просроченную задачу" placement="top-start" leaveDelay={200}>
                   <span><Button disabled={true} variant='contained' color='primary'>Выполнить</Button></span>

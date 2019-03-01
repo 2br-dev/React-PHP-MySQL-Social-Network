@@ -7,6 +7,9 @@ import { Typography, Button, TextField, Tooltip } from '@material-ui/core';
 import API from './functions/API';
 import _ from 'lodash';
 import Loader from './Loader/Loader';
+import CloseIcon from '@material-ui/icons/Clear';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Snackbar from './Snackbar/Snackbar';
 
 export default class SingleNews extends Component {
   constructor(props) {
@@ -19,7 +22,10 @@ export default class SingleNews extends Component {
       currentNews: [],
       likedBy: [],
       loading: true,
-      commentsLoading: false
+      commentsLoading: false,
+      snackBar: false,
+      snackBarMessage: '',
+      snackBarVariant: '',
     }
   }
 
@@ -71,6 +77,8 @@ export default class SingleNews extends Component {
     const formData = new FormData();
     formData.append('id', id);
     formData.append('liked_by', this.props.user.id);
+    const actions = document.getElementById('actions');
+    actions.style.pointerEvents = 'none';
 
     $.ajax({
       url: `${API}/api/news/addlike.php`,
@@ -78,12 +86,14 @@ export default class SingleNews extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: function (res) {
+      success: function (e, res) {
         console.log(res);
         fetch(`${API}/api/news/read_one.php?id=${self.props.singleNewsId}`)
           .then(response => response.json())
           .then(currentNews => self.setState({ currentNews }))
           .then(() => self.getAvatars(self.props.singleNewsId))
+
+        setTimeout(() => actions.style.pointerEvents = 'all', 500)  
       },
       error: function (err) {
         console.log(err);
@@ -95,10 +105,12 @@ export default class SingleNews extends Component {
   removeLike = (id, e) => {
     const self = this;
     e.preventDefault();
-
+    e.stopPropagation();
     const formData = new FormData();
     formData.append('id', id);
     formData.append('liked_by', this.props.user.id);
+    const actions = document.getElementById('actions');
+    actions.style.pointerEvents = 'none';
 
     $.ajax({
       url: `${API}/api/news/removelike.php`,
@@ -112,6 +124,8 @@ export default class SingleNews extends Component {
           .then(response => response.json())
           .then(currentNews => self.setState({ currentNews }))
           .then(() => self.getAvatars(self.props.singleNewsId))
+
+        setTimeout(() => actions.style.pointerEvents = 'all', 500)
       },
       error: function (err) {
         console.log(err);
@@ -148,14 +162,58 @@ export default class SingleNews extends Component {
     });
   }
 
-  getNoun(number) {
-    number = Math.abs(number);
-    number %= 100;
-    if (number >= 5 && number <= 20) return 'отметок';
-    number %= 10;
-    if (number === 1) return 'отметка';
-    if (number >= 2 && number <= 4) return 'отметки';
-    return 'отметок';
+  /**
+  |--------------------------------------------------
+  | Удаление комментария 
+  | arguments: @id 
+  | type: @int
+  |--------------------------------------------------
+  */
+  deleteComment = (e, id, news_id) => {
+    this.setState({ commentsLoading: true });
+    var self = this;
+    e.preventDefault();
+
+    $.ajax({
+      url: `${API}/api/news/deletecomment.php`,
+      data: { id, news_id },
+      type: 'POST',
+      success: function() {
+        self.setState({ commentText: '', snackBar: true, snackBarMessage: 'Комментарий был удален', snackBarVariant: 'info' })
+        self.fetchComments();
+        setTimeout(() => self.setState({ commentsLoading: false }), 250);
+      },
+      error: function(err) {
+        console.log(err);
+        self.setState({ commentsLoading: false, snackBar: true, snackBarMessage: 'Не удалось удалить комментарий', snackBarVariant: 'error' })
+      }
+    });
+    this.setSnackbarTimeout(5000);
+  }
+
+  /**
+  |--------------------------------------------------
+  | закрывает @Snackbar
+  |--------------------------------------------------
+  */
+  handleCloseSnackBar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({ snackBar: false });
+  };
+
+  /**
+  |--------------------------------------------------
+  | Ставит @timeout у @snackbar
+  |--------------------------------------------------
+  */
+  setSnackbarTimeout = (ms) => {
+    window.clearTimeout(timer);
+    var timer = setTimeout(() => {
+      this.setState({ snackBar: false })
+    }, ms);
   }
 
   render() {
@@ -183,12 +241,18 @@ export default class SingleNews extends Component {
         <Single>
           {loading ? <Loader minHeight={500} color='primary' /> :
             <Fragment>
-              <button className='close' onClick={closeNews}></button>
+              <Tooltip placement='left' title='Закрыть'>
+                <Icon><CloseIcon onClick={closeNews} /></Icon>
+              </Tooltip>
 
               <PostHeader>
                 <Avatar style={{ background: `url(${currentUser.avatar ? avatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
-                <Typography variant='subtitle2'>{currentUser.name} {currentUser.surname}</Typography>
+                <Typography variant='subtitle2'>{currentUser.name} {currentUser.surname}</Typography>            
               </PostHeader>
+
+              {currentNews.importance === '1' ? this.props.createImportantBar(10) : null}
+
+              <Typography variant='h5'>{currentNews.title}</Typography>
 
               <PostContent>
                 <Typography variant='body1'>{currentNews.text}</Typography>
@@ -196,7 +260,7 @@ export default class SingleNews extends Component {
               </PostContent>
 
               <PostLikes>
-                <Typography variant='subtitle2'>{currentNews.likes} {this.getNoun(currentNews.likes)} "Нравится"</Typography>
+                <Typography variant='subtitle2'>{currentNews.likes} {this.props.getNoun(currentNews.likes)} "Нравится"</Typography>
                 {/* eslint-disable-next-line*/}
                 {likedBy.map((user, i) => {
 
@@ -210,24 +274,32 @@ export default class SingleNews extends Component {
                 })}
               </PostLikes>
 
-              <PostActions>
-                {Object.keys(thisComments).length}
-                <FontAwesomeIcon icon='comments' style={{ marginLeft: 10 }} />
+              <PostActions id='actions'>
+                {thisComments.length}
+                <Tooltip placement='top' title={`${thisComments.length} ${this.props.getCommentsNoun(thisComments.length)}`}>
+                  <FontAwesomeIcon icon='comments' style={{ marginLeft: 10 }} />
+                </Tooltip>
 
                 {!_.some(likedBy, ['id', user.id])
                   ?
                   <React.Fragment>
                     <span>{currentNews.likes}</span>
-                    <FontAwesomeIcon onClick={e => this.addLike(currentNews.id, e)} icon='heart' style={{ marginLeft: 10 }} />
+                    <Tooltip placement='top' title={`${currentNews.likes} ${this.props.getNoun(currentNews.likes)} "Нравится"`}>
+                      <FontAwesomeIcon onClick={e => this.addLike(currentNews.id, e)} icon='heart' style={{ marginLeft: 10 }} />
+                    </Tooltip>
                   </React.Fragment>
                   :
                   <React.Fragment>
                     <span>{currentNews.likes}</span>
-                    <FontAwesomeIcon onClick={e => this.removeLike(currentNews.id, e)} icon='heart' style={{ color: 'red', marginLeft: 10 }} />
+                    <Tooltip placement='top' title={`${currentNews.likes} ${this.props.getNoun(currentNews.likes)} "Нравится"`}>
+                      <FontAwesomeIcon onClick={e => this.removeLike(currentNews.id, e)} icon='heart' style={{ color: '#1976d2', marginLeft: 10 }} />
+                    </Tooltip>  
                   </React.Fragment>
                 }
-
-                <FontAwesomeIcon icon='envelope' style={{ marginLeft: '25px' }} />
+                <Tooltip placement='top' title='Написать сообщение'>
+                  <FontAwesomeIcon icon='envelope' style={{ marginLeft: '25px' }} />
+                </Tooltip>
+                
               </PostActions>
 
               <NewComment>
@@ -259,6 +331,12 @@ export default class SingleNews extends Component {
                         <Typography variant='caption' className='comment-date'>{comment.date}</Typography>
                       </div>
                       <div className='comment-text'>{comment.text}</div>
+
+                      <DelIcon>
+                        <Tooltip placement='left' title="Удалить">
+                          <DeleteIcon onClick={(e) => this.deleteComment(e, comment.id, comment.news_id)} />
+                        </Tooltip>
+                      </DelIcon>
                     </Comments>
                   )
                 })}
@@ -266,6 +344,14 @@ export default class SingleNews extends Component {
             </Fragment>}
         </Single>
         <Wrapper onClick={closeNews}></Wrapper>
+
+        {/* Snackbar */}
+        <Snackbar
+          snackBar={this.state.snackBar}
+          variant={this.state.snackBarVariant}
+          message={this.state.snackBarMessage}
+          handleCloseSnackBar={this.handleCloseSnackBar.bind(this)}
+        />
       </Fragment>
     )
   }
@@ -309,6 +395,7 @@ const Wrapper = styled.div`
 const PostHeader = styled.div`
   display: flex;
   align-items: center;
+  margin-bottom: 25px;
 
   img {
     border-radius: 50%;
@@ -323,7 +410,7 @@ const PostHeader = styled.div`
 const PostContent = styled.div`
   p {
     margin: 15px 0 5px;
-    font-size: 24px;
+    font-size: 20px;
   }
   span {
     color: #657786;
@@ -380,6 +467,7 @@ const Comments = styled.div`
   border-bottom: 1px solid #e6ecf0;
   cursor: pointer;
   padding: 15px 30px;
+  position: relative;
 
   :last-child {
     border-bottom: none;
@@ -495,5 +583,27 @@ const TextArea = styled.div`
     & > div {
       height: 100%;
     }
+  }
+`;
+const Icon = styled.div`
+  position: absolute;
+  right: 25px;
+  top: 10px;
+  cursor: pointer;
+  svg {
+    color: #1976d2;
+  }
+`;
+
+const DelIcon = styled.div`
+  cursor: pointer;
+  right: 25px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  position: absolute;
+  height: fit-content;
+  svg {
+    color: rgba(0,0,0,.54);
   }
 `;

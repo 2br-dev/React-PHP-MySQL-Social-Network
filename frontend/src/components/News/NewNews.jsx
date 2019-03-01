@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
-import { Checkbox, Button, FormControlLabel, Typography, TextField } from '@material-ui/core';
+import { Checkbox, Button, FormControlLabel, Typography, TextField, Tooltip } from '@material-ui/core';
 import defaultAvatar from '../img/photos/images.png';
+import CloseIcon from '@material-ui/icons/Clear';
 
 export default function NewNews(props) {
   let avatar = '';
@@ -16,7 +17,11 @@ export default function NewNews(props) {
       <Container>
         <Header>
           <Typography variant='button'>Новая новость</Typography> 
-          <button className='close' onClick={props.closeNews}></button>
+
+          <Tooltip placement='left' title='Закрыть'>
+            <Icon><CloseIcon onClick={props.closeNews} /></Icon>
+          </Tooltip>
+
         </Header>
         <Body>
           <form action="" method="POST" onSubmit={props.submitNews}>
@@ -157,5 +162,14 @@ const TextArea = styled.div`
     & > div {
       height: 100%;
     }
+  }
+`;
+const Icon = styled.div`
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  svg {
+    color: #1976d2;
   }
 `;

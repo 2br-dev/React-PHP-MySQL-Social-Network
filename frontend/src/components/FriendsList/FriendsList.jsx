@@ -13,7 +13,8 @@ export default class FriendList extends Component {
     friends: [], 
     initial: [],
     searchValue: '',
-    loading: true
+    loading: true,
+    documentTitle: document.title
   }
 
   componentDidMount() {
@@ -29,7 +30,9 @@ export default class FriendList extends Component {
   handleSearch = (e) => {
     this.setState({ searchValue: e.target.value });
     const searchValue = e.target.value.toLowerCase();
-    
+
+    document.title = e.target.value || this.state.documentTitle;
+
     let friends = this.state.initial;
     friends = friends.filter(friend => 
       friend.name.toLowerCase().includes(searchValue) || 
@@ -37,6 +40,10 @@ export default class FriendList extends Component {
       friend.position.toLowerCase().includes(searchValue)
     );
     this.setState({ friends });
+  }
+
+  componentWillUnmount = () => {
+    document.title = this.state.documentTitle;
   }
 
   render() {
@@ -58,7 +65,7 @@ export default class FriendList extends Component {
                   to={`id${friend.id}`}
                   onClick={() => this.props.handleChangeUserId(friend.id)}
                 >
-                  <Friend  
+                  <Friend
                     friend={friend} 
                   />
                 </Link>

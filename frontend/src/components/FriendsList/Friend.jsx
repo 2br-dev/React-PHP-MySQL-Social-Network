@@ -15,7 +15,7 @@ function Friend(props) {
   }
 
   return (
-    <ListItem button>
+    <ListItem button TouchRippleProps={{ classes: { child: 'touch-ripple' }}} >
       <ListItemAvatar>
         <Avatar
           alt={`${props.friend.name} ${props.friend.surname}`}

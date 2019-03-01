@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import SnackBar from './Snackbar/Snackbar';
 import InputBase from '@material-ui/core/InputBase';
 import Loader from './Loader/Loader';
+import { DatePicker } from 'material-ui-pickers';
 
 class PersonalInfo extends Component {
   constructor(props) {
@@ -25,7 +26,9 @@ class PersonalInfo extends Component {
       snackBar: false,
       snackBarMessage: '',
       snackBarVariant: '',
-      loading: true
+      loading: true,
+      selectedDate: '',
+      loadingChild: false
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.openModal = this.openModal.bind(this);
@@ -38,12 +41,15 @@ class PersonalInfo extends Component {
     this.removeInput = this.removeInput.bind(this);
   }
 
-  fetchUserInfo() {
-    this.setState({ loading: true })
+  fetchUserInfo(action) {
+    if (!action) this.setState({ loading: true });
+
+    if (action === 'child') this.setState({ loadingChild: true });
+
     fetch(`${API}/api/user/info.php?id=${this.props.user_id}`)
       .then(response => response.json())
-      .then(userInfo => this.setState({ userInfo }))
-      .then(() => this.setState({ loading: false }))
+      .then(userInfo => this.setState({ userInfo, selectedDate: userInfo.birthday }))
+      .then(() => this.setState({ loading: false, loadingChild: false }))
       .catch(err => console.log(err))
   }
 
@@ -59,6 +65,8 @@ class PersonalInfo extends Component {
   openModal(text) {
     this.setState({ modal: true, modalText: text });
   }
+
+  handleDateChange = date => this.setState({ selectedDate: date.format() });
 
   // динамически обрабатываем изменения полей
   handleChange(event) {
@@ -84,10 +92,9 @@ class PersonalInfo extends Component {
     e.preventDefault();
     if (this.state.childName && this.state.childBirthyear) {
       var self = this;
-      self.setState({ modal: false });
       const formData = new FormData();
-      formData.append('name', $('input[name="childName"]').val());
-      formData.append('year', $('input[name="childBirthyear"]').val());
+      formData.append('name', this.state.childName);
+      formData.append('year', this.state.childBirthyear);
       formData.append('parent', self.props.user_logged_id);
 
       $.ajax({
@@ -97,7 +104,7 @@ class PersonalInfo extends Component {
         contentType: false,
         type: 'POST',
         success: function (res) {
-          self.fetchUserInfo();
+          self.fetchUserInfo('child');
           self.setState({ newChildInput: false, childBirthyear: '', childName: '' });
           self.setState({ snackBar: true, snackBarMessage: 'Персональные данные были обновлены.', snackBarVariant: 'success' })
           console.log(res);
@@ -108,8 +115,12 @@ class PersonalInfo extends Component {
       });
       setTimeout(() => this.setState({ snackBar: false }), 5700);
     } else {
-      if (!this.state.childBirthyear) this.setState({ yearError: false })
-      if (!this.state.childName) this.setState({ nameError: false })
+      if (this.state.newChildInput) {
+        this.setState({ snackBar: true, snackBarMessage: 'Нужно заполнить все поля.', snackBarVariant: 'warning' })
+        if (!this.state.childBirthyear) this.setState({ yearError: false })
+        if (!this.state.childName) this.setState({ nameError: false })
+        setTimeout(() => this.setState({ snackBar: false }), 5700);
+      }
     }
   }
 
@@ -126,7 +137,7 @@ class PersonalInfo extends Component {
       contentType: false,
       type: 'POST',
       success: function (res) {
-        self.fetchUserInfo();
+        self.fetchUserInfo('child');
         self.setState({ snackBar: true, snackBarMessage: 'Персональные данные были обновлены.', snackBarVariant: 'success' });
         console.log(res);
       },
@@ -141,7 +152,6 @@ class PersonalInfo extends Component {
 
   handleSubmit(e) {
     var self = this;
-    self.setState({ modal: false });
     e.preventDefault();
 
     const formData = new FormData();
@@ -150,7 +160,7 @@ class PersonalInfo extends Component {
     formData.append('adress', $('input[name="adress"]').val());
     formData.append('army_country', $('input[name="army_country"]').val());
     formData.append('army_type', $('input[name="army_type"]').val());
-    formData.append('birthday', $('input[name="birthday"]').val());
+    formData.append('birthday', this.state.selectedDate.slice(0, 10));
     formData.append('district', $('input[name="district"]').val());
     formData.append('fakultet', $('input[name="fakultet"]').val());
     formData.append('name', $('input[name="name"]').val());
@@ -175,7 +185,7 @@ class PersonalInfo extends Component {
             self.setState({ snackBar: true, snackBarMessage: 'Что-то пошло не так, попробуйте обновить страницу.', snackBarVariant: 'error' })
             break;
           case 1:
-            self.fetchUserInfo();
+            self.fetchUserInfo('update');
             self.setState({ snackBar: true, snackBarMessage: 'Персональные данные были обновлены.', snackBarVariant: 'success' });
             self.addChild(e);
             break;
@@ -213,11 +223,11 @@ class PersonalInfo extends Component {
               <InputBase value={value} />
             </FormControl>
           ) : (
-            <FormControl>
-              <InputLabel htmlFor={name}>{label}</InputLabel>
-              <InputBase id={name} value={value} />
-            </FormControl>
-          )}
+              <FormControl>
+                <InputLabel htmlFor={name}>{label}</InputLabel>
+                <InputBase id={name} value={value} />
+              </FormControl>
+            )}
         </Naked>
       )
     }
@@ -253,14 +263,14 @@ class PersonalInfo extends Component {
                 <Fragment>
                   {this.createInput('Имя', userInfo.name, 'name')}
                   {this.createInput('Фамилия', userInfo.surname, 'surname')}
-                  {this.createInput('Должность', userInfo.position, 'position')}    
+                  {this.createInput('Должность', userInfo.position, 'position')}
                 </Fragment>
               ) : (
-                <Fragment>
-                  <InputBase className='user-header' value={userInfo.name + ' ' + userInfo.surname} />
-                  <span className='user-position'>{this.createInput('Должность', userInfo.position, 'position')}</span>
-                </Fragment>
-              )}
+                  <Fragment>
+                    <InputBase className='user-header' value={userInfo.name + ' ' + userInfo.surname} />
+                    <span className='user-position'>{this.createInput('Должность', userInfo.position, 'position')}</span>
+                  </Fragment>
+                )}
 
 
               {user_logged_id === user_id ? (
@@ -279,22 +289,22 @@ class PersonalInfo extends Component {
                   />}
                 </InputMask>) : (
                   <Naked>
-                      <InputBase id='phone' style={{ pointerEvents: 'none', padding: 0 }} value={userInfo.phone} />
+                    <InputBase id='phone' style={{ pointerEvents: 'none', padding: 0 }} value={userInfo.phone} />
                   </Naked>
                 )}
 
               {user_logged_id === user_id ? (
                 <FormControl >
-                  <TextField
-                    label='Дата рождения'
+                  <DatePicker
                     variant='outlined'
-                    type="date"
                     name="birthday"
                     margin='dense'
-                    value={userInfo.birthday}
+                    label='Дата рождения'
+                    format={'Do MMMM YYYY'}
+                    value={this.state.selectedDate ? this.state.selectedDate : userInfo.birthday}
                     fullWidth={true}
                     InputLabelProps={{ shrink: true }}
-                    onChange={this.handleChange}
+                    onChange={this.handleDateChange}
                     aria-describedby="component-helper-text"
                   />
                   <FormHelperText id="component-helper-text">*Год рождения будет виден только руководству</FormHelperText>
@@ -340,12 +350,14 @@ class PersonalInfo extends Component {
               )}
           </div>
           <div className="personal-section">
-            {childrens.length > 0 ? (
+
+            
               <Fragment>
                 <div className="personal-section__header">
                   <Typography variant='h6' color='primary'>Дети</Typography>
                   <hr />
                 </div>
+                {this.state.loadingChild ? <Loader minHeight={120} color='primary' /> :
                 <Childrens>
                   {Object.keys(childrens).map(child =>
                     <Children key={childrens[child].id}>
@@ -354,9 +366,8 @@ class PersonalInfo extends Component {
                       <Tooltip title="Удалить" placement="right"><Clear onClick={() => this.deleteChild(childrens[child].id)} /></Tooltip>
                     </Children>
                   )}
-                </Childrens>
+                </Childrens>}
               </Fragment>
-            ) : null}
 
             {newChildInput ? (<NewChild>
               <div>
@@ -503,6 +514,7 @@ const Childrens = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin: 20px 0 5px;
+  padding-left: 15px;
 `;
 const NewChild = styled.div`
   display: flex;
@@ -526,6 +538,7 @@ const ChildBtns = styled.div`
   button {
     margin-right: 15px;
   }
+  padding-left: 15px;
 `;
 const Naked = styled.div`
   width: 100%;

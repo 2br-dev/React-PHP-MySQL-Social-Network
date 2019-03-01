@@ -12,13 +12,14 @@ import defaultAvatar from './img/photos/images.png';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Snackbar from './Snackbar/Snackbar';
 import Loader from './Loader/Loader';
+import ConfirmDelete from './News/ConfirmDelete';
+import WarningIcon from '@material-ui/icons/Warning';
 
 class News extends Component {
   constructor(props) {
     super(props);
     this.state = {
       news: [],
-      comments: [],
       newNews: false,
       newNewsTopic: '',
       newNewsText: '',
@@ -32,10 +33,11 @@ class News extends Component {
       snackBar: false,
       snackBarMessage: '',
       snackBarVariant: '',
-      loading: true
+      loading: true,
+      confirmDelete: false,
+      preparedNewsId: ''
     }
 
-    this.countComments = this.countComments.bind(this);
     this.addLike = this.addLike.bind(this);
     this.reloadComponent = this.reloadComponent.bind(this);
     this.removeLike = this.removeLike.bind(this);
@@ -54,13 +56,10 @@ class News extends Component {
   }
 
   async reloadComponent(action) {
-    if (!action) await this.setState({ loading: true }) 
+    if (!action) await this.setState({ loading: true })
     await fetch(`${API}/api/news/read.php`)
       .then(response => response.json())
       .then(news => this.props.onAddNews(news.records || []))
-    await fetch(`${API}/api/news/getcomments.php`)
-      .then(response => response.json())
-      .then(comments => this.setState({ comments: comments.records }))
     await this.setState({ loading: false })
   }
 
@@ -69,9 +68,6 @@ class News extends Component {
     this.setState({ invalidText: false, invalidTopic: false });
   }
 
-  // считает кол-во комментариев
-  countComments = (id) => (this.state.comments.filter((comment) => comment.news_id === id)).length;
-
   // добавляем лайк
   addLike = (id, e) => {
     var self = this;
@@ -79,6 +75,8 @@ class News extends Component {
     const formData = new FormData();
     formData.append('id', id);
     formData.append('liked_by', this.props.user.id);
+    const actions = document.getElementById('actions');
+    actions.style.pointerEvents = 'none';
 
     $.ajax({
       url: `${API}/api/news/addlike.php`,
@@ -86,8 +84,9 @@ class News extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: function (res) {
+      success: function () {
         self.reloadComponent('like');
+        setTimeout(() => actions.style.pointerEvents = 'all', 500)
       },
       error: function (err) {
         console.log(err);
@@ -99,6 +98,8 @@ class News extends Component {
   removeLike = (id, e) => {
     const self = this;
     e.preventDefault();
+    const actions = document.getElementById('actions');
+    actions.style.pointerEvents = 'none';
 
     const formData = new FormData();
     formData.append('id', id);
@@ -113,6 +114,7 @@ class News extends Component {
       success: function (res) {
         self.reloadComponent('like');
         self.setState({ newNews: false });
+        setTimeout(() => actions.style.pointerEvents = 'all', 500)
       },
       error: function (err) {
         console.log(err);
@@ -143,8 +145,11 @@ class News extends Component {
         success: function (res) {
           console.log(res);
           self.reloadComponent();
-          self.setState({ newNews: !self.state.newNews, newNewsText: '', newNewsTopic: '' });
-          window.scrollTo(0, 0);
+          self.setState({ 
+            newNews: !self.state.newNews, 
+            newNewsText: '', 
+            newNewsTopic: ''
+          });
           self.setState({ snackBar: true, snackBarMessage: 'Добавлена новая новость', snackBarVariant: 'success' })
         },
         error: function (err) {
@@ -152,10 +157,12 @@ class News extends Component {
           self.setState({ snackBar: true, snackBarMessage: 'Не удалось добавить новость', snackBarVariant: 'error' })
         }
       });
+      this.setSnackbarTimeout(5000);
     } else {
-
+      self.setState({ snackBar: true, snackBarMessage: 'Необходимо заполнить все поля', snackBarVariant: 'warning' })
       if (self.state.newNewsTopic === '') this.setState({ invalidTopic: true });
       if (self.state.newNewsText === '') this.setState({ invalidText: true });
+      this.setSnackbarTimeout(5000);
     }
   }
 
@@ -165,7 +172,7 @@ class News extends Component {
     this.setState({ editing: true });
     var self = this;
     const formData = new FormData();
-    formData.append('id', id);
+    formData.append('id', this.state.preparedNewsId);
 
     $.ajax({
       url: `${API}/api/news/delete.php`,
@@ -175,15 +182,15 @@ class News extends Component {
       type: 'POST',
       success: function (res) {
         self.reloadComponent();
-        self.setState({ editing: '' });
-        self.setState({ snackBar: true, snackBarMessage: 'Новость была удалена', snackBarVariant: 'success' })
+        self.setState({ editing: '', preparedNewsId: '', confirmDelete: false  });
+        self.setState({ snackBar: true, snackBarMessage: 'Новость была удалена', snackBarVariant: 'info' })
       },
       error: function (err) {
         console.log(err);
         self.setState({ snackBar: true, snackBarMessage: 'Не удалось удалить новость', snackBarVariant: 'error' })
       }
     });
-    setTimeout(() => this.setState({ snackBar: false }), 5700);
+    this.setSnackbarTimeout(5000);
   };
 
   prepareNews = id => {
@@ -218,10 +225,12 @@ class News extends Component {
           self.setState({ snackBar: true, snackBarMessage: 'Не удалось изменить новость', snackBarVariant: 'error' })
         }
       });
-      setTimeout(() => this.setState({ snackBar: false }), 5700);
+      this.setSnackbarTimeout(5000);
     } else {
+      self.setState({ snackBar: true, snackBarMessage: 'Нужно заполнить всё поля', snackBarVariant: 'warning' })
       if (self.state.newNewsTopic === '') this.setState({ invalidTopic: true });
       if (self.state.newNewsText === '') this.setState({ invalidText: true });
+      this.setSnackbarTimeout(5000);
     }
   }
 
@@ -229,14 +238,21 @@ class News extends Component {
 
   showNews(id) {
     setTimeout(() => {
-      if (this.state.editing === '') this.setState({ singleNews: true, singleNewsId: id }); 
+      if (this.state.editing === '') this.setState({ singleNews: true, singleNewsId: id });
     }, 100)
   }
 
 
   // закрываем новость 
   closeNews = () => {
-    this.setState({ singleNews: false, singleNewsId: '', newNews: false, likedBy: [] });
+    this.setState({ 
+      singleNews: false, 
+      singleNewsId: '', 
+      newNews: false, 
+      likedBy: [], 
+      preparedNewsId: '',
+      confirmDelete: false
+    });
     this.reloadComponent('close');
   }
 
@@ -247,6 +263,76 @@ class News extends Component {
 
     this.setState({ snackBar: false });
   };
+
+  setSnackbarTimeout = (ms) => {
+    window.clearTimeout(timer);
+    var timer = setTimeout(() => {
+      this.setState({ snackBar: false })
+    }, ms);
+  }
+
+  /**
+  |--------------------------------------------------
+  | находим правильную форму склонения лайков 
+  |--------------------------------------------------
+  */
+ getNoun = number => {
+    number = Math.abs(number);
+    number %= 100;
+    if (number >= 5 && number <= 20) return 'отметок';
+    number %= 10;
+    if (number === 1) return 'отметка';
+    if (number >= 2 && number <= 4) return 'отметки';
+    return 'отметок';
+  }
+
+  /**
+  |--------------------------------------------------
+  | Находим правильную форму склонения комментариев
+  |--------------------------------------------------
+  */
+  getCommentsNoun = number => {
+    number = Math.abs(number);
+    number %= 100;
+    if (number >= 5 && number <= 20) return 'комментариев';
+    number %= 10;
+    if (number === 1) return 'комментарий';
+    if (number >= 2 && number <= 4) return 'комментария';
+    return 'комментариев';
+  }
+
+  /**
+  |--------------------------------------------------
+  | создаёт надпись "Помечено как важное"
+  |--------------------------------------------------
+  */
+  createImportantBar = (margin) => {
+    const Important = styled.div`
+      display: flex;
+      align-items: center;
+      margin-bottom: 0;
+      margin-top: ${margin}px;
+      svg {
+        color: rgba(0,0,0,.15);
+        margin-right: 5px;  
+      }
+    `;
+    return (
+      <Important>
+        <WarningIcon />
+        <Typography variant='caption'>Отмечено как "Важное"</Typography>            
+      </Important>
+    )
+  }
+
+  /**
+  |--------------------------------------------------
+  | Спрашиваем об удалении новости
+  |--------------------------------------------------
+  */
+  prepareDelete = (id) => {
+    this.setState({ confirmDelete: true, preparedNewsId: id })
+  }
 
   render() {
     const { news, invalidText, invalidTopic, newNews, loading, newNewsText, newNewsTopic, editing, singleNews, singleNewsId, comments, newNewsImportance } = this.state;
@@ -276,7 +362,7 @@ class News extends Component {
                         </Typography>
                         <Icon>
                           <Tooltip placement='left' title="Удалить">
-                            <DeleteIcon onClick={() => this.removeNews(item.id)} />
+                            <DeleteIcon onClick={() => this.prepareDelete(item.id)} />
                           </Tooltip>
                         </Icon>
                       </Fragment>
@@ -286,6 +372,9 @@ class News extends Component {
                         {item.date}
                       </Typography>}
                   </NewsInfo>
+
+                  {item.importance === '1' ? this.createImportantBar(0) : null}
+
                   {editing !== item.id ?
                     <Fragment>
                       <Typography variant='button'>{item.title.replace(/&quot;/g, `"`)}</Typography>
@@ -301,7 +390,6 @@ class News extends Component {
                         name='newNewsTopic'
                         type='text'
                         error={this.state.invalidTopic}
-                        required
                       />
                       <TextArea>
                         <TextField
@@ -312,30 +400,39 @@ class News extends Component {
                           onChange={this.handleChange}
                           value={newNewsText}
                           error={this.state.invalidText}
-                          required
                         />
                       </TextArea>
                       <Button onClick={(e) => this.editNews(e, item.id)} variant='contained' color='primary'>Изменить</Button>
                     </form>}
                 </div>
 
-                <Actions>
-                  <p>{this.countComments(item.id)}</p>
-                  <FontAwesomeIcon onClick={editing === '' ? () => this.showNews(item.id) : null} icon="comments" />
-                  <p>{item.likes}</p>
+                <Actions id='actions'>
+                  <p>{item.comments}</p>
+                  <Tooltip title={`${item.comments} ${this.getCommentsNoun(item.comments)}`} placement='top'>
+                    <FontAwesomeIcon onClick={editing === '' ? () => this.showNews(item.id) : null} icon="comments" />
+                  </Tooltip>
+                  
+                    <p>{item.likes}</p>
 
                   {!item.liked_by.includes(` ${user.id}`)
                     ?
-                    <FontAwesomeIcon onClick={e => this.addLike(item.id, e)} icon="heart" />
+                    <Tooltip title={`${item.likes} ${this.getNoun(item.likes)} "Нравится"`} placement='top'>
+                      <FontAwesomeIcon onClick={e => this.addLike(item.id, e)} icon="heart" />
+                    </Tooltip>  
                     :
-                    <FontAwesomeIcon onClick={e => this.removeLike(item.id, e)} icon="heart" style={{ color: 'red' }} />
+                    <Tooltip title={`${item.likes} ${this.getNoun(item.likes)} "Нравится"`} placement='top'>
+                      <FontAwesomeIcon onClick={e => this.removeLike(item.id, e)} icon="heart" style={{ color: '#1976d2' }} />
+                    </Tooltip>  
                   }
-
-                  <FontAwesomeIcon data-id={item.id} onClick={this.addLike} icon="envelope" style={{ marginLeft: '25px' }} />
+                  <Tooltip title='Отправить сообщение' placement='top'>
+                    <FontAwesomeIcon data-id={item.id} onClick={this.addLike} icon="envelope" style={{ marginLeft: '25px' }} />
+                  </Tooltip>
 
                   {user.id === item.author_id
                     ?
+                    <Tooltip title='Редактировать' placement='top'>
                     <FontAwesomeIcon onClick={() => this.prepareNews(item.id)} icon="edit" style={{ marginLeft: '25px' }} />
+                    </Tooltip>
                     :
                     null
                   }
@@ -369,12 +466,21 @@ class News extends Component {
             showNews={this.showNews}
             closeNews={this.closeNews.bind(this)}
             singleNewsId={singleNewsId}
-            comments={comments}
             news={news}
             user={user}
-            reloadComponent={this.reloadComponent} />
+            getNoun={this.getNoun}
+            getCommentsNoun={this.getCommentsNoun}
+            reloadComponent={this.reloadComponent}
+            createImportantBar={this.createImportantBar} />
           :
           null}
+
+        {/* Подтверить удаление новости */}
+        {this.state.confirmDelete ?
+        <ConfirmDelete
+          closeNews={this.closeNews.bind(this)}
+          removeNews={this.removeNews.bind(this)}
+        /> : null}
 
         {/* Snackbar */}
         <Snackbar
@@ -424,7 +530,6 @@ const NewsInfo = styled.div`
     }
   }
 `;
-
 const UserAvatar = styled.div`
   position: absolute;
   left: 20px;

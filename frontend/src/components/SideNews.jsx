@@ -49,6 +49,11 @@ class SideNews extends Component {
 
   changeImportance = () => this.setState({ importance: !this.state.importance });
 
+  /**
+  |--------------------------------------------------
+  | Находим правильную форму склонения комментариев
+  |--------------------------------------------------
+  */
   getNoun = number => {
     number = Math.abs(number);
     number %= 100;

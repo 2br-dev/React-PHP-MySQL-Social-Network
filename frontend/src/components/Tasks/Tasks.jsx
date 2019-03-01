@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Paper, Typography, Button } from '@material-ui/core';
 import Fab from '../Fab/Fab';
 import Modal from '../Modal/Modal';
@@ -10,6 +10,7 @@ import $ from 'jquery';
 import Snackbar from '../Snackbar/Snackbar';
 import { connect } from 'react-redux';
 import ConfirmDelete from './ConfirmDelete';
+import Loader from '../Loader/Loader';
 
 class Tasks extends Component {
   state = {
@@ -22,12 +23,19 @@ class Tasks extends Component {
     disabledButton: 1,
     snackBar: false,
     snackBarMessage: 'Задача отмечена как "Выполненная"',
-    snackBarVariant: 'success'
+    snackBarVariant: 'success',
+    loading: true
   }
   componentDidMount = () => {
+    fetch(`${API}/api/tasks/read.php?id=${this.props.user_logged_id}`)
+      .then(response => response.json())
+      .then(tasks => this.props.getTasks(tasks.data))
+      .catch(err => console.log(err))
+
     fetch(`${API}/api/user/read.php`)
       .then(response => response.json())
-      .then(users => this.setState({ users: users.data }))  
+      .then(users => this.setState({ users: users.data }))
+      .then(() => this.setState({ loading: false }))
       .catch(err => console.log(err))
   }
 
@@ -39,13 +47,14 @@ class Tasks extends Component {
     const formData = new FormData();
     const self = this;
     let date = new Date();
+    this.setState({ loading: true })
     const done_date = date.toLocaleDateString();
     const done_time = `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`;
 
     formData.append('id', id);
     formData.append('done_date', done_date);
     formData.append('done_time', done_time);
-    
+
     $.ajax({
       url: `${API}/api/tasks/complete.php`,
       data: formData,
@@ -59,6 +68,7 @@ class Tasks extends Component {
           .then(tasks => self.setState({ tasks: tasks.data, initial: tasks.data }))
           .then(() => self.setState({ snackBar: true, snackBarMessage: 'Задача отмечена как "Выполненная"', snackBarVariant: 'success' }))
           .then(() => self.props.markAsCompleted(self.state.tasks))
+          .then(() => this.setState({ loading: false }))
           .catch(err => console.log(err))
       },
       error: err => {
@@ -74,14 +84,14 @@ class Tasks extends Component {
     this.setState({ disabledButton: id });
     let filtered = this.state.initial;
 
-    if (filter === 'initial') this.setState({ tasks: this.state.initial });
+    if (filter === 'initial') this.props.onFilter(this.state.initial);
     if (filter === 'transfered') {
       filtered = filtered.filter(item => Number(item.from) === this.props.user_logged_id);
-      this.setState({ tasks: filtered });
+      this.props.onFilter(filtered);
     }
     if (filter === 'completed') {
       filtered = filtered.filter(item => item.status === '1');
-      this.setState({ tasks: filtered });
+      this.props.onFilter(filtered);
     }
   }
 
@@ -96,9 +106,9 @@ class Tasks extends Component {
   handleDelete = () => {
     const formData = new FormData();
     const self = this;
-
+    this.setState({ loading: true })
     formData.append('id', this.state.preparedToDelete);
-    
+
     $.ajax({
       url: `${API}/api/tasks/delete.php`,
       data: formData,
@@ -113,6 +123,7 @@ class Tasks extends Component {
           .then(() => self.setState({ snackBar: true, snackBarMessage: 'Задача успешно была удалена', snackBarVariant: 'success' }))
           .then(() => self.props.onDeleteTask(self.state.preparedToDelete))
           .then(() => self.handleClose())
+          .then(() => this.setState({ loading: false }))
           .catch(err => console.log(err))
       },
       error: err => {
@@ -129,46 +140,51 @@ class Tasks extends Component {
 
     if (this.state.initial.length === 0) {
       setTimeout(() => this.setState({ initial: this.props.store.tasks, tasks: this.props.store.tasks }), 0);
-    } 
-    
+    }
+
     return (
       <Wrapper>
         <Paper>
-          <Filters>
-            <Button 
-              onClick={() => this.handleFilter(1, 'initial')}
-              variant={disabledButton === 1 ? 'contained' : 'text'} 
-              disabled={disabledButton === 1 ? true : false}>Все задачи</Button>
-            <Button 
-              color="primary"
-              onClick={() => this.handleFilter(2, 'transfered')}
-              variant={disabledButton === 2 ? 'contained' : 'text'} 
-              disabled={disabledButton === 2 ? true : false}
-              >
-              Переданные
+          {!this.state.loading ?
+            <Fragment>
+              <Filters>
+                <Button
+                  onClick={() => this.handleFilter(1, 'initial')}
+                  variant={disabledButton === 1 ? 'contained' : 'text'}
+                  disabled={disabledButton === 1 ? true : false}>Все задачи</Button>
+                <Button
+                  color="primary"
+                  onClick={() => this.handleFilter(2, 'transfered')}
+                  variant={disabledButton === 2 ? 'contained' : 'text'}
+                  disabled={disabledButton === 2 ? true : false}
+                >
+                  Переданные
             </Button>
-            <Button 
-              onClick={() => this.handleFilter(3, 'completed')}
-              variant={disabledButton === 3 ? 'contained' : 'text'} 
-              disabled={disabledButton === 3 ? true : false}
-              color="secondary">
-              Выполненные
+                <Button
+                  onClick={() => this.handleFilter(3, 'completed')}
+                  variant={disabledButton === 3 ? 'contained' : 'text'}
+                  disabled={disabledButton === 3 ? true : false}
+                  color="secondary">
+                  Выполненные
             </Button>
-          </Filters>
-          {this.props.store.tasks.length > 0 
-          ? 
-            this.props.store.tasks.map(task => 
-              <Task 
-                key={task.id} 
-                task={task} 
-                users={users} 
-                user_logged_id={this.props.user_logged_id}
-                handleCompleted={this.handleCompleted}
-                handleConfirm={this.handleConfirm.bind(this)}
-              />)
-          : 
-          <Typography className='no-tasks' variant='caption'>нет задач</Typography> }
+              </Filters>
+              {this.props.store.tasks.length > 0
+                ?
+                this.props.store.tasks.map(task =>
+                  <Task
+                    key={task.id}
+                    task={task}
+                    users={users}
+                    user_logged_id={this.props.user_logged_id}
+                    handleCompleted={this.handleCompleted}
+                    handleConfirm={this.handleConfirm.bind(this)}
+                  />)
+                :
+                <Typography className='no-tasks' variant='caption'>нет задач</Typography>}
+            </Fragment>
+            : <Loader minHeight={300} color='primary' />}
         </Paper>
+
 
         {/* Button to add task */}
         <span onClick={this.handleOpen}><Fab title='Добавить задачу' /></span>
@@ -188,7 +204,7 @@ class Tasks extends Component {
         <Modal
           open={this.state.confirm}
           handleClose={this.handleClose.bind(this)}
-          component={<ConfirmDelete 
+          component={<ConfirmDelete
             handleDelete={this.handleDelete}
             handleClose={this.handleClose.bind(this)}
           />}
@@ -234,6 +250,12 @@ export default connect(
     },
     onDeleteTask: (task) => {
       dispatch({ type: 'DELETE_TASK', payload: task })
+    },
+    onFilter: (tasks) => {
+      dispatch({ type: 'FILTER_TASKS', payload: tasks })
+    },
+    getTasks: (tasks) => {
+      dispatch({ type: 'FETCH_TASKS', payload: tasks })
     }
   })
 )(Tasks);
