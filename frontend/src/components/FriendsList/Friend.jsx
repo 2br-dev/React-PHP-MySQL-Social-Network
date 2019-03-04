@@ -18,6 +18,7 @@ function Friend(props) {
     <ListItem button TouchRippleProps={{ classes: { child: 'touch-ripple' }}} >
       <ListItemAvatar>
         <Avatar
+          style={{ height: 100, width: 100 }}
           alt={`${props.friend.name} ${props.friend.surname}`}
           src={props.friend.avatar !== '' ? avatar : defaultAvatar}
         />

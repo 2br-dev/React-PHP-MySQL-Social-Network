@@ -19,7 +19,7 @@
 	<!-- CSS -->
 	<link type="text/css" rel="stylesheet" href="/css/normalize.css" >
 	<link type="text/css" rel="stylesheet" href="/css/style.css" >
-	<link type="text/css" rel="stylesheet" href="/frontend/build/static/css/main.c942f705.chunk.css" >
+	<link type="text/css" rel="stylesheet" href="/frontend/build/static/css/main.b87f6c17.chunk.css" >
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 

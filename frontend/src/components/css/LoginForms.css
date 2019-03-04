@@ -13,9 +13,6 @@
   top: 15%;
   z-index: 2;
 }
-.login-screen .modal {
-  top: 200px;
-}
 .login-screen-button {
   position: relative;
   z-index: 2;
@@ -70,38 +67,6 @@
   line-height: 25px;
   padding-left: 10px;
   margin-top: 5px;
-}
-.invalid-form-result {
-  margin-top: 0;
-  color: #d32f2f;
-}
-.btn {
-  background: #00a8ff;
-  color: white;
-  border: none;
-  outline: none;
-  border-radius: 10px;
-  text-align: center;
-  padding: 10px 15px;
-  position: relative;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  width: fit-content;
-  text-transform: uppercase;
-}
-.btn:hover {
-  cursor: pointer;
-  transition: .5s ease;
-  background: #33b9ff;
-}
-.form-container .btn {
-  position: absolute;
-  bottom: 30px;
-}
-label {
-  font-size: 18px;
 }
 .registerForm .register-buttons {
   padding-top: 40px;

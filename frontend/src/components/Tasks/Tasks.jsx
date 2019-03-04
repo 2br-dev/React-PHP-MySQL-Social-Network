@@ -7,10 +7,10 @@ import styled from 'styled-components';
 import API from '../functions/API';
 import Task from './Task';
 import $ from 'jquery';
-import Snackbar from '../Snackbar/Snackbar';
 import { connect } from 'react-redux';
 import ConfirmDelete from './ConfirmDelete';
 import Loader from '../Loader/Loader';
+import { withSnackbar } from 'notistack';
 
 class Tasks extends Component {
   state = {
@@ -21,9 +21,6 @@ class Tasks extends Component {
     initial: [],
     users: [],
     disabledButton: 1,
-    snackBar: false,
-    snackBarMessage: 'Задача отмечена как "Выполненная"',
-    snackBarVariant: 'success',
     loading: true
   }
   componentDidMount = () => {
@@ -66,18 +63,16 @@ class Tasks extends Component {
         fetch(`${API}/api/tasks/read.php?id=${self.props.user_logged_id}`)
           .then(response => response.json())
           .then(tasks => self.setState({ tasks: tasks.data, initial: tasks.data }))
-          .then(() => self.setState({ snackBar: true, snackBarMessage: 'Задача отмечена как "Выполненная"', snackBarVariant: 'success' }))
+          .then(() => self.props.enqueueSnackbar('Задача отмечена как "Выполненная"', { variant: 'success' }))
           .then(() => self.props.markAsCompleted(self.state.tasks))
           .then(() => this.setState({ loading: false }))
           .catch(err => console.log(err))
       },
       error: err => {
         console.log(err);
-        self.setState({ snackBar: true, snackBarMessage: 'Что-то пошло не так, попробуйте снова', snackBarVariant: 'error' })
+        self.props.enqueueSnackbar('Что-то пошло не так, попробуйте снова', { variant: 'error' })
       }
     });
-
-    setTimeout(() => this.setState({ snackBar: false }), 5700);
   }
 
   handleFilter = (id, filter) => {
@@ -94,14 +89,6 @@ class Tasks extends Component {
       this.props.onFilter(filtered);
     }
   }
-
-  handleCloseSnackBar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    this.setState({ snackBar: false });
-  };
 
   handleDelete = () => {
     const formData = new FormData();
@@ -120,7 +107,7 @@ class Tasks extends Component {
         fetch(`${API}/api/tasks/read.php?id=${self.props.user_logged_id}`)
           .then(response => response.json())
           .then(tasks => self.setState({ tasks: tasks.data || [], initial: tasks.data || [] }))
-          .then(() => self.setState({ snackBar: true, snackBarMessage: 'Задача успешно была удалена', snackBarVariant: 'success' }))
+          .then(() => self.props.enqueueSnackbar('Задача успешно была удалена', { variant: 'info' }))
           .then(() => self.props.onDeleteTask(self.state.preparedToDelete))
           .then(() => self.handleClose())
           .then(() => this.setState({ loading: false }))
@@ -128,11 +115,9 @@ class Tasks extends Component {
       },
       error: err => {
         console.log(err);
-        self.setState({ snackBar: true, snackBarMessage: 'Что-то пошло не так, попробуйте снова', snackBarVariant: 'error' })
+        self.props.enqueueSnackbar('Что-то пошло не так, попробуйте снова', { variant: 'error' })
       }
     });
-
-    setTimeout(() => this.setState({ snackBar: false }), 5700);
   }
 
   render() {
@@ -209,14 +194,6 @@ class Tasks extends Component {
             handleClose={this.handleClose.bind(this)}
           />}
         />
-
-        {/* Snackbar */}
-        <Snackbar
-          snackBar={this.state.snackBar}
-          variant={this.state.snackBarVariant}
-          message={this.state.snackBarMessage}
-          handleCloseSnackBar={this.handleCloseSnackBar.bind(this)}
-        />
       </Wrapper>
     )
   }
@@ -258,4 +235,4 @@ export default connect(
       dispatch({ type: 'FETCH_TASKS', payload: tasks })
     }
   })
-)(Tasks);
+)(withSnackbar(Tasks));

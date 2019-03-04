@@ -8,10 +8,10 @@ import { Typography, TextField, Tooltip, Paper, FormControl, FormHelperText, But
 import AddIcon from '@material-ui/icons/Done';
 import Clear from '@material-ui/icons/Clear';
 import styled from 'styled-components';
-import SnackBar from './Snackbar/Snackbar';
 import InputBase from '@material-ui/core/InputBase';
 import Loader from './Loader/Loader';
 import { DatePicker } from 'material-ui-pickers';
+import { withSnackbar } from 'notistack';
 
 class PersonalInfo extends Component {
   constructor(props) {
@@ -23,15 +23,11 @@ class PersonalInfo extends Component {
       yearError: true,
       childName: '',
       childBirthyear: '',
-      snackBar: false,
-      snackBarMessage: '',
-      snackBarVariant: '',
       loading: true,
       selectedDate: '',
       loadingChild: false
     }
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.openModal = this.openModal.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.fetchUserInfo = this.fetchUserInfo.bind(this);
     this.deleteChild = this.deleteChild.bind(this);
@@ -43,7 +39,7 @@ class PersonalInfo extends Component {
 
   fetchUserInfo(action) {
     if (!action) this.setState({ loading: true });
-
+      
     if (action === 'child') this.setState({ loadingChild: true });
 
     fetch(`${API}/api/user/info.php?id=${this.props.user_id}`)
@@ -56,14 +52,6 @@ class PersonalInfo extends Component {
   // делаем запрос перед рендером
   componentDidMount() {
     this.fetchUserInfo();
-  }
-  // делаем запрос перед получением пропсов
-  componentWillReceiveProps() {
-    this.fetchUserInfo();
-  }
-
-  openModal(text) {
-    this.setState({ modal: true, modalText: text });
   }
 
   handleDateChange = date => this.setState({ selectedDate: date.format() });
@@ -106,20 +94,18 @@ class PersonalInfo extends Component {
         success: function (res) {
           self.fetchUserInfo('child');
           self.setState({ newChildInput: false, childBirthyear: '', childName: '' });
-          self.setState({ snackBar: true, snackBarMessage: 'Персональные данные были обновлены.', snackBarVariant: 'success' })
+          self.props.enqueueSnackbar('Персональные данные были обновлены', { variant: 'success' });
           console.log(res);
         },
-        error: function (err) {
-          self.setState({ snackBar: true, snackBarMessage: 'Что-то пошло не так, попробуйте обновить страницу.', snackBarVariant: 'error' })
+        error: function() {
+          self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' });
         }
       });
-      setTimeout(() => this.setState({ snackBar: false }), 5700);
     } else {
       if (this.state.newChildInput) {
-        this.setState({ snackBar: true, snackBarMessage: 'Нужно заполнить все поля.', snackBarVariant: 'warning' })
+        this.props.enqueueSnackbar('Нужно заполнить все поля', { variant: 'warning' });
         if (!this.state.childBirthyear) this.setState({ yearError: false })
         if (!this.state.childName) this.setState({ nameError: false })
-        setTimeout(() => this.setState({ snackBar: false }), 5700);
       }
     }
   }
@@ -138,14 +124,13 @@ class PersonalInfo extends Component {
       type: 'POST',
       success: function (res) {
         self.fetchUserInfo('child');
-        self.setState({ snackBar: true, snackBarMessage: 'Персональные данные были обновлены.', snackBarVariant: 'success' });
+        self.props.enqueueSnackbar('Персональные данные были обновлены', { variant: 'success' });
         console.log(res);
       },
-      error: function (err) {
-        self.setState({ snackBar: true, snackBarMessage: 'Что-то пошло не так, попробуйте обновить страницу.', snackBarVariant: 'error' })
+      error: function() {
+        self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' });
       }
     });
-    setTimeout(() => this.setState({ snackBar: false }), 5700);
   }
 
   removeInput = () => this.setState({ newChildInput: false });
@@ -182,21 +167,20 @@ class PersonalInfo extends Component {
         let response = res.result;
         switch (response) {
           case 0:
-            self.setState({ snackBar: true, snackBarMessage: 'Что-то пошло не так, попробуйте обновить страницу.', snackBarVariant: 'error' })
+            self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' });
             break;
           case 1:
             self.fetchUserInfo('update');
-            self.setState({ snackBar: true, snackBarMessage: 'Персональные данные были обновлены.', snackBarVariant: 'success' });
+            self.props.enqueueSnackbar('Персональные данные были обновлены', { variant: 'success' });
             self.addChild(e);
             break;
           default: break;
         }
       },
-      error: function (err) {
-        self.setState({ snackBar: true, snackBarMessage: 'Что-то пошло не так, попробуйте обновить страницу.', snackBarVariant: 'error' })
+      error: function() {
+        self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' });
       }
     });
-    setTimeout(() => this.setState({ snackBar: false }), 5700);
   }
 
   createInput = (label, value, name) => {
@@ -233,14 +217,6 @@ class PersonalInfo extends Component {
     }
   }
 
-  handleCloseSnackBar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    this.setState({ snackBar: false });
-  };
-
   render() {
     const { loading, userInfo, newChildInput, childName, childBirthyear, nameError, yearError } = this.state;
     const { user_id, user_logged_id, user } = this.props;
@@ -271,7 +247,6 @@ class PersonalInfo extends Component {
                     <span className='user-position'>{this.createInput('Должность', userInfo.position, 'position')}</span>
                   </Fragment>
                 )}
-
 
               {user_logged_id === user_id ? (
                 <InputMask
@@ -350,8 +325,7 @@ class PersonalInfo extends Component {
               )}
           </div>
           <div className="personal-section">
-
-            
+          
               <Fragment>
                 <div className="personal-section__header">
                   <Typography variant='h6' color='primary'>Дети</Typography>
@@ -420,8 +394,6 @@ class PersonalInfo extends Component {
             {this.createInput('Области/края', userInfo.district, 'district')}
             {this.createInput('Актуальный адрес', userInfo.adress, 'adress')}
 
-
-
           </div>
           <div className="personal-section">
             <div className="personal-section__header">
@@ -446,14 +418,6 @@ class PersonalInfo extends Component {
 
           {user_logged_id === user_id ? <Btn><Button type='submit' variant='contained' color='primary' onClick={this.handleSubmit}>Обновить данные</Button></Btn> : null}
         </Form> : <Loader minHeight={400} color='primary' />}
-
-        {/* Snackbar */}
-        <SnackBar
-          snackBar={this.state.snackBar}
-          variant={this.state.snackBarVariant}
-          message={this.state.snackBarMessage}
-          handleCloseSnackBar={this.handleCloseSnackBar.bind(this)}
-        />
       </Paper >
     )
   }
@@ -563,4 +527,4 @@ const Naked = styled.div`
     margin-left: 10px;
   }
 `;
-export default PersonalInfo;
+export default withSnackbar(PersonalInfo);

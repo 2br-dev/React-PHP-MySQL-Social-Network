@@ -6,7 +6,7 @@ import API from '../functions/API';
 import Stepper from './Stepper';
 import $ from 'jquery';
 import { connect } from 'react-redux';
-import SnackBar from '../Snackbar/Snackbar';
+import { withSnackbar } from 'notistack';
 
 class NewTask extends Component {
   state = {
@@ -15,10 +15,7 @@ class NewTask extends Component {
     users: [],
     multi: [],
     text: '',
-    importance: 0,
-    snackBar: false,
-    snackBarMessage: '',
-    snackBarVariant: ''
+    importance: 0
   }
 
   componentDidMount = () => {
@@ -71,23 +68,15 @@ class NewTask extends Component {
         fetch(`${API}/api/tasks/read.php?id=${this.props.user_logged_id}`)
           .then(response => response.json())
           .then(tasks => self.props.onAddNewTask(tasks.data))
-          .then(() => self.setState({ snackBar: true, snackBarMessage: 'Задача была поставлена.', snackBarVariant: 'success' }))
+          .then(() => self.props.enqueueSnackbar('Задача была поставлена', { variant: 'success' }))
           .catch(err => console.log(err))
       },
       error: err => {
         console.log(err);
-        self.setState({ snackBar: true, snackBarMessage: 'Что-то пошло не так, попробуйте обновить страницу.', snackBarVariant: 'error' })
+        self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' })
       }
     });
   }
-
-  handleCloseSnackBar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    this.setState({ snackBar: false });
-  };
   
   render() {
     const { users, multi, selectedTime, selectedDate, text } = this.state;
@@ -115,13 +104,6 @@ class NewTask extends Component {
             handleSubmit={this.handleSubmit}
           />
         </Paper>
-        {/* Snackbar */}
-        <SnackBar
-          snackBar={this.state.snackBar}
-          variant={this.state.snackBarVariant}
-          message={this.state.snackBarMessage}
-          handleCloseSnackBar={this.handleCloseSnackBar.bind(this)}
-        />
       </Wrapper>
     )
   }
@@ -188,4 +170,4 @@ export default connect(
       dispatch({ type: 'ADD_TASK', payload: task })
     }
   })
-)(NewTask);
+)(withSnackbar(NewTask));

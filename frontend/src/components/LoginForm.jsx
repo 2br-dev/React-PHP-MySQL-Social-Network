@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import SignupForm from './SignupForm';
 import RegisterForm from './RegisterForm';
 import Header from './Header';
+import Typography from '@material-ui/core/Typography';
 import BgBubbles from './BgBubbles';
 import './css/LoginForms.css';
 
@@ -25,8 +26,12 @@ class LoginForm extends Component {
         <div className="login-screen-container">
           <p className="login-screen-greetings">Здравствуйте</p>  
           <div className="login-button-container">
-            <button className={this.state.whichForm ? 'login-screen-button login-screen-button-enabled' : 'login-screen-button'} onClick={this.changeForm}>Войти</button>
-            <button className={this.state.whichForm ? 'login-screen-button' : 'login-screen-button login-screen-button-enabled'} onClick={this.changeForm}>Зарегистрироваться</button>
+            <button className={this.state.whichForm ? 'login-screen-button login-screen-button-enabled' : 'login-screen-button'} onClick={this.changeForm}>
+              <Typography variant='button'>Войти</Typography>
+            </button>
+            <button className={this.state.whichForm ? 'login-screen-button' : 'login-screen-button login-screen-button-enabled'} onClick={this.changeForm}>
+              <Typography variant='button'>Зарегистрироваться</Typography>
+            </button>
           </div>              
           {this.state.whichForm ? <RegisterForm /> : <SignupForm />}                        
         </div>

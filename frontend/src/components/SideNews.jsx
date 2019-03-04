@@ -31,7 +31,7 @@ class SideNews extends Component {
     await this.setState({ loading: true })
     await fetch(`http://akvatory.local/api/news/read.php`)
       .then(response => response.json())
-      .then(news => this.props.getNews( news.records || [] ))
+      .then(news => this.props.getNews(news.records || []))
     await fetch(`http://akvatory.local/api/news/getcomments.php`)
       .then(response => response.json())
       .then(comments => this.setState({ comments: comments.records }))
@@ -57,6 +57,21 @@ class SideNews extends Component {
   getNoun = number => {
     number = Math.abs(number);
     number %= 100;
+    if (number >= 5 && number <= 20) return 'отметок';
+    number %= 10;
+    if (number === 1) return 'отметка';
+    if (number >= 2 && number <= 4) return 'отметки';
+    return 'отметок';
+  }
+
+  /**
+  |--------------------------------------------------
+  | Находим правильную форму склонения комментариев
+  |--------------------------------------------------
+  */
+  getCommentsNoun = number => {
+    number = Math.abs(number);
+    number %= 100;
     if (number >= 5 && number <= 20) return 'комментариев';
     number %= 10;
     if (number === 1) return 'комментарий';
@@ -70,100 +85,102 @@ class SideNews extends Component {
 
     if (this.state.news.length === 0) {
       setTimeout(() => this.setState({ news: this.props.store.news }), 0);
-    } 
+    }
 
     return (
       <Wrapper>
         <Paper>
-          {loading ? <Loader minHeight={250} color='primary' /> : 
-          <News>
-            <NewsSwitch>
-              <Typography variant='subtitle2'>Только важное </Typography>
-              <Switch color='primary' onClick={this.changeImportance.bind(this)} />
-            </NewsSwitch>
-            {/* eslint-disable-next-line */}
-            {news.length > 0 ? this.props.store.news.map((item, i) => {
+          {loading ? <Loader minHeight={250} color='primary' /> :
+            <News>
+              <NewsSwitch>
+                <Typography variant='subtitle2'>Только важное </Typography>
+                <Switch color='primary' onClick={this.changeImportance.bind(this)} />
+              </NewsSwitch>
+              {/* eslint-disable-next-line */}
+              {news.length > 0 ? this.props.store.news.map((item, i) => {
 
-              if (importance) {
-                if (item.importance === '1' && NEWS_COUNTER < 3) {
-                  NEWS_COUNTER++;
-                  return (
-                    <div key={i} className="news-item">
-                      <div className="news-item-header">
-                        <Typography variant='subtitle2'>{item.author}</Typography>
-                        <Typography variant='caption'>{item.date}</Typography>
-                      </div>
-                      <Typography variant='button' className='news-caption' onClick={() => this.goToSingleNews(item.id)}>
-                        {item.importance === '1' ? <Tooltip title='Важное!' placement="left"><WarningIcon /></Tooltip> : null}
-                        {item.title}
-                      </Typography>
-                      <div className="news-item-text">
-                        <Typography variant='body2'>{item.text}</Typography>
-                      </div>
-                      <Tooltip title="Перейти к комментариям" placement="top-start">
-                        <div
-                          onClick={() => this.goToSingleNews(item.id)}
-                          className="news-item-comment"
-                        >
-                          <FontAwesomeIcon icon='comments' />
-                          {item.comments} {this.getNoun(item.comments)}
+                if (importance) {
+                  if (item.importance === '1' && NEWS_COUNTER < 3) {
+                    NEWS_COUNTER++;
+                    return (
+                      <div key={i} className="news-item">
+                        <div className="news-item-header">
+                          <Typography variant='subtitle2'>{item.author}</Typography>
+                          <Typography variant='caption'>{item.date}</Typography>
                         </div>
-                      </Tooltip>
-                    </div>
-                  )
-                }
-              } else {
-                while (i < 3) {
-                  return (
-                    <div key={i} className="news-item">
-                      <div className="news-item-header">
-                        <Typography variant='subtitle2'>{item.author}</Typography>
-                        <Typography variant='caption'>{item.date}</Typography>
-                      </div>
-                      <Typography variant='button' className='news-caption' onClick={() => this.goToSingleNews(item.id)}>
-                        {item.importance === '1' ? <Tooltip title='Важное!' placement="top-start"><WarningIcon /></Tooltip> : null}
-                        {item.title}
-                      </Typography>
-                      <div className="news-item-text">
-                        <Typography variant='body2'>{item.text}</Typography>
-                      </div>
-                      <Tooltip title="Перейти к комментариям" placement="top-start">
-                        <div
-                          onClick={() => this.goToSingleNews(item.id)}
-                          className="news-item-comment"
-                        >
-                          <FontAwesomeIcon icon='comments' />
-                          {item.comments} {this.getNoun(item.comments)}
+                        <Typography variant='button' className='news-caption' onClick={() => this.goToSingleNews(item.id)}>
+                          {item.importance === '1' ? <Tooltip title='Важное!' placement="left"><WarningIcon /></Tooltip> : null}
+                          {item.title}
+                        </Typography>
+                        <div className="news-item-text">
+                          <Typography variant='body2'>{item.text}</Typography>
                         </div>
-                      </Tooltip>
-                    </div>
-                  )
+                        <Tooltip title="Перейти к комментариям" placement="top-start">
+                          <div
+                            onClick={() => this.goToSingleNews(item.id)}
+                            className="news-item-comment"
+                          >
+                            <FontAwesomeIcon icon='comments' />
+                            {item.comments} {this.getCommentsNoun(item.comments)}
+                          </div>
+                        </Tooltip>
+                      </div>
+                    )
+                  }
+                } else {
+                  while (i < 3) {
+                    return (
+                      <div key={i} className="news-item">
+                        <div className="news-item-header">
+                          <Typography variant='subtitle2'>{item.author}</Typography>
+                          <Typography variant='caption'>{item.date}</Typography>
+                        </div>
+                        <Typography variant='button' className='news-caption' onClick={() => this.goToSingleNews(item.id)}>
+                          {item.importance === '1' ? <Tooltip title='Важное!' placement="top-start"><WarningIcon /></Tooltip> : null}
+                          {item.title}
+                        </Typography>
+                        <div className="news-item-text">
+                          <Typography variant='body2'>{item.text}</Typography>
+                        </div>
+                        <Tooltip title="Перейти к комментариям" placement="top-start">
+                          <div
+                            onClick={() => this.goToSingleNews(item.id)}
+                            className="news-item-comment"
+                          >
+                            <FontAwesomeIcon icon='comments' />
+                            {item.comments} {this.getCommentsNoun(item.comments)}
+                          </div>
+                        </Tooltip>
+                      </div>
+                    )
+                  }
                 }
+              }) :
+                <NoNews><Typography variant='h6'>нет новостей</Typography></NoNews>
               }
-            }) : 
-              <NoNews><Typography variant='h6'>нет новостей</Typography></NoNews>
-            }
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={() => { this.props.handleChangeSection('news'); window.scrollTo(0, 0) }}
-            >
-              КО ВСЕМ НОВОСТЯМ
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={() => { this.props.handleChangeSection('news'); window.scrollTo(0, 0) }}
+              >
+                КО ВСЕМ НОВОСТЯМ
             </Button>
 
-            {singleNews
-              ?
-              <SingleNews
-                closeNews={this.closeNews.bind(this)}
-                singleNewsId={singleNewsId}
-                news={news}
-                user={this.props.user}
-                comments={comments}
-                reloadComponent={this.reloadComponent}
-              />
-              : null}
+              {singleNews
+                ?
+                <SingleNews
+                  closeNews={this.closeNews.bind(this)}
+                  singleNewsId={singleNewsId}
+                  news={news}
+                  user={this.props.user}
+                  comments={comments}
+                  getNoun={this.getNoun}
+                  getCommentsNoun={this.getCommentsNoun}
+                  reloadComponent={this.reloadComponent}
+                />
+                : null}
 
-          </News>}
+            </News>}
         </Paper>
       </Wrapper>
     )
@@ -234,6 +251,6 @@ export default connect(
   dispatch => ({
     getNews: (news) => {
       dispatch({ type: 'FETCH_NEWS', payload: news })
-    }  
+    }
   })
 )(SideNews);

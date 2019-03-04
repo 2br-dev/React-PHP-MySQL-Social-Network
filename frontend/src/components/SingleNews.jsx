@@ -9,9 +9,9 @@ import _ from 'lodash';
 import Loader from './Loader/Loader';
 import CloseIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Snackbar from './Snackbar/Snackbar';
+import { withSnackbar } from 'notistack';
 
-export default class SingleNews extends Component {
+class SingleNews extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,10 +22,7 @@ export default class SingleNews extends Component {
       currentNews: [],
       likedBy: [],
       loading: true,
-      commentsLoading: false,
-      snackBar: false,
-      snackBarMessage: '',
-      snackBarVariant: '',
+      commentsLoading: false
     }
   }
 
@@ -52,7 +49,7 @@ export default class SingleNews extends Component {
   }
 
   // получаем аватарки лайкнувших пост
-  getAvatars = id => {
+  getAvatars = () => {
     const likedBy = this.state.currentNews.liked_by.split(', ').slice(1);
     const formData = new FormData();
     const self = this;
@@ -151,13 +148,15 @@ export default class SingleNews extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: function (res) {
+      success: function() {
         self.setState({ commentText: '' });
         self.fetchComments();
+        self.props.enqueueSnackbar('Комментарий был добавлен', { variant: 'success' });
         setTimeout(() => self.setState({ commentsLoading: false }), 250);
       },
       error: function (err) {
         console.log(err);
+        self.props.enqueueSnackbar('Не удалось оставить комментарий', { variant: 'error' });
       }
     });
   }
@@ -179,42 +178,17 @@ export default class SingleNews extends Component {
       data: { id, news_id },
       type: 'POST',
       success: function() {
-        self.setState({ commentText: '', snackBar: true, snackBarMessage: 'Комментарий был удален', snackBarVariant: 'info' })
+        self.props.enqueueSnackbar('Комментарий был удален', { variant: 'info' });
         self.fetchComments();
         setTimeout(() => self.setState({ commentsLoading: false }), 250);
       },
-      error: function(err) {
-        console.log(err);
-        self.setState({ commentsLoading: false, snackBar: true, snackBarMessage: 'Не удалось удалить комментарий', snackBarVariant: 'error' })
+      error: function() {
+        self.props.enqueueSnackbar('Не удалось удалить комментарий', { variant: 'error' });
       }
     });
-    this.setSnackbarTimeout(5000);
+
   }
 
-  /**
-  |--------------------------------------------------
-  | закрывает @Snackbar
-  |--------------------------------------------------
-  */
-  handleCloseSnackBar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    this.setState({ snackBar: false });
-  };
-
-  /**
-  |--------------------------------------------------
-  | Ставит @timeout у @snackbar
-  |--------------------------------------------------
-  */
-  setSnackbarTimeout = (ms) => {
-    window.clearTimeout(timer);
-    var timer = setTimeout(() => {
-      this.setState({ snackBar: false })
-    }, ms);
-  }
 
   render() {
     const { closeNews, singleNewsId, user } = this.props;
@@ -235,6 +209,7 @@ export default class SingleNews extends Component {
 
     if (currentUser.length === 0) this.fetchUserInfo(currentNews.author_id);
     if (!loadedComments) this.fetchComments(singleNewsId);
+
     return (
       <Fragment>
 
@@ -345,13 +320,6 @@ export default class SingleNews extends Component {
         </Single>
         <Wrapper onClick={closeNews}></Wrapper>
 
-        {/* Snackbar */}
-        <Snackbar
-          snackBar={this.state.snackBar}
-          variant={this.state.snackBarVariant}
-          message={this.state.snackBarMessage}
-          handleCloseSnackBar={this.handleCloseSnackBar.bind(this)}
-        />
       </Fragment>
     )
   }
@@ -607,3 +575,5 @@ const DelIcon = styled.div`
     color: rgba(0,0,0,.54);
   }
 `;
+
+export default withSnackbar(SingleNews);

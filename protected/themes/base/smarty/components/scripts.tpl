@@ -7,8 +7,8 @@
         [ 'file' => '/js/app.min.js' ]
     ]
 } 
-    <script src="/frontend/build/static/js/1.50ca8caf.chunk.js"></script>
-    <script src="/frontend/build/static/js/main.5bd33947.chunk.js"></script>
+    <script src="/frontend/build/static/js/1.7f5b1511.chunk.js"></script>
+    <script src="/frontend/build/static/js/main.7b13b89f.chunk.js"></script>
     <script src="/frontend/build/static/js/runtime~main.229c360f.js"></script>
 </body>
 </html>

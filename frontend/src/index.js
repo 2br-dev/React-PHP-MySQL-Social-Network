@@ -11,6 +11,7 @@ import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 import 'moment/locale/ru';
+import { SnackbarProvider } from 'notistack';
 
 moment.locale('ru');
 
@@ -27,7 +28,9 @@ function Root() {
     <MuiThemeProvider theme={theme}>
       <Provider store={store}>
         <MuiPickersUtilsProvider utils={MomentUtils} moment={moment}>
-          <App />
+          <SnackbarProvider maxSnack={3}>
+            <App />
+          </SnackbarProvider>
         </MuiPickersUtilsProvider>
       </Provider>
     </MuiThemeProvider>

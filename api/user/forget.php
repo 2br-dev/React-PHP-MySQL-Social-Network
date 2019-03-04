@@ -6,19 +6,14 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
  
-// get database connection
 include_once '../config/database.php';
 include_once '../../define.php'; 
-// instantiate product object
 include_once '../objects/user.php';
  
 $database = new Database();
 $db = $database->getConnection();
  
 $user = new User($db);
- 
-// get posted data
-$data = json_decode(file_get_contents("php://input"));
  
 $credentials 		= __post('credentials');
 $servername     = DB_HOST;
@@ -110,7 +105,7 @@ if (isset($credentials)) {
        // Create a message
       $message = (new \Swift_Message($subject))
        ->setFrom(['prog@2-br.ru' => 'akvatory-robot'])
-       ->setTo("serallek@gmail.com")
+       ->setTo($user_email)
        ->setBody($body, 'text/html');
       
       if ($mailer->send($message)) {

@@ -10,10 +10,10 @@ import { Paper, Button, Typography, TextField, Tooltip } from '@material-ui/core
 import { connect } from 'react-redux';
 import defaultAvatar from './img/photos/images.png';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Snackbar from './Snackbar/Snackbar';
 import Loader from './Loader/Loader';
 import ConfirmDelete from './News/ConfirmDelete';
 import WarningIcon from '@material-ui/icons/Warning';
+import { withSnackbar } from 'notistack';
 
 class News extends Component {
   constructor(props) {
@@ -30,9 +30,6 @@ class News extends Component {
       singleNewsId: '',
       invalidText: false,
       invalidTopic: false,
-      snackBar: false,
-      snackBarMessage: '',
-      snackBarVariant: '',
       loading: true,
       confirmDelete: false,
       preparedNewsId: ''
@@ -150,25 +147,24 @@ class News extends Component {
             newNewsText: '', 
             newNewsTopic: ''
           });
-          self.setState({ snackBar: true, snackBarMessage: 'Добавлена новая новость', snackBarVariant: 'success' })
+          self.props.enqueueSnackbar('Добавлена новая новость', { variant: 'success' })
         },
         error: function (err) {
           console.log(err);
-          self.setState({ snackBar: true, snackBarMessage: 'Не удалось добавить новость', snackBarVariant: 'error' })
+          self.props.enqueueSnackbar('Не удалось добавить новость', { variant: 'error' })
         }
       });
-      this.setSnackbarTimeout(5000);
+
     } else {
-      self.setState({ snackBar: true, snackBarMessage: 'Необходимо заполнить все поля', snackBarVariant: 'warning' })
+      self.props.enqueueSnackbar('Необходимо заполнить все поля', { variant: 'warning' })
       if (self.state.newNewsTopic === '') this.setState({ invalidTopic: true });
       if (self.state.newNewsText === '') this.setState({ invalidText: true });
-      this.setSnackbarTimeout(5000);
     }
   }
 
   changeImportance = () => this.setState({ newNewsImportance: !this.state.newNewsImportance });
 
-  removeNews = id => {
+  removeNews = () => {
     this.setState({ editing: true });
     var self = this;
     const formData = new FormData();
@@ -180,17 +176,16 @@ class News extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: function (res) {
+      success: function() {
         self.reloadComponent();
         self.setState({ editing: '', preparedNewsId: '', confirmDelete: false  });
-        self.setState({ snackBar: true, snackBarMessage: 'Новость была удалена', snackBarVariant: 'info' })
+        self.props.enqueueSnackbar('Новость была удалена', { variant: 'info' });
       },
-      error: function (err) {
+      error: function(err) {
         console.log(err);
-        self.setState({ snackBar: true, snackBarMessage: 'Не удалось удалить новость', snackBarVariant: 'error' })
+        self.props.enqueueSnackbar('Не удалось удалить новость', { variant: 'error' });
       }
     });
-    this.setSnackbarTimeout(5000);
   };
 
   prepareNews = id => {
@@ -215,22 +210,20 @@ class News extends Component {
         processData: false,
         contentType: false,
         type: 'POST',
-        success: function (res) {
+        success: function() {
           self.reloadComponent();
           setTimeout(() => self.setState({ editing: '' }), 200);
-          self.setState({ snackBar: true, snackBarMessage: 'Новость была изменена', snackBarVariant: 'success' })
+          self.props.enqueueSnackbar('Новость была изменена', { variant: 'info' });
         },
         error: function (err) {
           console.log(err);
-          self.setState({ snackBar: true, snackBarMessage: 'Не удалось изменить новость', snackBarVariant: 'error' })
+          self.props.enqueueSnackbar('Не удалось изменить новость', { variant: 'error' });
         }
       });
-      this.setSnackbarTimeout(5000);
     } else {
-      self.setState({ snackBar: true, snackBarMessage: 'Нужно заполнить всё поля', snackBarVariant: 'warning' })
+      self.props.enqueueSnackbar('Нужно заполнить всё поля', { variant: 'warning' });
       if (self.state.newNewsTopic === '') this.setState({ invalidTopic: true });
       if (self.state.newNewsText === '') this.setState({ invalidText: true });
-      this.setSnackbarTimeout(5000);
     }
   }
 
@@ -241,7 +234,6 @@ class News extends Component {
       if (this.state.editing === '') this.setState({ singleNews: true, singleNewsId: id });
     }, 100)
   }
-
 
   // закрываем новость 
   closeNews = () => {
@@ -254,21 +246,6 @@ class News extends Component {
       confirmDelete: false
     });
     this.reloadComponent('close');
-  }
-
-  handleCloseSnackBar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    this.setState({ snackBar: false });
-  };
-
-  setSnackbarTimeout = (ms) => {
-    window.clearTimeout(timer);
-    var timer = setTimeout(() => {
-      this.setState({ snackBar: false })
-    }, ms);
   }
 
   /**
@@ -335,7 +312,7 @@ class News extends Component {
   }
 
   render() {
-    const { news, invalidText, invalidTopic, newNews, loading, newNewsText, newNewsTopic, editing, singleNews, singleNewsId, comments, newNewsImportance } = this.state;
+    const { news, invalidText, invalidTopic, newNews, loading, newNewsText, newNewsTopic, editing, singleNews, singleNewsId, newNewsImportance } = this.state;
     const { user } = this.props;
     let avatar = null;
     window.location.host.includes('localhost') ? avatar = user.avatar : avatar = `frontend/public/${user.avatar}`;
@@ -482,13 +459,6 @@ class News extends Component {
           removeNews={this.removeNews.bind(this)}
         /> : null}
 
-        {/* Snackbar */}
-        <Snackbar
-          snackBar={this.state.snackBar}
-          variant={this.state.snackBarVariant}
-          message={this.state.snackBarMessage}
-          handleCloseSnackBar={this.handleCloseSnackBar.bind(this)}
-        />
       </Paper>
     )
   }
@@ -605,4 +575,4 @@ export default connect(
       dispatch({ type: 'ADD_NEWS', payload: news })
     }
   })
-)(News);
+)(withSnackbar(News));
