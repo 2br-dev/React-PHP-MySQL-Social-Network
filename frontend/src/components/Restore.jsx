@@ -104,7 +104,6 @@ class Restore extends Component {
               label="Пароль"
               margin='dense'
               name='pw'
-              error={this.state.invalidPass}
               value={this.state.pw}
               onChange={this.handleChange}
               error={this.state.pw.length > 0 && this.state.pw.length < 8}

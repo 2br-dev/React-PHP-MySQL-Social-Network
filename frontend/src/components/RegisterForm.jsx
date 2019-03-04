@@ -48,7 +48,6 @@ class RegisterForm extends Component {
 
   validateEmail(email) {
     // eslint-disable-next-line
-    console.log(email)
     const regExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     regExp.test(email) ? this.setState({ isEmailValid: true }) : this.setState({ isEmailValid: false });
   }
@@ -137,7 +136,6 @@ class RegisterForm extends Component {
               label="Пароль"
               margin='dense'
               name='password'
-              error={this.state.invalidPass}
               value={this.state.password}
               onChange={this.handleChange}
               error={this.state.entered && this.state.password.length < 8}

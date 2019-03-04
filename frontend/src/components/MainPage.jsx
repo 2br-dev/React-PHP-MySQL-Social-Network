@@ -10,6 +10,7 @@ import Tasks from './Tasks/Tasks';
 import News from './News';
 import Nav from './Navigation/Navigation';
 import styled from 'styled-components';
+import Chat from './Chat/Chat';
 
 class MainPage extends Component {
   constructor(props) {
@@ -73,7 +74,7 @@ class MainPage extends Component {
       case `id${this.state.user_id}`:
         return <PersonalInfo user_id={this.state.user_id} user_logged_id={this.state.user_logged_id} user={this.state.user} />
       case 'messages':
-        return 'messages';
+        return <Chat user={this.state.user} />;
       case 'news':
         return <News user={this.state.user} />;
       case 'tasks':
