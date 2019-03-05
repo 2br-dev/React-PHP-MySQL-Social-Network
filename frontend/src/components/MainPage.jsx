@@ -11,6 +11,7 @@ import News from './News';
 import Nav from './Navigation/Navigation';
 import styled from 'styled-components';
 import Chat from './Chat/Chat';
+import { connect } from 'react-redux';
 
 class MainPage extends Component {
   constructor(props) {
@@ -64,8 +65,8 @@ class MainPage extends Component {
   componentDidMount() {
     fetch(`http://akvatory.local/api/user/read_one.php?id=${this.state.user_id}`)
       .then(response => response.json())
-      .then(user => this.setState({ user: user, initialUser: user }))
-      .then(() => this.setState({ loading: false }))
+      .then(user => this.setState({ user: user, initialUser: user, loading: false }))
+      .then(() => this.props.getUser(this.state.initialUser))
       .catch(err => console.log(err))
   }
 
@@ -134,4 +135,13 @@ const MainSection = styled.div`
   justify-content: space-between;
 `;
 
-export default MainPage;
+export default connect(
+  state => ({
+    store: state,
+  }),
+  dispatch => ({
+    getUser: user => {
+      dispatch({ type: 'LOGGED_IN', payload: user })
+    }
+  })
+)(MainPage);

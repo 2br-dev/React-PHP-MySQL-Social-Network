@@ -10,12 +10,13 @@ import NoChats from './NoChats';
 class Chat extends Component {
   state = {
     loading: true,
+    user: []
   }
 
-  componentDidMount = () => {
+  fetchChats(id) {
     const formData = new FormData();
     const self = this;
-    formData.append('id', `id${this.props.user.id}`);
+    formData.append('id', id); 
 
     $.ajax({
       url: `${API}/api/chat/read.php`,
@@ -25,18 +26,29 @@ class Chat extends Component {
       type: 'POST',
       success: function (res) {
         self.setState({ loading: false });
-        if (res.chats) self.props.getChats(res.chats);
+
+        if (res.chats) {
+          let result = res.chats;
+          result.forEach(item => {
+            item.users = item.users.replace(id, '').replace(',', '').trim();
+          }) 
+          self.props.getChats(res.chats);
+        }
       },
-      error: function (err) {
-        console.log(err);
-      }
+      error: err => console.log(err)
     });
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, user } = this.state;
     const chats = this.props.store.chats;
+    const userStore = this.props.store.user;
 
+    if (userStore.length > 0 && user.length === 0) {
+      this.setState({ user: userStore });
+      this.fetchChats(`id${userStore[0].id}`);
+    }
+    
     return (
       <Paper>
 
@@ -46,7 +58,8 @@ class Chat extends Component {
           <Dialogues
             user_id={this.props.user.id}
           />
-        : <Loader minHeight={300} color='primary' />}
+          : <Loader minHeight={300} color='primary' />}
+
       </Paper>
     )
   }

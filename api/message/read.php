@@ -7,45 +7,46 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
  
 // include database and object files
 include_once '../config/database.php';
-include_once '../objects/chat.php';
+include_once '../objects/message.php';
 
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
 
 // prepare product object
-$chat = new Chat($db);
+$message = new Message($db);
 
-$chat->users = __post('user_id');
+$message->chat = __post('chat');
 // read the details of product to be edited
-$stmt = $chat->read();
+$stmt = $message->readByChat();
 $num = $stmt->rowCount();
 
 if ($num > 0) {
-  $chat_arr = array();
-  $chat_arr["chats"] = array();
+  $msg_arr = array();
+  $msg_arr["messages"] = array();
 
   while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     extract($row);
 
-    $message = Q("SELECT * FROM `#_mdd_messages` WHERE `id` = ?s", array($last_msg))->row();
-
-    $chat_item = array(
-      "id"            => $id,
-      "users"         => $users,
-      "message"       => $message
+    $msg_item = array(
+      "user"       => $user,
+      "date"       => $date,
+      "body"       => $body,
+      "time"       => $time,
+      "readed"     => $readed,
+      "edited"     => $edited
     );
 
-    array_push($chat_arr["chats"], $chat_item);
+    array_push($msg_arr["messages"], $msg_item);
   }
 
   http_response_code(200);
 
   // make it json format
-  echo json_encode($chat_arr);
+  echo json_encode($msg_arr);
 } else {
 
   // tell the user product does not exist
-  echo json_encode(array('noChats' => 1));
+  echo json_encode(array('noMessages' => 1));
 }
  
