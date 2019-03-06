@@ -28,4 +28,30 @@ class Chat{
 
         return $stmt;
     }
+
+    function addChat()
+    {
+        // query to insert record
+        $query = "INSERT INTO " . $this->table_name . "
+           SET users=:users, last_msg=:last_msg";
+
+        // prepare query
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->users = htmlspecialchars(strip_tags($this->users));
+        $this->last_msg = htmlspecialchars(strip_tags($this->last_msg));
+
+        // bind values
+        $stmt->bindParam(":users", $this->users);
+        $stmt->bindParam(":last_msg", $this->last_msg);  
+
+        // execute query
+        if ($stmt->execute()) {
+            $chat_id = Q("SELECT `id` FROM `#_mdd_chats` ORDER BY `id` DESC LIMIT 1")->row('id');
+            echo json_encode(array("message" => "Chat was created.", "chat_id" => $chat_id));
+            return true;
+        }
+        return false;
+    }
 }

@@ -11,19 +11,24 @@ import { Transition, animated } from 'react-spring/renderprops';
 import ChatRoom from './ChatRoom';
 
 class FriendList extends Component {
-  state = {
-    friends: [],
-    initial: [],
-    searchValue: '',
-    loading: true,
-    documentTitle: document.title,
-    completed: false,
-    openRoom: false,
-    index: 1,
-    initialAnimation: false,
-    direction: true
-  }
+  constructor(props){
+    super(props);
+    this.state = {
+      friends: [],
+      initial: [],
+      searchValue: '',
+      loading: true,
+      documentTitle: document.title,
+      completed: false,
+      openRoom: false,
+      index: 1,
+      initialAnimation: false,
+      direction: true
+    }
 
+    this.rebuildList = this.rebuildList.bind(this);
+  }
+    
   componentDidMount() {
     fetch(`${API}/api/user/read.php`)
       .then(response => response.json())
@@ -77,7 +82,8 @@ class FriendList extends Component {
     if (chat) {
       this.props.openChat(chat, friend);
     } else {
-      this.props.closeChat();
+      this.rebuildList(this.props.store.chats);
+      setTimeout(() => this.props.closeChat(friend), 570);
     }
 
     this.setState({ direction: !this.state.direction });
@@ -160,8 +166,7 @@ class FriendList extends Component {
 }
 
 const FriendWrapper = styled.div`
-  height: 90vh;
-  max-height: calc(100vh - 450px);
+  height: 432px;
   overflow: auto;
   overflow-x: hidden;
   position: relative;
@@ -190,8 +195,8 @@ export default connect(
     openChat: (chat, friend) => {
       dispatch({ type: 'OPEN_CHAT', payload: [chat, friend] })
     },
-    closeChat: () => {
-      dispatch({ type: 'CLOSE_CHAT', payload: null })
+    closeChat: (friend) => {
+      dispatch({ type: 'CLOSE_CHAT', payload: [null, friend] })
     },
   })
 )(FriendList);

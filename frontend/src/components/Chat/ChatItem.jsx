@@ -49,7 +49,7 @@ function Friend(props) {
 
   return (
     <ListItem 
-      onClick={() => props.openRoom(props.friend.message.chat || 0, props.friend)}
+      onClick={() => props.openRoom(props.friend.hasOwnProperty('message') ? props.friend.message.chat : 0, props.friend)}
       button 
       TouchRippleProps={{ classes: { child: 'touch-ripple' }}} 
     >

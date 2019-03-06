@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-03-06 10:02:50
+/* Smarty version 3.1.32, created on 2019-03-06 14:52:52
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\system\controll.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5c7f709a706349_41691660',
+  'unifunc' => 'content_5c7fb4949f92d7_38442219',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5c7f709a706349_41691660 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5c7fb4949f92d7_38442219 (Smarty_Internal_Template $_smarty_tpl) {
 ?><label class="controll<?php if ($_smarty_tpl->tpl_vars['addclass']->value) {?> <?php echo $_smarty_tpl->tpl_vars['addclass']->value;
 }?>"<?php if ($_smarty_tpl->tpl_vars['id']->value) {?> id="<?php echo $_smarty_tpl->tpl_vars['id']->value;?>
 "<?php }

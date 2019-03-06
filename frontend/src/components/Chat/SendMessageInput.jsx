@@ -6,22 +6,24 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Send from '@material-ui/icons/Send';
 import Tooltip from '@material-ui/core/Tooltip';
 
-export default function SendMessageInput() {
+export default function SendMessageInput(props) {
   return (
-    <Container onSubmit={() => alert('submit')}>
+    <Container onSubmit={props.sendMessage}>
       <TextField
         placeholder="Напишите сообщение..."
         fullWidth
         autoFocus
         margin='dense'
         variant="filled"
+        onChange={props.handleNewMessage}
+        value={props.message}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
               <Tooltip title='Отправить сообщение' position='top'>
                 <IconButton
                   aria-label="Отправить сообщение"
-                  onClick={() => alert('submit')}
+                  onClick={props.sendMessage}
                 >
                   <Send />
                 </IconButton>
