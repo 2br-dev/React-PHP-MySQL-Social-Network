@@ -1,11 +1,23 @@
 import React from 'react';
 import NoMessages from './NoMessages';
 import { connect } from 'react-redux';
+import Message from './Message';
 
 function Messages(props) {
+  const { messages } = props.store;
+
   return (
     <div>
-      {props.store.messages.length === 0 ? <NoMessages /> : 'messages'}
+      {messages.length !== 0 ? 
+        messages.map(message => 
+          <Message 
+            key={message.id} 
+            message={message} 
+            editMessage={props.editMessage}
+            handleDelete={props.handleDelete}
+          />
+        )
+      : <NoMessages />}
     </div>
   )
 }

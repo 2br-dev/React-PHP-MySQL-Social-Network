@@ -9,10 +9,15 @@ import defaultAvatar from '../img/photos/images.png';
 import Messages from './Messages';
 import Loader from '../Loader/Loader';
 import SendMessageInput from './SendMessageInput';
+import EditMessageInput from './EditMessageInput';
+import DeleteModal from './DeleteModal';
 
 class ChatRoom extends Component {
   state = {
-    loading: true
+    loading: true,
+    editing: false,
+    editText: '',
+    deleting: false,
   }
 
   componentDidMount = () => {
@@ -38,9 +43,16 @@ class ChatRoom extends Component {
     });
 
   }
-  
+
+  handleEdit = (e) => this.setState({ editText: e.target.value });
+  editMessage = (message) => { if(!this.state.editing) this.setState({ editing: !this.state.editing, editText: message })};
+  closeEditing = () =>  this.setState({ editing: false, editText: '' });
+
+  handleDelete = () => this.setState({ deleting: true });
+  closeDelete = () =>  this.setState({ deleting: false });
+
   render() {
-    const { loading } = this.state;
+    const { loading, editing, deleting } = this.state;
     const { room } = this.props.store;
 
     let avatar = null;
@@ -65,9 +77,21 @@ class ChatRoom extends Component {
           </div>
         </RoomHeader>
 
-        {loading ? <Loader minHeight={250} color='primary' /> : <Messages />}
+        {loading ? <Loader minHeight={250} color='primary' /> : <Messages 
+          editMessage={this.editMessage.bind(this)} 
+          handleDelete={this.handleDelete.bind(this)}
+        />}
 
+        {editing ? <EditMessageInput 
+          closeEditing={this.closeEditing.bind(this)} 
+          message={this.state.editText} 
+          handleEdit={this.handleEdit.bind(this)}
+        /> : null}
         <SendMessageInput />
+
+        {deleting ? <DeleteModal 
+          closeDelete={this.closeDelete.bind(this)}
+        /> : null}
       </Room>
     )
   }

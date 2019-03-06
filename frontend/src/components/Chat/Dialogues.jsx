@@ -84,7 +84,7 @@ class FriendList extends Component {
 
     setTimeout(() => this.setState(state => ({
       index: state.index === 1 ? 0 : 1,
-    })), 0)
+    })), 300)
   }
 
   /**
@@ -107,34 +107,6 @@ class FriendList extends Component {
           searchValue={this.searchValue}
         />
         <List>
-          {this.state.friends.map(friend =>
-            <ChatItem
-              openRoom={this.openRoom.bind(this)}
-              key={friend.id}
-              friend={friend}
-            />
-          )}
-          {this.state.friends.map(friend =>
-            <ChatItem
-              openRoom={this.openRoom.bind(this)}
-              key={friend.id}
-              friend={friend}
-            />
-          )}
-          {this.state.friends.map(friend =>
-            <ChatItem
-              openRoom={this.openRoom.bind(this)}
-              key={friend.id}
-              friend={friend}
-            />
-          )}
-          {this.state.friends.map(friend =>
-            <ChatItem
-              openRoom={this.openRoom.bind(this)}
-              key={friend.id}
-              friend={friend}
-            />
-          )}
           {this.state.friends.map(friend =>
             <ChatItem
               openRoom={this.openRoom.bind(this)}
@@ -170,12 +142,14 @@ class FriendList extends Component {
           :
           <FriendWrapper>
             <Transition
-              native
+              reset
               unique
+              native
               items={index}
-              from={this.state.initialAnimation ? { transform: this.getDirection(!direction), position: 'absolute' } : {}}
+              from={this.state.initialAnimation ? { transform: this.getDirection(direction) } : { zIndex: 1 }}
               enter={{ transform: 'translateX(0%)' }}
-              leave={{ transform: this.getDirection(direction) }}>
+              leave={{ transform: this.getDirection(!direction) }}
+            >
               {index => this.pages[index]}
             </Transition>
           </FriendWrapper>

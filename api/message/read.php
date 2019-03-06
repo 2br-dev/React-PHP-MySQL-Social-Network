@@ -29,6 +29,7 @@ if ($num > 0) {
     extract($row);
 
     $msg_item = array(
+      "id"         => $id,
       "user"       => $user,
       "date"       => $date,
       "body"       => $body,
