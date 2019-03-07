@@ -16,10 +16,14 @@ export default function reducing(state = [], action) {
       newState = _.concat(newState, currentChat)
       return newState
     case 'EDIT_MESSAGE':
-      let editedState = state.filter(chat => chat.message.id !== action.payload);
-      let editedMessage = state.find(chat => chat.message.id === action.payload);
-      editedMessage.message.body = action.body;
-      editedState = _.concat(editedState, editedMessage)
+      let editedState = state.filter(chat => chat.message.id !== action.payload[0]);
+      let editedMessage = state.find(chat => chat.message.id === action.payload[0]);
+      
+      if (editedMessage) {
+        editedMessage.message.body = action.payload[1];
+        editedState = _.concat(editedState, editedMessage)
+      }
+      
       return editedState
     default:
       return state

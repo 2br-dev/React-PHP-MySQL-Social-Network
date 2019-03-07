@@ -38,12 +38,12 @@ function Friend(props) {
     |--------------------------------------------------
     */
     if (!moment(fromDayStart).isSame(dateFromNow, 'day')) {
-      return <Time>{props.friend.id === props.friend.message.user ? icon : null}<Typography variant="subtitle2" color='primary'>{moment(date, "DD.MM.YYYY").calendar().slice(0,-4)} {time}</Typography></Time>
+      return <Time>{/* props.friend.id === props.friend.message.user ? icon : null */}<Typography variant="subtitle2" color='primary'>{moment(date, "DD.MM.YYYY").calendar().slice(0,-4)} {time}</Typography></Time>
       /* return <Time>{icon}<Typography variant="subtitle2" color='primary'>{moment(date).fromNow()}</Typography></Time> */
     }
 
     return (
-      <Time>{props.friend.id === props.friend.message.user ? icon : null}<Typography variant="subtitle2" color='primary'>{props.friend.message.time}</Typography></Time>
+      <Time>{/* props.friend.id === props.friend.message.user ? icon : null */}<Typography variant="subtitle2" color='primary'>{props.friend.message.time}</Typography></Time>
     )
   }
   

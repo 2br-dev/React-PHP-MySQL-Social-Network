@@ -53,7 +53,7 @@ function Message(props) {
         <Typography className='message-time' variant='subtitle2' color='primary'>    
           {isToday(props.message.date)} {props.message.time}
           {props.message.edited === '1' ? ' отредактировано' : null}
-          {room.user.id !== props.message.user ? props.message.readed === '1' ? <Readed /> : <NotReaded /> : null}
+          {/* room.user.id !== props.message.user ? props.message.readed === '1' ? <Readed /> : <NotReaded /> : null */}
         </Typography>
       </Body>  
     </Container>

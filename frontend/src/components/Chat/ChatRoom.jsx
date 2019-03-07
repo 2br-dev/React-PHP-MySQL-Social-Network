@@ -204,10 +204,10 @@ class ChatRoom extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: () => {      
-        self.props.editMessage(this.state.editID, this.state.editText);
-        self.closeEditing();
-        self.getMessages();
+      success: async () => {  
+        self.closeEditing();  
+        await self.getMessages();   
+        await self.props.editMessage(self.state.editID, self.state.editText); 
       },
       error: err => console.log(err)
     });
@@ -330,7 +330,7 @@ export default connect(
       dispatch({ type: 'DELETE_MESSAGE', payload: messageID })
     },
     editMessage: (messageID, messageBody) => {
-      dispatch({ type: 'EDIT_MESSAGE', payload: messageID, body: messageBody })
+      dispatch({ type: 'EDIT_MESSAGE', payload: [messageID, messageBody] })
     },
     deleteChat: (chat_id) => {
       dispatch({ type: 'DELETE_CHAT', payload: chat_id })
