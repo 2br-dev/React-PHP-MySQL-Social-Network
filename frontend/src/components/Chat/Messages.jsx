@@ -9,7 +9,7 @@ function Messages(props) {
   
   setTimeout(() => {
     const messageContainer = document.getElementById("messages");
-    messageContainer.scrollTop = messageContainer.scrollHeight; 
+    if (messages.length !== 0 && messageContainer) messageContainer.scrollTop = messageContainer.scrollHeight; 
   }, 0);
 
   return (
@@ -20,7 +20,7 @@ function Messages(props) {
             key={message.id} 
             message={message} 
             editMessage={props.editMessage}
-            handleDelete={props.handleDelete}
+            handleDelete={() => props.handleDelete(message.id)}
           />
         )
       : <NoMessages />}

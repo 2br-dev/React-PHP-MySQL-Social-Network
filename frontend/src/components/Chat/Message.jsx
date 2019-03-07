@@ -44,7 +44,7 @@ function Message(props) {
           
           {room.user.id !== props.message.user 
             ? <span>
-                <Tooltip title='редактировать' placement='top'><Edit onClick={() => props.editMessage(props.message.body)} /></Tooltip>
+                <Tooltip title='редактировать' placement='top'><Edit onClick={() => props.editMessage(props.message.body, props.message.id)} /></Tooltip>
                 <Tooltip title='удалить' placement='top'><Delete onClick={props.handleDelete} /></Tooltip>
               </span> 
             : null}

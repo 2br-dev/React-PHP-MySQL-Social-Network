@@ -19,13 +19,21 @@ class ChatRoom extends Component {
     editing: false,
     editText: '',
     deleting: false,
-    newMessage: ''
+    newMessage: '',
+    deleteID: null,
+    editID: null
   }
+  interval = null;
 
   componentDidMount = () => {
     this.getMessages();
+    this.interval = setInterval(() => this.getMessages(), 5000);
   }
 
+  componentWillUnmount = () => {
+    clearInterval(this.interval);
+  }
+  
   getMessages = () => {
     const formData = new FormData();
     const self = this;
@@ -47,11 +55,11 @@ class ChatRoom extends Component {
   }
 
   handleEdit = (e) => this.setState({ editText: e.target.value });
-  editMessage = (message) => { if(!this.state.editing) this.setState({ editing: !this.state.editing, editText: message })};
-  closeEditing = () =>  this.setState({ editing: false, editText: '' });
+  editMessage = (message, id) => { if(!this.state.editing) this.setState({ editing: !this.state.editing, editText: message, editID: id })};
+  closeEditing = () =>  this.setState({ editing: false, editText: '', editID: null });
 
-  handleDelete = () => this.setState({ deleting: true });
-  closeDelete = () =>  this.setState({ deleting: false });
+  handleDelete = id => this.setState({ deleting: true, deleteID: id });
+  closeDelete = () =>  this.setState({ deleting: false, deleteID: null });
 
   handleNewMessage = (e) => this.setState({ newMessage: e.target.value });
 
@@ -69,6 +77,11 @@ class ChatRoom extends Component {
     if (!room.hasOwnProperty('chat_id')) {
       this.getMessageId(user[0].id, room.user.id);
       return;
+    } else {
+      fetch(`${API}/api/message/get_id.php`)
+        .then(response => response.json())
+        .then(message => localStorage.setItem('message_id', message.message_id))
+        .catch(err => console.log(err))
     }
 
     const formData = new FormData();
@@ -87,8 +100,6 @@ class ChatRoom extends Component {
     formData.append('date', message.date); 
     formData.append('time', message.time); 
 
-    console.log(message.chat);
-
     $.ajax({
       url: `${API}/api/message/send.php`,
       data: formData,
@@ -96,11 +107,12 @@ class ChatRoom extends Component {
       contentType: false,
       type: 'POST',
       success: function(res) {
-        if (!room.hasOwnProperty('chat_id')) {
+        if (!self.props.store.chats.find(chat => chat.id === message.chat)) {
           self.props.createChat(localStorage.getItem('users'), message.chat, message); 
-        }     
+        }  
         self.props.addMessage(message);
         self.setState({ newMessage: '' })
+        self.getMessages();
       },
       error: err => console.log(err)
     });
@@ -148,6 +160,59 @@ class ChatRoom extends Component {
     });
   }
 
+  /**
+  |--------------------------------------------------
+  | удаляем сообщение
+  |--------------------------------------------------
+  */
+  submitDelete = () => {
+    const formData = new FormData();
+    const self = this;
+    formData.append('id', this.state.deleteID); 
+
+    $.ajax({
+      url: `${API}/api/message/delete.php`,
+      data: formData,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      success: function(res) {
+        self.props.deleteMessage(self.state.deleteID);
+        if (self.props.store.messages.length === 0) self.props.deleteChat(self.props.store.room.chat_id);
+        self.closeDelete();
+        self.getMessages();
+      },
+      error: err => console.log(err)
+    });
+  }
+
+  /**
+  |--------------------------------------------------
+  | редактируем сообщение
+  |--------------------------------------------------
+  */
+  submitEdit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    const self = this;
+    formData.append('id', this.state.editID); 
+    formData.append('body', this.state.editText); 
+
+    $.ajax({
+      url: `${API}/api/message/edit.php`,
+      data: formData,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      success: () => {      
+        self.props.editMessage(this.state.editID, this.state.editText);
+        self.closeEditing();
+        self.getMessages();
+      },
+      error: err => console.log(err)
+    });
+  }
+
   render() {
     const { loading, editing, deleting } = this.state;
     const { room } = this.props.store;
@@ -184,6 +249,7 @@ class ChatRoom extends Component {
           closeEditing={this.closeEditing.bind(this)} 
           message={this.state.editText} 
           handleEdit={this.handleEdit.bind(this)}
+          submitEdit={this.submitEdit.bind(this)}
         /> : null}
 
         <SendMessageInput 
@@ -194,6 +260,7 @@ class ChatRoom extends Component {
 
         {deleting ? <DeleteModal 
           closeDelete={this.closeDelete.bind(this)}
+          submitDelete={this.submitDelete.bind(this)}
         /> : null}
       </Room>
     )
@@ -258,6 +325,15 @@ export default connect(
     },
     addMessage: (message) => {
       dispatch({ type: 'ADD_MESSAGE', payload: message })
+    },
+    deleteMessage: (messageID) => {
+      dispatch({ type: 'DELETE_MESSAGE', payload: messageID })
+    },
+    editMessage: (messageID, messageBody) => {
+      dispatch({ type: 'EDIT_MESSAGE', payload: messageID, body: messageBody })
+    },
+    deleteChat: (chat_id) => {
+      dispatch({ type: 'DELETE_CHAT', payload: chat_id })
     },
   })
 )(ChatRoom);

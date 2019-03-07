@@ -9,7 +9,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 export default function EditMessageInput(props) {
   return (
-    <Container onSubmit={() => alert('edited')}>
+    <Container onSubmit={props.submitEdit}>
       <TextField
         placeholder="Отредактируйте сообщение..."
         fullWidth
@@ -24,7 +24,7 @@ export default function EditMessageInput(props) {
               <Tooltip title='Редактировать' position='top'>
                 <IconButton
                   aria-label="Редактировать"
-                  onClick={() => alert('edited')}
+                  onClick={props.submitEdit}
                 >
                   <Edit />
                 </IconButton>

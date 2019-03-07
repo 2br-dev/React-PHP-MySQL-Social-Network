@@ -38,18 +38,18 @@ function Friend(props) {
     |--------------------------------------------------
     */
     if (!moment(fromDayStart).isSame(dateFromNow, 'day')) {
-      return <Time>{icon}<Typography variant="subtitle2" color='primary'>{moment(moment(date, "DD.MM.YYYY").add(1, 'day').format('L'), "DD.MM.YYYY").fromNow()}</Typography></Time>
+      return <Time>{props.friend.id === props.friend.message.user ? icon : null}<Typography variant="subtitle2" color='primary'>{moment(date, "DD.MM.YYYY").calendar().slice(0,-4)} {time}</Typography></Time>
       /* return <Time>{icon}<Typography variant="subtitle2" color='primary'>{moment(date).fromNow()}</Typography></Time> */
     }
 
     return (
-      <Time>{icon}<Typography variant="subtitle2" color='primary'>{props.friend.message.time}</Typography></Time>
+      <Time>{props.friend.id === props.friend.message.user ? icon : null}<Typography variant="subtitle2" color='primary'>{props.friend.message.time}</Typography></Time>
     )
   }
-
+  
   return (
     <ListItem 
-      onClick={() => props.openRoom(props.friend.hasOwnProperty('message') ? props.friend.message.chat : 0, props.friend)}
+      onClick={() => props.openRoom(props.friend.hasOwnProperty('message') && props.friend.message ? props.friend.message.chat : 0, props.friend)}
       button 
       TouchRippleProps={{ classes: { child: 'touch-ripple' }}} 
     >

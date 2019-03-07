@@ -10,7 +10,7 @@ export default function DeleteModal(props) {
         <Typography variant='body2'>Это действие удалит его для всех участников чата.</Typography>    
         <div>
           <Button variant='text' color='primary' onClick={props.closeDelete} >Отмена</Button>
-          <Button variant='text' color='primary'>Удалить</Button>
+          <Button variant='text' color='primary' onClick={props.submitDelete}>Удалить</Button>
         </div>       
       </Container>
       <Overlay onClick={props.closeDelete} />
