@@ -7,6 +7,7 @@ import { Typography, Paper, Switch, Button, Tooltip } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
 import { connect } from 'react-redux';
 import Loader from './Loader/Loader';
+import API from './functions/API';
 
 class SideNews extends Component {
   constructor(props) {
@@ -29,10 +30,10 @@ class SideNews extends Component {
 
   async reloadComponent() {
     await this.setState({ loading: true })
-    await fetch(`http://akvatory.local/api/news/read.php`)
+    await fetch(`${API}/api/news/read.php`)
       .then(response => response.json())
       .then(news => this.props.getNews(news.records || []))
-    await fetch(`http://akvatory.local/api/news/getcomments.php`)
+    await fetch(`${API}/api/news/getcomments.php`)
       .then(response => response.json())
       .then(comments => this.setState({ comments: comments.records }))
     await this.setState({ loading: false })

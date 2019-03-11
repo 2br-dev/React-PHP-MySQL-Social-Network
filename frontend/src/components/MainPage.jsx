@@ -12,6 +12,7 @@ import Nav from './Navigation/Navigation';
 import styled from 'styled-components';
 import Chat from './Chat/Chat';
 import { connect } from 'react-redux';
+import API from './functions/API';
 
 class MainPage extends Component {
   constructor(props) {
@@ -33,7 +34,7 @@ class MainPage extends Component {
   handleChangeUrl() { 
     this.setState({ user_id: this.state.user_logged_id });
     
-    fetch(`http://akvatory.local/api/user/read_one.php?id=${this.state.user_logged_id}`)
+    fetch(`${API}/api/user/read_one.php?id=${this.state.user_logged_id}`)
       .then(response => response.json())
       .then(user => this.setState({ user }))
       .catch(err => console.log(err))
@@ -46,7 +47,7 @@ class MainPage extends Component {
 
   handleChangeUserId(id) {
     this.setState({ user_id: id, section: `id${id}`})
-    fetch(`http://akvatory.local/api/user/read_one.php?id=${id}`)
+    fetch(`${API}/api/user/read_one.php?id=${id}`)
       .then(response => response.json())
       .then(user => this.setState({ user }))
   }
@@ -63,7 +64,7 @@ class MainPage extends Component {
   }
 
   componentDidMount() {
-    fetch(`http://akvatory.local/api/user/read_one.php?id=${this.state.user_id}`)
+    fetch(`${API}/api/user/read_one.php?id=${this.state.user_id}`)
       .then(response => response.json())
       .then(user => this.setState({ user: user, initialUser: user, loading: false }))
       .then(() => this.props.getUser(this.state.initialUser))
