@@ -12,12 +12,13 @@ include_once '../config/database.php';
 $database = new Database();
 $db = $database->getConnection();
  
-$news_id = __post('news_id');
-$who     = __post('who');
-$date    = __post('date');
-$visible = __post('visible');
-$time    = __post('time');
-$text    = __post('text');
+$news_id      = __post('news_id');
+$who          = __post('who');
+$date         = __post('date');
+$visible      = __post('visible');
+$time         = __post('time');
+$text         = __post('text');
+$author_id    = __post('author_id');
 $count = Q("SELECT `comments` FROM `#_mdd_news` WHERE `id`=?s",array($news_id))->row('comments') + 1;
    
 // update the comments
@@ -29,7 +30,8 @@ if(isset($news_id) && isset($who) && isset($text)) {
       'date' => $date,
       'visible' => $visible,
       'time' => $time,
-      'text' => $text
+      'text' => $text,
+      'author_id' => $author_id 
     ));	
 
     $sql = "UPDATE `db_mdd_news` SET `comments`='$count' WHERE `id`='$news_id'";

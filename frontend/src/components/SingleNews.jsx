@@ -141,6 +141,7 @@ class SingleNews extends Component {
     formData.append('visible', 1);
     formData.append('time', new Date().toLocaleTimeString().slice(0, -3));
     formData.append('text', this.state.commentText);
+    formData.append('author_id', this.props.user.id);
 
     $.ajax({
       url: `${API}/api/news/addcomment.php`,
@@ -278,9 +279,9 @@ class SingleNews extends Component {
               </PostActions>
 
               <NewComment>
-                <p className='newcomment-reply'>В ответ <a href={`${window.location.origin}/id${currentUser.id}`}>{currentUser.name} {currentUser.surname}</a></p>
+                <p className='newcomment-reply'>В ответ <a href={`${window.location.origin}/id${currentUser.id}`}>{currentNews.author}</a></p>
                 <div className='newcomment-input'>
-                  <Avatar style={{ background: `url(${user.avatar ? userAvatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
+                  <Avatar style={{ background: `url(${currentUser.avatar ? avatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
                   <TextArea>
                     <TextField
                       label='Комментарий'
@@ -301,7 +302,7 @@ class SingleNews extends Component {
                   return (
                     <Comments key={i}>
                       <div className='comment-header'>
-                        <Avatar style={{ background: `url(${user.avatar ? userAvatar : DefaultAvatar}) no-repeat center/cover`, marginTop: 20 }}></Avatar>
+                        <Avatar style={{ background: `url(${comment.avatar ? comment.avatar : DefaultAvatar}) no-repeat center/cover`, marginTop: 20 }}></Avatar>
                         <Typography variant='subtitle2'>{comment.who}</Typography>
                         <Typography variant='caption' className='comment-date'>{comment.date}</Typography>
                       </div>

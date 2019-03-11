@@ -24,6 +24,12 @@ if(isset($news->id)){
     
   $comments = Q("SELECT * FROM `#_mdd_comments` WHERE `news_id`=?s ORDER BY `id` DESC", array($_GET['id']))->all();
 
+  for ($i = 0; $i < count($comments); $i++) {
+    $user_data = Q("SELECT `avatar`, `name`, `surname` FROM `#_mdd_users` WHERE `id` = ?s", array($comments[$i]['author_id']))->row();
+    $comments[$i]['who'] = $user_data['name'] . " " . $user_data['surname'];
+    $comments[$i]['avatar'] = $user_data['avatar'];
+  }
+
   echo json_encode($comments);
 }
  
