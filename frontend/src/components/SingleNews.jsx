@@ -69,14 +69,14 @@ class SingleNews extends Component {
 
   // добавляем лайк
   addLike = (id, e) => {
+    const actions = document.getElementById('actions-news');
+    actions.style.pointerEvents = 'none';
     var self = this;
     e.preventDefault();
     const formData = new FormData();
     formData.append('id', id);
     formData.append('liked_by', this.props.user.id);
-    const actions = document.getElementById('actions');
-    actions.style.pointerEvents = 'none';
-
+    
     $.ajax({
       url: `${API}/api/news/addlike.php`,
       data: formData,
@@ -90,7 +90,7 @@ class SingleNews extends Component {
           .then(currentNews => self.setState({ currentNews }))
           .then(() => self.getAvatars(self.props.singleNewsId))
 
-        setTimeout(() => actions.style.pointerEvents = 'all', 500)  
+        setTimeout(() => actions.style.pointerEvents = 'all', 1000)  
       },
       error: function (err) {
         console.log(err);
@@ -100,14 +100,14 @@ class SingleNews extends Component {
 
   // убираем лайк
   removeLike = (id, e) => {
+    const actions = document.getElementById('actions-news');
+    actions.style.pointerEvents = 'none';
     const self = this;
     e.preventDefault();
     e.stopPropagation();
     const formData = new FormData();
     formData.append('id', id);
     formData.append('liked_by', this.props.user.id);
-    const actions = document.getElementById('actions');
-    actions.style.pointerEvents = 'none';
 
     $.ajax({
       url: `${API}/api/news/removelike.php`,
@@ -122,7 +122,7 @@ class SingleNews extends Component {
           .then(currentNews => self.setState({ currentNews }))
           .then(() => self.getAvatars(self.props.singleNewsId))
 
-        setTimeout(() => actions.style.pointerEvents = 'all', 500)
+        setTimeout(() => actions.style.pointerEvents = 'all', 1000)
       },
       error: function (err) {
         console.log(err);
@@ -249,7 +249,7 @@ class SingleNews extends Component {
                 })}
               </PostLikes>
 
-              <PostActions id='actions'>
+              <PostActions id='actions-news'>
                 {thisComments.length}
                 <Tooltip placement='top' title={`${thisComments.length} ${this.props.getCommentsNoun(thisComments.length)}`}>
                   <FontAwesomeIcon icon='comments' style={{ marginLeft: 10 }} />
