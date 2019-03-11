@@ -27,7 +27,7 @@ class templateRender
 
         $this->template->use_sub_dirs           = true;
         $this->template->debugging              = false;
-        $this->template->cache_modified_check   = false;
+        $this->template->cache_modified_check   = true;
         $this->template->compile_check          = true;
         $this->template->force_compile          = true;
         $this->template->error_reporting        = (defined('SYSTEM_DEBUG') && SYSTEM_DEBUG == 1) ?
