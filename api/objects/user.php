@@ -42,7 +42,7 @@ class User
 
     function read()
     {
-        $query = "SELECT * FROM `db_mdd_users` WHERE `approved` = '1' AND `name` != '' AND `visible` = 0";
+        $query = "SELECT * FROM `db_mdd_users` WHERE `approved` = '1' AND `name` != ''";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
