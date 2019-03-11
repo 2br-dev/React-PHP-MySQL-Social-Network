@@ -26,6 +26,9 @@ $news->readOne();
 if (isset($news->id)) {
     // create array
     $array = Q("SELECT * FROM `#_mdd_news` WHERE `id` = ?s", array($news->id))->row();
+    $user_data = Q("SELECT `avatar`, `name`, `surname` FROM `#_mdd_users` WHERE `id` = ?s", array($array['author_id']))->row();
+    $array['author'] = $user_data['name'] . " " . $user_data['surname'];
+    $array['avatar'] = $user_data['avatar'];
  /*    $news_arr = array(
         "id"         => $news->id,
         "who"         => $news->who,

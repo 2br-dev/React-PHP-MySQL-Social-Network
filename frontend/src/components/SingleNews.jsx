@@ -201,10 +201,10 @@ class SingleNews extends Component {
       avatar = currentUser.avatar;
     }
     let userAvatar = null;
-    if (window.location.host.includes('localhost') && user.avatar) {
-      userAvatar = user.avatar.slice(16);
+    if (window.location.host.includes('localhost') && currentNews.avatar) {
+      userAvatar = currentNews.avatar.slice(16);
     } else {
-      userAvatar = user.avatar;
+      userAvatar = currentNews.avatar;
     }
 
     if (currentUser.length === 0) this.fetchUserInfo(currentNews.author_id);
@@ -221,8 +221,8 @@ class SingleNews extends Component {
               </Tooltip>
 
               <PostHeader>
-                <Avatar style={{ background: `url(${currentUser.avatar ? avatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
-                <Typography variant='subtitle2'>{currentUser.name} {currentUser.surname}</Typography>            
+                <Avatar style={{ background: `url(${currentNews.avatar ? userAvatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
+                <Typography variant='subtitle2'>{currentNews.author}</Typography>            
               </PostHeader>
 
               {currentNews.importance === '1' ? this.props.createImportantBar(10) : null}
