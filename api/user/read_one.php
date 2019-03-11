@@ -19,9 +19,7 @@ $user = new User($db);
  
 // set ID property of record to read
 $user->id = isset($_GET['id']) ? $_GET['id'] : die();
- 
-// read the details of product to be edited
-$user->readOne();
+
  
 if($user->readOne()){
     // create array
