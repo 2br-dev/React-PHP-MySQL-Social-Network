@@ -10,6 +10,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import styled from 'styled-components';
+import Loader from './Loader/Loader';
 
 class RegisterForm extends Component {
   constructor(props) {
@@ -21,7 +22,8 @@ class RegisterForm extends Component {
       confirmed: '',
       isEmailValid: '',
       isPassHidden: false, 
-      entered: false
+      entered: false,
+      loading: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
@@ -55,7 +57,7 @@ class RegisterForm extends Component {
   handleSubmit(e) {
     var self = this;
     e.preventDefault();
-    this.setState({ entered: true });
+    this.setState({ entered: true, loading: true });
 
     if (this.state.login && this.state.isEmailValid && this.state.password) {
       const formData = new FormData();
@@ -86,7 +88,8 @@ class RegisterForm extends Component {
                 confirmed: '',
                 isEmailValid: '',
                 isPassHidden: false, 
-                entered: false
+                entered: false,
+                loading: false
               })
               break;
             case 2:
@@ -181,7 +184,9 @@ class RegisterForm extends Component {
             {!this.state.isEmailValid && this.state.email ? <FormHelperText style={{ color: '#f44336' }}>Пожалуйста, введите настоящий email адрес</FormHelperText> : ''}
 
             <BtnWrapper>
-              <Button variant='contained' color='primary' type='submit'>Зарегистрироваться</Button>
+              <Button variant='contained' color='primary' type='submit' disabled={this.state.loading}> 
+                {this.state.loading ? <Loader minHeight={30} color='secondary' /> : 'Зарегистрироваться'}  
+              </Button>
             </BtnWrapper>
           </form>
 
@@ -198,6 +203,12 @@ const BtnWrapper = styled.div`
     bottom: 30px;
     margin: auto;
     width: fit-content;
+    min-width: 199px;
+    background: #1976d2 !important;
+    & > span > div > div {
+      height: 25px !important;
+      width: 25px !important;
+    }
   }
 `;
 export default withSnackbar(RegisterForm);

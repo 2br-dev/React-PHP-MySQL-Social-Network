@@ -11,10 +11,10 @@ function MainpageHeader(props) {
   const defaultAvatar = { backgroundImage: `url(${image})` };
   let uploadedAvatar = '';
 
-  if (window.location.host.includes('localhost')) {
-    uploadedAvatar = { backgroundImage: `url(${user.avatar})` };
+  if (window.location.host.includes('localhost') && user.avatar) {
+    uploadedAvatar = { backgroundImage: `url(${user.avatar.slice(16)})` };
   } else {
-    uploadedAvatar = { backgroundImage: `url(frontend/public/${user.avatar})` };
+    uploadedAvatar = { backgroundImage: `url(${user.avatar})` };
   }
 
   return (
