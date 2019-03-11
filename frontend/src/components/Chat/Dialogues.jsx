@@ -68,8 +68,8 @@ class FriendList extends Component {
     chats.forEach(chat => {
       friends.find(friend => `id${friend.id}` === chat.users).message = chat.message;
     })
-    let withMessages = Array(friends.find(friend => friend.hasOwnProperty('message')));
-    let withoutMessages = Array(friends.find(friend => !friend.hasOwnProperty('message')));
+    let withMessages = friends.filter(friend => friend.hasOwnProperty('message'));
+    let withoutMessages = friends.filter(friend => !friend.hasOwnProperty('message'));
     let sorted = withMessages.concat(withoutMessages);
     this.setState({ completed: true, friends: sorted });
   }
