@@ -8,10 +8,10 @@ import defaultAvatar from '../img/photos/images.png';
 function Friend(props) {
   let avatar = '';
 
-  if (window.location.host.includes('localhost')) {
-    avatar = props.friend.avatar;
+  if (window.location.host.includes('localhost') && props.friend.avatar) {
+    avatar = props.friend.avatar.slice(16);
   } else {
-    avatar = `frontend/public/${props.friend.avatar}`;
+    avatar = props.friend.avatar;
   }
 
   return (

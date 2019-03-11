@@ -195,16 +195,16 @@ class SingleNews extends Component {
     const { currentUser, thisComments, loadedComments, commentText, currentNews, likedBy, loading, commentsLoading } = this.state;
 
     let avatar = null;
-    if (window.location.host.includes('localhost')) {
-      avatar = currentUser.avatar;
+    if (window.location.host.includes('localhost') && currentUser.avatar) {
+      avatar = currentUser.avatar.slice(16);
     } else {
-      avatar = `frontend/public/${currentUser.avatar}`;
+      avatar = currentUser.avatar;
     }
     let userAvatar = null;
-    if (window.location.host.includes('localhost')) {
-      userAvatar = user.avatar;
+    if (window.location.host.includes('localhost') && user.avatar) {
+      userAvatar = user.avatar.slice(16);
     } else {
-      userAvatar = `frontend/public/${user.avatar}`;
+      userAvatar = user.avatar;
     }
 
     if (currentUser.length === 0) this.fetchUserInfo(currentNews.author_id);
@@ -227,10 +227,10 @@ class SingleNews extends Component {
 
               {currentNews.importance === '1' ? this.props.createImportantBar(10) : null}
 
-              <Typography variant='h5'>{currentNews.title}</Typography>
+              <Typography variant='h5'>{currentNews.title.replace(/&quot;/g, `"`)}</Typography>
 
               <PostContent>
-                <Typography variant='body1'>{currentNews.text}</Typography>
+                <Typography variant='body1'>{currentNews.text.replace(/&quot;/g, `"`)}</Typography>
                 <Typography variant='caption'>{currentNews.date}</Typography>
               </PostContent>
 
@@ -271,9 +271,9 @@ class SingleNews extends Component {
                     </Tooltip>  
                   </React.Fragment>
                 }
-                <Tooltip placement='top' title='Написать сообщение'>
+            {/*     <Tooltip placement='top' title='Написать сообщение'>
                   <FontAwesomeIcon icon='envelope' style={{ marginLeft: '25px' }} />
-                </Tooltip>
+                </Tooltip> */}
                 
               </PostActions>
 

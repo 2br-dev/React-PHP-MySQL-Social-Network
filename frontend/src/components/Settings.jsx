@@ -191,10 +191,10 @@ class Settings extends Component {
     const { user, uploadedAvatar } = this.state;
 
     let avatar = null;
-    if (window.location.host.includes('localhost')) {
-      avatar = user.avatar;
+    if (window.location.host.includes('localhost') && user.avatar) {
+      avatar = user.avatar.slice(16);
     } else {
-      avatar = `frontend/public/${user.avatar}`;
+      avatar = user.avatar;
     }
 
     return (

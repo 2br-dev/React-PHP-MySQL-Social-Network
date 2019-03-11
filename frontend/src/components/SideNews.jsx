@@ -137,10 +137,10 @@ class SideNews extends Component {
                         </div>
                         <Typography variant='button' className='news-caption' onClick={() => this.goToSingleNews(item.id)}>
                           {item.importance === '1' ? <Tooltip title='Важное!' placement="top-start"><WarningIcon /></Tooltip> : null}
-                          {item.title}
+                          {item.title.replace(/&quot;/g, `"`)}
                         </Typography>
                         <div className="news-item-text">
-                          <Typography variant='body2'>{item.text}</Typography>
+                          <Typography variant='body2'>{item.text.replace(/&quot;/g, `"`)}</Typography>
                         </div>
                         <Tooltip title="Перейти к комментариям" placement="top-start">
                           <div

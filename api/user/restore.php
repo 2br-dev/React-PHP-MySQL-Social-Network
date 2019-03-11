@@ -1,6 +1,4 @@
 <?php
-
-// required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: *");
@@ -19,9 +17,10 @@ $db = $database->getConnection();
 $user = new User($db);
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
- 
-$pass				= password_hash(md5( __post('password') . md5($user_login)), PASSWORD_DEFAULT);
+
 $user_code  = __post('auth');
+$user_login = Q("SELECT `login` FROM `#_mdd_users` WHERE `code` = ?s", array($user_code))->row('login');
+$pass				= password_hash(md5( __post('password') . md5($user_login)), PASSWORD_DEFAULT);
 $servername = DB_HOST;
 $username 	= DB_USER;
 $password 	= DB_PASS;

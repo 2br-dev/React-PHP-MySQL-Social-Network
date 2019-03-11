@@ -219,9 +219,9 @@ class ChatRoom extends Component {
 
     let avatar = null;
     if (room.hasOwnProperty('user') && window.location.host.includes('localhost')) {
-      avatar = room.user.avatar;
+      avatar = room.user.avatar.slice(16);
     } else if (room.hasOwnProperty('user')) {
-      avatar = `frontend/public/${room.user.avatar}`;
+      avatar = room.user.avatar;
     }
 
     return (

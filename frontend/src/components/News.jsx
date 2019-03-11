@@ -311,11 +311,16 @@ class News extends Component {
     this.setState({ confirmDelete: true, preparedNewsId: id })
   }
 
+  handleAvatarRoute = avatar => {
+    return window.location.host.includes('localhost') ? avatar.slice(16) : avatar;
+  }
+
   render() {
     const { news, invalidText, invalidTopic, newNews, loading, newNewsText, newNewsTopic, editing, singleNews, singleNewsId, newNewsImportance } = this.state;
     const { user } = this.props;
     let avatar = null;
-    window.location.host.includes('localhost') ? avatar = user.avatar : avatar = `frontend/public/${user.avatar}`;
+    window.location.host.includes('localhost') && user.avatar ? avatar = user.avatar.slice(16) : avatar = user.avatar;
+    
 
     if (this.state.news.length === 0) {
       setTimeout(() => this.setState({ news: this.props.store.news }), 0);
@@ -327,7 +332,7 @@ class News extends Component {
           this.props.store.news.length > 0 && this.props.store.news ? this.props.store.news.map((item, i) => {
             return (
               <NewsContainer key={i}>
-                <UserAvatar style={{ background: `url(${user.avatar === '' ? defaultAvatar : avatar}) no-repeat center/cover` }} />
+                <UserAvatar style={{ background: `url(${this.handleAvatarRoute(item.avatar) === '' ? defaultAvatar : this.handleAvatarRoute(item.avatar)}) no-repeat center/cover` }} />
                 <div>
                   <NewsInfo>
                     {user.id === item.author_id
@@ -401,9 +406,9 @@ class News extends Component {
                       <FontAwesomeIcon onClick={e => this.removeLike(item.id, e)} icon="heart" style={{ color: '#1976d2' }} />
                     </Tooltip>  
                   }
-                  <Tooltip title='Отправить сообщение' placement='top'>
+                 {/*  <Tooltip title='Отправить сообщение' placement='top'>
                     <FontAwesomeIcon data-id={item.id} onClick={this.addLike} icon="envelope" style={{ marginLeft: '25px' }} />
-                  </Tooltip>
+                  </Tooltip> */}
 
                   {user.id === item.author_id
                     ?

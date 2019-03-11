@@ -11,9 +11,9 @@ import Edit from '@material-ui/icons/Edit';
 
 function Message(props) { 
   let prodUrl = '';
-  if (!window.location.host.includes('localhost')) {
+  /* if (!window.location.host.includes('localhost')) {
     prodUrl = `frontend/public/`;
-  } 
+  }  */
 
   function isToday(date) {
     const fromDayStart = moment().startOf('day').format();

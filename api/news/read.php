@@ -26,6 +26,9 @@ if ($num > 0) {
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         extract($row);
 
+        $user_data = Q("SELECT `avatar`, `name`, `surname` FROM `#_mdd_users` WHERE `id` = ?s", array($author_id))->row();
+        $author = $user_data['name'] . " " . $user_data['surname'];
+
         $news_item = array(
             "id"          => $id,
             "author"      => $author,
@@ -37,6 +40,7 @@ if ($num > 0) {
             'likes'       => $likes,
             'liked_by'    => $liked_by,
             'comments'    => $comments,
+            'avatar'      => $user_data['avatar']
         );
 
         array_push($news_arr["records"], $news_item);

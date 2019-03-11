@@ -226,7 +226,6 @@ class PersonalInfo extends Component {
     if (userInfo.childs) childrens = JSON.parse(userInfo.childs.replace(/\//g, ''));
     if (window.location.host.includes('localhost') && avatar) avatar = avatar.slice(16);
 
-    console.log(avatar)
     return (
       <Paper className="personal">
 
