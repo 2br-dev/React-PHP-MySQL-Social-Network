@@ -80,6 +80,30 @@ class SideNews extends Component {
     return 'комментариев';
   }
 
+  /**
+  |--------------------------------------------------
+  | создаёт надпись "Помечено как важное"
+  |--------------------------------------------------
+  */
+  createImportantBar = (margin) => {
+    const Important = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+    margin-top: ${margin}px;
+    svg {
+      color: rgba(0,0,0,.15);
+      margin-right: 5px;  
+    }
+  `;
+    return (
+      <Important>
+        <WarningIcon />
+        <Typography variant='caption'>Отмечено как "Важное"</Typography>
+      </Important>
+    )
+  }
+
   render() {
     const { news, importance, singleNews, singleNewsId, comments, loading } = this.state;
     var NEWS_COUNTER = 0;
@@ -178,6 +202,7 @@ class SideNews extends Component {
                   getNoun={this.getNoun}
                   getCommentsNoun={this.getCommentsNoun}
                   reloadComponent={this.reloadComponent}
+                  createImportantBar={this.createImportantBar.bind(this)}
                 />
                 : null}
 
