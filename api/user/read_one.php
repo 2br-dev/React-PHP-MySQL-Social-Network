@@ -23,7 +23,7 @@ $user->id = isset($_GET['id']) ? $_GET['id'] : die();
 // read the details of product to be edited
 $user->readOne();
  
-if($user->login!=null){
+if($user->readOne()){
     // create array
     $user_arr = array(
         "id"         => $user->id,

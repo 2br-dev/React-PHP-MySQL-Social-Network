@@ -111,6 +111,8 @@ class User
         $this->name         = $row['name'];
         $this->surname      = $row['surname'];
         $this->liked        = $row['liked'];
+
+        return true;
     }
     function readPersonal()
     {
