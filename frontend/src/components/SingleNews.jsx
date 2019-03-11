@@ -15,7 +15,6 @@ class SingleNews extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: [],
       thisComments: [],
       loadedComments: false,
       commentText: '',
@@ -30,16 +29,9 @@ class SingleNews extends Component {
     await fetch(`${API}/api/news/read_one.php?id=${this.props.singleNewsId}`)
       .then(response => response.json())
       .then(currentNews => this.setState({ currentNews }))
-    await this.fetchUserInfo(this.props.user.id);
     await this.fetchComments(this.props.singleNewsId);
     await this.getAvatars(this.props.singleNewsId);
     await this.setState({ loading: false })
-  }
-
-  fetchUserInfo(id) {
-    fetch(`${API}/api/user/info.php?id=${id}`)
-      .then(response => response.json())
-      .then(currentUser => this.setState({ currentUser }))
   }
 
   fetchComments(id) {
@@ -193,13 +185,13 @@ class SingleNews extends Component {
 
   render() {
     const { closeNews, singleNewsId, user } = this.props;
-    const { currentUser, thisComments, loadedComments, commentText, currentNews, likedBy, loading, commentsLoading } = this.state;
+    const { thisComments, loadedComments, commentText, currentNews, likedBy, loading, commentsLoading } = this.state;
 
     let avatar = null;
-    if (window.location.host.includes('localhost') && currentUser.avatar) {
-      avatar = currentUser.avatar.slice(16);
+    if (window.location.host.includes('localhost') && user.avatar) {
+      avatar = user.avatar.slice(16);
     } else {
-      avatar = currentUser.avatar;
+      avatar = user.avatar;
     }
     let userAvatar = null;
     if (window.location.host.includes('localhost') && currentNews.avatar) {
@@ -208,7 +200,6 @@ class SingleNews extends Component {
       userAvatar = currentNews.avatar;
     }
 
-    if (currentUser.length === 0) this.fetchUserInfo(currentNews.author_id);
     if (!loadedComments) this.fetchComments(singleNewsId);
 
     return (
@@ -279,9 +270,9 @@ class SingleNews extends Component {
               </PostActions>
 
               <NewComment>
-                <p className='newcomment-reply'>В ответ <a href={`${window.location.origin}/id${currentUser.id}`}>{currentNews.author}</a></p>
+                <p className='newcomment-reply'>В ответ <a href={`${window.location.origin}/id${currentNews.id}`}>{currentNews.author}</a></p>
                 <div className='newcomment-input'>
-                  <Avatar style={{ background: `url(${currentUser.avatar ? avatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
+                  <Avatar style={{ background: `url(${user.avatar ? avatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
                   <TextArea>
                     <TextField
                       label='Комментарий'
@@ -308,11 +299,13 @@ class SingleNews extends Component {
                       </div>
                       <div className='comment-text'>{comment.text}</div>
 
+                      {comment.author_id === user.id ?
                       <DelIcon>
                         <Tooltip placement='left' title="Удалить">
                           <DeleteIcon onClick={(e) => this.deleteComment(e, comment.id, comment.news_id)} />
                         </Tooltip>
                       </DelIcon>
+                      : null}
                     </Comments>
                   )
                 })}

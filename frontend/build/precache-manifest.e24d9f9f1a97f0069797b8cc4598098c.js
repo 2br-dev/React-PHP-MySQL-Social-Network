@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/static/media/calibri.b0f61b94.woff"
   },
   {
-    "revision": "a549358d9cfa358306b7",
+    "revision": "2c662b37e7a40a4c0b9a",
     "url": "/static/css/main.9b9e0de8.chunk.css"
   },
   {
@@ -24,27 +24,27 @@ self.__precacheManifest = [
     "url": "/static/media/baseline-search-24px.a87eca9e.svg"
   },
   {
-    "revision": "a549358d9cfa358306b7",
-    "url": "/static/js/main.a549358d.chunk.js"
+    "revision": "2c662b37e7a40a4c0b9a",
+    "url": "/static/js/main.2c662b37.chunk.js"
   },
   {
     "revision": "e425fd845f7a0a14f291fd13baafb024",
     "url": "/static/media/calibri.e425fd84.svg"
   },
   {
-    "revision": "4fc5a7297cb1148d7dd1132a2d736795",
-    "url": "/static/media/calibri.4fc5a729.ttf"
-  },
-  {
     "revision": "2a4d815e17eaadddf81877da1a6b981b",
     "url": "/static/media/calibri.2a4d815e.eot"
+  },
+  {
+    "revision": "4fc5a7297cb1148d7dd1132a2d736795",
+    "url": "/static/media/calibri.4fc5a729.ttf"
   },
   {
     "revision": "63e6c0c127c99e902a750e951bfcc346",
     "url": "/static/media/photo_2018-12-20_16-23-55.63e6c0c1.jpg"
   },
   {
-    "revision": "f606d48e3713af02ac0d65eed16c4f41",
+    "revision": "acd5a47e6d841b78e20b69047c744a99",
     "url": "/index.html"
   }
 ];
