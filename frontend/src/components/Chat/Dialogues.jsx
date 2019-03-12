@@ -66,7 +66,7 @@ class FriendList extends Component {
   rebuildList = (chats) => {
     let friends = this.state.friends;
     chats.forEach(chat => {
-      friends.find(friend => `id${friend.id}` === chat.users).message = chat.message;
+      friends.find(friend => `id${friend.id}`.includes(chat.users)).message = chat.message;
     })
     let withMessages = friends.filter(friend => friend.hasOwnProperty('message'));
     let withoutMessages = friends.filter(friend => !friend.hasOwnProperty('message'));

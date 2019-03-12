@@ -153,7 +153,7 @@ class ChatRoom extends Component {
         self.props.assignChat(res.chat_id);
         localStorage.setItem('message_id', messageId);
         localStorage.setItem('chat_id', res.chat_id);
-        localStorage.setItem('users', `id${user2}`);
+        localStorage.setItem('users', `id${user1}, id${user2}`);
         self.sendMessage(false);    
       },
       error: err => console.log(err)
