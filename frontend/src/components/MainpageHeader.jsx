@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import defaultBackground from './img/photos/Water image_Dreamstime.jpg';
 import Loader from './Loader/Loader';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 function MainpageHeader(props) {
   const { user } = props;
@@ -43,7 +44,7 @@ function MainpageHeader(props) {
             <Button variant="contained" href="logout.php" color="primary">Выйти</Button>
           </div>
         </div>
-        <Button variant="contained" href="/settings" color="primary">Настройки</Button>
+        <Button variant="contained" href="/settings" color="primary">{window.innerWidth > 600 ? 'Настройки' : <SettingsIcon />}</Button>
       </header>
     </Wrapper>
   )

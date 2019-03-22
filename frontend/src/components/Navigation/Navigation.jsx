@@ -86,6 +86,17 @@ const Wrapper = styled.div`
   svg {
     color: #1976d2;
   }
+
+  @media all and (max-width: 600px) {
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+    opacity: 1;
+    margin-bottom: 0;
+    a > span > span {
+      display: none;
+    }
+  }
 `;
 const BadgeWrapper = styled.div`
   & > span > span {

@@ -215,6 +215,9 @@ class SideNews extends Component {
 
 const Wrapper = styled.div`
   width: 30%;
+  @media all and (max-width: 600px) {
+    display: none;
+  }
 `;
 const NewsSwitch = styled.div`
   display: flex;

@@ -40,3 +40,11 @@
   background: url("../img/photos/photo_2018-12-20_16-23-55.jpg") no-repeat center / cover;
   box-shadow: 0 0 0 2px inset #fff;
 }
+@media all and (max-width: 600px) {
+  .header {
+    width: 100%;
+  }
+  .person {
+    width: unset;
+  }
+}

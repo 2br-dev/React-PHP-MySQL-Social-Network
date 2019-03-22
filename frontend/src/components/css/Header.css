@@ -46,3 +46,14 @@
   right: 0;
   z-index: 10;
 }
+@media all and (max-width: 600px) {
+  .header {
+    width: 100%;
+  }
+  .header-date {
+    display: none;
+  }
+  .header-team {
+    width: 65%;
+  }
+}
