@@ -337,7 +337,9 @@ class PersonalInfo extends Component {
                     <Children key={childrens[child].id}>
                       <Typography variant='subtitle2'>Имя: {childrens[child].child_name} </Typography>
                       <Typography variant='caption'>{childrens[child].child_birthyear} г.р.</Typography>
-                      <Tooltip title="Удалить" placement="right"><Clear onClick={() => this.deleteChild(childrens[child].id)} /></Tooltip>
+                      {user_logged_id === user_id ?
+                        <Tooltip title="Удалить" placement="right"><Clear onClick={() => this.deleteChild(childrens[child].id)} /></Tooltip>
+                      : null}
                     </Children>
                   )}
                 </Childrens>}
