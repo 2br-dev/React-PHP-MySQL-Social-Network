@@ -53,7 +53,7 @@ export default class FriendList extends Component {
           this.state.loading ? 
             <Loader minHeight={370} color='primary' /> 
           :
-            <FriendWrapper>
+          <FriendWrapper>
             <Search 
               handleSearch={this.handleSearch} 
               searchValue={this.searchValue}
@@ -85,5 +85,12 @@ const FriendWrapper = styled.div`
   ul {
     padding: 0;
     padding-bottom: 50px;
+  }
+
+  @media all and (max-width: 600px) {
+    ul {
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
   }
 `;

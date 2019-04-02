@@ -43,6 +43,10 @@ const Container = styled.div`
   &::-webkit-scrollbar-thumb {
     background: #1976d2; 
   }
+
+  @media all and (max-width: 600px) {
+    max-height: calc(100vh - 100px);
+  }
 `;
 
 export default connect(

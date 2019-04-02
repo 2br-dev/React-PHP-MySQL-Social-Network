@@ -150,7 +150,7 @@ const Wrapper = styled.div`
   .closeNewTask svg {
     font-size: 30px;
     color: #1976d2;
-    opacity: .6;
+    opacity: .8;
     cursor: pointer;
     position: absolute;
     right: 20px;
@@ -160,6 +160,27 @@ const Wrapper = styled.div`
       opacity: .8;
       transition: .37s ease;
     }
+  }
+  @media all and (max-width: 600px) {
+    top: 0;
+    max-width: 100%;
+    border-radius: unset;
+    height: calc(100vh - 55px);
+    margin: unset;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    & > div {
+      padding: 20px 15px;
+      box-shadow: unset;
+      & > div {
+        > div:first-child {
+          padding: 20px 5px;
+        }
+      }
+    }
+    .closeNewTask svg {
+      font-size: 32px;
+      right: 15px;
+    } 
   }
 `;
 

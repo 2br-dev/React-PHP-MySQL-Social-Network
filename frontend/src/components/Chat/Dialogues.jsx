@@ -66,7 +66,7 @@ class FriendList extends Component {
   rebuildList = (chats) => {
     let friends = this.state.friends;
     chats.forEach(chat => {
-      friends.find(friend => `id${friend.id}`.includes(chat.users)).message = chat.message;
+      friends.find(friend => chat.users.includes(`id${friend.id}`)).message = chat.message;
     })
     let withMessages = friends.filter(friend => friend.hasOwnProperty('message'));
     let withoutMessages = friends.filter(friend => !friend.hasOwnProperty('message'));
@@ -189,6 +189,14 @@ const FriendWrapper = styled.div`
   ul {
     padding: 0;
     padding-bottom: 50px;
+  }
+
+  @media all and (max-width: 600px) {
+    height: calc(100vh - 55px);
+    ul {
+      padding: unset;
+      padding-top: 10px;
+    }
   }
 `;
 

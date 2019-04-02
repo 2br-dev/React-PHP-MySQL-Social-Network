@@ -160,8 +160,13 @@ input[name="password"] {
 .touch-ripple {
   color: #1976d2;
 }
-
+.MuiExpansionPanelSummary-content-181 > :last-child {
+  padding-right: 0; 
+}
 @media all and (max-width: 600px) {
+  #root {
+    padding-bottom: 50px;
+  }  
   .container {
     width: 100%;
   }

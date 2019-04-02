@@ -112,3 +112,25 @@ input[type=date]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   display: none;
 }
+
+@media all and (max-width: 600px) {
+  .personal-header {
+    padding: 40px 20px 20px;
+    flex-direction: column;
+  }
+  .personal-header__info {
+    padding-right: 0; 
+    width: 100%; 
+  }
+  .personal-header__photo {
+    width: unset;
+    margin-top: unset;
+    margin-right: 20px;
+  }
+  .personal-section {
+    padding: 0 15px;
+  }
+  .personal-header__info p {
+    margin: 0;
+  }
+}

@@ -28,3 +28,12 @@
   background: #11508e;
   transition: .37s ease;
 }
+@media all and (max-width: 600px) {
+  .approved-container {
+    width: 100%;
+  }
+  .approved-container h1 {
+    font-size: 24px;
+    font-weight: normal;
+  }
+}

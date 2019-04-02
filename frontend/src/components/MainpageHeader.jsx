@@ -19,7 +19,9 @@ function MainpageHeader(props) {
   }
 
   return (
+    
     <Wrapper>
+      {window.innerWidth < 600 && !window.location.pathname.includes('id') ? null :
       <header className="header">
         <div className="person">
           {props.loading
@@ -45,7 +47,7 @@ function MainpageHeader(props) {
           </div>
         </div>
         <Button variant="contained" href="/settings" color="primary">{window.innerWidth > 600 ? 'Настройки' : <SettingsIcon />}</Button>
-      </header>
+      </header>}
     </Wrapper>
   )
 }

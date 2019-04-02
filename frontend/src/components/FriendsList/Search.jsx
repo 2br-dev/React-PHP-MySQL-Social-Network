@@ -37,6 +37,24 @@ const SearchWrapper = styled.div`
   & > div {
     width: 100%;
   }
+
+  @media all and (max-width: 600px) {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    padding: 10px 20px 12px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    label {
+      line-height: .5;
+    }
+    input {
+      padding: 9px 18.5px;
+    }
+    input::placeholder {
+      color: red;
+    }
+  }
 `;
 
 export default Search;

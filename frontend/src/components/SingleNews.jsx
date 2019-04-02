@@ -145,7 +145,11 @@ class SingleNews extends Component {
         self.setState({ commentText: '' });
         self.fetchComments();
         self.props.enqueueSnackbar('Комментарий был добавлен', { variant: 'success' });
-        setTimeout(() => self.setState({ commentsLoading: false }), 250);
+        setTimeout(() => {
+          self.setState({ commentsLoading: false });
+          const commentsContainer = document.getElementById("single-news");
+          commentsContainer.scrollTop = commentsContainer.scrollHeight; 
+        }, 250);    
       },
       error: function (err) {
         console.log(err);
@@ -205,7 +209,7 @@ class SingleNews extends Component {
     return (
       <Fragment>
 
-        <Single>
+        <Single  id='single-news'>
           {loading ? <Loader minHeight={500} color='primary' /> :
             <Fragment>
               <Tooltip placement='left' title='Закрыть'>
@@ -342,6 +346,15 @@ const Single = styled.div`
   ::-webkit-scrollbar { 
     display: none; 
   }
+
+  @media all and (max-width: 600px) {
+    width: 100%;
+    height: calc(100vh - 50px);
+    top: 0;
+    max-height: unset;
+    border-radius: 0;
+    padding: 30px 15px 15px;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -401,6 +414,12 @@ const PostLikes = styled.div`
   span {
     width: 50%;
     padding: 15px 10px 15px;
+  }
+
+  @media all and (max-width: 600px) {
+    h6:first-child {
+      font-size: 12px;
+    }
   }
 `;
 
@@ -468,7 +487,7 @@ const Comments = styled.div`
 const NewComment = styled.div`
   padding: 15px 30px;
   background: #f5f8fa;
-  width: 600px;
+  width: 100%;
   margin-top: 20px;
   margin-left: -30px;
   border-bottom: 1px solid #e6ecf0;
@@ -504,6 +523,12 @@ const NewComment = styled.div`
     div {
       margin-right: 0;
     }
+  }
+
+  @media all and (max-width: 600px) {
+    margin-left: -15px;
+    padding: 15px;
+    width: calc(100% + 30px);
   }
 `;
 const Avatar = styled.div`
@@ -554,6 +579,14 @@ const Icon = styled.div`
   cursor: pointer;
   svg {
     color: #1976d2;
+  }
+
+  @media all and (max-width: 600px) {
+    right: 15px;
+    top: 25px;
+    svg {
+      font-size: 32px;
+    }
   }
 `;
 

@@ -33,8 +33,8 @@
     }
   }
   &-image {
-    width: 125px;
-    height: 125px;
+    min-width: 125px;
+    min-height: 125px;
     border-radius: 50%;
     background: url("../img/photos/photo_2018-12-20_16-23-55.jpg") no-repeat center/cover;
     box-shadow: 0 0 0 2px inset #fff;
@@ -44,8 +44,34 @@
 @media all and (max-width: 600px) {
   .header  {
     width: 100%;
+    height: 100%;
+    padding: 15px 20px 60px;
+    background: #fff;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   }
   .person {
     width: unset;
+
+    &-image {
+      min-width: 50px;
+      min-height: 50px;
+      box-shadow: unset;
+    }
+    &-info {
+      a {
+        position: absolute;
+        right: 20px;
+        bottom: 15px;
+      }
+      &__name {
+        font-size: 24px;
+        max-width: 200px;
+      }
+      &__container {
+        padding: 0;
+        margin: 0;
+      }
+    }
   }
 }

@@ -59,14 +59,14 @@ export default class Task extends React.Component {
             </TaskStatus>
           </Typography>
 
-          <DeleteIcon onClick={() => this.props.handleConfirm(this.props.task.id)}>
+          <DeleteIcon onClick={(e) => this.props.handleConfirm(e, this.props.task.id)}>
             <Tooltip title="Удалить" placement="left">
               <Delete />
             </Tooltip>
           </DeleteIcon>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails style={styles.details}>
-          <Typography variant='h6'>Задача: {this.props.task.text}  </Typography>
+          <Typography variant='h6'> {this.props.task.text}  </Typography>
           <Footer>
             <div>
               <Typography variant='caption'>{this.props.users.length > 0 ? this.getUserNames(this.props.task.for).slice(0, -2) : null}</Typography>
@@ -108,7 +108,7 @@ const Icon = styled.div`
 `;
 const DeleteIcon = styled.span`
   svg {
-    font-size: 26px;
+    font-size: 32px;
     color: rgba(0,0,0,0.54);
     right: 55px;
     padding: 5px;

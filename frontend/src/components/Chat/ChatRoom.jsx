@@ -269,6 +269,10 @@ class ChatRoom extends Component {
 const Room = styled.div`
   overflow: hidden;
   height: 432px;
+
+  @media all and (max-width: 600px) {
+    height: calc(100vh - 55px);
+  }
 `;
 const RoomHeader = styled.div`
   background: #1976d2;

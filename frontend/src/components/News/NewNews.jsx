@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Checkbox, Button, FormControlLabel, Typography, TextField, Tooltip } from '@material-ui/core';
 import defaultAvatar from '../img/photos/images.png';
 import CloseIcon from '@material-ui/icons/Clear';
+import AddIcon from '@material-ui/icons/Add';
 
 export default function NewNews(props) {
   let avatar = '';
@@ -64,7 +65,7 @@ export default function NewNews(props) {
                 }
                 label="Отметить как важное"
               />
-              <Button onClick={props.submitNews} variant='contained' color='primary'>Добавить новость</Button>
+              <Button onClick={props.submitNews} variant='contained' color='primary'>{window.innerWidth > 600 ? 'Добавить новость' : <AddIcon />}</Button>
             </Footer>
           </form>
         </Body>
@@ -98,6 +99,14 @@ const Container = styled.div`
   .close {
     top: -5px;
   }
+  @media all and (max-width: 600px) {
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    box-shadow: unset;
+    border-radius: 0;
+    padding-top: 10px;
+  }
 `;
 const Header = styled.div`
   display: flex;
@@ -113,6 +122,12 @@ const Body = styled.div`
     display: inline-block;
   }
   padding: 0 25px;
+  @media all and (max-width: 600px) {
+    .image {
+      display: none;
+    }
+    padding: 0 15px;
+  }
 `;
 const Footer = styled.div`
   display: flex;
@@ -121,6 +136,10 @@ const Footer = styled.div`
   justify-content: space-between;
   width: 85%;
   margin-left: 15%;
+  @media all and (max-width: 600px) {
+    width: 100%;
+    margin-left: 0;
+  }
 `;
 const Topic = styled.div`
   display: flex;
@@ -130,6 +149,13 @@ const Topic = styled.div`
 
   & > div {
     width: 85%;
+  }
+  @media all and (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+    & > div {
+      width: 100%;
+    }
   }
 `;
 const TextArea = styled.div`
@@ -163,6 +189,15 @@ const TextArea = styled.div`
       height: 100%;
     }
   }
+  @media all and (max-width: 600px) {
+    & > div {
+      width: 100%;
+    }
+    height: 250px;
+    textarea {
+      max-height: 230px;
+    }
+  }
 `;
 const Icon = styled.div`
   cursor: pointer;
@@ -170,6 +205,10 @@ const Icon = styled.div`
   top: 15px;
   right: 20px;
   svg {
+    font-size: 32px;
     color: #1976d2;
+  }
+  @media all and (max-width: 600px) {
+    right: 15px;
   }
 `;

@@ -40,6 +40,9 @@ const Wrapper = styled.div`
     justify-content: center;
     z-index: 10;
   }
+  @media all and (max-width: 600px) {
+    width: 100%;
+  }
 `;
 const Dialogue = styled.section`
   position: fixed !important;

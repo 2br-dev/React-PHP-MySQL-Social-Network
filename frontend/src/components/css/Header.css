@@ -47,13 +47,13 @@
   z-index: 10;
 }
 @media all and (max-width: 600px) {
-  .header {
-    width: 100%;
+  .header > a {
+    position: absolute;
+    left: 20px;
+    bottom: 15px;
   }
+  .header-team,
   .header-date {
     display: none;
-  }
-  .header-team {
-    width: 65%;
   }
 }

@@ -53,12 +53,13 @@
 
 @media all and (max-width: 600px) {
   .header {
-    width: 100%;
+    > a {
+      position: absolute;
+      left: 20px;
+      bottom: 15px;
+    }
   }
-  .header-date {
+  .header-team, .header-date {
     display: none;
-  }
-  .header-team {
-    width: 65%;
   }
 }

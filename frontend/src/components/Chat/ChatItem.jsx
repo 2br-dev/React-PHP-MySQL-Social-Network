@@ -7,8 +7,8 @@ import Avatar from '@material-ui/core/Avatar';
 import defaultAvatar from '../img/photos/images.png';
 import styled from 'styled-components';
 import moment from 'moment';
-import NotReaded from '@material-ui/icons/Done';
-import Readed from '@material-ui/icons/DoneAll';
+/* import NotReaded from '@material-ui/icons/Done';
+import Readed from '@material-ui/icons/DoneAll'; */
 
 function Friend(props) {
   let avatar = '';
@@ -27,9 +27,9 @@ function Friend(props) {
   const getTime = (time, date, readed) => {
     const fromDayStart = moment().startOf('day').format();
     const dateFromNow = moment(date, "DD.MM.YYYY").format();
-    let icon = null;
+   /*  let icon = null;
 
-    readed === '1' ? icon = <Readed /> : icon = <NotReaded />;   
+    readed === '1' ? icon = <Readed /> : icon = <NotReaded />;   */ 
     
     /**
     |--------------------------------------------------

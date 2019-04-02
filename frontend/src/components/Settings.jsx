@@ -20,10 +20,10 @@ if (window.location.pathname === '/settings') {
 
 const styles = {
   default: {
-    width: '600px',
-    margin: '0 auto',
+    width: window.innerWidth < 600 ? '95%' : 600,
+    margin: '10px auto',
     position: 'relative',
-    padding: '20px 40px 80px',
+    padding: window.innerWidth < 600 ? '20px 15px 80px' : '20px 40px 80px',
     zIndex: 37
   },
   input: {
@@ -61,7 +61,8 @@ const styles = {
     marginBottom: 12,
     color: '#fff',
     textAlign: 'center',
-    fontWeight: 500
+    fontWeight: 500,
+    display: window.innerWidth < 600 ? 'none' : 'block'
   }
 };
 

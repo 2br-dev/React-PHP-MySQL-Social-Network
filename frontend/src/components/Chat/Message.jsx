@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import defaultAvatar from '../img/photos/images.png';
 import { Typography, Tooltip } from '@material-ui/core';
-import NotReaded from '@material-ui/icons/Done';
-import Readed from '@material-ui/icons/DoneAll';
+/* import NotReaded from '@material-ui/icons/Done';
+import Readed from '@material-ui/icons/DoneAll'; */
 import moment from 'moment';
 import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';

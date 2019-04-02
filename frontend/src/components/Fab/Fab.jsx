@@ -8,7 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 const styles = theme => ({
   fixed: {
     position: 'fixed',
-    bottom: theme.spacing.unit * 2,
+    bottom: window.innerWidth > 600 ? theme.spacing.unit * 2 : 74,
     right: theme.spacing.unit * 3,
   },
 });

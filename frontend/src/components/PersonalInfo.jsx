@@ -475,6 +475,13 @@ const Children = styled.div`
       opacity: .8;
     }
   }
+  @media all and (max-width: 600px) {
+    width: 100%;
+    svg {
+      display: block;
+      font-size: 28px;
+    }
+  }
 `;
 const Childrens = styled.div`
   display: flex;
@@ -527,6 +534,11 @@ const Naked = styled.div`
   .inline-input {
     display: inline-flex;
     margin-left: 10px;
+  }
+  @media all and (max-width: 600px) {
+    & > div {
+      padding-left: 15px;
+    }
   }
 `;
 export default withSnackbar(PersonalInfo);

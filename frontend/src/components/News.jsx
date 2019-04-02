@@ -14,6 +14,7 @@ import Loader from './Loader/Loader';
 import ConfirmDelete from './News/ConfirmDelete';
 import WarningIcon from '@material-ui/icons/Warning';
 import { withSnackbar } from 'notistack';
+import ResponsiveHeader from './ResponsiveHeader/ResponsiveHeader';
 
 class News extends Component {
   constructor(props) {
@@ -69,6 +70,7 @@ class News extends Component {
   addLike = (id, e) => {
     var self = this;
     e.preventDefault();
+    e.stopPropagation();
     const formData = new FormData();
     formData.append('id', id);
     formData.append('liked_by', this.props.user.id);
@@ -95,6 +97,7 @@ class News extends Component {
   removeLike = (id, e) => {
     const self = this;
     e.preventDefault();
+    e.stopPropagation();
     const actions = document.getElementById('actions');
     actions.style.pointerEvents = 'none';
 
@@ -196,6 +199,7 @@ class News extends Component {
 
   editNews = (e, id) => {
     e.preventDefault();
+    e.stopPropagation();
     var self = this;
 
     if (this.state.newNewsTopic !== '' && this.state.newNewsText !== '') {
@@ -307,8 +311,9 @@ class News extends Component {
   | Спрашиваем об удалении новости
   |--------------------------------------------------
   */
-  prepareDelete = (id) => {
-    this.setState({ confirmDelete: true, preparedNewsId: id })
+  prepareDelete = (e, id) => {
+    this.setState({ confirmDelete: true, preparedNewsId: id });
+    e.stopPropagation();
   }
 
   handleAvatarRoute = avatar => {
@@ -318,6 +323,7 @@ class News extends Component {
   render() {
     const { news, invalidText, invalidTopic, newNews, loading, newNewsText, newNewsTopic, editing, singleNews, singleNewsId, newNewsImportance } = this.state;
     const { user } = this.props;
+    // eslint-disable-next-line
     let avatar = null;
     window.location.host.includes('localhost') && user.avatar ? avatar = user.avatar.slice(16) : avatar = user.avatar;
     
@@ -328,10 +334,11 @@ class News extends Component {
 
     return (
       <Paper>
+        {window.innerWidth < 600 ? <ResponsiveHeader title='Новости компании' /> : null}
         {loading ? <Loader minHeight={300} color='primary' /> :
           this.props.store.news.length > 0 && this.props.store.news ? this.props.store.news.map((item, i) => {
-            return (
-              <NewsContainer key={i}>
+            return (  
+              <NewsContainer key={i} onClick={() => this.showNews(item.id)}>
                 <UserAvatar style={{ background: `url(${this.handleAvatarRoute(item.avatar) === '' ? defaultAvatar : this.handleAvatarRoute(item.avatar)}) no-repeat center/cover` }} />
                 <div>
                   <NewsInfo>
@@ -344,7 +351,7 @@ class News extends Component {
                         </Typography>
                         <Icon>
                           <Tooltip placement='left' title="Удалить">
-                            <DeleteIcon onClick={() => this.prepareDelete(item.id)} />
+                            <DeleteIcon onClick={(e) => this.prepareDelete(e, item.id)} />
                           </Tooltip>
                         </Icon>
                       </Fragment>
@@ -418,7 +425,9 @@ class News extends Component {
                     :
                     null
                   }
-                  <Button onClick={() => this.showNews(item.id)} variant='contained' color='primary' style={{ position: 'absolute', right: 40 }}>Читать</Button>
+                  {window.innerWidth >= 600 ? 
+                    <Button onClick={() => this.showNews(item.id)} variant='contained' color='primary' style={{ position: 'absolute', right: window.innerWidth > 600 ? 40 : 20 }}>Читать</Button>
+                  : null }
                 </Actions>
 
               </NewsContainer>
@@ -473,12 +482,17 @@ const NewsContainer = styled.div`
   position: relative;
   padding: 20px 40px 20px 120px;
   border-bottom: 1px solid #e6ecf0;
+  cursor: pointer;
+
   input {
     padding: 10px 15px;
   }
   :hover {
-    background: rgba(0,0,0,0.015);
+    background: rgba(0,0,0,0.037);
     transition: .37s ease;
+  }
+  @media all and (max-width: 600px) {
+    padding: 10px 20px 10px 80px;
   }
 `;
 const Body = styled.div`
@@ -512,6 +526,10 @@ const UserAvatar = styled.div`
   border-radius: 50%;
   width: 80px;
   height: 80px;
+  @media all and (max-width: 600px) {
+    width: 45px;
+    height: 45px;
+  }
 `;
 
 const Actions = styled.div`

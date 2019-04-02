@@ -23,4 +23,9 @@ const Container = styled.div`
   text-align: center;
   justify-content: center;
   flex-direction: column;
+
+  @media all and (max-width: 600px) {
+    padding: 30px 40px;
+    height: 160px;
+  }
 `;

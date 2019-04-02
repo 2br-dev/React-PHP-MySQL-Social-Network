@@ -9,7 +9,7 @@ const sections = [
   {
     value: 0,
     section: 'id',
-    label: 'Моя страница',
+    label: window.innerWidth < 600 ? 'Главная' : 'Моя страница',
     img: <Person />,
   },
   { 
@@ -21,13 +21,13 @@ const sections = [
   {
     value: 2,
     section: 'news',
-    label: 'Новости компании',
+    label: window.innerWidth < 600 ? 'Новости' : 'Новости компании',
     img: <News />,
   },
   {
     value: 3,
     section: 'tasks',
-    label: 'Входящие задачи',
+    label: window.innerWidth < 600 ? 'Задачи' : 'Входящие задачи',
     img: <Task />,
   },
   {

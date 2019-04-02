@@ -1,23 +1,27 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Paper, Typography, Button } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Clear';
 import styled from 'styled-components';
 
 export default function ConfirmDelete(props) {
   return (
-    <Wrapper>
-      <Paper>
-        <Icon onClick={props.handleClose}>
-          <CloseIcon />
-        </Icon>
-        <Typography variant='body1'>Вы уверены, что хотите удалить задачу?</Typography>
-        <Typography variant='caption'>Вся информация по задаче будет удалена безвозвратно.</Typography>
-        <ButtonContainer>
-          <Button variant='contained' color='secondary' onClick={props.handleDelete}>Удалить</Button>
-          <Button variant='text' color='default' onClick={props.handleClose}>Отмена</Button>
-        </ButtonContainer>
-      </Paper>
-    </Wrapper>
+    <Fragment>
+      <Wrapper>
+        <Paper>
+          <Icon onClick={props.handleClose}>
+            <CloseIcon />
+          </Icon>
+          <Typography variant='body1'>Вы уверены, что хотите удалить задачу?</Typography>
+          <Typography variant='caption'>Вся информация по задаче будет удалена безвозвратно.</Typography>
+          <ButtonContainer>
+            <Button variant='contained' color='secondary' onClick={props.handleDelete}>Удалить</Button>
+            <Button variant='text' color='default' onClick={props.handleClose}>Отмена</Button>
+          </ButtonContainer>
+        </Paper>
+        
+      </Wrapper>
+      <Backdrop onClick={props.handleClose} />
+    </Fragment>
   )
 }
 const Wrapper = styled.div`
@@ -30,6 +34,7 @@ const Wrapper = styled.div`
   bottom: 0;
   margin: auto;
   outline: none;
+  z-index: 1000;
   & > div {
     height: 100%;
     position: relative;
@@ -37,6 +42,9 @@ const Wrapper = styled.div`
     padding: 30px;
     flex-direction: column;
     justify-content: center;
+  }
+  @media all and (max-width: 600px) {
+    width: 95%;
   }
 `;
 const ButtonContainer = styled.div`
@@ -56,3 +64,13 @@ const Icon = styled.div`
     top: 16px;
   }
 `
+const Backdrop = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0,0,0,.37);
+`;

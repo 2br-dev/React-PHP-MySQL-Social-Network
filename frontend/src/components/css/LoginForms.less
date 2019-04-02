@@ -5,6 +5,7 @@
   left: 0;
   right: 0;
   background: linear-gradient(to bottom right, #1976d2, #9de3dc, #0d11b4);
+  overflow: hidden;
   &-container {
     position: fixed;
     left: 0;
@@ -101,4 +102,23 @@
   top: 29px;
   opacity: .5;
   cursor: pointer;
+}
+
+@media all and (max-width: 600px) {
+  .form-container {
+    width: 100%;
+    padding: 25px 15px 85px;
+  }
+  .login-button-container {
+    width: 100%;
+    button > span {
+      font-size: 12px;
+    }
+  }
+  .login-screen-container {
+    top: 5%;
+  }
+  .login-screen-button-enabled {
+    text-decoration: unset !important;
+  }
 }

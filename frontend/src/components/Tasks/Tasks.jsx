@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import ConfirmDelete from './ConfirmDelete';
 import Loader from '../Loader/Loader';
 import { withSnackbar } from 'notistack';
-
+import ResponsiveHeader from '../ResponsiveHeader/ResponsiveHeader';
 class Tasks extends Component {
   state = {
     open: false,
@@ -36,8 +36,11 @@ class Tasks extends Component {
       .catch(err => console.log(err))
   }
 
-  handleOpen = () => this.setState({ open: true });
-  handleConfirm = id => this.setState({ confirm: true, preparedToDelete: id });
+  handleOpen = (e) => this.setState({ open: true });
+  handleConfirm = (e,id) => {
+    e.stopPropagation();
+    this.setState({ confirm: true, preparedToDelete: id });
+  }
   handleClose = () => this.setState({ open: false, confirm: false, preparedToDelete: null });
 
   handleCompleted = (id) => {
@@ -128,28 +131,28 @@ class Tasks extends Component {
     }
 
     return (
-      <Wrapper>
+      <Wrapper> 
         <Paper>
+          {window.innerWidth < 600 ? <ResponsiveHeader title='Задачи' /> : null}
           {!this.state.loading ?
             <Fragment>
               <Filters>
                 <Button
                   onClick={() => this.handleFilter(1, 'initial')}
-                  variant={disabledButton === 1 ? 'contained' : 'text'}
+                  variant={disabledButton !== 1 ? 'contained' : 'text'}
                   disabled={disabledButton === 1 ? true : false}>Все задачи</Button>
                 <Button
-                  color="primary"
                   onClick={() => this.handleFilter(2, 'transfered')}
-                  variant={disabledButton === 2 ? 'contained' : 'text'}
+                  variant={disabledButton !== 2 ? 'contained' : 'text'}
                   disabled={disabledButton === 2 ? true : false}
                 >
                   Переданные
             </Button>
                 <Button
                   onClick={() => this.handleFilter(3, 'completed')}
-                  variant={disabledButton === 3 ? 'contained' : 'text'}
+                  variant={disabledButton !== 3 ? 'contained' : 'text'}
                   disabled={disabledButton === 3 ? true : false}
-                  color="secondary">
+                >
                   Выполненные
             </Button>
               </Filters>
@@ -214,6 +217,23 @@ const Filters = styled.div`
   justify-content: space-around;
   button {
     width: 33.3%;
+  }
+
+  @media all and (max-width: 600px) {
+    height: 45px;
+      
+    button {
+      > span {
+        font-size: 10px;
+        color: #757575;
+      }
+    }
+    button:disabled {
+      > span {
+        font-size: 12px;
+        color: #232323;
+      }
+    }
   }
 `;
 

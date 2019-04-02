@@ -20,7 +20,24 @@ const theme = createMuiTheme({
     primary: { main: '#1976d2' }, 
     secondary: { main: '#ff4800' },
   },
-  typography: { useNextVariants: true }
+  typography: { useNextVariants: true },
+  overrides: {
+    MuiSnackbar: { 
+      root: { 
+        bottom: window.innerWidth < 600 ? '60px !important' : '0', 
+      },
+    },
+    MuiModal: {
+      root: {
+        bottom: window.innerWidth < 600 ? '60px !important' : '0', 
+      },
+    },
+    MuiBackdrop: {
+      root: {
+        bottom: window.innerWidth < 600 ? 'display: none' : 'display: block', 
+      },
+    }
+  },
 });
 
 function Root() {
@@ -28,7 +45,9 @@ function Root() {
     <MuiThemeProvider theme={theme}>
       <Provider store={store}>
         <MuiPickersUtilsProvider utils={MomentUtils} moment={moment}>
-          <SnackbarProvider maxSnack={3}>
+          <SnackbarProvider 
+            maxSnack={3}
+          >
             <App />
           </SnackbarProvider>
         </MuiPickersUtilsProvider>
