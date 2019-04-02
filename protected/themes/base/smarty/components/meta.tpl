@@ -5,7 +5,7 @@
 	<title itemprop="name">{$_meta.title}</title>
 	<meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, maximum-scale=1.0">
     <meta content="{$_meta.robots}" name="robots">
     <meta content="{$_meta.keywords}" name="keywords">
     <meta content="{$_meta.description}" name="description" itemprop="description">
