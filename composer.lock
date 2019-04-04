@@ -1,0 +1,164 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "3981e5ceb6039f192c21ae686c7b9c9f",
+    "packages": [
+        {
+            "name": "emarref/jwt",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/emarref/jwt.git",
+                "reference": "79f563750ff90dabd4fa677c4b4e5ec9ed52d9b4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/emarref/jwt/zipball/79f563750ff90dabd4fa677c4b4e5ec9ed52d9b4",
+                "reference": "79f563750ff90dabd4fa677c4b4e5ec9ed52d9b4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "suggest": {
+                "ext-openssl": "Enables more token encryption options"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Emarref\\Jwt\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Malcolm Fell",
+                    "email": "emarref@gmail.com"
+                }
+            ],
+            "description": "A JWT implementation",
+            "time": "2016-09-05T20:33:06+00:00"
+        },
+        {
+            "name": "miladrahimi/php-jwt",
+            "version": "v1.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/miladrahimi/php-jwt.git",
+                "reference": "59fc5c0113930706ea737b8dd64f0f8e063ba13a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/miladrahimi/php-jwt/zipball/59fc5c0113930706ea737b8dd64f0f8e063ba13a",
+                "reference": "59fc5c0113930706ea737b8dd64f0f8e063ba13a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-openssl": "*",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MiladRahimi\\Jwt\\": "src/",
+                    "MiladRahimi\\Jwt\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Milad Rahimi",
+                    "email": "info@miladrahimi.com"
+                }
+            ],
+            "description": "A PHP implementation of JWT (JSON Web Token) generator, parser, verifier, and validator",
+            "homepage": "https://github.com/miladrahimi/php-jwt",
+            "keywords": [
+                "JSON Web Token",
+                "decoder",
+                "encoder",
+                "jwt",
+                "parser",
+                "token",
+                "validator",
+                "verifier"
+            ],
+            "time": "2019-03-05T08:44:03+00:00"
+        },
+        {
+            "name": "rbdwllr/reallysimplejwt",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/RobDWaller/ReallySimpleJWT.git",
+                "reference": "5bcd4ba5d2f7c9a2354688c870fc3daca93830cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/RobDWaller/ReallySimpleJWT/zipball/5bcd4ba5d2f7c9a2354688c870fc3daca93830cb",
+                "reference": "5bcd4ba5d2f7c9a2354688c870fc3daca93830cb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "require-dev": {
+                "phpmd/phpmd": "2.6.*",
+                "phpstan/phpstan": "^0.10",
+                "phpunit/phpunit": "^7.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ReallySimpleJWT\\": "src",
+                    "Tests\\": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Waller",
+                    "email": "rdwaller1984@gmail.com"
+                }
+            ],
+            "description": "A really simple library to generate user authentication JSON Web Tokens.",
+            "keywords": [
+                "Authentication",
+                "json",
+                "json web tokens",
+                "jwt",
+                "php",
+                "tokens"
+            ],
+            "time": "2019-02-08T07:54:08+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

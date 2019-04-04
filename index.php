@@ -3,6 +3,8 @@
 $t1 = microtime(true);
 
 require 'define.php';
+require_once 'verify.php';
+require_once 'vendor/autoload.php';
 
 $app = new Fastest\Core\App();
 
@@ -18,8 +20,9 @@ if (strpos($_SERVER['REQUEST_URI'],'/restore') !== false) {
   die;
 }
 
-// если в сессии не записан USERNAME - редирект на страницу авторизации.
-if(!isset($_SESSION['username']) && $_SERVER['REQUEST_URI'] != '/login') {
+
+// если токен не верифицирован - редирект на страницу авторизации.
+if(!verify() && $_SERVER['REQUEST_URI'] != '/login') {
   // если страница restore или 404 то ничего не делаем
   if (strpos($_SERVER['REQUEST_URI'],'/restore') !== false || $_SERVER['REQUEST_URI'] == '/404' || $_SERVER['REQUEST_URI'] == '/approved') {
     die;
@@ -30,7 +33,7 @@ if(!isset($_SESSION['username']) && $_SERVER['REQUEST_URI'] != '/login') {
 
 // редирект на главную страницу залогиненного профиля.
 if ($_SERVER['REQUEST_URI'] == '/') {
-  $id = $_COOKIE['user_id'];
+  $id = parseUserId();
   $sex = Q("SELECT `sex` FROM `#_mdd_users` WHERE `id` = ?i",array($id))->row('sex');
   if($sex == '') {
     header('location:/settings');

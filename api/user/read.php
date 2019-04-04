@@ -6,6 +6,9 @@ header("Content-Type: application/json; charset=UTF-8");
 // include database and object files
 include_once '../config/database.php';
 include_once '../objects/user.php';
+include_once '../../verify.php'; 
+require_once '../../vendor/autoload.php';
+if(!verify()) header('location:/login');
 
 // instantiate database and product object
 $database = new Database();

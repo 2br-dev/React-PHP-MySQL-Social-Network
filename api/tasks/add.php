@@ -8,7 +8,10 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
  
 // get database connection
 include_once '../config/database.php';
- 
+include_once '../../verify.php'; 
+require_once '../../vendor/autoload.php';
+if(!verify()) header('location:/login');
+
 // instantiate product object
 include_once '../objects/task.php';
  

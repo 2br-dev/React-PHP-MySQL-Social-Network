@@ -1,0 +1,7 @@
+{
+    "require": {
+        "emarref/jwt": "^1.0",
+        "rbdwllr/reallysimplejwt": "^2.0",
+        "miladrahimi/php-jwt": "1.*"
+    }
+}

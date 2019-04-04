@@ -9,6 +9,9 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // include database and object file
 include_once '../config/database.php';
 include_once '../objects/news.php';
+include_once '../../verify.php'; 
+require_once '../../vendor/autoload.php';
+if(!verify()) header('location:/login');
 
 // get database connection
 $database = new Database();

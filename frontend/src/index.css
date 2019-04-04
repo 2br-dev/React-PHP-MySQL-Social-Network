@@ -5,6 +5,7 @@
   font-weight: normal;
   font-style: normal;
 }
+
 body {
   margin: 0;
   padding: 0;
@@ -13,6 +14,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
 }
+
 textarea:focus,
 textarea:active,
 input:focus,
@@ -23,9 +25,11 @@ input:active {
   outline: none;
   border: none;
 }
+
 * {
   box-sizing: border-box;
 }
+
 #root {
   padding-bottom: 150px;
 }
@@ -34,6 +38,7 @@ input:active {
   width: 1000px;
   margin: 0 auto;
 }
+
 .black-wrapper {
   z-index: 99;
   background: rgba(0, 0, 0, 0.5);
@@ -43,6 +48,7 @@ input:active {
   bottom: 0;
   position: fixed;
 }
+
 .close {
   position: absolute;
   right: 16px;
@@ -54,9 +60,11 @@ input:active {
   cursor: pointer;
   background: transparent;
 }
+
 .close:hover {
   opacity: 1;
 }
+
 .close:before,
 .close:after {
   z-index: 20;
@@ -67,12 +75,15 @@ input:active {
   width: 7px;
   background-color: #2196F3;
 }
+
 .close:before {
   transform: rotate(45deg);
 }
+
 .close:after {
   transform: rotate(-45deg);
 }
+
 input[name="password"] {
   position: relative;
 }
@@ -110,12 +121,12 @@ input[name="password"] {
 }
 
 /* On mouse-over, add a grey background color */
-.checkbox-container:hover input ~ .checkbox-checkmark {
+.checkbox-container:hover input~.checkbox-checkmark {
   background-color: #ccc;
 }
 
 /* When the checkbox is checked, add a blue background */
-.checkbox-container input:checked ~ .checkbox-checkmark {
+.checkbox-container input:checked~.checkbox-checkmark {
   background-color: #2196F3;
 }
 
@@ -127,7 +138,7 @@ input[name="password"] {
 }
 
 /* Show the checkmark when checked */
-.checkbox-container input:checked ~ .checkbox-checkmark:after {
+.checkbox-container input:checked~.checkbox-checkmark:after {
   display: block;
 }
 
@@ -152,6 +163,7 @@ input[name="password"] {
   height: 18px;
   width: auto;
 }
+
 .svg-inline--fa:hover {
   opacity: 1;
   transition: .37s ease;
@@ -160,13 +172,16 @@ input[name="password"] {
 .touch-ripple {
   color: #1976d2;
 }
-.MuiExpansionPanelSummary-content-181 > :last-child {
-  padding-right: 0; 
+
+.MuiExpansionPanelSummary-content-181> :last-child {
+  padding-right: 0;
 }
+
 @media all and (max-width: 600px) {
   #root {
     padding-bottom: 50px;
-  }  
+  }
+
   .container {
     width: 100%;
   }

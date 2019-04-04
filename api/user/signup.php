@@ -1,17 +1,22 @@
 <?php
-// required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
  
-// get database connection
 include_once '../config/database.php';
 include_once '../../define.php'; 
-// instantiate product object
 include_once '../objects/user.php';
- 
+require_once '../../vendor/autoload.php';
+
+use MiladRahimi\Jwt\Cryptography\Algorithms\Hmac\HS256;
+use MiladRahimi\Jwt\JwtGenerator;
+
+$key = JWT_KEY;
+$signer = new HS256($key);
+$generator = new JwtGenerator($signer);
+
 $database = new Database();
 $db = $database->getConnection();
  
@@ -66,9 +71,10 @@ if (isset($login) && isset($password))
           $is_approved = Q("SELECT `approved` FROM `#_mdd_users` WHERE `email` = '$login'",array())->row('approved');
           if ($is_approved == 1 && password_verify($pass, $user_hash)) 
           {
-            $_SESSION['username'] = $login;
             $user_id = Q("SELECT `id` FROM `#_mdd_users` WHERE `email` = '$login'",array())->row('id');
-            echo json_encode( array( 'result' => 1, 'user_id' => intval($user_id) ), 64 | 256 );	
+            $jwt = $generator->generate(['user_id' => $user_id, 'date' => date("Y-m-d H:i:s")]);
+    
+            echo json_encode( array( 'result' => 1, 'user_id' => $user_id, 'jwt' => $jwt ), 64 | 256 );	
           } 
             else 
           {
@@ -83,9 +89,10 @@ if (isset($login) && isset($password))
       
       if ($is_approved == 1 && password_verify($pass, $user_hash)) 
       {
-        $_SESSION['username'] = $login;
         $user_id = Q("SELECT `id` FROM `#_mdd_users` WHERE `login` = '$login'",array())->row('id');
-        echo json_encode( array( 'result' => 1, 'user_id' => intval($user_id) ), 64 | 256 );	
+        $jwt = $generator->generate(['user_id' => $user_id, 'date' => date("Y-m-d H:i:s")]);
+
+        echo json_encode( array( 'result' => 1, 'user_id' => $user_id, 'jwt' => $jwt ), 64 | 256 );		
       } 
         else 
       {

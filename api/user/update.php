@@ -5,22 +5,25 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
- 
+
 // include database and object files
 include_once '../../define.php';
 include_once '../config/database.php';
 include_once '../objects/user.php';
- 
+include_once '../../verify.php'; 
+require_once '../../vendor/autoload.php';
+if(!verify()) header('location:/login');
+
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
- 
+
 // prepare user object
 $user = new User($db);
- 
+
 // get id of user to be edited
 $data = json_decode(file_get_contents("php://input"));
- 
+
 // set user property values
 $user->id           = __post('id');
 $user->adress       = __post('adress');
@@ -39,18 +42,15 @@ $user->city         = __post('city');
 $user->sex          = __post('sex');
 
 // update the user
-if($user->update()){
-    // set response code - 200 ok
+if ($user->update()) {
     http_response_code(200);
     // tell the user
     echo json_encode(array("message" => "User was updated.", "result" => 1));
 }
- 
+
 // if unable to update the user, tell the user
-else{
-    // set response code - 503 service unavailable
+else {
     http_response_code(503);
     // tell the user
     echo json_encode(array("message" => "Unable to update user.", "result" => 0));
 }
-?>

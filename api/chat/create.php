@@ -10,7 +10,10 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../config/database.php';
 // instantiate product object
 include_once '../objects/chat.php';
- 
+include_once '../../verify.php'; 
+require_once '../../vendor/autoload.php';
+if(!verify()) header('location:/login');
+
 $database = new Database();
 $db = $database->getConnection();
 

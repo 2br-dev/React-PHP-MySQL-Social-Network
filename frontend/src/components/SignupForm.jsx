@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import $ from 'jquery';
-import Cookie from './functions/Cookie';
 import ForgetPassword from './ForgetPassword';
 import { connect } from 'react-redux';
 import API from './functions/API';
@@ -13,6 +12,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
+import Cookie from './functions/Cookie';
 
 class SignupForm extends Component {
   constructor(props) {
@@ -57,7 +57,7 @@ class SignupForm extends Component {
         contentType: false,
         type: 'POST',
         success: function (res) {
-          console.log(res);
+          let jwt = res.jwt;
           let response = res.result;
           let user_id = res.user_id;
           let cookie = new Cookie();
@@ -70,9 +70,10 @@ class SignupForm extends Component {
               self.props.enqueueSnackbar('К сожалению, ваша учетная запись ещё не подтверждена, попробуйте войти позже', { variant: 'info' });
               break;
             case 1:
+              localStorage.setItem('akv_jwt_token', jwt);
+              cookie.setCookie('akv_jwt_token', jwt, 30);
               cookie.setCookie('user_id', user_id, 30);
-              localStorage.setItem('user_id', user_id);
-              window.location.href = `/`;
+              window.location.href = `/`;  
               break;
             default: break;
           }

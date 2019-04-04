@@ -327,7 +327,6 @@ class News extends Component {
     let avatar = null;
     window.location.host.includes('localhost') && user.avatar ? avatar = user.avatar.slice(16) : avatar = user.avatar;
     
-
     if (this.state.news.length === 0) {
       setTimeout(() => this.setState({ news: this.props.store.news }), 0);
     }

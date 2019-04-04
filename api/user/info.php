@@ -9,7 +9,10 @@ header('Content-Type: application/json');
 // include database and object files
 include_once '../config/database.php';
 include_once '../objects/user.php';
- 
+include_once '../../verify.php'; 
+require_once '../../vendor/autoload.php';
+if(!verify()) header('location:/login');
+
 // get database connection
 $database = new Database();
 $db = $database->getConnection();

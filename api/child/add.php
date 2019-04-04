@@ -11,7 +11,10 @@ include_once '../config/database.php';
  
 // instantiate product object
 include_once '../objects/child.php';
- 
+include_once '../../verify.php'; 
+require_once '../../vendor/autoload.php';
+if(!verify()) header('location:/login');
+
 $database = new Database();
 $db = $database->getConnection();
  

@@ -11,7 +11,10 @@ include_once '../config/database.php';
  
 // instantiate news object
 include_once '../objects/news.php';
- 
+include_once '../../verify.php'; 
+require_once '../../vendor/autoload.php';
+if(!verify()) header('location:/login');
+
 $database = new Database();
 $db = $database->getConnection();
  
