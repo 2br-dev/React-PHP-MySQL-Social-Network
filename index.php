@@ -11,7 +11,7 @@ $app = new Fastest\Core\App();
 
 $app->terminate($_SERVER);
 
-setActivity();
+if (isset($_COOKIE['akv_jwt_token'])) setActivity();
 
 // если восстанавливаем пароль, то проверяем AUTH-KEY, если не совпадает - то 404
 if (strpos($_SERVER['REQUEST_URI'],'/restore') !== false) {

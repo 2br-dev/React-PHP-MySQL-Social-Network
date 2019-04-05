@@ -12,6 +12,10 @@ function Learnings() {
     setOpened(section);
   }
 
+  function closeSection() {
+    setOpened(false);
+  }
+
   return (
     <Wrapper>
       {window.innerWidth < 600 ? <ResponsiveHeader title='Обучение' /> : null}
@@ -22,8 +26,8 @@ function Learnings() {
             changeSection={changeSection} 
           />
         : opened === 'tests' 
-          ? <Tests />
-          : <Materials />
+          ? <Tests closeSection={closeSection} />
+          : <Materials closeSection={closeSection} />
       }
     </Wrapper>
   )
