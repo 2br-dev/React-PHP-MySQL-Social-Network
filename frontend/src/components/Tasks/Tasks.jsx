@@ -146,7 +146,7 @@ class Tasks extends Component {
                   variant={disabledButton !== 2 ? 'contained' : 'text'}
                   disabled={disabledButton === 2 ? true : false}
                 >
-                  Переданные
+                  Поставленные
             </Button>
                 <Button
                   onClick={() => this.handleFilter(3, 'completed')}

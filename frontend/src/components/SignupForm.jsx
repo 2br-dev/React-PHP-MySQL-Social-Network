@@ -69,6 +69,9 @@ class SignupForm extends Component {
             case 0.5:
               self.props.enqueueSnackbar('К сожалению, ваша учетная запись ещё не подтверждена, попробуйте войти позже', { variant: 'info' });
               break;
+            case 'error':
+              self.props.enqueueSnackbar('Не удалось войти. Проверьте правильность введенных данных', { variant: 'error' });
+              break;
             case 1:
               localStorage.setItem('akv_jwt_token', jwt);
               cookie.setCookie('akv_jwt_token', jwt, 30);

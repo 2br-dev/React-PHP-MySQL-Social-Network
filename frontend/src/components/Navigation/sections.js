@@ -4,12 +4,13 @@ import Message from '@material-ui/icons/Message';
 import Task from '@material-ui/icons/ListAlt';
 import News from '@material-ui/icons/NewReleases';
 import People from '@material-ui/icons/People';
+import Book from '@material-ui/icons/Book';
 
 const sections = [
   {
     value: 0,
     section: 'id',
-    label: window.innerWidth < 600 ? 'Главная' : 'Моя страница',
+    label: 'Главная',
     img: <Person />,
   },
   { 
@@ -21,13 +22,13 @@ const sections = [
   {
     value: 2,
     section: 'news',
-    label: window.innerWidth < 600 ? 'Новости' : 'Новости компании',
+    label: 'Новости',
     img: <News />,
   },
   {
     value: 3,
     section: 'tasks',
-    label: window.innerWidth < 600 ? 'Задачи' : 'Входящие задачи',
+    label: 'Задачи',
     img: <Task />,
   },
   {
@@ -35,12 +36,8 @@ const sections = [
     section: 'colleagues',
     label: 'Коллеги',
     img: <People />,
-  }/* ,
-  {
-    section: 'learnings',
-    label: 'Обучение',
-    img: 'learning.png',
-  },
+  }
+  /*
   {
     section: 'gallery',
     label: 'Галерея',
@@ -52,5 +49,14 @@ const sections = [
     img: 'favourites.png',
   }, */
 ];
+
+if (window.innerWidth >= 600) {
+  sections.push({
+    value: 5,
+    section: 'learnings',
+    label: 'Обучение',
+    img: <Book />
+  })
+}
 
 export default sections;

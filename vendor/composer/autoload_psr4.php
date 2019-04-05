@@ -7,8 +7,13 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Tests\\' => array($vendorDir . '/rbdwllr/reallysimplejwt/tests'),
+    'Slim\\' => array($vendorDir . '/slim/slim/Slim'),
     'ReallySimpleJWT\\' => array($vendorDir . '/rbdwllr/reallysimplejwt/src'),
+    'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
+    'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'MiladRahimi\\Jwt\\Tests\\' => array($vendorDir . '/miladrahimi/php-jwt/tests'),
     'MiladRahimi\\Jwt\\' => array($vendorDir . '/miladrahimi/php-jwt/src'),
+    'Interop\\Container\\' => array($vendorDir . '/container-interop/container-interop/src/Interop/Container'),
+    'FastRoute\\' => array($vendorDir . '/nikic/fast-route/src'),
     'Emarref\\Jwt\\' => array($vendorDir . '/emarref/jwt/src'),
 );

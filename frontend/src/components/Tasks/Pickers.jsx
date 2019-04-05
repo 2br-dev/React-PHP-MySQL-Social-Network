@@ -10,8 +10,10 @@ class MaterialUIPickers extends React.Component {
           margin="normal"
           label="Выберите дату"
           value={this.props.selectedDate}
+          minDate={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
           fullWidth={true}
           onChange={this.props.handleDateChange}
+          cancelLabel='Отмена'
         />
         <TimePicker
           ampm={false}
@@ -20,7 +22,9 @@ class MaterialUIPickers extends React.Component {
           value={this.props.selectedTime}
           locale='ru'
           fullWidth={true}
+          minutesStep={5}
           onChange={this.props.handleTimeChange}
+          cancelLabel='Отмена'
         />
       </Grid>
     );

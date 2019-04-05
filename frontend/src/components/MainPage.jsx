@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import Chat from './Chat/Chat';
 import { connect } from 'react-redux';
 import API from './functions/API';
+import Learnings from './Learnings/Learnings';
 
 class MainPage extends Component {
   constructor(props) {
@@ -88,9 +89,9 @@ class MainPage extends Component {
               user_id={this.state.user_logged_id}
             />
         )
- /*      case 'learnings':
-        return 'learnings';
-      case 'gallery':
+      case 'learnings':
+        return <Learnings />;
+      /*case 'gallery':
         return 'gallery';
       case 'favourites':
         return 'favourites'; */

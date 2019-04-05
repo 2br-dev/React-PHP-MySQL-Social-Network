@@ -6,14 +6,18 @@ import { Typography, ExpansionPanelDetails, ExpansionPanelSummary, ExpansionPane
 import styled from 'styled-components';
 import classNames from 'classnames';
 import moment from 'moment';
+import $ from 'jquery';
+import API from '../functions/API';
+import { connect } from 'react-redux';
 
-export default class Task extends React.Component {
+class Task extends React.Component {
 
   getUserNames = (users) => {
     let usersId = users.split(',');
-    let result = 'Для: ';
+    let result = 'Для: ';  
 
     usersId.forEach(id => {
+      if (Number(id.slice(3)) === this.props.user_logged_id) return result += "Вас  ";
       result += `${this.props.users.find(user => user.id === id.slice(3)).name} `;
       result += `${this.props.users.find(user => user.id === id.slice(3)).surname}, `;
     })
@@ -23,12 +27,32 @@ export default class Task extends React.Component {
   getAdresant = (id) => {
     let initial = "От: ";
     // eslint-disable-next-line
-    if (id = this.props.user_logged_id) return initial += 'Вас';
+    if (Number(id) === this.props.user_logged_id) return initial += 'Вас';
 
     if (this.props.users.length > 0) {
       initial += this.props.users.find(user => user.id === this.props.task.from).name;
       initial += ` ${this.props.users.find(user => user.id === this.props.task.from).surname}`;
       return initial;
+    }
+  }
+
+  openTask(e, id, readed) {
+    const self = this;
+    if (!readed) {
+      e.stopPropagation();
+      const formData = new FormData();
+      formData.append('id', id);
+      $.ajax({
+        url: `${API}/api/tasks/mark_as_read.php`,
+        data: formData,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: res => {
+          console.log(res);
+          self.props.markTask(id);
+        }
+      }); 
     }
   }
 
@@ -38,11 +62,12 @@ export default class Task extends React.Component {
     const difference = moment.duration(end.diff(now))._milliseconds;
 
     return (
-      <ExpansionPanel>
+      <ExpansionPanel onClick={e => this.openTask(e, this.props.task.id, this.props.task.readed)}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant='caption'>
             <Typography variant='subtitle2' style={styles.flex}>
-              Получено: {this.props.task.date} в {`${this.props.task.time} `}
+            {this.props.task.from === this.props.user_logged_id.toString() ? 'Поставлено: ' : 'Получено: ' }
+            {this.props.task.date} в {`${this.props.task.time} `}
               {this.props.task.importance === '1' ? <Tooltip title="Отмечено как 'Важное'" placement="top-start"><Icon><WarningIcon /></Icon></Tooltip> : null}
             </Typography>
             {this.getAdresant(this.props.task.from)}
@@ -59,11 +84,14 @@ export default class Task extends React.Component {
             </TaskStatus>
           </Typography>
 
-          <DeleteIcon onClick={(e) => this.props.handleConfirm(e, this.props.task.id)}>
-            <Tooltip title="Удалить" placement="left">
-              <Delete />
-            </Tooltip>
-          </DeleteIcon>
+          {this.props.task.from === this.props.user_logged_id.toString() ?     
+            <DeleteIcon onClick={(e) => this.props.handleConfirm(e, this.props.task.id)}>
+              <Tooltip title="Удалить" placement="left">
+                <Delete />
+              </Tooltip>
+            </DeleteIcon>
+          : null }
+
         </ExpansionPanelSummary>
         <ExpansionPanelDetails style={styles.details}>
           <Typography variant='h6'> {this.props.task.text}  </Typography>
@@ -72,7 +100,8 @@ export default class Task extends React.Component {
               <Typography variant='caption'>{this.props.users.length > 0 ? this.getUserNames(this.props.task.for).slice(0, -2) : null}</Typography>
               <Typography variant='subtitle2'>Выполнить до: {this.props.task.until_date.split('-').reverse().join('.')}, {this.props.task.until_time}</Typography>
             </div>
-            {this.props.task.status === '0' && this.props.task.from.includes(`for${this.props.user_logged_id}`) ?
+    
+            {this.props.task.status === '0' && this.props.task.for.includes(`for${this.props.user_logged_id}`) ?
               difference < 0 ?
                 <Tooltip title="Нельзя выполнить просроченную задачу" placement="top-start" leaveDelay={200}>
                   <span><Button disabled={true} variant='contained' color='primary'>Выполнить</Button></span>
@@ -134,3 +163,14 @@ const TaskStatus = styled.span`
     color: darkred;
   }
 `;
+
+export default connect(
+  state => ({
+    store: state
+  }),
+  dispatch => ({
+    markTask: (task) => {
+      dispatch({ type: 'READED_TASK', payload: task})
+    }     
+  })
+)(Task);

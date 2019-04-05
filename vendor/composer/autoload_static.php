@@ -6,19 +6,40 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit748f828bac0c22e4c8114b9d4eae383a
 {
+    public static $files = array (
+        '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'T' => 
         array (
             'Tests\\' => 6,
         ),
+        'S' => 
+        array (
+            'Slim\\' => 5,
+        ),
         'R' => 
         array (
             'ReallySimpleJWT\\' => 16,
+        ),
+        'P' => 
+        array (
+            'Psr\\Http\\Message\\' => 17,
+            'Psr\\Container\\' => 14,
         ),
         'M' => 
         array (
             'MiladRahimi\\Jwt\\Tests\\' => 22,
             'MiladRahimi\\Jwt\\' => 16,
+        ),
+        'I' => 
+        array (
+            'Interop\\Container\\' => 18,
+        ),
+        'F' => 
+        array (
+            'FastRoute\\' => 10,
         ),
         'E' => 
         array (
@@ -31,9 +52,21 @@ class ComposerStaticInit748f828bac0c22e4c8114b9d4eae383a
         array (
             0 => __DIR__ . '/..' . '/rbdwllr/reallysimplejwt/tests',
         ),
+        'Slim\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/slim/slim/Slim',
+        ),
         'ReallySimpleJWT\\' => 
         array (
             0 => __DIR__ . '/..' . '/rbdwllr/reallysimplejwt/src',
+        ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
         ),
         'MiladRahimi\\Jwt\\Tests\\' => 
         array (
@@ -43,9 +76,27 @@ class ComposerStaticInit748f828bac0c22e4c8114b9d4eae383a
         array (
             0 => __DIR__ . '/..' . '/miladrahimi/php-jwt/src',
         ),
+        'Interop\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
+        ),
+        'FastRoute\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nikic/fast-route/src',
+        ),
         'Emarref\\Jwt\\' => 
         array (
             0 => __DIR__ . '/..' . '/emarref/jwt/src',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'Pimple' => 
+            array (
+                0 => __DIR__ . '/..' . '/pimple/pimple/src',
+            ),
         ),
     );
 
@@ -54,6 +105,7 @@ class ComposerStaticInit748f828bac0c22e4c8114b9d4eae383a
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit748f828bac0c22e4c8114b9d4eae383a::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit748f828bac0c22e4c8114b9d4eae383a::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit748f828bac0c22e4c8114b9d4eae383a::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }

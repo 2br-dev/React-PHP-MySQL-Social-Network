@@ -78,7 +78,11 @@ if (isset($login) && isset($password))
           } 
             else 
           {
-            echo json_encode( array( 'result' => 0.5 ), 64 | 256 );	
+            if ($is_approved == 1) {
+              echo json_encode( array( 'result' => 'error' ), 64 | 256 );	
+            } else {
+              echo json_encode( array( 'result' => 0.5 ), 64 | 256 );	
+            }     
           }
         }
       }			
@@ -96,7 +100,11 @@ if (isset($login) && isset($password))
       } 
         else 
       {
-        echo json_encode( array( 'result' => 0.5 ), 64 | 256 );	
+        if ($is_approved == 1) {
+          echo json_encode( array( 'result' => 'error' ), 64 | 256 );	
+        } else {
+          echo json_encode( array( 'result' => 0.5 ), 64 | 256 );	
+        }     
       }	 
     }
     /* закрытие выборки */

@@ -15,4 +15,5 @@ const Wrapper = styled.div`
   height: 80px;
   padding: 36px 20px 15px;
   font-size: 24px;
+  background: #fff;
 `;

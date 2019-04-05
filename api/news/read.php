@@ -7,13 +7,25 @@ header("Content-Type: application/json; charset=UTF-8");
 // include database and object files
 include_once '../config/database.php';
 include_once '../objects/news.php';
+include_once '../objects/user.php';
 include_once '../../verify.php'; 
+include_once '../../setActivity.php'; 
 require_once '../../vendor/autoload.php';
+
 if(!verify()) header('location:/login');
 
-// instantiate database and product object
+// get database connection
 $database = new Database();
 $db = $database->getConnection();
+
+// initialize object
+$user = new User($db);
+
+if (setActivity()) {
+  $user->id = setActivity();
+  $user->last_activity = round(microtime(true) * 1000);
+  $user->set_activity();
+}
 
 // initialize object
 $news = new News($db);

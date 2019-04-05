@@ -7,11 +7,12 @@ import Search from './Search';
 import { Link } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Loader from '../Loader/Loader';
+import { connect } from 'react-redux';
+import moment from 'moment';
 
-export default class FriendList extends Component {
+class FriendList extends Component {
   state = { 
     friends: [], 
-    initial: [],
     searchValue: '',
     loading: true,
     documentTitle: document.title
@@ -21,10 +22,28 @@ export default class FriendList extends Component {
     fetch(`${API}/api/user/read.php`)
       .then(response => response.json())
       .then(friends => this.setState({ 
-        friends: friends.data.filter(friend => friend.id !== this.props.user_id.toString()), 
-        initial: friends.data.filter(friend => friend.id !== this.props.user_id.toString()), 
+        friends: friends.data.filter(friend => friend.id !== this.props.user_id.toString())
       })) 
+      .then(() => this.props.onFetchFriends(this.state.friends))
+      .then(() => this.sortFriends())
       .then(() => this.setState({ loading: false }))   
+  }
+
+  sortFriends = () => {
+    let sorted = this.state.friends;
+    let online = [],
+        offline = [],
+        not_used = [];
+    sorted.forEach(friend => {
+      friend.last_activity = this.setOnline(friend.last_activity);
+      friend.last_activity === 'Online' 
+        ? online.push(friend) 
+        : friend.last_activity 
+          ? offline.push(friend)
+          : not_used.push(friend)
+    }); 
+    sorted = online.concat(offline.concat(not_used));
+    this.props.setOnline(sorted);
   }
 
   handleSearch = (e) => {
@@ -33,13 +52,24 @@ export default class FriendList extends Component {
 
     document.title = e.target.value || this.state.documentTitle;
 
-    let friends = this.state.initial;
+    let friends = this.state.friends;
     friends = friends.filter(friend => 
       friend.name.toLowerCase().includes(searchValue) || 
       friend.surname.toLowerCase().includes(searchValue) ||
       friend.position.toLowerCase().includes(searchValue)
     );
-    this.setState({ friends });
+    this.props.filterFriends(friends);
+  }
+
+  setOnline = time => {
+    if (!time) return '';
+
+    const lastActivity = moment(Number(time)).fromNow();
+    if ((lastActivity.includes('секунд') || lastActivity.includes('минут')) && (parseInt(lastActivity) < 15 || !parseInt(lastActivity))) {
+      return `Online`;
+    } else {
+      return `Последний визит: ${lastActivity}`;
+    }
   }
 
   componentWillUnmount = () => {
@@ -59,7 +89,7 @@ export default class FriendList extends Component {
               searchValue={this.searchValue}
             />
             <List>
-              {this.state.friends.map(friend  => 
+              {this.props.store.friends.map(friend  => 
                 <Link 
                   key={friend.id} 
                   to={`id${friend.id}`}
@@ -94,3 +124,20 @@ const FriendWrapper = styled.div`
     }
   }
 `;
+
+export default connect(
+  state => ({
+    store: state
+  }),
+  dispatch => ({
+    onFetchFriends: (friends) => {
+      dispatch({ type: 'FETCH_FRIENDS', payload: friends })
+    },
+    filterFriends: (friends) => {
+      dispatch({ type: 'FILTER_FRIENDS', payload: friends })
+    },
+    setOnline: (friends) => {
+      dispatch({ type: 'SET_FRIENDS', payload: friends })
+    }
+  })
+)(FriendList);

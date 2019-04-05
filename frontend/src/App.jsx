@@ -22,7 +22,7 @@ class App extends Component {
            {/*  <Route path='/favourites' component={MainPage}/>
             <Route path='/gallery'    component={MainPage}/> */}
             <Route path='/tasks'      component={MainPage}/>
-           {/*  <Route path='/learnings'  component={MainPage}/> */}
+            <Route path='/learnings'  component={MainPage}/>
             <Route path='/messages'   component={MainPage}/>
             <Route path='/news'       component={MainPage}/> 
             <Route path='/settings'   component={Settings}/>

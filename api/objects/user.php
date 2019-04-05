@@ -33,6 +33,7 @@ class User
     public $avatar;
     public $approved;
     public $code;
+    public $last_activity;
 
     // constructor with $db as database connection
     public function __construct($db)
@@ -411,6 +412,30 @@ class User
 
         // bind new values
         $stmt->bindParam(':approved', $this->approved);
+        $stmt->bindParam(':id', $this->id);
+
+        // execute the query
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function set_activity()
+    {
+        $query = "UPDATE " . $this->table_name . "
+        SET `last_activity` = :last_activity WHERE `id` = :id";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->last_activity = htmlspecialchars(strip_tags($this->last_activity));
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        // bind new values
+        $stmt->bindParam(':last_activity', $this->last_activity);
         $stmt->bindParam(':id', $this->id);
 
         // execute the query

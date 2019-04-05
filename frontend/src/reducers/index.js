@@ -5,6 +5,7 @@ import news from './news';
 import chats from './chats';
 import room from './room';
 import messages from './messages';
+import friends from './friends';
 
 export default combineReducers({
   user,
@@ -12,5 +13,6 @@ export default combineReducers({
   tasks,
   chats,
   room,
-  messages
+  messages,
+  friends
 })

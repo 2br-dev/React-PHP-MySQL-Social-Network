@@ -9,13 +9,23 @@ header('Content-Type: application/json');
 // include database and object files
 include_once '../config/database.php';
 include_once '../objects/task.php';
+include_once '../objects/user.php';
 include_once '../../verify.php'; 
+include_once '../../setActivity.php'; 
 require_once '../../vendor/autoload.php';
+
 if(!verify()) header('location:/login');
 
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
+
+if (setActivity()) {
+  $user = new User($db);
+  $user->id = setActivity();
+  $user->last_activity = round(microtime(true) * 1000);
+  $user->set_activity();
+}
 
 // prepare product object
 $task = new Task($db);
@@ -43,7 +53,8 @@ if ($num > 0) {
       "until_date"    => $until_date,
       "until_time"    => $until_time,
       "importance"    => $importance,
-      "status"        => $status
+      "status"        => $status,
+      "readed"        => $readed
     );
 
     array_push($task_arr["data"], $task_item);

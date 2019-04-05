@@ -4,11 +4,14 @@ $t1 = microtime(true);
 
 require 'define.php';
 require_once 'verify.php';
+require_once 'setActivity.php';
 require_once 'vendor/autoload.php';
 
 $app = new Fastest\Core\App();
 
 $app->terminate($_SERVER);
+
+setActivity();
 
 // если восстанавливаем пароль, то проверяем AUTH-KEY, если не совпадает - то 404
 if (strpos($_SERVER['REQUEST_URI'],'/restore') !== false) {

@@ -9,7 +9,6 @@ import styled from 'styled-components';
 import _ from 'lodash';
 import API from '../functions/API';
 import { connect } from 'react-redux';
-import moment from 'moment';
 
 const PATH = window.location.pathname;
 let urlValue = _.find(sections, ['section', PATH.includes('id') ? 'id' : PATH.slice(1)]);
@@ -31,13 +30,10 @@ class Navigation extends React.Component {
 
   countTask = () => {
     let counter = 0;
-    const now = moment(new Date()); //todays date
     const filtered = this.props.store.tasks.filter(task => Number(task.from) !== this.props.user_logged_id);
     filtered.forEach(task => {
-      const end = moment(task.until_date); // another date
-      const difference = moment.duration(end.diff(now))._milliseconds;
-      if (task.status === '0' && difference > 0) counter++;
-    })
+      if(!task.readed) counter++; 
+    });
     return counter;
   }
   render() {

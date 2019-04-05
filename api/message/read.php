@@ -8,14 +8,25 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // include database and object files
 include_once '../config/database.php';
 include_once '../objects/message.php';
+include_once '../objects/user.php';
 include_once '../../verify.php'; 
+include_once '../../setActivity.php'; 
 require_once '../../vendor/autoload.php';
+
 if(!verify()) header('location:/login');
 
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
 
+// initialize object
+$user = new User($db);
+
+if (setActivity()) {
+  $user->id = setActivity();
+  $user->last_activity = round(microtime(true) * 1000);
+  $user->set_activity();
+}
 // prepare product object
 $message = new Message($db);
 

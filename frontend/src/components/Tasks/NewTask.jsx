@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Paper, Typography, Tooltip } from '@material-ui/core';
 import styled from 'styled-components';
 import CloseIcon from '@material-ui/icons/Close';
@@ -10,7 +10,7 @@ import { withSnackbar } from 'notistack';
 
 class NewTask extends Component {
   state = {
-    selectedDate: new Date(),
+    selectedDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
     selectedTime: new Date(),
     users: [],
     multi: [],
@@ -82,29 +82,32 @@ class NewTask extends Component {
     const { users, multi, selectedTime, selectedDate, text } = this.state;
 
     return (
-      <Wrapper>
-        <Paper>
-          <span className='closeNewTask' onClick={this.props.handleClose}>
-            <Tooltip title="Закрыть" placement="left"><CloseIcon /></Tooltip>
-          </span>
-          <Typography variant='h5'>Новая Задача</Typography>
-          <Stepper
-            users={users}
-            multi={multi}
-            text={text}
-            selectedTime={selectedTime}
-            selectedDate={selectedDate}
-            handleChange={this.handleChange}
-            handleTextChange={this.handleTextChange}
-            handleDateChange={this.handleDateChange}
-            handleTimeChange={this.handleTimeChange}
-            changeImportance={this.changeImportance}
-            resetAll={this.resetAll}
-            handleClose={this.props.handleClose}
-            handleSubmit={this.handleSubmit}
-          />
-        </Paper>
-      </Wrapper>
+      <Fragment>
+        <Wrapper>
+          <Paper>
+            <span className='closeNewTask' onClick={this.props.handleClose}>
+              <Tooltip title="Закрыть" placement="left"><CloseIcon /></Tooltip>
+            </span>
+            <Typography variant='h5'>Новая Задача</Typography>
+            <Stepper
+              users={users}
+              multi={multi}
+              text={text}
+              selectedTime={selectedTime}
+              selectedDate={selectedDate}
+              handleChange={this.handleChange}
+              handleTextChange={this.handleTextChange}
+              handleDateChange={this.handleDateChange}
+              handleTimeChange={this.handleTimeChange}
+              changeImportance={this.changeImportance}
+              resetAll={this.resetAll}
+              handleClose={this.props.handleClose}
+              handleSubmit={this.handleSubmit}
+            />
+          </Paper>
+        </Wrapper>
+        {window.innerWidth >= 600 ? <Backdrop onClick={this.props.handleClose} /> : null}
+      </Fragment>
     )
   }
 }
@@ -122,6 +125,7 @@ const Wrapper = styled.div`
   background: #ffffff;
   border-radius: 10px;
   outline: none;
+  z-index: 10;
 
   .listFor {
     max-height: 220px;
@@ -182,6 +186,16 @@ const Wrapper = styled.div`
       right: 15px;
     } 
   }
+`;
+
+const Backdrop = styled.div`
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  background: rgba(0,0,0,.17);
 `;
 
 export default connect(

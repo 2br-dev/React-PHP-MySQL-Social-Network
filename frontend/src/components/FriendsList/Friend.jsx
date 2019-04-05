@@ -25,8 +25,8 @@ function Friend(props) {
       </ListItemAvatar>
       <ListItemText
         inset
-        primary={`${props.friend.name} ${props.friend.surname}`}
-        secondary={props.friend.position}
+        primary={`${props.friend.name} ${props.friend.surname}, ${props.friend.position}`}
+        secondary={props.friend.last_activity}
       />
     </ListItem>
   );

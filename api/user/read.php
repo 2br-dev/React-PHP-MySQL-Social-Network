@@ -7,15 +7,23 @@ header("Content-Type: application/json; charset=UTF-8");
 include_once '../config/database.php';
 include_once '../objects/user.php';
 include_once '../../verify.php'; 
+include_once '../../setActivity.php'; 
 require_once '../../vendor/autoload.php';
+
 if(!verify()) header('location:/login');
 
-// instantiate database and product object
+// get database connection
 $database = new Database();
 $db = $database->getConnection();
 
 // initialize object
 $user = new User($db);
+
+if (setActivity()) {
+  $user->id = setActivity();
+  $user->last_activity = round(microtime(true) * 1000);
+  $user->set_activity();
+}
 
 // query products
 $stmt = $user->read();
@@ -34,7 +42,8 @@ if ($num > 0) {
             "name"    => $name,
             "surname" => $surname,
             "position" => $position,
-            "avatar" => $avatar
+            "avatar" => $avatar,
+            "last_activity" => $last_activity
         );
 
         array_push($users_arr["data"], $user_item);

@@ -131,4 +131,32 @@ class Task
 
         return false;
     }
+
+    function markAsRead()
+    {
+        $query = "UPDATE " . $this->table_name . "
+                SET
+                    readed = :readed
+                WHERE
+                    id = :id";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->id = htmlspecialchars(strip_tags($this->id));
+        $this->readed = 1;
+
+        // bind new values
+        $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(':readed', $this->readed);
+
+        // execute the query
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        if ($stmt->execute()) return true;
+        return false;
+    }
 }
