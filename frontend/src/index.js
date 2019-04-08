@@ -36,6 +36,11 @@ const theme = createMuiTheme({
       root: {
         bottom: window.innerWidth < 600 ? 'display: none' : 'display: block', 
       },
+    },
+    MuiFab: {
+      root: {
+        bottom: window.innerWidth < 600 ? '76px' : '0', 
+      }
     }
   },
 });

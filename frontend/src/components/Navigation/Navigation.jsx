@@ -6,17 +6,12 @@ import Tab from '@material-ui/core/Tab';
 import Badge from '@material-ui/core/Badge';
 import sections from './sections';
 import styled from 'styled-components';
-import _ from 'lodash';
 import API from '../functions/API';
 import { connect } from 'react-redux';
 
-const PATH = window.location.pathname;
-let urlValue = _.find(sections, ['section', PATH.includes('id') ? 'id' : PATH.slice(1)]);
-if (urlValue) urlValue = urlValue.value;
-
 class Navigation extends React.Component {
   state = {
-    value: urlValue
+    value: 0
   };
 
   componentDidMount = () => {
