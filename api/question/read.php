@@ -38,15 +38,12 @@ if ($num > 0) {
     extract($row);
 
     $question_item = array(
-      "correct_answer"  => $correct_answer,
-      "question"        => $question,
-      "test"            => $test,
-      "answer1"         => $answer1,
-      "answer2"         => $answer2,
-      "answer3"         => $answer3,
-      "answer4"         => $answer4,
-      "answer5"         => $answer5,
-      "answer6"         => $answer6
+      "id"            => $id,
+      "variants"      => $variants,
+      "question"      => $question,
+      "category"      => $category,
+      "subcategory"   => $subcategory,
+      "checked"       => false
     );
 
     array_push($question_arr["data"], $question_item);

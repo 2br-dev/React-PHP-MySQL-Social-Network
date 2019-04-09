@@ -177,6 +177,18 @@ input[name="password"] {
   padding-right: 0;
 }
 
+.expansion-panel-top {
+  background: #1976d2 !important;
+}
+
+.expansion-panel-top svg, .expansion-panel-top div p {
+  color: white;
+}
+
+.align-center>div {
+  align-items: center;
+}
+
 @media all and (max-width: 600px) {
   #root {
     padding-bottom: 50px;

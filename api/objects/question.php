@@ -7,15 +7,10 @@ class Question{
  
     // object properties
     public $id;
-    public $correct_answer;
+    public $variants;
     public $question;
-    public $test;
-    public $answer1;
-    public $answer2;
-    public $answer3;
-    public $answer4;
-    public $answer5;
-    public $answer6;
+    public $category;
+    public $subcategory;
  
     // constructor with $db as database connection
     public function __construct($db){

@@ -33,4 +33,15 @@ export async function fetchQuestions() {
   return await result;
 }
 
+export async function fetchCategories() {
+  let result = [];
+
+  await fetch(`${API}/api/getCategories.php`)
+    .then(response => response.json())
+    .then(res => result = res)
+    .catch(err => console.log(err))
+  
+  return await result;
+}
+
 export default [];

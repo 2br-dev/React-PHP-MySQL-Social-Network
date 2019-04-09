@@ -7,6 +7,7 @@ import room from './room';
 import messages from './messages';
 import friends from './friends';
 import tests from './tests';
+import categories from './categories';
 
 export default combineReducers({
   user,
@@ -16,5 +17,6 @@ export default combineReducers({
   room,
   messages,
   friends,
-  tests
+  tests,
+  categories
 })
