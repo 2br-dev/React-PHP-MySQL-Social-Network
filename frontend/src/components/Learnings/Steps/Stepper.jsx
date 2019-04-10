@@ -35,11 +35,11 @@ function getSteps() {
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return `Вы можете выбрать только одного сотрудника.`;
+      return `Выберите сотрудника из выпадающего списка, так же можете начать вводить имя или фамилию сотрудника в строке поиска. Вы можете выбрать только одного сотрудника.`;
     case 1:
-      return 'Назначьте время прохождения тестирования.';
+      return 'Выберите длительность тестирования из выпадающего списка.';
     case 2:
-      return `Вы можете добавить в тестирование вопросы из разных категорий.`;
+      return `Отметьте категории или подкатегории вопросов, которые будут в тестировании. Вы можете добавлять в тестирование вопросы из разных категорий.`;
     default:
       return 'Unknown step';
   }
@@ -47,37 +47,52 @@ function getStepContent(step) {
 
 class VerticalLinearStepper extends React.Component {
   state = {
-    activeStep: 2,
+    activeStep: 0,
   };
 
   handleNext = () => {
     this.setState(state => ({
       activeStep: state.activeStep + 1,
     }));
+    this.setOverlay(this.state.activeStep + 1);
   };
 
   handleBack = () => {
     this.setState(state => ({
       activeStep: state.activeStep - 1,
     }));
+    this.setOverlay(this.state.activeStep - 1);
   };
 
   handleReset = () => {
     this.setState({
       activeStep: 0,
     });
+    this.setOverlay(0)
   };
 
-  checkDisabled = (step, multi, time) => {
-    if (step === 0 && multi.length !== 0) return false;
+  setOverlay(step) {
+    console.log(step)
+    const overlay = document.getElementById('overlay-modal');
+    if (step === 2) {
+      overlay.style.overflow = 'overlay';
+    } else {
+      overlay.style.overflow = 'visible';
+    }
+  }
+  checkDisabled = (step, selectedUser, time, questions) => {
+    if (step === 0 && selectedUser.length !== 0) return false;
     if (step === 1 && time) return false;
-    if (step === 2) return false;
+    if (step === 2 && questions) {
+      const selectedQuestions = questions.filter(question => question.checked);
+      if (selectedQuestions.length > 0 ) return false;
+    }
     
     return true;
   }
 
   render() {
-    const { classes, users, multi, selectedTime, questions, categories } = this.props;
+    const { classes, users, selectedUser, selectedTime, questions, categories } = this.props;
     const steps = getSteps();
     const { activeStep } = this.state;
 
@@ -100,12 +115,12 @@ class VerticalLinearStepper extends React.Component {
                     </Button>
                     <Button
                       variant="contained"
-                      color="primary"
+                      color={activeStep === steps.length - 1 ? 'secondary' : 'primary'}
                       onClick={activeStep === steps.length - 1 ? () => {this.props.handleSubmit(); this.handleNext()} : this.handleNext}
                       className={classes.button}
-                      disabled={this.checkDisabled(activeStep, multi, selectedTime)} 
+                      disabled={this.checkDisabled(activeStep, selectedUser, selectedTime, questions)} 
                     >
-                      {activeStep === steps.length - 1 ? 'Финиш' : 'Дальше'}
+                      {activeStep === steps.length - 1 ? 'Создать тестирование' : 'Дальше'}
                     </Button>
                   </div>
                 </div>
@@ -119,7 +134,7 @@ class VerticalLinearStepper extends React.Component {
         {activeStep === 0 
           ? <SelectUser 
               users={users} 
-              multi={multi}
+              selectedUser={selectedUser}
               handleChange={this.props.handleChange}
             />
           : activeStep === 1
@@ -137,14 +152,14 @@ class VerticalLinearStepper extends React.Component {
 
         {activeStep === steps.length && (
           <Paper square elevation={0} className={classes.resetContainer}>
-            <Typography>Задача успешно поставлена.</Typography>
+            <Typography>Вы можете запустить тестирование в любое время на вкладке "созданные" в разделе тесты.</Typography>
             <Button 
               onClick={() => {this.handleReset(); this.props.resetAll()}}
               variant="contained"               
-              color="primary"
+              color="secondary"
               className={classes.button}
             >
-              Поставить ещё задачу
+              Создать ещё одно тестирование
             </Button>
             <Button 
               onClick={this.props.handleClose} 

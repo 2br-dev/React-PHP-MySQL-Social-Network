@@ -3,34 +3,15 @@ import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
 
-const times = [
-  {
-    value: '5',
-    label: '5',
-  },
-  {
-    value: '10',
-    label: '10',
-  },
-  {
-    value: '15',
-    label: '15',
-  },
-  {
-    value: '20',
-    label: '20',
-  },
-  {
-    value: '25',
-    label: '25',
-  },
-  {
-    value: '30',
-    label: '30',
-  },
-];
+let times = [];
+
+for (let i = 10; i <= 120; i += 10) {
+  let item = {};
+  item.value = i;
+  item.label = `${i} минут`;
+  times.push(item);
+}
 
 const styles = theme => ({
   textField: {
@@ -62,9 +43,6 @@ class TimePicker extends React.Component {
           }}
           helperText="Пожалуйста, назначьте время прохождения теста"
           margin="dense"
-          InputProps={{
-            endAdornment: <InputAdornment position="end">минут</InputAdornment>,
-          }}
         >
           {times.map(option => (
             <MenuItem key={option.value} value={option.value}>

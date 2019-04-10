@@ -189,6 +189,22 @@ input[name="password"] {
   align-items: center;
 }
 
+.react-swipeable-view-container {
+  max-height: 300px;
+}
+
+.swipeable>div>div::-webkit-scrollbar {
+  width: 4px;
+}
+
+.swipeable>div>div::-webkit-scrollbar-track {
+  background-color: #ebebeb;
+}
+
+.swipeable>div>div::-webkit-scrollbar-thumb {
+  background: #1976d2; 
+}
+
 @media all and (max-width: 600px) {
   #root {
     padding-bottom: 50px;

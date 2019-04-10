@@ -14,7 +14,8 @@ const styles = theme => ({
     marginTop: 20,
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    zIndex: 1000,
   },
   input: {
     display: 'flex',
@@ -25,7 +26,7 @@ const styles = theme => ({
     flexWrap: 'wrap',
     flex: 1,
     alignItems: 'center',
-    overflow: 'hidden',
+    zIndex: 1000,
   },
   chip: {
     margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
@@ -49,7 +50,7 @@ const styles = theme => ({
   },
   paper: {
     position: 'absolute',
-    zIndex: 1,
+    zIndex: 1000,
     marginTop: theme.spacing.unit,
     left: 0,
     right: 0,
@@ -171,6 +172,7 @@ class IntegrationReactSelect extends React.Component {
     const users = this.props.users.map(user => ({
       value: user.id,
       label: `${user.name} ${user.surname}`,
+      position: user.position
     }));
 
     const selectStyles = {
@@ -197,8 +199,8 @@ class IntegrationReactSelect extends React.Component {
             }}
             options={users}
             components={components}
-            value={this.props.multi}
-            onChange={this.props.handleChange('multi')}
+            value={this.props.selectedUser}
+            onChange={this.props.handleChange('selectedUser')}
             placeholder="Выберите тестируемого сотрудника"
             isMulti={false}
           />

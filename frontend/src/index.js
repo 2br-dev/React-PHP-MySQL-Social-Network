@@ -40,6 +40,7 @@ const theme = createMuiTheme({
     MuiFab: {
       root: {
         bottom: window.innerWidth < 600 ? '76px' : '0', 
+        zIndex: 10
       }
     }
   },

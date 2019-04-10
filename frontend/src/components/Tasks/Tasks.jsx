@@ -12,6 +12,7 @@ import ConfirmDelete from './ConfirmDelete';
 import Loader from '../Loader/Loader';
 import { withSnackbar } from 'notistack';
 import ResponsiveHeader from '../ResponsiveHeader/ResponsiveHeader';
+
 class Tasks extends Component {
   state = {
     open: false,
@@ -195,6 +196,7 @@ class Tasks extends Component {
           component={<ConfirmDelete
             handleDelete={this.handleDelete}
             handleClose={this.handleClose.bind(this)}
+            name='задачу'
           />}
         />
       </Wrapper>

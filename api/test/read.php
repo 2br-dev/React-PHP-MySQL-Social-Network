@@ -1,7 +1,7 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Methods: *");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 include_once '../config/database.php';
@@ -26,8 +26,15 @@ if (setActivity()) {
 ** BODY
 */
 $test = new Test($db);
+$test->user_id = isset($_GET['byid']) ? parseUserId() : null;
 
-$stmt = $test->read();
+if (!isset($test->user_id)) {
+  $stmt = $test->read();
+} else {
+  $test->completed = 1;
+  $stmt = $test->readById();
+}
+
 $num = $stmt->rowCount();
 
 if ($num > 0) {
@@ -42,6 +49,7 @@ if ($num > 0) {
     $position = $user_info['position'];
 
     $test_item = array(
+      "id"            => $id,
       "time"          => $time,
       "date"          => $date,
       "user_id"       => $user_id,
@@ -50,7 +58,9 @@ if ($num > 0) {
       "time"          => $time,
       "position"      => $position,
       "estimated_time" => $estimated_time,
-      "result"        => $result
+      "result"        => $result,
+      "completed"     => $completed,
+      "questions"     => $questions
     );
 
     array_push($test_arr["data"], $test_item);
@@ -59,6 +69,6 @@ if ($num > 0) {
   http_response_code(200);
   echo json_encode($test_arr);
 } else {
-  echo json_encode(array("tests" => "No tests."));
+  echo json_encode(array("data" => "No tests."));
 }
  

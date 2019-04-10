@@ -22,6 +22,17 @@ export async function fetchTests() {
   return await result;
 }
 
+export async function fetchTestsById() {
+  let result = [];
+
+  await fetch(`${API}/api/test/read.php?byid=true`)
+    .then(response => response.json())
+    .then(res => result = res.data)
+    .catch(err => console.log(err))
+  
+  return await result;
+}
+
 export async function fetchQuestions() {
   let result = [];
 
@@ -37,6 +48,17 @@ export async function fetchCategories() {
   let result = [];
 
   await fetch(`${API}/api/getCategories.php`)
+    .then(response => response.json())
+    .then(res => result = res)
+    .catch(err => console.log(err))
+  
+  return await result;
+}
+
+export async function fetchTestLastId() {
+  let result = '';
+
+  await fetch(`${API}/api/test/getLastId.php`)
     .then(response => response.json())
     .then(res => result = res)
     .catch(err => console.log(err))

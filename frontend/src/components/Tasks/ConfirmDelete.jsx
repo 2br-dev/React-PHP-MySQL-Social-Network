@@ -11,8 +11,8 @@ export default function ConfirmDelete(props) {
           <Icon onClick={props.handleClose}>
             <CloseIcon />
           </Icon>
-          <Typography variant='body1'>Вы уверены, что хотите удалить задачу?</Typography>
-          <Typography variant='caption'>Вся информация по задаче будет удалена безвозвратно.</Typography>
+          <Typography variant='body1'>{`Вы уверены, что хотите удалить ${props.name}?`}</Typography>
+          <Typography variant='caption'>Вся информация будет удалена безвозвратно.</Typography>
           <ButtonContainer>
             <Button variant='contained' color='secondary' onClick={props.handleDelete}>Удалить</Button>
             <Button variant='text' color='default' onClick={props.handleClose}>Отмена</Button>
