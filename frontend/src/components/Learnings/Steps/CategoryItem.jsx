@@ -42,10 +42,10 @@ function CategoryItem(props) {
 
     if (current.indexOf(category) === -1) {
       current.push(category);
-      setChecked(true); 
+      setChecked(true);
     } else {
       current = current.filter(cat => cat !== category);
-      if (current.length === 0) setChecked(false); 
+      if (current.length === 0) setChecked(false);
     }
     setCheckedSubs(current);
   }
@@ -57,23 +57,24 @@ function CategoryItem(props) {
 
     if (current.indexOf(category) === -1) {
       current.push(category);
-      setChecked(true); 
-    }  else {
+      setChecked(true);
+    } else {
       current = current.filter(cat => cat !== category);
-      if (current.length === 0) setChecked(false); 
-    } 
+      if (current.length === 0) setChecked(false);
+    }
 
     setCheckedSubs(current);
   }
 
   function findUniqSubcategories(questions) {
-    let result = [];
+    let result = props.store.categories;
     questions.forEach(question => {
       if (result.indexOf(question.subcategory) === -1) result.push(question.subcategory);
     })
     props.getCategories(result);
   }
 
+  console.log(categoryFiltered, props.store.categories)
   return (
     <ExpansionPanel>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} className='align-center expansion-panel-top' style={{ paddingLeft: 12 }}>
@@ -85,35 +86,40 @@ function CategoryItem(props) {
         <Typography className={classes.heading}>{props.var}</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails style={{ flexDirection: 'column', padding: 0 }}>
-        {props.store.categories.map(category =>
-          <ExpansionPanel key={category}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} className='align-center' style={{ paddingLeft: 12 }}>
-              <Checkbox
-                color='primary'
-                onClick={e => markSub(e, category)}
-                checked={checkedSubs.indexOf(category) !== -1}
-              />
-              <Typography className={classes.heading}>{category}</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails style={{ flexDirection: 'column', padding: 0 }}>
-              <List>
-                {/*eslint-disable-next-line */}
-                {categoryFiltered.map(question => {
-                  if (question.subcategory === category) {
-                    return (
-                      <QuestionItem
-                        key={question.id}
-                        category={category}
-                        setHeadSubCategory={setHeadSubCategory}
-                        question={question}
-                        handleMarkQuestion={props.handleMarkQuestion}
-                      />
-                    )      
-                  } 
-                })}
-              </List>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
+        {props.store.categories.map(category => {
+          if (categoryFiltered.find(q => q.subcategory === category)) {
+            return (
+              <ExpansionPanel key={category}>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} className='align-center' style={{ paddingLeft: 12 }}>
+                  <Checkbox
+                    color='primary'
+                    onClick={e => markSub(e, category)}
+                    checked={checkedSubs.indexOf(category) !== -1}
+                  />
+                  <Typography className={classes.heading}>{category}</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails style={{ flexDirection: 'column', padding: 0 }}>
+                  <List>
+                    {/*eslint-disable-next-line */}
+                    {categoryFiltered.map(question => {
+                      if (question.subcategory === category) {
+                        return (
+                          <QuestionItem
+                            key={question.id}
+                            category={category}
+                            setHeadSubCategory={setHeadSubCategory}
+                            question={question}
+                            handleMarkQuestion={props.handleMarkQuestion}
+                          />
+                        )
+                      }
+                    })}
+                  </List>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            )
+          }
+        }
         )}
       </ExpansionPanelDetails>
     </ExpansionPanel>

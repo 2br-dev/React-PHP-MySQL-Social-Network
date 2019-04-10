@@ -1,10 +1,10 @@
 self.__precacheManifest = [
   {
-    "revision": "4fc5a7297cb1148d7dd1132a2d736795",
-    "url": "/static/media/calibri.4fc5a729.ttf"
+    "revision": "e425fd845f7a0a14f291fd13baafb024",
+    "url": "/static/media/calibri.e425fd84.svg"
   },
   {
-    "revision": "78af5f2c8ed0dcbb2921",
+    "revision": "2944ace35242c69637b4",
     "url": "/static/css/main.5c70b8f5.chunk.css"
   },
   {
@@ -24,8 +24,8 @@ self.__precacheManifest = [
     "url": "/static/media/Water image_Dreamstime.b2e60f28.jpg"
   },
   {
-    "revision": "78af5f2c8ed0dcbb2921",
-    "url": "/static/js/main.78af5f2c.chunk.js"
+    "revision": "2944ace35242c69637b4",
+    "url": "/static/js/main.2944ace3.chunk.js"
   },
   {
     "revision": "2a4d815e17eaadddf81877da1a6b981b",
@@ -36,15 +36,15 @@ self.__precacheManifest = [
     "url": "/static/media/calibri.b0f61b94.woff"
   },
   {
-    "revision": "e425fd845f7a0a14f291fd13baafb024",
-    "url": "/static/media/calibri.e425fd84.svg"
+    "revision": "4fc5a7297cb1148d7dd1132a2d736795",
+    "url": "/static/media/calibri.4fc5a729.ttf"
   },
   {
     "revision": "63e6c0c127c99e902a750e951bfcc346",
     "url": "/static/media/photo_2018-12-20_16-23-55.63e6c0c1.jpg"
   },
   {
-    "revision": "8c08abc80572f945bbac1c878f9b5d34",
+    "revision": "8ad65b6964f38c67c214846c48d580a8",
     "url": "/index.html"
   }
 ];

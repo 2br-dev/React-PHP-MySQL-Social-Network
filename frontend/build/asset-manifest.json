@@ -1,17 +1,17 @@
 {
   "main.css": "/static/css/main.5c70b8f5.chunk.css",
-  "main.js": "/static/js/main.78af5f2c.chunk.js",
-  "main.js.map": "/static/js/main.78af5f2c.chunk.js.map",
+  "main.js": "/static/js/main.2944ace3.chunk.js",
+  "main.js.map": "/static/js/main.2944ace3.chunk.js.map",
   "static/js/1.6c067785.chunk.js": "/static/js/1.6c067785.chunk.js",
   "static/js/1.6c067785.chunk.js.map": "/static/js/1.6c067785.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.229c360f.js",
   "runtime~main.js.map": "/static/js/runtime~main.229c360f.js.map",
   "static/media/baseline-search-24px.svg": "/static/media/baseline-search-24px.a87eca9e.svg",
-  "static/media/index.css": "/static/media/calibri.e425fd84.svg",
+  "static/media/index.css": "/static/media/calibri.4fc5a729.ttf",
   "static/media/MainpageHeader.css": "/static/media/photo_2018-12-20_16-23-55.63e6c0c1.jpg",
   "static/media/Water image_Dreamstime.jpg": "/static/media/Water image_Dreamstime.b2e60f28.jpg",
   "static/css/main.5c70b8f5.chunk.css.map": "/static/css/main.5c70b8f5.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.5f1829555c59a98c8a9abb21e5cf8ca3.js": "/precache-manifest.5f1829555c59a98c8a9abb21e5cf8ca3.js",
+  "precache-manifest.8408016b4d4d68256e265ef53ffbb4bf.js": "/precache-manifest.8408016b4d4d68256e265ef53ffbb4bf.js",
   "service-worker.js": "/service-worker.js"
 }

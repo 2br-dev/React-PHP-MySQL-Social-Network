@@ -47,7 +47,7 @@ function getStepContent(step) {
 
 class VerticalLinearStepper extends React.Component {
   state = {
-    activeStep: 0,
+    activeStep: 2,
   };
 
   handleNext = () => {
@@ -72,7 +72,6 @@ class VerticalLinearStepper extends React.Component {
   };
 
   setOverlay(step) {
-    console.log(step)
     const overlay = document.getElementById('overlay-modal');
     if (step === 2) {
       overlay.style.overflow = 'overlay';
@@ -80,14 +79,14 @@ class VerticalLinearStepper extends React.Component {
       overlay.style.overflow = 'visible';
     }
   }
+
   checkDisabled = (step, selectedUser, time, questions) => {
     if (step === 0 && selectedUser.length !== 0) return false;
     if (step === 1 && time) return false;
     if (step === 2 && questions) {
       const selectedQuestions = questions.filter(question => question.checked);
       if (selectedQuestions.length > 0 ) return false;
-    }
-    
+    } 
     return true;
   }
 
