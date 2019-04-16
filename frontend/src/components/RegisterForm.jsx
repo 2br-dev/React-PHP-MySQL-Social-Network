@@ -23,6 +23,8 @@ class RegisterForm extends Component {
       isEmailValid: '',
       isPassHidden: false, 
       entered: false,
+      name: '',
+      surname: '',
       loading: false
     }
     this.handleChange = this.handleChange.bind(this);
@@ -59,12 +61,14 @@ class RegisterForm extends Component {
     e.preventDefault();
     this.setState({ entered: true, loading: true });
 
-    if (this.state.login && this.state.isEmailValid && this.state.password) {
+    if (this.state.login &&  this.state.surname && this.state.name && this.state.isEmailValid && this.state.password) {
       const formData = new FormData();
 
       formData.append('login', this.state.login);
       formData.append('email', this.state.email);
       formData.append('password', this.state.password);
+      formData.append('name', this.state.name);
+      formData.append('surname', this.state.surname);
 
       $.ajax({
         url: `${API}/api/user/register.php`,
@@ -84,6 +88,8 @@ class RegisterForm extends Component {
               self.setState({ 
                 email: '',
                 login: '',
+                name: '',
+                surname: '',
                 password: '',
                 confirmed: '',
                 isEmailValid: '',
@@ -121,6 +127,26 @@ class RegisterForm extends Component {
       <Fragment>
         <div className="form-container">
           <form id="register" action="" method="POST" onSubmit={this.handleSubmit}>
+            <TextField
+              label="Имя"
+              variant="outlined"
+              name='name'
+              fullWidth
+              error={this.state.entered && !this.state.name}
+              margin='dense'
+              onChange={this.handleChange}
+              value={this.state.name}
+            />
+            <TextField
+              label="Фамилия"
+              variant="outlined"
+              name='surname'
+              fullWidth
+              error={this.state.entered && !this.state.surname}
+              margin='dense'
+              onChange={this.handleChange}
+              value={this.state.surname}
+            />
             <TextField
               label="Логин или email"
               variant="outlined"

@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-04-16 16:12:51
+/* Smarty version 3.1.32, created on 2019-04-16 17:04:29
   from 'C:\OpenServer\domains\akvatory.local\protected\themes\base\smarty\components\meta.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5cb5d4d3ca67e0_88448403',
+  'unifunc' => 'content_5cb5e0edf26c80_46140634',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5cb5d4d3ca67e0_88448403 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5cb5e0edf26c80_46140634 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html class="no-js" itemscope="itemscope" itemtype="http://schema.org/<?php if (!isset($_smarty_tpl->tpl_vars['uri']->value[1])) {?>WebPage<?php } else { ?>ItemPage<?php }?>" lang="<?php echo $_smarty_tpl->tpl_vars['_page']->value['lang'];?>
 "><head><title itemprop="name"><?php echo $_smarty_tpl->tpl_vars['_meta']->value['title'];?>

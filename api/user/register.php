@@ -15,6 +15,8 @@ $db = $database->getConnection();
 $user = new User($db);
  
 $login 		  = __post('login');
+$name 		  = __post('name');
+$surname 		  = __post('surname');
 $password 	= __post('password');
 $email 			= filter_var(__post('email'), FILTER_VALIDATE_EMAIL);
 
@@ -28,17 +30,15 @@ if (isset($login) && isset($email) && isset($password)) {
     die;
   }
 
-  $result = Q("INSERT INTO `#_mdd_users` SET `login`=?s, `password`=?s, `email`=?s, `admin`=?i, `created`=NOW()", 
-    array($login, password_hash(md5( $password . md5($login)), PASSWORD_DEFAULT), $email, 0,));
+  $result = Q("INSERT INTO `#_mdd_users` SET `login`=?s, `password`=?s, `email`=?s, `admin`=?i, `name`=?s, `surname`=?s, `created`=NOW()", 
+    array($login, password_hash(md5( $password . md5($login)), PASSWORD_DEFAULT), $email, 0, $name, $surname));
 
   $user_id = Q("SELECT `id` FROM `#_mdd_users` WHERE `login`=?s",array($login))->row('id');
 
-  
-    $domen = str_replace([ 'http://', 'www.', 'www' ], '', $_SERVER['SERVER_NAME']);
-    $subject = "Запрос на регистрацию на сайте " . $domen;
+    $subject = "Запрос на регистрацию в социальной сети.";
   
     $body  = '<h2 style="color:#000000; margin: 0;">Пользователь, запрашивает регистрацию:</h2>';
-    $body .= '<p style="color: #444444; font-size: 14px;">Логин: '.$login.'</p>';
+    $body .= '<p style="color: #444444; font-size: 14px;">Пользователь: '.$name.' '.$surname.'</p>';
     $body .= '<p style="color: #444444; font-size: 14px;">Email: '.$email.'</a>';
     $body .= '<p><a href="http://службадоставкиводы.рф/api/user/approve.php?id='.$user_id.'">Перейдите по ссылке, чтобы подтвердить регистрацию пользователя.</a></p>';
     $body .= '<p style="color: #444444; font-size: 14px;">Либо просто проигнорируйте это письмо, если регистрацию не подтверждаете.</p>';
