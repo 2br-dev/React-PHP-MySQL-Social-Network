@@ -125,13 +125,10 @@ class Settings extends Component {
   }
 
   componentDidMount = () => {
-    const id = localStorage.getItem('user_id');
-    this.setState({ user_id: id });
-    fetch(`${API}/api/user/info.php?id=${id}`)
+    fetch(`${API}/api/user/info.php`)
       .then(response => response.json())
-      .then(user => this.setState({ user }))
+      .then(user => this.setState({ user, user_id: user.id }))
   }
-
 
   handleChange = event => {
     // ставим стейт исходя из именя поля и вводимого значения
