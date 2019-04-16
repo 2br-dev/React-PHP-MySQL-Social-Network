@@ -205,6 +205,12 @@ input[name="password"] {
   background: #1976d2; 
 }
 
+.testing-bubbles {
+  z-index: -1;
+  background: linear-gradient(to bottom right, #1976d2, #9de3dc, #0d11b4);
+  margin-top: 0;
+}
+
 @media all and (max-width: 600px) {
   #root {
     padding-bottom: 50px;

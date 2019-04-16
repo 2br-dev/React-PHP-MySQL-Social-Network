@@ -1,9 +1,9 @@
 import React from 'react';
 import './css/BgBubbles.css';
 
-const BgBubbles = () => {
+const BgBubbles = ({ cssClass }) => {
   return (
-    <ul className="bg-bubbles">
+    <ul className={cssClass ? `${cssClass} bg-bubbles` : 'bg-bubbles'}>
       <li></li>
       <li></li>
       <li></li>

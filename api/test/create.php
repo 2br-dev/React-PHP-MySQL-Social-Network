@@ -30,8 +30,11 @@ $test->questions = __post('questions');
 $test->user_name = __post('user_name');
 $test->user_id   = __post('user_id');
 $test->date      = __post('date');
-$test->time      = __post('time');
-$test->estimated_time = __post('time') . ':00';
+
+if (__post('time') != false) {
+  $test->time      = __post('time');
+  $test->estimated_time = __post('time') . ':00';
+}
 
 $stmt = $test->create();
 

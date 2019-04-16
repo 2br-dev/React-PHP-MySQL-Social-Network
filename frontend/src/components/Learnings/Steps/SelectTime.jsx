@@ -4,7 +4,12 @@ import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 
-let times = [];
+let times = [
+  {
+    value: false,
+    label: 'без времени'
+  }
+];
 
 for (let i = 10; i <= 120; i += 10) {
   let item = {};

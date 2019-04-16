@@ -6,14 +6,8 @@ import Avatar from '@material-ui/core/Avatar';
 import defaultAvatar from '../img/photos/images.png';
 
 function Friend(props) {
-  let avatar = '';
-
-  if (window.location.host.includes('localhost') && props.friend.avatar) {
-    avatar = props.friend.avatar.slice(16);
-  } else {
-    avatar = props.friend.avatar;
-  }
-
+  let avatar = props.friend.avatar;
+ 
   return (
     <ListItem button TouchRippleProps={{ classes: { child: 'touch-ripple' }}} >
       <ListItemAvatar>

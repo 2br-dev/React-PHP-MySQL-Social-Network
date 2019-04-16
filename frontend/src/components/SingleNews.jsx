@@ -188,23 +188,9 @@ class SingleNews extends Component {
 
 
   render() {
-    const { closeNews, singleNewsId, user } = this.props;
-    const { thisComments, loadedComments, commentText, currentNews, likedBy, loading, commentsLoading } = this.state;
-
-    let avatar = null;
-    if (window.location.host.includes('localhost') && user.avatar) {
-      avatar = user.avatar.slice(16);
-    } else {
-      avatar = user.avatar;
-    }
-    let userAvatar = null;
-    if (window.location.host.includes('localhost') && currentNews.avatar) {
-      userAvatar = currentNews.avatar.slice(16);
-    } else {
-      userAvatar = currentNews.avatar;
-    }
-
-    if (!loadedComments) this.fetchComments(singleNewsId);
+    const { closeNews, user } = this.props;
+    const { thisComments, commentText, currentNews, likedBy, loading, commentsLoading } = this.state;
+    const userAvatar = currentNews.avatar;
 
     return (
       <Fragment>
@@ -276,7 +262,7 @@ class SingleNews extends Component {
               <NewComment>
                 <p className='newcomment-reply'>В ответ <a href={`${window.location.origin}/id${currentNews.id}`}>{currentNews.author}</a></p>
                 <div className='newcomment-input'>
-                  <Avatar style={{ background: `url(${user.avatar ? avatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
+                  <Avatar style={{ background: `url(${user.avatar ? user.avatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
                   <TextArea>
                     <TextField
                       label='Комментарий'

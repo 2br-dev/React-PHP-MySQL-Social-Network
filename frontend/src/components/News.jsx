@@ -324,8 +324,7 @@ class News extends Component {
     const { news, invalidText, invalidTopic, newNews, loading, newNewsText, newNewsTopic, editing, singleNews, singleNewsId, newNewsImportance } = this.state;
     const { user } = this.props;
     // eslint-disable-next-line
-    let avatar = null;
-    window.location.host.includes('localhost') && user.avatar ? avatar = user.avatar.slice(16) : avatar = user.avatar;
+    let avatar = user.avatar;
     
     if (this.state.news.length === 0) {
       setTimeout(() => this.setState({ news: this.props.store.news }), 0);
@@ -338,7 +337,7 @@ class News extends Component {
           this.props.store.news.length > 0 && this.props.store.news ? this.props.store.news.map((item, i) => {
             return (  
               <NewsContainer key={i} onClick={() => this.showNews(item.id)}>
-                <UserAvatar style={{ background: `url(${this.handleAvatarRoute(item.avatar) === '' ? defaultAvatar : this.handleAvatarRoute(item.avatar)}) no-repeat center/cover` }} />
+                <UserAvatar style={{ background: `url(${item.avatar === '' ? defaultAvatar : item.avatar}) no-repeat center/cover` }} />
                 <div>
                   <NewsInfo>
                     {user.id === item.author_id

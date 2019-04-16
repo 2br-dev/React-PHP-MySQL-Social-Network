@@ -44,7 +44,7 @@ if ($num > 0) {
   while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     extract($row);
 
-    $user_info = Q("SELECT `name`, `surname`, `position` FROM `#_mdd_users` WHERE `id` = ?s", array($user_id))->row();
+    $user_info = Q("SELECT `name`, `surname`, `position` FROM `#_mdd_users` WHERE `id` = ?s ORDER BY `id` DESC", array($user_id))->row();
     $user_name =  $user_info['name'] . ' ' . $user_info['surname'];
     $position = $user_info['position'];
 
@@ -54,7 +54,6 @@ if ($num > 0) {
       "date"          => $date,
       "user_id"       => $user_id,
       "user_name"     => $user_name,
-      "object"        => $object,
       "time"          => $time,
       "position"      => $position,
       "estimated_time" => $estimated_time,
@@ -69,6 +68,6 @@ if ($num > 0) {
   http_response_code(200);
   echo json_encode($test_arr);
 } else {
-  echo json_encode(array("data" => "No tests."));
+  echo json_encode(array("data" => array()));
 }
  

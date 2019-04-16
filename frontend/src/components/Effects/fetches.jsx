@@ -66,4 +66,37 @@ export async function fetchTestLastId() {
   return await result;
 }
 
+export async function fetchSingleTest(id) {
+  let result = [];
+
+  await fetch(`${API}/api/test/getSingleTest.php?id=${id}`)
+    .then(response => response.json())
+    .then(res => result = res.data)
+    .catch(err => console.log(err))
+  
+  return await result;
+}
+
+export async function fetchSingleQuestion(id) {
+  let result = [];
+
+  await fetch(`${API}/api/question/getSingleQuestion.php?id=${id}`)
+    .then(response => response.json())
+    .then(res => result = res.data)
+    .catch(err => console.log(err))
+  
+  return await result;
+}
+
+export async function fetchTestStatus(id) {
+  let result = [];
+
+  await fetch(`${API}/api/test/getStatus.php?id=${id}`)
+    .then(response => response.json())
+    .then(res => result = res.data)
+    .catch(err => console.log(err))
+  
+  return await result;
+}
+
 export default [];

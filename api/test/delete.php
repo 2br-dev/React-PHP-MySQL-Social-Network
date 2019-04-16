@@ -31,7 +31,7 @@ $stmt = $test->delete();
 
 if ($stmt) {
   http_response_code(200);
-  echo json_encode(array("success" => "Successfully deleted task."));
+  echo json_encode(array("success" => "Successfully deleted test."));
 } else {
   echo json_encode(array("error" => "Error when deleting test."));
 }

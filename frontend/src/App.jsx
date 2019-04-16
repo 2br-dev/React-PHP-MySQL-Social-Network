@@ -6,6 +6,7 @@ import Approved from './components/Approved';
 import Restore from './components/Restore';
 import Page404 from './components/Page404';
 import Settings from './components/Settings';
+import TestPage from './components/Learnings/TestPage/index';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faComments, faHeart, faEnvelope, faEdit } from '@fortawesome/free-solid-svg-icons';
 
@@ -21,6 +22,7 @@ class App extends Component {
             <Route path='/colleagues' component={MainPage}/>
            {/*  <Route path='/favourites' component={MainPage}/>
             <Route path='/gallery'    component={MainPage}/> */}
+            <Route path='/test/:any'  component={TestPage}/>
             <Route path='/tasks'      component={MainPage}/>
             <Route path='/learnings'  component={MainPage}/>
             <Route path='/messages'   component={MainPage}/>

@@ -30,30 +30,38 @@ function TestList(props) {
   const { classes } = props;
   let items = props.items;
 
-  if (props.completed !== undefined) {
+  if (props.completed) {
     items = items.filter(item => {
       return props.completed ? item.completed : !item.completed;
     })
   }
 
+  function getCorrectTime(time) {
+    return time === 'false' || !time  ? 'не ограничено' : `${time} минут`;
+  }
+
+  function getPercent(value) {
+    return parseFloat(value.replace(',','.')).toFixed(2) * 100 + '%';
+  }
+
   return (
     <div className={classes.root}>
       <List component="nav">
-        {items.length > 0 ? items.map((item) => 
+        {items && items.length > 0 ? items.map((item) => 
           <Fragment key={item.id}>
-            <ListItemLink href="#simple-list">
+            <ListItemLink href={`test/${item.id}`}>
               <ListItemText 
-                primary={`${item.user_name}, ${item.position}`} 
+                primary={`${item.user_name}, ${item.position} ${item.completed === '1' ? '(завершён)' : item.completed === '0.5' ? '(начат)' : '(ожидает прохождения)'}`} 
                 secondary={
                   <React.Fragment>
                     <Typography component="span" className={classes.inline} color="textPrimary">
                       {item.date}
                     </Typography>
-                    {item.completed ? ` — Результат: ${item.result}.` : ` — Вопросов в тестировании: ${item.questions.length}, время на прохождение: ${item.time} минут` }
+                    {item.completed === '1' ? ` — Результат: ${getPercent(item.result)}.` : ` — Вопросов в тестировании: ${item.questions.length}, время на прохождение: ${getCorrectTime(item.time)}` }
                   </React.Fragment>
                 }
               />
-              {props.completed !== undefined && !props.completed ?     
+              {!props.completed ?     
                 <DeleteIcon onClick={e => props.handleConfirm(e, item.id)}>
                   <Tooltip title="Удалить тестирование" placement="top">
                     <Delete />

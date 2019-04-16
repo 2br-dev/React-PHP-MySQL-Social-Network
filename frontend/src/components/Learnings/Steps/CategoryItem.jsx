@@ -74,7 +74,6 @@ function CategoryItem(props) {
     props.getCategories(result);
   }
 
-  console.log(categoryFiltered, props.store.categories)
   return (
     <ExpansionPanel>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} className='align-center expansion-panel-top' style={{ paddingLeft: 12 }}>
@@ -86,6 +85,7 @@ function CategoryItem(props) {
         <Typography className={classes.heading}>{props.var}</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails style={{ flexDirection: 'column', padding: 0 }}>
+        {/*eslint-disable-next-line */}
         {props.store.categories.map(category => {
           if (categoryFiltered.find(q => q.subcategory === category)) {
             return (

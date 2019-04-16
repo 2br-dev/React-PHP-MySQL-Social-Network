@@ -23,7 +23,6 @@ if (strpos($_SERVER['REQUEST_URI'],'/restore') !== false) {
   die;
 }
 
-
 // если токен не верифицирован - редирект на страницу авторизации.
 if(!verify() && $_SERVER['REQUEST_URI'] != '/login') {
   // если страница restore или 404 то ничего не делаем

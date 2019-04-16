@@ -81,6 +81,7 @@ class AdminPanel extends React.Component {
   closeModal = () => this.setState({ open: false });
   handleClose = () => this.setState({ open: false, confirm: false, preparedToDelete: null });
   handleConfirm = (e,id) => {
+    e.preventDefault();
     e.stopPropagation();
     this.setState({ confirm: true, preparedToDelete: id });
   }

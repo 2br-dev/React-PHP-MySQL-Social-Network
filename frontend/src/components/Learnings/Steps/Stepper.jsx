@@ -47,7 +47,7 @@ function getStepContent(step) {
 
 class VerticalLinearStepper extends React.Component {
   state = {
-    activeStep: 2,
+    activeStep: 0,
   };
 
   handleNext = () => {
@@ -82,7 +82,7 @@ class VerticalLinearStepper extends React.Component {
 
   checkDisabled = (step, selectedUser, time, questions) => {
     if (step === 0 && selectedUser.length !== 0) return false;
-    if (step === 1 && time) return false;
+    if (step === 1 && (typeof time === 'boolean' || time)) return false;
     if (step === 2 && questions) {
       const selectedQuestions = questions.filter(question => question.checked);
       if (selectedQuestions.length > 0 ) return false;
