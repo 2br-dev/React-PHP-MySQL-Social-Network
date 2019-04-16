@@ -40,7 +40,7 @@ if (isset($login) && isset($email) && isset($password)) {
     $body  = '<h2 style="color:#000000; margin: 0;">Пользователь, запрашивает регистрацию:</h2>';
     $body .= '<p style="color: #444444; font-size: 14px;">Логин: '.$login.'</p>';
     $body .= '<p style="color: #444444; font-size: 14px;">Email: '.$email.'</a>';
-    $body .= '<p><a href="'.$_SERVER['SERVER_NAME'].'/api/user/approve.php?id='.$user_id.'">Перейдите по ссылке, чтобы подтвердить регистрацию пользователя.</a></p>';
+    $body .= '<p><a href="http://службадоставкиводы.рф/api/user/approve.php?id='.$user_id.'">Перейдите по ссылке, чтобы подтвердить регистрацию пользователя.</a></p>';
     $body .= '<p style="color: #444444; font-size: 14px;">Либо просто проигнорируйте это письмо, если регистрацию не подтверждаете.</p>';
     $body .= '<p style="color: #444444; font-size: 14px;">С уважением, <i>Искусственный Интеллект.</i></p>'; 
 
