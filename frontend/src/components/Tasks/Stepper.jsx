@@ -70,7 +70,7 @@ class VerticalLinearStepper extends React.Component {
 
   checkDisabled = (step, multi, date, time, text) => {
     if (step === 0 && multi.length !== 0) return false;
-    if (step === 1 && typeof date === 'string' && typeof time === 'string') return false;
+    if (step === 1 && date && time) return false;
     if (step === 2 && text.length > 0) return false;
     
     return true;

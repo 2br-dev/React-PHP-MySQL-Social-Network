@@ -46,7 +46,7 @@ function MainpageHeader(props) {
             <Button variant="contained" href="logout.php" color="primary">Выйти</Button>
           </div>
         </div>
-        <Button variant="contained" href="/settings" color="primary">{window.innerWidth > 600 ? 'Настройки' : <SettingsIcon />}</Button>
+        <Button variant="contained" href="/settings" color="primary">{window.innerWidth > 600 ? 'Персональные данные' : <SettingsIcon />}</Button>
       </header>}
     </Wrapper>
   )

@@ -153,6 +153,7 @@ class User
         $this->avatar       = $row['avatar'];
         $this->army_type    = $row['army_type'];
         $this->sex          = $row['sex'];
+        $this->admin        = $row['admin'];
         $this->childs       = json_encode($childs, JSON_UNESCAPED_UNICODE);
     }
     // update the product
@@ -445,5 +446,32 @@ class User
 
         return false;
     }
-}
 
+    public function setAdministrator($id)
+    {
+        $isAdmin = Q("SELECT `admin` FROM `#_mdd_users` WHERE `id` = ?s", array($id))->row('admin');
+
+        $query = "UPDATE " . $this->table_name . "
+        SET `admin` = :admin WHERE `id` = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $isAdmin = htmlspecialchars(strip_tags($isAdmin));
+        $id = htmlspecialchars(strip_tags($id));
+
+        // bind new values
+        $value =  $isAdmin == '1' ? '0' : '1';
+        $stmt->bindParam(':admin', $value);
+        $stmt->bindParam(':id', $id);
+
+        // execute the query
+        $stmt->execute();
+
+        if ($isAdmin == '1') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}

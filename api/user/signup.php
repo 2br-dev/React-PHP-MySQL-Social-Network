@@ -72,7 +72,8 @@ if (isset($login) && isset($password))
           if ($is_approved == 1 && password_verify($pass, $user_hash)) 
           {
             $user_id = Q("SELECT `id` FROM `#_mdd_users` WHERE `email` = '$login'",array())->row('id');
-            $jwt = $generator->generate(['user_id' => $user_id, 'date' => date("Y-m-d H:i:s")]);
+            $admin = Q("SELECT `admin` FROM `#_mdd_users` WHERE `email` = '$login'",array())->row('admin');
+            $jwt = $generator->generate(['user_id' => $user_id, 'date' => date("Y-m-d H:i:s"), 'admin' => $admin]);
     
             echo json_encode( array( 'result' => 1, 'user_id' => $user_id, 'jwt' => $jwt ), 64 | 256 );	
           } 
@@ -94,7 +95,8 @@ if (isset($login) && isset($password))
       if ($is_approved == 1 && password_verify($pass, $user_hash)) 
       {
         $user_id = Q("SELECT `id` FROM `#_mdd_users` WHERE `login` = '$login'",array())->row('id');
-        $jwt = $generator->generate(['user_id' => $user_id, 'date' => date("Y-m-d H:i:s")]);
+        $admin = Q("SELECT `admin` FROM `#_mdd_users` WHERE `login` = '$login'",array())->row('admin');
+        $jwt = $generator->generate(['user_id' => $user_id, 'date' => date("Y-m-d H:i:s"), 'admin' => $admin]);
 
         echo json_encode( array( 'result' => 1, 'user_id' => $user_id, 'jwt' => $jwt ), 64 | 256 );		
       } 

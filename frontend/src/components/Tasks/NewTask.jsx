@@ -10,8 +10,8 @@ import { withSnackbar } from 'notistack';
 
 class NewTask extends Component {
   state = {
-    selectedDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
-    selectedTime: new Date(),
+    selectedDate: null,
+    selectedTime: null,
     users: [],
     multi: [],
     text: '',

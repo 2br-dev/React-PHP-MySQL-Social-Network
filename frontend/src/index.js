@@ -42,6 +42,16 @@ const theme = createMuiTheme({
         bottom: window.innerWidth < 600 ? '76px' : '0', 
         zIndex: 10
       }
+    },
+    MuiList: {
+      padding: {
+        padding: '0 !important'
+      }
+    },
+    MuiModal: {
+      root: {
+        maxWidth: `${window.innerWidth}px !important`
+      }
     }
   },
 });

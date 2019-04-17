@@ -10,7 +10,7 @@ const sections = [
   {
     value: 0,
     section: 'id',
-    label: 'Главная',
+    label: 'Профиль',
     img: <Person />,
   },
   { 

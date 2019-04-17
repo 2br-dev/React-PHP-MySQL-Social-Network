@@ -20,8 +20,9 @@ $db = $database->getConnection();
 // prepare product object
 $user = new User($db);
 
+
 // set ID property of record to read
-$user->id = parseUserId();
+$user->id = isset($_GET['id']) ? $_GET['id'] : parseUserId();
 
 // read the details of product to be edited
 $user->readPersonal();
@@ -47,6 +48,7 @@ if ($user->id != null) {
         "army_type"   => $user->army_type,
         "sex"         => $user->sex,
         "childs"      => $user->childs,
+        "admin"       => $user->admin
     );
 
     // set response code - 200 OK

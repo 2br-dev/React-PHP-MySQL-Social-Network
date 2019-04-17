@@ -10,16 +10,15 @@ import AdminPanel from './AdminPanel';
 import { connect } from 'react-redux';
 import UserPanel from './UserPanel';
 
-var isAdmin = true;
-
 function Tests(props) {
   const { tests } = props.store;
+  const isAdmin = props.store.user[0].admin;
   const [loading, setLoading] = useState(tests.length === 0 ? true : false);
 
   useEffect(() => {
     if (tests.length === 0) {
         async function fetchData() {
-        const response = isAdmin ? await fetchTests() : await fetchTestsById();
+        const response = isAdmin === '1' ? await fetchTests() : await fetchTestsById();
         props.fetchTests(response);
         setLoading(false);
       }
@@ -30,15 +29,15 @@ function Tests(props) {
   return (
     <Paper style={{ minHeight: 300, position: 'relative' }}>
 
-      {!loading && isAdmin ? <AdminPanel items={tests} /> : null}
+      {!loading && isAdmin === '1' ? <AdminPanel items={tests} /> : null}
 
-      {!loading && !isAdmin ? <UserPanel /> : null}
+      {!loading && isAdmin === '0' ? <UserPanel /> : null}
 
       {loading 
         ? <Loader minHeight={350} color='primary' /> 
-        : tests && tests.length > 0 && !isAdmin
+        : tests && tests.length > 0 && isAdmin === '0'
           ? <TestList items={tests}/>
-          : !isAdmin ? <NoTests /> : null}
+          : isAdmin === '0' ? <NoTests /> : null}
 
       <Buttons>
         <Button  

@@ -143,7 +143,7 @@ class SingleNews extends Component {
       type: 'POST',
       success: function() {
         self.setState({ commentText: '' });
-        self.fetchComments();
+        self.fetchComments(self.props.singleNewsId);
         self.props.enqueueSnackbar('Комментарий был добавлен', { variant: 'success' });
         setTimeout(() => {
           self.setState({ commentsLoading: false });
@@ -176,7 +176,7 @@ class SingleNews extends Component {
       type: 'POST',
       success: function() {
         self.props.enqueueSnackbar('Комментарий был удален', { variant: 'info' });
-        self.fetchComments();
+        self.fetchComments(self.props.singleNewsId);
         setTimeout(() => self.setState({ commentsLoading: false }), 250);
       },
       error: function() {
@@ -473,7 +473,7 @@ const Comments = styled.div`
 const NewComment = styled.div`
   padding: 15px 30px;
   background: #f5f8fa;
-  width: 100%;
+  width: calc(100% + 60px);
   margin-top: 20px;
   margin-left: -30px;
   border-bottom: 1px solid #e6ecf0;

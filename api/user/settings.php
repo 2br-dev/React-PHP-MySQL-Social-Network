@@ -21,7 +21,7 @@ $user = new User($db);
 $data = json_decode(file_get_contents("php://input"));
  
 $user->id           = __post('id');
-$user->birthday     = __post('birthday');
+$user->birthday     = __post('birthday') != null ? __post('birthday') : date("Y-m-d");
 $user->name         = __post('name');
 $user->position     = __post('position');
 $user->surname      = __post('surname');

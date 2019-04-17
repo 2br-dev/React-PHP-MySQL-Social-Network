@@ -14,6 +14,7 @@ class MaterialUIPickers extends React.Component {
           fullWidth={true}
           onChange={this.props.handleDateChange}
           cancelLabel='Отмена'
+          emptyLabel='не выбрана дата'
         />
         <TimePicker
           ampm={false}
@@ -25,6 +26,7 @@ class MaterialUIPickers extends React.Component {
           minutesStep={5}
           onChange={this.props.handleTimeChange}
           cancelLabel='Отмена'
+          emptyLabel='не выбрано время'
         />
       </Grid>
     );

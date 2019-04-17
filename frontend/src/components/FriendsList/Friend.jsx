@@ -12,7 +12,7 @@ function Friend(props) {
     <ListItem button TouchRippleProps={{ classes: { child: 'touch-ripple' }}} >
       <ListItemAvatar>
         <Avatar
-          style={{ height: avatarSize.height, width: avatarSize.width }}
+          style={{ height: 50, width: 50 }}
           alt={`${props.friend.name} ${props.friend.surname}`}
           src={props.friend.avatar !== '' ? avatar : defaultAvatar}
         />
@@ -26,12 +26,4 @@ function Friend(props) {
   );
 }
 
-const avatarSize = {};
-if (window.innerWidth < 600) {
-  avatarSize.width = 50;
-  avatarSize.height = 50;
-} else {
-  avatarSize.width = 100;
-  avatarSize.height = 100;
-}
 export default Friend;

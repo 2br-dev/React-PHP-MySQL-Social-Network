@@ -4,7 +4,7 @@ import API from './functions/API';
 import InputMask from 'react-input-mask';
 import './css/PersonalInfo.css';
 import defaultAvatar from './img/photos/images.png';
-import { Typography, TextField, Tooltip, Paper, FormControl, FormHelperText, Button, MenuItem, InputLabel } from '@material-ui/core';
+import { Typography, OutlinedInput, Select, TextField, Tooltip, Paper, FormControl, FormHelperText, Button, MenuItem, InputLabel } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Done';
 import Clear from '@material-ui/icons/Clear';
 import styled from 'styled-components';
@@ -12,6 +12,8 @@ import InputBase from '@material-ui/core/InputBase';
 import Loader from './Loader/Loader';
 import { DatePicker } from 'material-ui-pickers';
 import { withSnackbar } from 'notistack';
+import { connect } from 'react-redux';
+import DropdownActions from './DropdownActions/Dropdown';
 
 class PersonalInfo extends Component {
   constructor(props) {
@@ -25,7 +27,9 @@ class PersonalInfo extends Component {
       childBirthyear: '',
       loading: true,
       selectedDate: '',
-      loadingChild: false
+      loadingChild: false,
+      isSelectOpened: false,
+      lastUser: null
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -38,13 +42,14 @@ class PersonalInfo extends Component {
   }
 
   fetchUserInfo(action) {
+    const id = window.location.pathname.slice(3);
     if (!action) this.setState({ loading: true });
       
     if (action === 'child') this.setState({ loadingChild: true });
 
-    fetch(`${API}/api/user/info.php?id=${this.props.user_id}`)
+    fetch(`${API}/api/user/info.php?id=${id}`)
       .then(response => response.json())
-      .then(userInfo => this.setState({ userInfo, selectedDate: userInfo.birthday }))
+      .then(userInfo => this.setState({ userInfo, selectedDate: userInfo.birthday, lastUser: userInfo }))
       .then(() => this.setState({ loading: false, loadingChild: false }))
       .catch(err => console.log(err))
   }
@@ -217,19 +222,32 @@ class PersonalInfo extends Component {
     }
   }
 
+  closeSelect = () => this.setState({ isSelectOpened: false });
+
   render() {
-    const { loading, userInfo, newChildInput, childName, childBirthyear, nameError, yearError } = this.state;
+    const { loading, newChildInput, childName, childBirthyear, nameError, yearError } = this.state;
     const { user_id, user_logged_id, user } = this.props;
     let childrens = {};
     let avatar = user.avatar;
+    let userInfo = this.state.userInfo;
 
     if (userInfo.childs) childrens = JSON.parse(userInfo.childs.replace(/\//g, ''));
-    if (window.location.host.includes('localhost') && avatar) avatar = avatar.slice(16);
+
+    if (this.props.store.user.length > 0) {
+      if (window.location.pathname.slice(3) === this.props.store.user[0].id) {
+        userInfo = this.props.store.user[0];
+      } else {
+        userInfo = this.state.userInfo;
+      }
+    }
 
     return (
       <Paper className="personal">
 
         {!loading ? <Form id="personal-info" action="" method="POST" onSubmit={this.handleSubmit}>
+
+          <DropdownActions userInfo={userInfo} user_logged_id={user_logged_id} fetchUserInfo={this.fetchUserInfo}/>
+
           <div className="personal-header">
             <div className="personal-header__photo">
               <div style={{ background: `url(${avatar ? avatar : defaultAvatar}) no-repeat center/cover` }}></div>
@@ -275,12 +293,13 @@ class PersonalInfo extends Component {
                     name="birthday"
                     margin='dense'
                     label='Дата рождения'
-                    format={'Do MMMM YYYY'}
+                    format={userInfo.admin === '1' ? 'Do MMMM YYYY' : 'Do MMMM'}
                     value={this.state.selectedDate ? this.state.selectedDate : userInfo.birthday}
                     fullWidth={true}
                     InputLabelProps={{ shrink: true }}
                     onChange={this.handleDateChange}
                     aria-describedby="component-helper-text"
+                    cancelLabel='Отмена'
                   />
                   <FormHelperText id="component-helper-text">*Год рождения будет виден только руководству</FormHelperText>
                 </FormControl>
@@ -288,44 +307,61 @@ class PersonalInfo extends Component {
             </div>
           </div>
           <div className="personal-section">
+
+            {user_logged_id !== user_id && !userInfo.status && childrens.length === 0 ?
+            null :
             <div className="personal-section__header">
-              <Typography variant='h6' color='primary'>Семья</Typography>
+              <Typography vazriant='h6' color='primary'>Семья</Typography>
               <hr />
             </div>
+            }
 
             {user_logged_id === user_id ? (
-              <TextField
-                select
-                label="Семейное положение"
-                name="status"
-                value={userInfo.status || ''}
-                onChange={this.handleChange}
-                margin="dense"
-                variant='outlined'
-                fullWidth={true}
-                InputLabelProps={{ shrink: true }}
-              >
-                {userInfo.sex === 'женский' ?
-                  <MenuItem value="Не замужем">Не замужем</MenuItem> :
-                  <MenuItem value="Не женат">Не женат</MenuItem>
-                }
-                {userInfo.sex === 'женский' ?
-                  <MenuItem value="Замужем">Замужем</MenuItem> :
-                  <MenuItem value="Женат">Женат</MenuItem>
-                }
-                <MenuItem value="В гражданском браке">В гражданском браке</MenuItem>
-              </TextField>
+              <FormControl style={{ width: '100%' }}>
+                <InputLabel htmlFor="status">Семейное положение</InputLabel>
+                <Select   
+                  value={userInfo.status || ''}
+                  onOpen={this.listenSelect}
+                  onClose={this.closeSelectOnScroll}
+                  open={this.state.isSelectOpened}
+                  onChange={this.handleChange}
+                  onClick={() => this.setState({ isSelectOpened: !this.state.isSelectOpened })}
+                  input={
+                    <OutlinedInput
+                      labelWidth={500}
+                      name="status"
+                      id="status"
+                    />
+                  }         
+                >
+                  {userInfo.sex === 'женский' ?
+                    <MenuItem value="Не замужем">Не замужем</MenuItem> :
+                    <MenuItem value="Не женат">Не женат</MenuItem>
+                  }
+                  {userInfo.sex === 'женский' ?
+                    <MenuItem value="Замужем">Замужем</MenuItem> :
+                    <MenuItem value="Женат">Женат</MenuItem>
+                  }
+                  <MenuItem value="В гражданском браке">В гражданском браке</MenuItem>
+                </Select>
+              </FormControl>
             ) : (
+
+              userInfo.status ?
                 <Naked>
                   <FormControl>
                     <InputLabel htmlFor='status'>Семейное положение</InputLabel>
                     <InputBase id='status' value={userInfo.status} />
                   </FormControl>
                 </Naked>
+              : null
               )}
           </div>
           <div className="personal-section">
           
+              {user_logged_id !== user_id && childrens.length === 0 
+              ? null 
+              :
               <Fragment>
                 <div className="personal-section__header">
                   <Typography variant='h6' color='primary'>Дети</Typography>
@@ -344,6 +380,7 @@ class PersonalInfo extends Component {
                   )}
                 </Childrens>}
               </Fragment>
+              }
 
             {newChildInput ? (<NewChild>
               <div>
@@ -387,35 +424,59 @@ class PersonalInfo extends Component {
               </ChildBtns>) : null}
           </div>
           <div className="personal-section">
+            {user_logged_id !== user_id && !userInfo.city && !userInfo.disctrict && !userInfo.adress 
+            ? null :
             <div className="personal-section__header">
               <Typography variant='h6' color='primary'>Контакты</Typography>
               <hr />
             </div>
+            }
 
-            {this.createInput('Родной город', userInfo.city, 'city')}
-            {this.createInput('Области/края', userInfo.district, 'district')}
-            {this.createInput('Актуальный адрес', userInfo.adress, 'adress')}
+            {user_logged_id !== user_id && !userInfo.city && !userInfo.disctrict && !userInfo.adress 
+            ? null :      
+              <Fragment>
+                {this.createInput('Родной город', userInfo.city, 'city')}
+                {this.createInput('Области/края', userInfo.district, 'district')}
+                {this.createInput('Актуальный адрес', userInfo.adress, 'adress')}
+              </Fragment>
+            }
 
           </div>
           <div className="personal-section">
+            {user_logged_id !== user_id && !userInfo.vuz && !userInfo.fakultet 
+            ? null :
             <div className="personal-section__header">
               <Typography variant='h6' color='primary'>Образование</Typography>
               <hr />
             </div>
+            }
 
-            {this.createInput('ВУЗ', userInfo.vuz, 'vuz')}
-            {this.createInput('Факультет', userInfo.fakultet, 'fakultet')}
+            {user_logged_id !== user_id && !userInfo.vuz && !userInfo.fakultet
+            ? null :
+              <Fragment>
+                {this.createInput('ВУЗ', userInfo.vuz, 'vuz')}
+                {this.createInput('Факультет', userInfo.fakultet, 'fakultet')}
+              </Fragment>
+            }
 
           </div>
           {userInfo.sex === 'мужской' ?
             <div className="personal-section">
+              {user_logged_id !== user_id && !userInfo.army_country && !userInfo.army_type 
+              ? null :
               <div className="personal-section__header">
                 <Typography variant='h6' color='primary'>Служба</Typography>
                 <hr />
               </div>
+              }
 
-              {this.createInput('Страна', userInfo.army_country, 'army_country')}
-              {this.createInput('Род войск', userInfo.army_type, 'army_type')}
+              {user_logged_id !== user_id && !userInfo.army_country && !userInfo.army_type 
+              ? null :
+                <Fragment>
+                  {this.createInput('Страна', userInfo.army_country, 'army_country')}
+                  {this.createInput('Род войск', userInfo.army_type, 'army_type')}
+                </Fragment>
+              }
             </div> : null}
 
           {user_logged_id === user_id ? <Btn><Button type='submit' variant='contained' color='primary' onClick={this.handleSubmit}>Обновить данные</Button></Btn> : null}
@@ -426,6 +487,7 @@ class PersonalInfo extends Component {
 }
 const Form = styled.form`
   padding-bottom: 30px;
+  position: relative;
   label {
     text-transform: lowercase;
   }
@@ -541,4 +603,7 @@ const Naked = styled.div`
     }
   }
 `;
-export default withSnackbar(PersonalInfo);
+
+export default connect(
+  state => ({ store: state })
+)(withSnackbar(PersonalInfo));

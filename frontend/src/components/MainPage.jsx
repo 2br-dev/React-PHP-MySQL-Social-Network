@@ -3,7 +3,6 @@ import './css/MainPage.css'
 import Header from './Header';
 import MainpageHeader from './MainpageHeader';
 import SideNews from './SideNews';
-import Cookie from './functions/Cookie';
 import FriendsList from './FriendsList/FriendsList';
 import PersonalInfo from './PersonalInfo';
 import Tasks from './Tasks/Tasks';
@@ -44,19 +43,25 @@ class MainPage extends Component {
   handleChangeSection(section) {
     this.setState({ section });
     this.handleChangeUrl();
+
+    if (section.includes('id')) {
+      fetch(`${API}/api/user/info.php`)
+        .then(response => response.json())
+        .then(user => this.setState({ user: user, user_id: parseInt(user.id) }))
+    }
   }
 
   handleChangeUserId(id) {
     this.setState({ user_id: id, section: `id${id}`})
     fetch(`${API}/api/user/read_one.php?id=${id}`)
       .then(response => response.json())
-      .then(user => this.setState({ user }))
+      .then(user => this.setState({ user, user_id: parseInt(user.id) }))
   }
 
   componentWillMount() {
-    const cookie = new Cookie();
-    const cookie_id = cookie.getCookie('user_id');
-    this.setState({ user_id: parseInt(cookie_id), user_logged_id: parseInt(cookie_id) });
+    fetch(`${API}/api/user/info.php`)
+      .then(response => response.json())
+      .then(user => this.setState({ initialUser: user, user_logged_id: parseInt(user.id) }))
     
     if (window.location.pathname.includes('id')) {
       const current_id = window.location.pathname.slice(3);
@@ -67,7 +72,7 @@ class MainPage extends Component {
   componentDidMount() {
     fetch(`${API}/api/user/read_one.php?id=${this.state.user_id}`)
       .then(response => response.json())
-      .then(user => this.setState({ user: user, initialUser: user, loading: false }))
+      .then(user => this.setState({ user: user, loading: false }))
       .then(() => this.props.getUser(this.state.initialUser))
       .catch(err => console.log(err))
   }

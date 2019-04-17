@@ -49,10 +49,9 @@ else{
  
 $user_email = Q('SELECT `email` FROM `#_mdd_users` WHERE `id` = ?s', array($_GET['id']))->row('email');
 
-$domen = str_replace([ 'http://', 'www.', 'www' ], '', $_SERVER['SERVER_NAME']);
-$subject = "Ваша учетная запись подтверждена " . $domen;
+$subject = "Ваша учетная запись в социальной сети подтверждена.";
 $body  = '<h2 style="color:#000000; margin: 0;">Поздравляем, ваша учётная запись была подтверждена!</h2>';
-$body .= '<p><a href="'.$_SERVER['SERVER_NAME'].'/login">Перейдите по ссылке, чтобы войти в систему.</a></p>';
+$body .= '<p><a href="http://службадоставкиводы.рф/login">Перейдите по ссылке, чтобы войти в систему.</a></p>';
 $body .= '<p style="color: #444444; font-size: 14px;">С уважением, <i>Искусственный Интеллект.</i></p>'; 
 
 // Create the Transport

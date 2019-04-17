@@ -84,6 +84,7 @@ const Wrapper = styled.div`
     z-index: 1000;
     opacity: 1;
     margin-bottom: 0;
+    width: ${window.innerWidth}px;
     a {
       padding-top: 5px;
       min-height: 50px;

@@ -142,40 +142,43 @@ class Settings extends Component {
     self.setState({ modal: false });
     e.preventDefault();
 
-    const formData = new FormData();
+    if ($('input[name="surname"]').val() && $('input[name="name"]').val() && $('input[name="sex"]').val() && $('input[name="position"]').val() && (this.state.selectedDate || this.state.user.birthday)) {
+      const formData = new FormData();
+      formData.append('id', self.state.user.id);
+      formData.append('surname', $('input[name="surname"]').val());
+      formData.append('name', $('input[name="name"]').val());
+      formData.append('birthday', self.state.selectedDate.slice(0, 10) || this.state.user.birthday);
+      formData.append('sex', $('input[name="sex"]').val());
+      formData.append('position', $('input[name="position"]').val());
+      formData.append('avatar', self.state.uploadedAvatar);
 
-    formData.append('id', self.state.user.id);
-    formData.append('surname', $('input[name="surname"]').val());
-    formData.append('name', $('input[name="name"]').val());
-    formData.append('birthday', self.state.selectedDate.slice(0, 10) || this.state.user.birthday);
-    formData.append('sex', $('input[name="sex"]').val());
-    formData.append('position', $('input[name="position"]').val());
-    formData.append('avatar', self.state.uploadedAvatar);
-
-    $.ajax({
-      url: `${API}/api/user/settings.php`,
-      data: formData,
-      processData: false,
-      contentType: false,
-      type: 'POST',
-      success: function (res) {
-        console.log(res);
-        let response = res.result;
-        switch (response) {
-          case 0:
-            self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' });
-            break;
-          case 1:
-            self.props.enqueueSnackbar('Персональные данные изменены', { variant: 'success' });
-            window.location.href = `id${self.state.user.id}`;
-            break;
-          default: break;
+      $.ajax({
+        url: `${API}/api/user/settings.php`,
+        data: formData,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function (res) {
+          console.log(res);
+          let response = res.result;
+          switch (response) {
+            case 0:
+              self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' });
+              break;
+            case 1:
+              self.props.enqueueSnackbar('Персональные данные изменены', { variant: 'success' });
+              window.location.href = `id${self.state.user.id}`;
+              break;
+            default: break;
+          }
+        },
+        error: function () {
+          self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' });
         }
-      },
-      error: function () {
-        self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' });
-      }
-    });
+      });
+    } else {
+      self.props.enqueueSnackbar('Пожалуйста заполните все поля', { variant: 'warning' });
+    }  
   }
 
   /**
@@ -188,12 +191,7 @@ class Settings extends Component {
   render() {
     const { user, uploadedAvatar } = this.state;
 
-    let avatar = null;
-    if (window.location.host.includes('localhost') && user.avatar) {
-      avatar = user.avatar.slice(16);
-    } else {
-      avatar = user.avatar;
-    }
+    let avatar = user.avatar;
 
     return (
       <React.Fragment>
@@ -204,8 +202,8 @@ class Settings extends Component {
 
           <form id="personal-info" action="" method="POST" encType="multipart/form-data">
             {uploadedAvatar ?
-              <div style={{ ...styles.avatar, background: `url(${uploadedAvatar ? uploadedAvatar : DefaultAvatar}) no-repeat center/cover` }}></div> :
-              <div style={{ ...styles.avatar, background: `url(${avatar}) no-repeat center/cover` }}></div>}
+              <div style={{ ...styles.avatar, background: `url(${uploadedAvatar}) no-repeat center/cover` }}></div> :
+              <div style={{ ...styles.avatar, background: `url(${avatar ? avatar : DefaultAvatar}) no-repeat center/cover` }}></div>}
             <Button variant="contained" style={{ ...styles.upload }}>
               Загрузить фото профиля
             <Icon style={{ marginLeft: 10 }}>cloud_upload</Icon>
@@ -276,12 +274,14 @@ class Settings extends Component {
               margin="normal"
               label='Дата рождения'
               format={'Do MMMM YYYY'}
-              value={this.state.selectedDate ? this.state.selectedDate : user.birthday}
+              value={this.state.selectedDate ? this.state.selectedDate : user.birthday || null}
               fullWidth={true}
               InputLabelProps={{ shrink: true }}
               onChange={this.handleDateChange}
               aria-describedby="component-helper-text"
               style={{ ...styles.input }}
+              cancelLabel='Отмена'
+              emptyLabel='Не выбрана дата рождения'
               required
             />
 

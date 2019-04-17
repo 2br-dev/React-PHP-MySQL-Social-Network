@@ -13,7 +13,7 @@ import Continue from './Continue';
 import API from '../../functions/API';
 import Loader from '../../Loader/Loader';
 
-document.body.style.height = 'unset';
+if (window.location.pathname !== '/settings') document.body.style.height = 'unset';
 
 function TestContainer({ store }) {
   const [start, setStart] = useState(false);
