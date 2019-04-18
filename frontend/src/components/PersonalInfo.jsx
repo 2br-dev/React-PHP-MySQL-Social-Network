@@ -15,6 +15,8 @@ import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
 import DropdownActions from './DropdownActions/Dropdown';
 
+var autoSaveTimer = null;
+
 class PersonalInfo extends Component {
   constructor(props) {
     super(props);
@@ -63,10 +65,15 @@ class PersonalInfo extends Component {
 
   // динамически обрабатываем изменения полей
   handleChange(event) {
+    window.clearTimeout(autoSaveTimer);
     // ставим стейт исходя из именя поля и вводимого значения
     let userInfo = { ...this.state.userInfo };
     userInfo[event.target.name] = event.target.value;
     this.setState({ userInfo });
+    this.props.updateUser(event.target.name, event.target.value);
+    autoSaveTimer = setTimeout(() => {
+      this.handleSubmit(event, true);
+    }, 2000)
   }
 
   prepareChild() {
@@ -140,7 +147,7 @@ class PersonalInfo extends Component {
 
   removeInput = () => this.setState({ newChildInput: false });
 
-  handleSubmit(e) {
+  handleSubmit(e, dontShow) {
     var self = this;
     e.preventDefault();
 
@@ -156,7 +163,7 @@ class PersonalInfo extends Component {
     formData.append('name', $('input[name="name"]').val());
     formData.append('phone', $('input[name="phone"]').val());
     formData.append('position', $('input[name="position"]').val());
-    formData.append('status', $('input[name="status"]').val());
+    formData.append('status', this.state.userInfo.status);
     formData.append('surname', $('input[name="surname"]').val());
     formData.append('vuz', $('input[name="vuz"]').val());
     formData.append('city', $('input[name="city"]').val());
@@ -174,10 +181,12 @@ class PersonalInfo extends Component {
           case 0:
             self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' });
             break;
-          case 1:
-            self.fetchUserInfo('update');
-            self.props.enqueueSnackbar('Персональные данные были обновлены', { variant: 'success' });
-            self.addChild(e);
+          case 1: 
+            if (!dontShow) {
+              self.fetchUserInfo('update');
+              self.props.enqueueSnackbar('Персональные данные были обновлены', { variant: 'success' });
+              self.addChild(e);
+            }
             break;
           default: break;
         }
@@ -222,6 +231,8 @@ class PersonalInfo extends Component {
     }
   }
 
+  closeSelectOnScroll = () => true;
+  listenSelect = () => true;
   closeSelect = () => this.setState({ isSelectOpened: false });
 
   render() {
@@ -605,5 +616,10 @@ const Naked = styled.div`
 `;
 
 export default connect(
-  state => ({ store: state })
+  state => ({ store: state }),
+  dispatch => ({
+    updateUser: (field, value) => {
+      dispatch({ type: 'UPDATE_USER', payload: value, field: field })
+    }
+  })
 )(withSnackbar(PersonalInfo));

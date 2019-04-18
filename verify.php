@@ -37,3 +37,18 @@
     }
   }
 
+  function getAdminStatus() {
+    $jwt = isset($_COOKIE['akv_jwt_token']) ? $_COOKIE['akv_jwt_token'] : '';
+    $key = JWT_KEY;
+    $verifyer = new HS256($key);
+
+    $parser = new JwtParser($verifyer);
+
+    try {
+        $claims = $parser->parse($jwt);  
+        return $claims['admin'];
+    } catch (TokenParsingException $e) {
+        return false;
+    }
+  }
+

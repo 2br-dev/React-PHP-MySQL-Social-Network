@@ -52,6 +52,11 @@ const theme = createMuiTheme({
       root: {
         maxWidth: `${window.innerWidth}px !important`
       }
+    },
+    MuiGrid: {
+      container: {
+        height: '100% !important'
+      }
     }
   },
 });

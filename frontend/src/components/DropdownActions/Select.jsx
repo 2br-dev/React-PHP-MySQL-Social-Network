@@ -9,6 +9,7 @@ import Modal from '../Modal/Modal';
 import $ from 'jquery';
 import API from '../functions/API';
 import ConfirmStatus from './ConfirmStatus';
+import { Link } from 'react-router-dom';
 
 class LongMenu extends React.Component {
   state = {
@@ -81,7 +82,8 @@ class LongMenu extends React.Component {
             {userInfo.admin === '1' ? "Разжаловать администратора" : "Сделать администратором"}
           </MenuItem>
         : null}
-          <MenuItem component="a" href='/learnings'>Обучение</MenuItem>
+          <MenuItem component={Link} to='/calendar'>Календарь</MenuItem>
+          <MenuItem component={Link} to='/learnings'>Обучение</MenuItem> 
         </Menu>
 
         {/* Confirm promote modal */}

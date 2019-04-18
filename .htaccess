@@ -22,7 +22,7 @@
 # https://www.w3.org/TR/cors/
 
 # <IfModule mod_headers.c>
-#     Header set Access-Control-Allow-Origin "*"
+#    Header set Access-Control-Allow-Origin "*"
 # </IfModule>
 
 # ----------------------------------------------------------------------

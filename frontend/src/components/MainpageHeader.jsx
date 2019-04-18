@@ -54,6 +54,7 @@ function MainpageHeader(props) {
 
 const Wrapper = styled.div`
   background: url('${defaultBackground}') no-repeat center/cover;
+  background-attachment: fixed;
 `;
 
 export default MainpageHeader;

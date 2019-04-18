@@ -4,6 +4,8 @@ cp/
 cp_setup/
 upload_dir/
 img/
+upload/
+frontend/public/upload/
 protected/runtime
 protected/config
 protected/config/db

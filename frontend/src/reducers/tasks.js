@@ -1,7 +1,10 @@
 export default function reducing(state = [], action) {
   switch (action.type) {
     case 'FETCH_TASKS':
-      return [...action.payload]
+      if (Array.isArray(action.payload)) {
+        return [...action.payload]
+      }
+      return state
     case 'MARK_COMPLETED':
       return [...action.payload]
     case 'ADD_TASK':
