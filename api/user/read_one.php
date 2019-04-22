@@ -21,7 +21,7 @@ $db = $database->getConnection();
 $user = new User($db);
  
 // set ID property of record to read
-$user->id = isset($_GET['id']) ? $_GET['id'] : die();
+$user->id = isset($_GET['id']) ? $_GET['id'] : parseUserId();
 
  
 if($user->readOne()){

@@ -8,6 +8,7 @@ import messages from './messages';
 import friends from './friends';
 import tests from './tests';
 import categories from './categories';
+import events from './events';
 
 export default combineReducers({
   user,
@@ -18,5 +19,6 @@ export default combineReducers({
   messages,
   friends,
   tests,
-  categories
+  categories,
+  events
 })

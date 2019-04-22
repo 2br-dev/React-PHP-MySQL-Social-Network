@@ -6,6 +6,8 @@ export default function reducing(state = [], action) {
       let updated = state[0];
       updated[action.field] = action.payload; 
       return [updated]
+    case 'FETCH_USER':  
+      return action.payload
     default:
       return state
   }

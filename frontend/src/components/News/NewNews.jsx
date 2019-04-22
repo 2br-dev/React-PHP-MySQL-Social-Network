@@ -6,13 +6,9 @@ import CloseIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
 
 export default function NewNews(props) {
-  let avatar = '';
-  if (!window.location.host.includes('localhost') && props.user.avatar) {
-    avatar = props.user.avatar;
-  } else {
-    avatar = props.user.avatar.slice(16);
-  }
+  let avatar = props.user.avatar;
 
+  console.log(props.user)
   return (
     <Fragment>
       <Container>
