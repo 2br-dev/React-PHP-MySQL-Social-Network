@@ -74,6 +74,7 @@ class News extends Component {
     const formData = new FormData();
     formData.append('id', id);
     formData.append('liked_by', this.props.user.id);
+    formData.append('created_at', new Date().getTime());
     const actions = document.getElementById('actions');
     actions.style.pointerEvents = 'none';
 
@@ -132,7 +133,7 @@ class News extends Component {
       formData.append('title', this.state.newNewsTopic);
       formData.append('text', this.state.newNewsText);
       formData.append('date', new Date().toJSON().slice(0, 10).replace(/-/g, '.'));
-      formData.append('created', new Date().getTime());
+      formData.append('created_at', new Date().getTime());
       formData.append('importance', this.state.newNewsImportance ? 1 : 0);
       formData.append('author_id', this.props.user.id);
 

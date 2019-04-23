@@ -175,7 +175,8 @@ class Test{
                 SET
                     completed = :completed,
                     estimated_time = :estimated_time,
-                    result = :result
+                    result = :result,
+                    created_at = :created_at
                 WHERE
                     id = :id";
 
@@ -187,12 +188,14 @@ class Test{
         $this->completed = htmlspecialchars(strip_tags($this->completed));
         $this->result = htmlspecialchars(strip_tags($coefficient));
         $this->estimated_time = htmlspecialchars(strip_tags($this->estimated_time));
-
+        $this->created_at = strval($this->created_at);
+        
         // bind new values
         $stmt->bindParam(':id', $this->id);
         $stmt->bindParam(':completed', $this->completed);
         $stmt->bindParam(':result', $this->result);
         $stmt->bindParam(':estimated_time', $this->estimated_time);
+        $stmt->bindParam(':created_at', $this->created_at);
 
         // execute the query
         if ($stmt->execute()) {

@@ -30,6 +30,7 @@ $calendar->creator = __post('creator');
 $calendar->endDate = __post('endDate');
 $calendar->startDate = __post('startDate');
 $calendar->title = __post('title');
+$calendar->created_at = __post('created_at');
 
 $calendar->max = __post('max') != null ? __post('max') : '';
 $calendar->interval = __post('interval') != null ? __post('interval') : '';

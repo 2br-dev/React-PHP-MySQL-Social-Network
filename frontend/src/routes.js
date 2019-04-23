@@ -49,6 +49,11 @@ const routes = [
     description: 'Календарь'
   },
   {
+    path: '/feed',
+    component: MainPage,
+    description: 'Оповещения'
+  },
+  {
     path: '/test/:any',
     component: TestPage,
     description: 'Страница тестирования'

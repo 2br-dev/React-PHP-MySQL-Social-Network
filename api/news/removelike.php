@@ -26,9 +26,10 @@ $current_stats= Q("SELECT `likes`, `liked_by` FROM `#_mdd_news` WHERE `id` = ?s"
 $news->id        = __post('id');
 $news->likes     = $current_stats['likes'] - 1;
 $news->liked_by  = str_replace(', ' . __post('liked_by'),"", $current_stats['liked_by']);
+$liked_by = __post('liked_by');
 
 // update the user
-if($news->removeLike()){
+if($news->removeLike($liked_by)){
     // set response code - 200 ok
     http_response_code(200);
     // tell the user

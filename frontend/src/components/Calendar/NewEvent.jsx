@@ -99,7 +99,7 @@ function NewEvent({ isOpen, handleClose, enqueueSnackbar, user, onAddEvent }) {
 
   async function createEvent() {
     if (title && startDate && endDate) {
-      const data = { creator: user.id, title }
+      const data = { creator: user.id, title, created_at: new Date().getTime() }
 
       if (isSignAllowed) {
         data.max = maxUsers;

@@ -59,6 +59,7 @@ export function finishTest(data) {
   const formData = new FormData();
   formData.append('id', data.id);
   formData.append('estimated_time', data.estimated_time);
+  formData.append('created_at', new Date().getTime());
 
   $.ajax({
     url: `${API}/api/test/finish.php`,

@@ -29,6 +29,7 @@ $test = new Test($db);
 $test->id = __post('id');
 $test->estimated_time = __post('estimated_time');
 $test->completed = '1';
+$test->created_at = __post('created_at');
 
 $stmt = $test->finish();
 

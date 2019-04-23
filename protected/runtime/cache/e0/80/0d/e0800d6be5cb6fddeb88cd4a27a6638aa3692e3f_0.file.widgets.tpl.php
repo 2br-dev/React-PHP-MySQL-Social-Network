@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 3.1.32, created on 2019-04-18 16:36:42
+/* Smarty version 3.1.32, created on 2019-04-23 11:04:28
   from 'C:\OpenServer\domains\akvatory.local\protected\app\core\admin-template\view\dashboard\widgets.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_5cb87d6ae7a4a8_07244930',
+  'unifunc' => 'content_5cbec70ce41a91_98623314',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,6 +20,6 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5cb87d6ae7a4a8_07244930 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5cbec70ce41a91_98623314 (Smarty_Internal_Template $_smarty_tpl) {
 }
 }

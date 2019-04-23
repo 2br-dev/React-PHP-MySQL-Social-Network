@@ -25,6 +25,7 @@ $message->date     = __post('date');
 $message->time     = __post('time');
 $message->user     = __post('user');
 $message->body     = __post('body');
+$message->created_at     = __post('created_at');
 $message->readed   = 0;
 $message->edited   = 0;
  

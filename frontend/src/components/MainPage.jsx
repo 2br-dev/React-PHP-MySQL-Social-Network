@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import Chat from './Chat/Chat';
 import { connect } from 'react-redux';
 import API from './functions/API';
+import Feed from './Feed/index';
 import Learnings from './Learnings/Learnings';
 
 class MainPage extends Component {
@@ -32,9 +33,13 @@ class MainPage extends Component {
   }
 
   handleChangeUrl() { 
-    this.setState({ user_id: this.state.user_logged_id });
-    
-    fetch(`${API}/api/user/read_one.php?id=${this.state.user_logged_id}`)
+    let url = `${API}/api/user/read_one.php`;
+
+    if (this.state.user_logged_id) {
+      url += `?id=${this.state.user_logged_id}`;
+    }
+
+    fetch(url)
       .then(response => response.json())
       .then(user => this.setState({ user }))
       .catch(err => console.log(err))
@@ -53,7 +58,7 @@ class MainPage extends Component {
 
   handleChangeUserId(id) {
     this.setState({ user_id: id, section: `id${id}`})
-    fetch(`${API}/api/user/read_one.php?id=${id}`)
+    fetch(`${API}/api/user/read_one.php`)
       .then(response => response.json())
       .then(user => this.setState({ user, user_id: parseInt(user.id) }))
   }
@@ -70,7 +75,7 @@ class MainPage extends Component {
   }
 
   componentDidMount() {
-    fetch(`${API}/api/user/read_one.php?id=${this.state.user_id}`)
+    fetch(`${API}/api/user/read_one.php`)
       .then(response => response.json())
       .then(user => this.setState({ user: user, loading: false }))
       .then(() => this.props.getUser(this.state.initialUser))
@@ -87,6 +92,8 @@ class MainPage extends Component {
         return <News user={this.state.user} />;
       case 'tasks':
         return <Tasks user_logged_id={this.state.user_logged_id} />;
+      case 'learnings':
+        return <Learnings />;
       case 'colleagues':
         return (
             <FriendsList 
@@ -94,8 +101,8 @@ class MainPage extends Component {
               user_id={this.state.user_logged_id}
             />
         )
-      case 'learnings':
-        return <Learnings />;
+      case 'feed':
+        return <Feed />;
       /*case 'gallery':
         return 'gallery';
       case 'favourites':

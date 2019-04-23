@@ -56,7 +56,8 @@ class NewTask extends Component {
     formData.append('text', text);
     formData.append('until_time', selectedTime.slice(11, 16));
     formData.append('importance', importance ? '1' : '0');
-
+    formData.append('created_at', new Date().getTime());
+    
     $.ajax({
       url: `${API}/api/tasks/add.php`,
       data: formData,

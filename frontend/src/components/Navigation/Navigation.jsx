@@ -23,7 +23,7 @@ class Navigation extends React.Component {
 
   handleChange = (event, value) => this.setState({ value });
 
-  countTask = () => {
+  countFeed = () => {
     let counter = 0;
     const filtered = this.props.store.tasks.filter(task => Number(task.from) !== this.props.user_logged_id);
     filtered.forEach(task => {
@@ -31,6 +31,7 @@ class Navigation extends React.Component {
     });
     return counter;
   }
+  
   render() {
     const { value } = this.state;
     const user = this.props;
@@ -47,8 +48,8 @@ class Navigation extends React.Component {
             {sections.map((section, i) =>
               <Tab
                 key={i}
-                label={section.section === 'tasks' && this.countTask() > 0 ?
-                  <BadgeWrapper><Badge color="secondary" badgeContent={this.countTask()}>
+                label={section.section === 'feed' && this.countFeed() > 0 ?
+                  <BadgeWrapper><Badge color="secondary" badgeContent={this.countFeed()}>
                     {section.label}
                   </Badge></BadgeWrapper>
                   : section.label

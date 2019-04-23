@@ -9,6 +9,7 @@ import friends from './friends';
 import tests from './tests';
 import categories from './categories';
 import events from './events';
+import feed from './feed';
 
 export default combineReducers({
   user,
@@ -20,5 +21,6 @@ export default combineReducers({
   friends,
   tests,
   categories,
-  events
+  events,
+  feed
 })

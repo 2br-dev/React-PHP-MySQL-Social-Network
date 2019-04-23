@@ -15,6 +15,7 @@ class Calendar
     public $creator;
     public $signed;
     public $interval;
+    public $created;
 
     // constructor with $db as database connection
     public function __construct($db)
@@ -105,6 +106,7 @@ class Calendar
                 `startDate`=:startDate, 
                 `endDate`=:endDate, 
                 `max`=:max, 
+                `created_at`=:created_at,
                 `title`=:title";
 
                 // prepare query
@@ -116,6 +118,7 @@ class Calendar
                 $this->endDate = htmlspecialchars(strip_tags($this->endDate));
                 $this->max = htmlspecialchars(strip_tags($this->max));
                 $this->title = htmlspecialchars(strip_tags($this->title));
+                $this->created_at = htmlspecialchars(strip_tags($this->created_at));
 
                 // bind values
                 $stmt->bindParam(":creator", $this->creator);
@@ -123,7 +126,8 @@ class Calendar
                 $stmt->bindParam(":endDate", $this->endDate);
                 $stmt->bindParam(":max", $this->max);
                 $stmt->bindParam(":title", $this->title);
-
+                $stmt->bindParam(":created_at", $this->created_at);
+                
                 // execute query
                 $stmt->execute();
             }
@@ -137,6 +141,7 @@ class Calendar
             `startDate`=:startDate, 
             `endDate`=:endDate, 
             `max`=:max, 
+            `created_at`=:created_at,
             `title`=:title";
 
             // prepare query
@@ -148,6 +153,7 @@ class Calendar
             $this->endDate = htmlspecialchars(strip_tags($this->endDate));
             $this->max = htmlspecialchars(strip_tags($this->max));
             $this->title = htmlspecialchars(strip_tags($this->title));
+            $this->created_at = htmlspecialchars(strip_tags($this->created_at));
 
             // bind values
             $stmt->bindParam(":creator", $this->creator);
@@ -155,6 +161,7 @@ class Calendar
             $stmt->bindParam(":endDate", $this->endDate);
             $stmt->bindParam(":max", $this->max);
             $stmt->bindParam(":title", $this->title);
+            $stmt->bindParam(":created_at", $this->created_at);
 
             // execute query
             if ($stmt->execute()) {

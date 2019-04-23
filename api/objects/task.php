@@ -30,7 +30,7 @@ class Task
     {
         // query to insert record
         $query = "INSERT INTO " . $this->table_name . "
-           SET `for`=:for, `from`=:from, date=:date, time=:time, until_date=:until_date, text=:text, until_time=:until_time, importance=:importance, status=:status";
+           SET `for`=:for, `from`=:from, date=:date, time=:time, until_date=:until_date, text=:text, created_at=:created_at, until_time=:until_time, importance=:importance, status=:status";
 
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -45,6 +45,7 @@ class Task
         $this->until_time = htmlspecialchars(strip_tags($this->until_time));
         $this->importance = htmlspecialchars(strip_tags($this->importance));
         $this->status = htmlspecialchars(strip_tags($this->status));
+        $this->created_at = htmlspecialchars(strip_tags($this->created_at));
 
         // bind values
         $stmt->bindParam(":for", $this->for);
@@ -56,6 +57,7 @@ class Task
         $stmt->bindParam(":until_time", $this->until_time);
         $stmt->bindParam(":importance", $this->importance);
         $stmt->bindParam(":status", $this->status);
+        $stmt->bindParam(":created_at", $this->created_at);
 
         // execute query
         if ($stmt->execute()) {

@@ -99,7 +99,7 @@ class News
         return false;
     }
 
-    function removeLike()
+    function removeLike($liked_by)
     {
 
         // update query
@@ -125,9 +125,29 @@ class News
 
         // execute the query
         if ($stmt->execute()) {
+            $this->deleteLike($liked_by);
             return true;
         }
 
+        return false;
+    }
+
+    function deleteLike($liked_by) {
+        // delete query
+        $query = "DELETE FROM db_mdd_likes WHERE `news_id` = ? AND `user` = ?";
+        // prepare query
+        $stmt = $this->conn->prepare($query);
+        // sanitize
+        $this->id = htmlspecialchars(strip_tags($this->id));
+        $liked_by = htmlspecialchars(strip_tags($liked_by));
+
+        // bind id of record to delete
+        $stmt->bindParam(1, $this->id);
+        $stmt->bindParam(2, $liked_by);
+        // execute query
+        if ($stmt->execute()) {
+            return true;
+        }
         return false;
     }
 
@@ -138,7 +158,7 @@ class News
         $query = "INSERT INTO
                     " . $this->table_name . "
                 SET
-                author=:author, date=:date, text=:text, title=:title, created=:created, importance=:importance, author_id=:author_id";
+                author=:author, date=:date, text=:text, title=:title, created_at=:created_at, importance=:importance, author_id=:author_id";
 
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -149,7 +169,7 @@ class News
         $this->date = htmlspecialchars(strip_tags($this->date));
         $this->text = htmlspecialchars(strip_tags($this->text));
         $this->title = htmlspecialchars(strip_tags($this->title));
-        $this->created = htmlspecialchars(strip_tags($this->created));
+        $this->created_at = htmlspecialchars(strip_tags($this->created_at));
         $this->importance = htmlspecialchars(strip_tags($this->importance));
 
         // bind values
@@ -158,7 +178,7 @@ class News
         $stmt->bindParam(":date", $this->date);
         $stmt->bindParam(":text", $this->text);
         $stmt->bindParam(":title", $this->title);
-        $stmt->bindParam(":created", $this->created);
+        $stmt->bindParam(":created_at", $this->created_at);
         $stmt->bindParam(":importance", $this->importance);
 
         // execute query

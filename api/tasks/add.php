@@ -28,6 +28,7 @@ $task->until_date   = __post('until_date');
 $task->text   = __post('text');
 $task->until_time = __post('until_time');
 $task->importance   = __post('importance');
+$task->created_at   = __post('created_at');
 $task->status   = 0;
  
 if($task->addTask()){

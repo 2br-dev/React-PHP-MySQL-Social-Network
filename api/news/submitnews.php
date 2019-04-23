@@ -26,7 +26,7 @@ $news->author_id = __post('author_id');
 $news->text = __post('text');
 $news->title = __post('title');
 $news->date = __post('date');
-$news->created = __post('created');
+$news->created_at = __post('created_at');
 $news->importance = __post('importance');
 
 // create the news

@@ -15,6 +15,7 @@ class Message
     public $readed;
     public $edited;
     public $chat;
+    public $created_at;
 
     // constructor with $db as database connection
     public function __construct($db)
@@ -81,7 +82,7 @@ class Message
     {
         // query to insert record
         $query = "INSERT INTO " . $this->table_name . "
-           SET chat=:chat, date=:date, time=:time, user=:user, body=:body, readed=:readed, edited=:edited";
+           SET chat=:chat, date=:date, time=:time, user=:user, body=:body, readed=:readed, edited=:edited, created_at=:created_at";
 
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -94,7 +95,8 @@ class Message
         $this->body = htmlspecialchars(strip_tags($this->body));
         $this->readed = htmlspecialchars(strip_tags($this->readed));
         $this->edited = htmlspecialchars(strip_tags($this->edited));
-
+        $this->created_at = htmlspecialchars(strip_tags($this->created_at));
+        
         // bind values
         $stmt->bindParam(":chat", $this->chat);
         $stmt->bindParam(":date", $this->date);
@@ -103,6 +105,7 @@ class Message
         $stmt->bindParam(":body", $this->body);
         $stmt->bindParam(":readed", $this->readed);
         $stmt->bindParam(":edited", $this->edited);
+        $stmt->bindParam(":created_at", $this->created_at);
 
         // execute query
         if ($stmt->execute()) {

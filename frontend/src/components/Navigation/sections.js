@@ -4,7 +4,7 @@ import Message from '@material-ui/icons/Message';
 import Task from '@material-ui/icons/ListAlt';
 import News from '@material-ui/icons/NewReleases';
 import People from '@material-ui/icons/People';
-import Book from '@material-ui/icons/Book';
+import RssFeed from '@material-ui/icons/RssFeed';
 
 const sections = [
   {
@@ -53,9 +53,9 @@ const sections = [
 if (window.innerWidth >= 600) {
   sections.push({
     value: 5,
-    section: 'learnings',
-    label: 'Обучение',
-    img: <Book />
+    section: 'feed',
+    label: 'Оповещения',
+    img: <RssFeed />
   })
 }
 

@@ -91,7 +91,8 @@ class ChatRoom extends Component {
       chat: room.hasOwnProperty('chat_id') ? room.chat_id : localStorage.getItem('chat_id'),
       body: this.state.newMessage,
       date: moment().format('L'),
-      time: moment().format('LT')
+      time: moment().format('LT'),
+      created_at: new Date().getTime()
     };
 
     formData.append('chat', message.chat); 
@@ -99,6 +100,7 @@ class ChatRoom extends Component {
     formData.append('body', message.body); 
     formData.append('date', message.date); 
     formData.append('time', message.time); 
+    formData.append('created_at', message.created_at); 
 
     $.ajax({
       url: `${API}/api/message/send.php`,

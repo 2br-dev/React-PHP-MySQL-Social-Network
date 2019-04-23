@@ -7,8 +7,6 @@ import AddIcon from '@material-ui/icons/Add';
 
 export default function NewNews(props) {
   let avatar = props.user.avatar;
-
-  console.log(props.user)
   return (
     <Fragment>
       <Container>

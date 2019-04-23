@@ -68,6 +68,7 @@ class SingleNews extends Component {
     const formData = new FormData();
     formData.append('id', id);
     formData.append('liked_by', this.props.user.id);
+    formData.append('created_at', new Date().getTime());
     
     $.ajax({
       url: `${API}/api/news/addlike.php`,
@@ -75,8 +76,7 @@ class SingleNews extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: function (e, res) {
-        console.log(res);
+      success: function (res) {
         fetch(`${API}/api/news/read_one.php?id=${self.props.singleNewsId}`)
           .then(response => response.json())
           .then(currentNews => self.setState({ currentNews }))
@@ -108,7 +108,6 @@ class SingleNews extends Component {
       contentType: false,
       type: 'POST',
       success: function (res) {
-        console.log(res);
         fetch(`${API}/api/news/read_one.php?id=${self.props.singleNewsId}`)
           .then(response => response.json())
           .then(currentNews => self.setState({ currentNews }))
@@ -134,6 +133,7 @@ class SingleNews extends Component {
     formData.append('time', new Date().toLocaleTimeString().slice(0, -3));
     formData.append('text', this.state.commentText);
     formData.append('author_id', this.props.user.id);
+    formData.append('created_at', new Date().getTime());
 
     $.ajax({
       url: `${API}/api/news/addcomment.php`,
