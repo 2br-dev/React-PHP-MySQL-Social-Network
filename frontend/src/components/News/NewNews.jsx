@@ -4,9 +4,10 @@ import { Checkbox, Button, FormControlLabel, Typography, TextField, Tooltip } fr
 import defaultAvatar from '../img/photos/images.png';
 import CloseIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
+import { connect } from 'react-redux';
 
-export default function NewNews(props) {
-  let avatar = props.user.avatar;
+function NewNews({ submitNews, closeNews, newNewsTopic, handleChange, invalidTopic, invalidText, newNewsText, newNewsImportance, changeImportance, store: { user }}) {
+  let avatar = user.avatar;
   return (
     <Fragment>
       <Container>
@@ -14,22 +15,22 @@ export default function NewNews(props) {
           <Typography variant='button'>Новая новость</Typography> 
 
           <Tooltip placement='left' title='Закрыть'>
-            <Icon><CloseIcon onClick={props.closeNews} /></Icon>
+            <Icon><CloseIcon onClick={closeNews} /></Icon>
           </Tooltip>
 
         </Header>
         <Body>
-          <form action="" method="POST" onSubmit={props.submitNews}>
+          <form action="" method="POST" onSubmit={submitNews}>
             <Topic>
-              {props.user.avatar === ''
-                ? <div className='image' alt={`${props.user.name} ${props.user.surname}`} style={{ background: `url(${defaultAvatar}) no-repeat center/cover` }} />
-                : <div className='image' alt={`${props.user.name} ${props.user.surname}`} style={{ background: `url(${avatar}) no-repeat center/cover` }} />
+              {user.avatar === ''
+                ? <div className='image' alt={`${user.name} ${user.surname}`} style={{ background: `url(${defaultAvatar}) no-repeat center/cover` }} />
+                : <div className='image' alt={`${user.name} ${user.surname}`} style={{ background: `url(${avatar}) no-repeat center/cover` }} />
               }
               <TextField
                 label="Заголовок"
-                value={props.newNewsTopic}
-                onChange={props.handleChange}
-                error={props.invalidTopic}
+                value={newNewsTopic}
+                onChange={handleChange}
+                error={invalidTopic}
                 variant="outlined"
                 name='newNewsTopic'
                 type='text'
@@ -42,9 +43,9 @@ export default function NewNews(props) {
                 multiline
                 variant="outlined"
                 name='newNewsText'
-                error={props.invalidText}
-                onChange={props.handleChange}
-                value={props.newNewsText}
+                error={invalidText}
+                onChange={handleChange}
+                value={newNewsText}
                 required
               />
             </TextArea>
@@ -52,19 +53,19 @@ export default function NewNews(props) {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={props.newNewsImportance}
-                    onChange={props.changeImportance}
+                    checked={newNewsImportance}
+                    onChange={changeImportance}
                     color="primary"
                   />
                 }
                 label="Отметить как важное"
               />
-              <Button onClick={props.submitNews} variant='contained' color='primary'>{window.innerWidth > 600 ? 'Добавить новость' : <AddIcon />}</Button>
+              <Button onClick={submitNews} variant='contained' color='primary'>{window.innerWidth > 600 ? 'Добавить новость' : <AddIcon />}</Button>
             </Footer>
           </form>
         </Body>
       </Container>
-      <Wrapper onClick={props.closeNews}></Wrapper>
+      <Wrapper onClick={closeNews}></Wrapper>
     </Fragment>
   )
 }
@@ -206,3 +207,5 @@ const Icon = styled.div`
     right: 15px;
   }
 `;
+
+export default connect(state => ({ store: state }))(NewNews);

@@ -75,7 +75,7 @@ class ChatRoom extends Component {
 
     // если в комнате нет чат-id то создадим чат
     if (!room.hasOwnProperty('chat_id')) {
-      this.getMessageId(user[0].id, room.user.id);
+      this.getMessageId(user.id, room.user.id);
       return;
     } else {
       fetch(`${API}/api/message/get_id.php`)
@@ -87,7 +87,7 @@ class ChatRoom extends Component {
     const formData = new FormData();
     const self = this; 
     const message = {
-      user: user[0].id,
+      user: user.id,
       chat: room.hasOwnProperty('chat_id') ? room.chat_id : localStorage.getItem('chat_id'),
       body: this.state.newMessage,
       date: moment().format('L'),

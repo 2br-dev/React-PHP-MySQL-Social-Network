@@ -43,7 +43,8 @@ class User
 
     function read()
     {
-        $query = "SELECT * FROM `db_mdd_users` WHERE `approved` = '1' AND `name` != ''";
+        $id = $this->id;
+        $query = "SELECT * FROM `db_mdd_users` WHERE `approved` = '1' AND `id` != '$id' AND `name` != ''";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -104,14 +105,12 @@ class User
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // set values to object properties
-        $this->login        = $row['login'];
         $this->position     = $row['position'];
         $this->avatar       = $row['avatar'];
-        $this->background   = $row['background'];
         $this->id           = $row['id'];
         $this->name         = $row['name'];
         $this->surname      = $row['surname'];
-        $this->liked        = $row['liked'];
+        $this->admin        = $row['admin'];
 
         return true;
     }

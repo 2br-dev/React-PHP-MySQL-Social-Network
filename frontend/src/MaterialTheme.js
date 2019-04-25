@@ -61,7 +61,7 @@ const theme = createMuiTheme({
         lineHeight: '20px',
         opacity: '.75'
       }
-    }
+    },
   },
 });
 

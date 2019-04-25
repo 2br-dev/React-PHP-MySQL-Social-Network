@@ -10,11 +10,11 @@ export default function Result({ item }) {
 
   return (
     <ResultWrapper>
-      <UserAvatar avatar={item.avatar} />
+      <UserAvatar avatar={item.avatar} type={item.type} />
       <ResultContent>
         <Typography variant='subtitle2' color='primary'>Вы прошли тестирование</Typography>
         <Typography variant='h3' color='primary' style={{ marginTop: 5 }}>{result}</Typography>
-        <Typography variant='body1' style={{ padding: '5px 0' }}>Оставшееся время: {item.estimated_time}</Typography>
+        <Typography variant='caption' style={{ padding: '5px 0' }}>Оставшееся время: {item.estimated_time}</Typography>
         <Typography variant='caption'>
           <b style={{ fontWeight: 500}}>{moment(Number(item.created_at)).calendar()}</b>&nbsp;
           — &nbsp;

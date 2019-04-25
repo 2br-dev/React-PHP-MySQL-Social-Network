@@ -6,66 +6,37 @@ import Tab from '@material-ui/core/Tab';
 import Badge from '@material-ui/core/Badge';
 import sections from './sections';
 import styled from 'styled-components';
-import API from '../functions/API';
 import { connect } from 'react-redux';
 
-class Navigation extends React.Component {
-  state = {
-    value: 0
-  };
-
-  componentDidMount = () => {
-    fetch(`${API}/api/tasks/read.php?id=${this.props.user_logged_id}`)
-      .then(response => response.json())
-      .then(tasks => this.props.getTasks(tasks.data))
-      .catch(err => console.log(err))
-  }
-
-  handleChange = (event, value) => this.setState({ value });
-
-  countFeed = () => {
-    let counter = 0;
-    const filtered = this.props.store.tasks.filter(task => Number(task.from) !== this.props.user_logged_id);
-    filtered.forEach(task => {
-      if(!task.readed) counter++; 
-    });
-    return counter;
-  }
-  
-  render() {
-    const { value } = this.state;
-    const user = this.props;
-
-    return (
-      <Wrapper>
-        <AppBar position="static" color="default">
-          <Tabs
-            value={value}
-            onChange={this.handleChange}
-            indicatorColor="primary"
-            centered
-          >
-            {sections.map((section, i) =>
-              <Tab
-                key={i}
-                label={section.section === 'feed' && this.countFeed() > 0 ?
-                  <BadgeWrapper><Badge color="secondary" badgeContent={this.countFeed()}>
-                    {section.label}
-                  </Badge></BadgeWrapper>
-                  : section.label
-                }
-                onClick={() => user.handleChangeSection(section.section !== 'id' ? section.section : `id${user.user_logged_id}`)}
-                component={Link}
-                to={section.section !== 'id' ? section.section : `id${user.user_logged_id}`}
-                icon={section.img}
-              />
-            )}
-          </Tabs>
-        </AppBar>
-      </Wrapper>
-    );
-  }
+function Navigation({ store: { unreaded: { feed }}}) {
+  return (
+    <Wrapper>
+      <AppBar position="static" color="default">
+        <Tabs
+          value={sections.findIndex(section => window.location.pathname.slice(1) === section.section) !== -1 ? sections.findIndex(section => window.location.pathname.slice(1) === section.section) : 0}
+          indicatorColor="primary"
+          centered
+        >
+          {sections.map((section, i) =>
+            <Tab
+              key={i}
+              label={section.section === 'feed' && feed ?
+                <BadgeWrapper><Badge color="secondary" className='feedBadge' badgeContent={feed}>
+                  {section.label}
+                </Badge></BadgeWrapper>
+                : section.label
+              }
+              component={Link}
+              to={section.section}
+              icon={section.img}
+            />
+          )}
+        </Tabs>
+      </AppBar>
+    </Wrapper>
+  );
 }
+
 const Wrapper = styled.div`
   flex-grow: 1;
   width: 100%;
@@ -102,10 +73,7 @@ const BadgeWrapper = styled.div`
     right: -5px;
   }
 `;
-export default connect(
-  state => ({
-    store: state
-  }),
+export default connect(state => ({ store: state }),
   dispatch => ({
     getTasks: (tasks) => {
       dispatch({ type: 'FETCH_TASKS', payload: tasks})

@@ -27,7 +27,7 @@ export default function News({ item }) {
 
   return (
     <NewsWrapper>
-      <UserAvatar avatar={item.avatar} />
+      <UserAvatar avatar={item.avatar} type={item.type} />
       <NewsContent>
         <Typography variant='subtitle2' color='primary' style={{ display: 'flex', alignItems: 'center' }}>
           {item.importance === '1' ? createImportantBar() : null}

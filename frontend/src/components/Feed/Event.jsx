@@ -22,15 +22,20 @@ export default function Result({ item }) {
     }
   }
 
+  function isFuture() {
+    return moment(item.endDate).diff(moment(new Date()));
+  }
+
   return (
     <EventWrapper>
-      <UserAvatar avatar={item.avatar} />
+      <UserAvatar avatar={item.avatar} type={item.type} />
       <EventContent>
         <Typography variant='subtitle2' color='primary' style={{ marginBottom: 5 }}>{`Новое событие в календаре — ${item.title}`}</Typography>
-        <Typography variant='h6'>{`${moment(item.startDate).calendar()} — ${item.endDate.slice(-5)}`}</Typography>
+        <Typography variant='body1'>{`${moment(item.startDate).calendar()} — ${item.endDate.slice(-5)}`}</Typography>
 
-        {item.max !== '0' ? <Typography variant='body2'>{getRemainingPlaces(item.max, item.signed)}</Typography> : null}
+        {item.max !== '0' && isFuture() > 0 ? <Typography variant='caption'>{getRemainingPlaces(item.max, item.signed)}</Typography> : null}
         <Typography variant='caption' style={{ marginTop: 5 }}>
+          Событие добавлено в календарь — &nbsp;
           <b style={{ fontWeight: 500}}>{moment(Number(item.created_at)).calendar()}</b>
         </Typography>
       </EventContent>

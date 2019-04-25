@@ -20,7 +20,6 @@ class News extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      news: [],
       newNews: false,
       newNewsTopic: '',
       newNewsText: '',
@@ -55,9 +54,6 @@ class News extends Component {
 
   async reloadComponent(action) {
     if (!action) await this.setState({ loading: true })
-    await fetch(`${API}/api/news/read.php`)
-      .then(response => response.json())
-      .then(news => this.props.onAddNews(news.records || []))
     await this.setState({ loading: false })
   }
 
@@ -68,12 +64,13 @@ class News extends Component {
 
   // добавляем лайк
   addLike = (id, e) => {
+    const { user } = this.props.store;
     var self = this;
     e.preventDefault();
     e.stopPropagation();
     const formData = new FormData();
     formData.append('id', id);
-    formData.append('liked_by', this.props.user.id);
+    formData.append('liked_by', user.id);
     formData.append('created_at', new Date().getTime());
     const actions = document.getElementById('actions');
     actions.style.pointerEvents = 'none';
@@ -87,15 +84,13 @@ class News extends Component {
       success: function () {
         self.reloadComponent('like');
         setTimeout(() => actions.style.pointerEvents = 'all', 500)
-      },
-      error: function (err) {
-        console.log(err);
       }
     });
   }
 
   // убираем лайк
   removeLike = (id, e) => {
+    const { user } = this.props.store;
     const self = this;
     e.preventDefault();
     e.stopPropagation();
@@ -104,7 +99,7 @@ class News extends Component {
 
     const formData = new FormData();
     formData.append('id', id);
-    formData.append('liked_by', this.props.user.id);
+    formData.append('liked_by', user.id);
 
     $.ajax({
       url: `${API}/api/news/removelike.php`,
@@ -112,30 +107,28 @@ class News extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: function (res) {
+      success: function () {
         self.reloadComponent('like');
         self.setState({ newNews: false });
         setTimeout(() => actions.style.pointerEvents = 'all', 500)
-      },
-      error: function (err) {
-        console.log(err);
       }
     });
   }
 
   submitNews = (e) => {
+    const { user } = this.props.store;
     var self = this;
     e.preventDefault();
     if (this.state.newNewsTopic !== '' && this.state.newNewsText !== '') {
       const formData = new FormData();
 
-      formData.append('author', `${this.props.user.name} ${this.props.user.surname}`);
+      formData.append('author', `${user.name} ${user.surname}`);
       formData.append('title', this.state.newNewsTopic);
       formData.append('text', this.state.newNewsText);
       formData.append('date', new Date().toJSON().slice(0, 10).replace(/-/g, '.'));
       formData.append('created_at', new Date().getTime());
       formData.append('importance', this.state.newNewsImportance ? 1 : 0);
-      formData.append('author_id', this.props.user.id);
+      formData.append('author_id', user.id);
 
       $.ajax({
         url: `${API}/api/news/submitnews.php`,
@@ -143,8 +136,7 @@ class News extends Component {
         processData: false,
         contentType: false,
         type: 'POST',
-        success: function (res) {
-          console.log(res);
+        success: function () {
           self.reloadComponent();
           self.setState({ 
             newNews: !self.state.newNews, 
@@ -153,8 +145,7 @@ class News extends Component {
           });
           self.props.enqueueSnackbar('Добавлена новая новость', { variant: 'success' })
         },
-        error: function (err) {
-          console.log(err);
+        error: function () {
           self.props.enqueueSnackbar('Не удалось добавить новость', { variant: 'error' })
         }
       });
@@ -185,16 +176,16 @@ class News extends Component {
         self.setState({ editing: '', preparedNewsId: '', confirmDelete: false  });
         self.props.enqueueSnackbar('Новость была удалена', { variant: 'info' });
       },
-      error: function(err) {
-        console.log(err);
+      error: function() {
         self.props.enqueueSnackbar('Не удалось удалить новость', { variant: 'error' });
       }
     });
   };
 
   prepareNews = id => {
-    let title = this.props.store.news.find(news => news.id === id).title;
-    let text = this.props.store.news.find(news => news.id === id).text;
+    const { news } = this.props.store;
+    let title = news.find(news => news.id === id).title;
+    let text = news.find(news => news.id === id).text;
     this.setState({ editing: id, newNewsTopic: title, newNewsText: text });
   }
 
@@ -220,8 +211,7 @@ class News extends Component {
           setTimeout(() => self.setState({ editing: '' }), 200);
           self.props.enqueueSnackbar('Новость была изменена', { variant: 'info' });
         },
-        error: function (err) {
-          console.log(err);
+        error: function () {
           self.props.enqueueSnackbar('Не удалось изменить новость', { variant: 'error' });
         }
       });
@@ -322,20 +312,16 @@ class News extends Component {
   }
 
   render() {
-    const { news, invalidText, invalidTopic, newNews, loading, newNewsText, newNewsTopic, editing, singleNews, singleNewsId, newNewsImportance } = this.state;
-    const { user } = this.props;
-    // eslint-disable-next-line
-    let avatar = user.avatar;
+    const { invalidText, invalidTopic, newNews, loading, newNewsText, newNewsTopic, editing, singleNews, singleNewsId, newNewsImportance } = this.state;
+    const { user, news } = this.props.store;
     
-    if (this.state.news.length === 0) {
-      setTimeout(() => this.setState({ news: this.props.store.news }), 0);
-    }
+    if (news.length === 0) setTimeout(() => this.setState({ news }), 0);
 
     return (
       <Paper>
         {window.innerWidth < 600 ? <ResponsiveHeader title='Новости компании' /> : null}
         {loading ? <Loader minHeight={300} color='primary' /> :
-          this.props.store.news.length > 0 && this.props.store.news ? this.props.store.news.map((item, i) => {
+          news.length > 0 && news ? news.map((item, i) => {
             return (  
               <NewsContainer key={i} onClick={() => this.showNews(item.id)}>
                 <UserAvatar style={{ background: `url(${item.avatar === '' ? defaultAvatar : item.avatar}) no-repeat center/cover` }} />
@@ -412,10 +398,6 @@ class News extends Component {
                       <FontAwesomeIcon onClick={e => this.removeLike(item.id, e)} icon="heart" style={{ color: '#1976d2' }} />
                     </Tooltip>  
                   }
-                 {/*  <Tooltip title='Отправить сообщение' placement='top'>
-                    <FontAwesomeIcon data-id={item.id} onClick={this.addLike} icon="envelope" style={{ marginLeft: '25px' }} />
-                  </Tooltip> */}
-
                   {user.id === item.author_id
                     ?
                     <Tooltip title='Редактировать' placement='top'>
@@ -438,7 +420,6 @@ class News extends Component {
 
         {newNews ?
           <NewNews
-            user={user}
             newNewsTopic={newNewsTopic}
             newNewsText={newNewsText}
             invalidText={invalidText}
@@ -456,8 +437,6 @@ class News extends Component {
             showNews={this.showNews}
             closeNews={this.closeNews.bind(this)}
             singleNewsId={singleNewsId}
-            news={news}
-            user={user}
             getNoun={this.getNoun}
             getCommentsNoun={this.getCommentsNoun}
             reloadComponent={this.reloadComponent}

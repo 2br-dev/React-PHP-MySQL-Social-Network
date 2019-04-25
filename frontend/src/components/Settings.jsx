@@ -167,7 +167,7 @@ class Settings extends Component {
               break;
             case 1:
               self.props.enqueueSnackbar('Персональные данные изменены', { variant: 'success' });
-              window.location.href = `id${self.state.user.id}`;
+              window.location.href = `/feed`;
               break;
             default: break;
           }

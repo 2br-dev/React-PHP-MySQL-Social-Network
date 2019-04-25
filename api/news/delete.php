@@ -25,8 +25,9 @@ $news->id = __post('id');
 // delete the news
 if ($news->delete()) {
 
-    // delete comments by news_id
+    // delete comments & likes by news_id
     $news->deleteComments();
+    $news->deleteLikes();
 
     // set response code - 200 ok
     http_response_code(200);

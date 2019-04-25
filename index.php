@@ -1,7 +1,4 @@
 <?php
-
-$t1 = microtime(true);
-
 require 'define.php';
 require_once 'verify.php';
 require_once 'setActivity.php';
@@ -37,13 +34,10 @@ if(!verify() && $_SERVER['REQUEST_URI'] != '/login') {
 if ($_SERVER['REQUEST_URI'] == '/') {
   $id = parseUserId();
   $sex = Q("SELECT `sex` FROM `#_mdd_users` WHERE `id` = ?i",array($id))->row('sex');
-  if($sex == '') {
+  if ($sex == '') {
     header('location:/settings');
   } else {
-    header('location:/id'.$id);
+    header('location:/feed');
   }  
 }
-
-# Load time
-// $app->logger($t1);
 ?>

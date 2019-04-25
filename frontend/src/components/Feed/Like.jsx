@@ -7,7 +7,7 @@ import { Typography } from '@material-ui/core';
 export default function Comment({ item }) {
   return (
     <LikeWrapper>
-      <UserAvatar avatar={item.avatar} />
+      <UserAvatar avatar={item.avatar} type={item.type} />
       <LikeContent>
         <Typography variant='subtitle2' color='primary'>{`${item.name} ${item.surname}`}</Typography>
         <Typography variant='caption'>

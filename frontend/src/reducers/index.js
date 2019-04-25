@@ -10,6 +10,7 @@ import tests from './tests';
 import categories from './categories';
 import events from './events';
 import feed from './feed';
+import unreaded from './unreaded';
 
 export default combineReducers({
   user,
@@ -22,5 +23,6 @@ export default combineReducers({
   tests,
   categories,
   events,
-  feed
+  feed,
+  unreaded
 })

@@ -8,58 +8,44 @@ import { Paper } from '@material-ui/core';
 import NoChats from './NoChats';
 
 class Chat extends Component {
-  state = {
-    loading: true,
-    user: []
+  state = { loading: true }
+
+  componentDidMount() {
+    this.fetchChats();
   }
 
-  fetchChats(id) {
-    const formData = new FormData();
+  fetchChats() {
     const self = this;
-    formData.append('id', id); 
 
     $.ajax({
       url: `${API}/api/chat/read.php`,
-      data: formData,
       processData: false,
       contentType: false,
       type: 'POST',
       success: function (res) {
         self.setState({ loading: false });
 
-        if (res.chats) {
-          let result = res.chats;
+        if (res[0].chats) {
+          let result = res[0].chats;
           result.forEach(item => {
-            item.users = item.users.replace(id, '').replace(',', '').trim();
+            item.users = item.users.replace(res.user_id, '').replace(',', '').trim();
           }) 
-          self.props.getChats(res.chats);
+          self.props.getChats(res[0].chats);
         }
-      },
-      error: err => console.log(err)
+      }
     });
   }
 
   render() {
-    const { loading, user } = this.state;
-    const chats = this.props.store.chats;
-    const userStore = this.props.store.user;
-
-    if (userStore.length > 0 && user.length === 0) {
-      this.setState({ user: userStore });
-      this.fetchChats(`id${userStore[0].id}`);
-    }
+    const { loading } = this.state;
+    const { chats } = this.props.store;
     
     return (
       <Paper>
-
         {chats.length === 0 ? <NoChats /> : null}
-
-        {!loading ?
-          <Dialogues
-            user_id={this.props.user.id}
-          />
+        {!loading 
+          ? <Dialogues />
           : <Loader minHeight={300} color='primary' />}
-
       </Paper>
     )
   }

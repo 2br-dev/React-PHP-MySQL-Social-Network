@@ -12,7 +12,7 @@ import UserPanel from './UserPanel';
 
 function Tests(props) {
   const { tests } = props.store;
-  const isAdmin = props.store.user[0].admin;
+  const isAdmin = props.store.user.admin;
   const [loading, setLoading] = useState(tests.length === 0 ? true : false);
 
   useEffect(() => {

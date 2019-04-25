@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './css/SideNews.css';
 import SingleNews from './SingleNews';
@@ -7,36 +7,13 @@ import { Typography, Paper, Switch, Button, Tooltip } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
 import { connect } from 'react-redux';
 import Loader from './Loader/Loader';
-import API from './functions/API';
 
 class SideNews extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      news: [],
-      importance: false,
-      singleNews: false,
-      singleNewsData: [],
-      singleNewsId: '',
-      comments: [],
-      loading: true
-    }
-    this.reloadComponent = this.reloadComponent.bind(this);
-  }
-
-  componentDidMount() {
-    this.reloadComponent();
-  }
-
-  async reloadComponent() {
-    await this.setState({ loading: true })
-    await fetch(`${API}/api/news/read.php`)
-      .then(response => response.json())
-      .then(news => this.props.getNews(news.records || []))
-    await fetch(`${API}/api/news/getcomments.php`)
-      .then(response => response.json())
-      .then(comments => this.setState({ comments: comments.records }))
-    await this.setState({ loading: false })
+  state = {
+    importance: false,
+    singleNews: false,
+    singleNewsData: [],
+    singleNewsId: ''
   }
 
   // переходим к конкретной новости
@@ -45,7 +22,6 @@ class SideNews extends Component {
   // закрываем новость 
   closeNews = () => {
     this.setState({ singleNews: false, singleNewsId: '' });
-    this.reloadComponent();
   }
 
   changeImportance = () => this.setState({ importance: !this.state.importance });
@@ -105,25 +81,21 @@ class SideNews extends Component {
   }
 
   render() {
-    const { news, importance, singleNews, singleNewsId, comments, loading } = this.state;
+    const { importance, singleNews, singleNewsId } = this.state;
+    const { store: { news }} = this.props;
     var NEWS_COUNTER = 0;
-
-    if (this.state.news.length === 0) {
-      setTimeout(() => this.setState({ news: this.props.store.news }), 0);
-    }
 
     return (
       <Wrapper>
         <Paper>
-          {loading ? <Loader minHeight={250} color='primary' /> :
+          {news.length === 0 ? <Loader minHeight={250} color='primary' /> :
             <News>
               <NewsSwitch>
                 <Typography variant='subtitle2'>Только важное </Typography>
                 <Switch color='primary' onClick={this.changeImportance.bind(this)} />
               </NewsSwitch>
               {/* eslint-disable-next-line */}
-              {news.length > 0 ? this.props.store.news.map((item, i) => {
-
+              {news.length > 0 ? news.map((item, i) => {
                 if (importance) {
                   if (item.importance === '1' && NEWS_COUNTER < 3) {
                     NEWS_COUNTER++;
@@ -180,34 +152,30 @@ class SideNews extends Component {
                     )
                   }
                 }
-              }) :
-                <NoNews><Typography variant='h6'>нет новостей</Typography></NoNews>
-              }
+              })
+              : <NoNews><Typography variant='h6'>нет новостей</Typography></NoNews>}
               <Button
                 variant='contained'
                 color='primary'
                 onClick={() => { this.props.handleChangeSection('news'); window.scrollTo(0, 0) }}
               >
                 КО ВСЕМ НОВОСТЯМ
-            </Button>
-
-              {singleNews
-                ?
-                <SingleNews
-                  closeNews={this.closeNews.bind(this)}
-                  singleNewsId={singleNewsId}
-                  news={news}
-                  user={this.props.user}
-                  comments={comments}
-                  getNoun={this.getNoun}
-                  getCommentsNoun={this.getCommentsNoun}
-                  reloadComponent={this.reloadComponent}
-                  createImportantBar={this.createImportantBar.bind(this)}
-                />
-                : null}
-
+              </Button>
             </News>}
         </Paper>
+        <Fragment>
+        {singleNews ?
+          <SingleNews
+            closeNews={this.closeNews.bind(this)}
+            singleNewsId={singleNewsId}
+            news={news}
+            getNoun={this.getNoun}
+            getCommentsNoun={this.getCommentsNoun}
+            reloadComponent={this.reloadComponent}
+            createImportantBar={this.createImportantBar.bind(this)}
+          />
+          : null}
+        </Fragment>  
       </Wrapper>
     )
   }
@@ -273,13 +241,4 @@ const NoNews = styled.div`
   opacity: .37;
   margin-bottom: 20px;
 `;
-export default connect(
-  state => ({
-    store: state,
-  }),
-  dispatch => ({
-    getNews: (news) => {
-      dispatch({ type: 'FETCH_NEWS', payload: news })
-    }
-  })
-)(SideNews);
+export default connect(state => ({ store: state }))(SideNews);

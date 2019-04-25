@@ -21,7 +21,10 @@ function Root() {
     <MuiThemeProvider theme={theme}>
       <Provider store={store}>
         <MuiPickersUtilsProvider utils={MomentUtils} moment={moment}>
-          <SnackbarProvider maxSnack={3} preventDuplicate={true}>
+          <SnackbarProvider 
+            maxSnack={3} 
+            preventDuplicate={true}
+          >
             <App />
           </SnackbarProvider>
         </MuiPickersUtilsProvider>

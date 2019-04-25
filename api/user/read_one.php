@@ -28,13 +28,11 @@ if($user->readOne()){
     // create array
     $user_arr = array(
         "id"         => $user->id,
-        "login"      => $user->login,
         "position"   => $user->position,
         "avatar"     => $user->avatar,
-        "background" => $user->background,
         "name"       => $user->name,
         "surname"    => $user->surname,
-        'liked'      => $user->liked
+        'admin'      => $user->admin
     );
 
     // set response code - 200 OK

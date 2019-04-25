@@ -31,7 +31,7 @@ if (setActivity()) {
 // prepare product object
 $chat = new Chat($db);
 
-$chat->users = __post('user_id');
+$chat->users = parseUserId();
 // read the details of product to be edited
 $stmt = $chat->read();
 $num = $stmt->rowCount();
@@ -57,7 +57,7 @@ if ($num > 0) {
   http_response_code(200);
 
   // make it json format
-  echo json_encode($chat_arr);
+  echo json_encode(array($chat_arr, 'user_id' => $chat->users));
 } else {
 
   // tell the user product does not exist

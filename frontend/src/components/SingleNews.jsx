@@ -10,6 +10,7 @@ import Loader from './Loader/Loader';
 import CloseIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { withSnackbar } from 'notistack';
+import { connect } from 'react-redux';
 
 class SingleNews extends Component {
   constructor(props) {
@@ -18,7 +19,6 @@ class SingleNews extends Component {
       thisComments: [],
       loadedComments: false,
       commentText: '',
-      currentNews: [],
       likedBy: [],
       loading: true,
       commentsLoading: false
@@ -26,11 +26,8 @@ class SingleNews extends Component {
   }
 
   async componentDidMount() {
-    await fetch(`${API}/api/news/read_one.php?id=${this.props.singleNewsId}`)
-      .then(response => response.json())
-      .then(currentNews => this.setState({ currentNews }))
     await this.fetchComments(this.props.singleNewsId);
-    await this.getAvatars(this.props.singleNewsId);
+    await this.getAvatars();
     await this.setState({ loading: false })
   }
 
@@ -42,7 +39,8 @@ class SingleNews extends Component {
 
   // получаем аватарки лайкнувших пост
   getAvatars = () => {
-    const likedBy = this.state.currentNews.liked_by.split(', ').slice(1);
+    const currentNews = this.props.store.news.find(item => item.id === this.props.singleNewsId);
+    const likedBy = currentNews.liked_by.split(', ').slice(1);
     const formData = new FormData();
     const self = this;
     formData.append('likedBy', likedBy);
@@ -54,7 +52,6 @@ class SingleNews extends Component {
       contentType: false,
       type: 'POST',
       success: res => self.setState({ likedBy: res }),
-      error: err => console.log(err)
     });
   }
   handleChange = e => this.setState({ commentText: e.target.value });
@@ -62,12 +59,13 @@ class SingleNews extends Component {
   // добавляем лайк
   addLike = (id, e) => {
     const actions = document.getElementById('actions-news');
+    const { user } = this.props.store;
     actions.style.pointerEvents = 'none';
     var self = this;
     e.preventDefault();
     const formData = new FormData();
     formData.append('id', id);
-    formData.append('liked_by', this.props.user.id);
+    formData.append('liked_by', user.id);
     formData.append('created_at', new Date().getTime());
     
     $.ajax({
@@ -76,16 +74,12 @@ class SingleNews extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: function (res) {
+      success: () => {
         fetch(`${API}/api/news/read_one.php?id=${self.props.singleNewsId}`)
           .then(response => response.json())
-          .then(currentNews => self.setState({ currentNews }))
-          .then(() => self.getAvatars(self.props.singleNewsId))
+          .then(() => self.getAvatars())
 
         setTimeout(() => actions.style.pointerEvents = 'all', 1000)  
-      },
-      error: function (err) {
-        console.log(err);
       }
     });
   }
@@ -93,13 +87,14 @@ class SingleNews extends Component {
   // убираем лайк
   removeLike = (id, e) => {
     const actions = document.getElementById('actions-news');
+    const { user } = this.props.store;
     actions.style.pointerEvents = 'none';
     const self = this;
     e.preventDefault();
     e.stopPropagation();
     const formData = new FormData();
     formData.append('id', id);
-    formData.append('liked_by', this.props.user.id);
+    formData.append('liked_by', user.id);
 
     $.ajax({
       url: `${API}/api/news/removelike.php`,
@@ -107,32 +102,28 @@ class SingleNews extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: function (res) {
+      success: () => {
         fetch(`${API}/api/news/read_one.php?id=${self.props.singleNewsId}`)
           .then(response => response.json())
-          .then(currentNews => self.setState({ currentNews }))
-          .then(() => self.getAvatars(self.props.singleNewsId))
-
+          .then(() => self.getAvatars())
         setTimeout(() => actions.style.pointerEvents = 'all', 1000)
-      },
-      error: function (err) {
-        console.log(err);
       }
     });
   }
 
   submitComment = e => {
+    const { user } = this.props.store;
     this.setState({ commentsLoading: true });
     var self = this;
     e.preventDefault();
     const formData = new FormData();
     formData.append('news_id', this.props.singleNewsId);
-    formData.append('who', `${this.props.user.name} ${this.props.user.surname}`);
+    formData.append('who', `${user.name} ${user.surname}`);
     formData.append('date', new Date().toJSON().slice(0, 10).replace(/-/g, '.'));
     formData.append('visible', 1);
     formData.append('time', new Date().toLocaleTimeString().slice(0, -3));
     formData.append('text', this.state.commentText);
-    formData.append('author_id', this.props.user.id);
+    formData.append('author_id', user.id);
     formData.append('created_at', new Date().getTime());
 
     $.ajax({
@@ -141,7 +132,7 @@ class SingleNews extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: function() {
+      success: () =>  {
         self.setState({ commentText: '' });
         self.fetchComments(self.props.singleNewsId);
         self.props.enqueueSnackbar('Комментарий был добавлен', { variant: 'success' });
@@ -151,8 +142,7 @@ class SingleNews extends Component {
           commentsContainer.scrollTop = commentsContainer.scrollHeight; 
         }, 250);    
       },
-      error: function (err) {
-        console.log(err);
+      error: function() {
         self.props.enqueueSnackbar('Не удалось оставить комментарий', { variant: 'error' });
       }
     });
@@ -183,18 +173,18 @@ class SingleNews extends Component {
         self.props.enqueueSnackbar('Не удалось удалить комментарий', { variant: 'error' });
       }
     });
-
   }
 
 
   render() {
-    const { closeNews, user } = this.props;
-    const { thisComments, commentText, currentNews, likedBy, loading, commentsLoading } = this.state;
+    const { closeNews, singleNewsId } = this.props;
+    const { thisComments, commentText, likedBy, loading, commentsLoading } = this.state;
+    const { user, news } = this.props.store;
+    const currentNews = news.find(item => item.id === singleNewsId);
     const userAvatar = currentNews.avatar;
-
+   
     return (
       <Fragment>
-
         <Single  id='single-news'>
           {loading ? <Loader minHeight={500} color='primary' /> :
             <Fragment>
@@ -252,11 +242,7 @@ class SingleNews extends Component {
                       <FontAwesomeIcon onClick={e => this.removeLike(currentNews.id, e)} icon='heart' style={{ color: '#1976d2', marginLeft: 10 }} />
                     </Tooltip>  
                   </React.Fragment>
-                }
-            {/*     <Tooltip placement='top' title='Написать сообщение'>
-                  <FontAwesomeIcon icon='envelope' style={{ marginLeft: '25px' }} />
-                </Tooltip> */}
-                
+                }              
               </PostActions>
 
               <NewComment>
@@ -299,11 +285,9 @@ class SingleNews extends Component {
                     </Comments>
                   )
                 })}
-
             </Fragment>}
         </Single>
         <Wrapper onClick={closeNews}></Wrapper>
-
       </Fragment>
     )
   }
@@ -589,4 +573,4 @@ const DelIcon = styled.div`
   }
 `;
 
-export default withSnackbar(SingleNews);
+export default connect(state => ({ store: state }))(withSnackbar(SingleNews));

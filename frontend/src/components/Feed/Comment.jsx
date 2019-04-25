@@ -7,7 +7,7 @@ import { Typography } from '@material-ui/core';
 export default function Comment({ item }) {
   return (
     <CommentWrapper>
-      <UserAvatar avatar={item.avatar} />
+      <UserAvatar avatar={item.avatar} type={item.type} />
       <CommentContent>
         <Typography variant='subtitle2' color='primary'>{`${item.name} ${item.surname}`}</Typography>
         <Typography variant='body1' style={{ padding: '5px 0' }}>{item.text}</Typography>

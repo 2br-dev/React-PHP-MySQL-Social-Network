@@ -33,10 +33,9 @@ class FriendList extends Component {
     fetch(`${API}/api/user/read.php`)
       .then(response => response.json())
       .then(friends => {
-        const data = friends.data.filter(friend => friend.id !== this.props.user_id);
+        const data = friends.data;
         this.setState({ friends: data, initial: data, loading: false })
       })
-      .catch(err => console.log(err))
   }
 
   handleSearch = (e) => {

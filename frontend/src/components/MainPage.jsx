@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import './css/MainPage.css'
 import Header from './Header';
 import MainpageHeader from './MainpageHeader';
@@ -11,137 +11,46 @@ import Nav from './Navigation/Navigation';
 import styled from 'styled-components';
 import Chat from './Chat/Chat';
 import { connect } from 'react-redux';
-import API from './functions/API';
 import Feed from './Feed/index';
 import Learnings from './Learnings/Learnings';
 
-class MainPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user_id: 0,
-      user_logged_id: 0,
-      user: [],
-      initialUser: [],
-      section: window.location.pathname.slice(1),
-      loading: true
-    }
-    this.handleChangeUrl      = this.handleChangeUrl.bind(this);  
-    this.handleChangeSection  = this.handleChangeSection.bind(this);  
-    this.handleChangeUserId   = this.handleChangeUserId.bind(this);
-    this.switchComponent      = this.switchComponent.bind(this);  
-  }
-
-  handleChangeUrl() { 
-    let url = `${API}/api/user/read_one.php`;
-
-    if (this.state.user_logged_id) {
-      url += `?id=${this.state.user_logged_id}`;
-    }
-
-    fetch(url)
-      .then(response => response.json())
-      .then(user => this.setState({ user }))
-      .catch(err => console.log(err))
-  }
-
-  handleChangeSection(section) {
-    this.setState({ section });
-    this.handleChangeUrl();
-
-    if (section.includes('id')) {
-      fetch(`${API}/api/user/info.php`)
-        .then(response => response.json())
-        .then(user => this.setState({ user: user, user_id: parseInt(user.id) }))
-    }
-  }
-
-  handleChangeUserId(id) {
-    this.setState({ user_id: id, section: `id${id}`})
-    fetch(`${API}/api/user/read_one.php`)
-      .then(response => response.json())
-      .then(user => this.setState({ user, user_id: parseInt(user.id) }))
-  }
-
-  componentWillMount() {
-    fetch(`${API}/api/user/info.php`)
-      .then(response => response.json())
-      .then(user => this.setState({ initialUser: user, user_logged_id: parseInt(user.id) }))
+function MainPage() {
+  function switchComponent() {
+    let url = window.location.pathname.slice(1);
+    if (url.includes('id')) return <PersonalInfo />
     
-    if (window.location.pathname.includes('id')) {
-      const current_id = window.location.pathname.slice(3);
-      this.setState({ user_id: parseInt(current_id)});
-    }
-  }
-
-  componentDidMount() {
-    fetch(`${API}/api/user/read_one.php`)
-      .then(response => response.json())
-      .then(user => this.setState({ user: user, loading: false }))
-      .then(() => this.props.getUser(this.state.initialUser))
-      .catch(err => console.log(err))
-  }
-
-  switchComponent(){
-    switch(this.state.section) {
-      case `id${this.state.user_id}`:
-        return <PersonalInfo user_id={this.state.user_id} user_logged_id={this.state.user_logged_id} user={this.state.user} />
+    switch (url) {
       case 'messages':
-        return <Chat user={this.state.user} />;
+        return <Chat />;
       case 'news':
-        return <News user={this.state.user} />;
+        return <News />;
       case 'tasks':
-        return <Tasks user_logged_id={this.state.user_logged_id} />;
+        return <Tasks />;
       case 'learnings':
         return <Learnings />;
       case 'colleagues':
-        return (
-            <FriendsList 
-              handleChangeUserId={this.handleChangeUserId} 
-              user_id={this.state.user_logged_id}
-            />
-        )
+        return <FriendsList />
       case 'feed':
-        return <Feed />;
-      /*case 'gallery':
-        return 'gallery';
-      case 'favourites':
-        return 'favourites'; */
+        return <Feed />
       default: return null;
     }
   }
   
-  render() {
-    const { user_id, user_logged_id, user, initialUser, loading } = this.state;
-    
-    if (user.error === 1) { window.location.href = '/404';}
-    
-    return (
-      <Fragment>
-        <MainpageHeader 
-          user={initialUser} loading={loading}
-        />
-        <div className="container">
-          <Header />
-          <Nav 
-            user_id={user_id}
-            user_logged_id={user_logged_id} 
-            handleChangeUrl={this.handleChangeUrl} 
-            handleChangeSection={this.handleChangeSection}
-          />
-          <MainSection>
-            <SideNews 
-              handleChangeSection={this.handleChangeSection} 
-              user={user} 
-            />
-            <div className="main-page-container">
-              {this.switchComponent()}
-            </div>
-          </MainSection>  
-        </div>
-      </Fragment>
-    );
-  }
+  return (
+    <Fragment>
+      <MainpageHeader />
+      <div className="container">
+        <Header />
+        <Nav />
+        <MainSection>
+          <SideNews />
+          <div className="main-page-container">
+            {switchComponent()}
+          </div>
+        </MainSection>  
+      </div>
+    </Fragment>
+  );
 }
 
 const MainSection = styled.div`
@@ -149,13 +58,4 @@ const MainSection = styled.div`
   justify-content: space-between;
 `;
 
-export default connect(
-  state => ({
-    store: state,
-  }),
-  dispatch => ({
-    getUser: user => {
-      dispatch({ type: 'LOGGED_IN', payload: user })
-    }
-  })
-)(MainPage);
+export default connect(state => ({ store: state }))(MainPage);

@@ -105,7 +105,10 @@ const AppointmentContentBase = ({ enqueueSnackbar, onSignup, onUnSignup, store, 
   }
 
   function isSigned() {
-    return restProps.appointmentData.signed.includes(`${store.user.name} ${store.user.surname}`);
+    if (restProps.appointmentData.hasOwnProperty('signed')) {
+      return restProps.appointmentData.signed.includes(`${store.user.name} ${store.user.surname}`);
+    }
+    return false;
   }
 
   return (
@@ -149,7 +152,7 @@ const AppointmentsTooltipBase = ({ enqueueSnackbar, onDeleteEvent, style, store,
 
   let isUserAppointment = false;
 
-  if (!Array.isArray(store.user) && restProps.appointmentMeta && restProps.appointmentMeta.data.creator === store.user.id) {
+  if (restProps.appointmentMeta && restProps.appointmentMeta.data.creator === store.user.id) {
     isUserAppointment = true;
   }
 
@@ -217,82 +220,80 @@ const DayScaleCellBase = ({ classes, ...restProps }) => {
 
 const DayScaleCell = withStyles(style, { name: 'DayScaleCell' })(DayScaleCellBase);
 
-function Calendar({ user, onFetchEvents, onFetchUser, store }) {
+function Calendar({ onFetchEvents, store: { user, events } }) {
   const [isOpen, setOpen] = useState(false);
-
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
     fetch(`${API}/api/calendar/read.php`)
       .then(response => response.json())
       .then(events => onFetchEvents(events))
-      .then(fetch(`${API}/api/user/read_one.php`)
-        .then(response => response.json())
-        .then(user => onFetchUser(user)))
   }, []);
 
   return (
-    <Paper>
-      {user.admin === '1' ?
-        <CreateEvent>
-          <Button variant='contained' color='secondary' onClick={() => setOpen(true)}>Создать событие</Button>
-        </CreateEvent>   
-      : null}
-      <Scheduler
-        style={{ height: '100%' }}
-        data={store.events}     
-      >
-        <ViewState
-          defaultCurrentViewName="День"
-        />
-        <DayView
-          name="День"
-          startDayHour={8}
-          endDayHour={19}
-        />
-        <WeekView
-          name="Неделя"
-          startDayHour={8}
-          endDayHour={19}
-          firstDayOfWeek={1}
-          timeTableCellComponent={TimeTableCell}
-          dayScaleCellComponent={DayScaleCell}
-        />
-        <MonthView
-          name="Месяц"
-          firstDayOfWeek={1}
-        />
-        <Toolbar />
-        <DateNavigator />       
-        <ViewSwitcher />
-        <Appointments
-          appointmentComponent={Appointment}   
-        />
-        <AppointmentTooltip
-          showOpenButton={false}
-          layoutComponent={AppointmentsTooltip}
-          showCloseButton   
-        />
-        <AppointmentForm
-          messages={{
-            allDayLabel: 'Весь день',
-            titleLabel: 'Мероприятие',
-            startDateLabel: 'Дата начала',
-            endDateLabel: 'Дата завершения',
-            commitCommand: 'Создать',
-            cancelCommand: 'Отмена',
-          }}
-          readOnly={true}
-        />
-      </Scheduler>
-      {isOpen ? 
-        <NewEvent 
-          isOpen={isOpen}
-          handleClose={handleClose}
-          user={user}
-        /> 
-      : null}
-    </Paper>
+    <Fragment>
+      <Paper>
+        {user.admin === '1' ?
+          <CreateEvent>
+            <Button variant='contained' color='secondary' onClick={() => setOpen(true)}>Создать событие</Button>
+          </CreateEvent>   
+        : null}
+        <Scheduler
+          style={{ height: '100%' }}
+          data={events}     
+        >
+          <ViewState
+            defaultCurrentViewName="День"
+          />
+          <DayView
+            name="День"
+            startDayHour={8}
+            endDayHour={19}
+          />
+          <WeekView
+            name="Неделя"
+            startDayHour={8}
+            endDayHour={19}
+            firstDayOfWeek={1}
+            timeTableCellComponent={TimeTableCell}
+            dayScaleCellComponent={DayScaleCell}
+          />
+          <MonthView
+            name="Месяц"
+            firstDayOfWeek={1}
+          />
+          <Toolbar />
+          <DateNavigator />       
+          <ViewSwitcher />
+          <Appointments
+            appointmentComponent={Appointment}   
+          />
+          <AppointmentTooltip
+            showOpenButton={false}
+            layoutComponent={AppointmentsTooltip}
+            showCloseButton   
+          />
+          <AppointmentForm
+            messages={{
+              allDayLabel: 'Весь день',
+              titleLabel: 'Мероприятие',
+              startDateLabel: 'Дата начала',
+              endDateLabel: 'Дата завершения',
+              commitCommand: 'Создать',
+              cancelCommand: 'Отмена',
+            }}
+            readOnly={true}
+          />
+        </Scheduler>
+        {isOpen ? 
+          <NewEvent 
+            isOpen={isOpen}
+            handleClose={handleClose}
+            user={user}
+          /> 
+        : null}
+      </Paper>
+    </Fragment>
   );
 }
 
@@ -311,9 +312,6 @@ export default connect(
   dispatch => ({
     onFetchEvents: (events) => {
       dispatch({ type: 'FETCH_EVENTS', payload: events })
-    },
-    onFetchUser: (user) => {
-      dispatch({ type: 'FETCH_USER', payload: user })
     },
     onDeleteEvent: (id) => {
       dispatch({ type: 'DELETE_EVENT', payload: id })

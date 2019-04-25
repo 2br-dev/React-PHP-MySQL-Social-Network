@@ -176,7 +176,7 @@ class Tasks extends Component {
 
 
         {/* Button to add task */}
-        {this.props.store.user.length > 0 && this.props.store.user[0].admin === '1' ?
+        {this.props.store.user.length > 0 && this.props.store.user.admin === '1' ?
         <span onClick={this.handleOpen}><Fab title='Добавить задачу' /></span> : null}
 
         {/* Add new task modal */}

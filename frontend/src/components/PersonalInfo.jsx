@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import DropdownActions from './DropdownActions/Dropdown';
 
 var autoSaveTimer = null;
+var pageInterval = null;
 
 class PersonalInfo extends Component {
   constructor(props) {
@@ -53,12 +54,22 @@ class PersonalInfo extends Component {
       .then(response => response.json())
       .then(userInfo => this.setState({ userInfo, selectedDate: userInfo.birthday, lastUser: userInfo }))
       .then(() => this.setState({ loading: false, loadingChild: false }))
-      .catch(err => console.log(err))
   }
 
   // делаем запрос перед рендером
   componentDidMount() {
     this.fetchUserInfo();
+    var currentLocation = window.location.pathname;
+    pageInterval = setInterval(() => {
+      if (currentLocation !== window.location.pathname && window.location.pathname.includes('id')) {
+        this.fetchUserInfo();
+        window.clearInterval(pageInterval)
+      } 
+    }, 250)
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(pageInterval)
   }
 
   handleDateChange = date => this.setState({ selectedDate: date.format() });
@@ -73,7 +84,8 @@ class PersonalInfo extends Component {
     this.props.updateUser(event.target.name, event.target.value);
     autoSaveTimer = setTimeout(() => {
       this.handleSubmit(event, true);
-    }, 2000)
+      this.props.enqueueSnackbar('Персональные данные были обновлены', { variant: 'success' });
+    }, 2500)
   }
 
   prepareChild() {
@@ -103,11 +115,10 @@ class PersonalInfo extends Component {
         processData: false,
         contentType: false,
         type: 'POST',
-        success: function (res) {
+        success: function () {
           self.fetchUserInfo('child');
           self.setState({ newChildInput: false, childBirthyear: '', childName: '' });
           self.props.enqueueSnackbar('Персональные данные были обновлены', { variant: 'success' });
-          console.log(res);
         },
         error: function() {
           self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' });
@@ -198,9 +209,10 @@ class PersonalInfo extends Component {
   }
 
   createInput = (label, value, name) => {
-    const { user_id, user_logged_id } = this.props;
+    const { user } = this.props.store;
+    const { userInfo } = this.state;
 
-    if (user_id === user_logged_id) {
+    if (user.id === userInfo.id) {
       return (
         <TextField
           label={label}
@@ -237,16 +249,15 @@ class PersonalInfo extends Component {
 
   render() {
     const { loading, newChildInput, childName, childBirthyear, nameError, yearError } = this.state;
-    const { user_id, user_logged_id, user } = this.props;
+    const { user } = this.props.store;
     let childrens = {};
-    let avatar = user.avatar;
-    let userInfo = this.state.userInfo;
+    let userInfo = user;
 
     if (userInfo.childs) childrens = JSON.parse(userInfo.childs.replace(/\//g, ''));
 
-    if (this.props.store.user.length > 0) {
-      if (window.location.pathname.slice(3) === this.props.store.user[0].id) {
-        userInfo = this.props.store.user[0];
+    if (user.hasOwnProperty('name')) {
+      if (window.location.pathname.slice(3) === userInfo.id) {
+        userInfo = user;
       } else {
         userInfo = this.state.userInfo;
       }
@@ -257,14 +268,14 @@ class PersonalInfo extends Component {
 
         {!loading ? <Form id="personal-info" action="" method="POST" onSubmit={this.handleSubmit}>
 
-          <DropdownActions userInfo={userInfo} user_logged_id={user_logged_id} fetchUserInfo={this.fetchUserInfo}/>
+          <DropdownActions userInfo={userInfo} fetchUserInfo={this.fetchUserInfo}/>
 
           <div className="personal-header">
             <div className="personal-header__photo">
-              <div style={{ background: `url(${avatar ? avatar : defaultAvatar}) no-repeat center/cover` }}></div>
+              <div style={{ background: `url(${userInfo.avatar ? userInfo.avatar : defaultAvatar}) no-repeat center/cover` }}></div>
             </div>
-            <div className={user_logged_id === user_id ? 'personal-header__info' : null}>
-              {user_logged_id === user_id ? (
+            <div className={user.id === userInfo.id ? 'personal-header__info' : null}>
+              {user.id === userInfo.id ? (
                 <Fragment>
                   {this.createInput('Имя', userInfo.name, 'name')}
                   {this.createInput('Фамилия', userInfo.surname, 'surname')}
@@ -277,7 +288,7 @@ class PersonalInfo extends Component {
                   </Fragment>
                 )}
 
-              {user_logged_id === user_id ? (
+              {user.id === userInfo.id ? (
                 <InputMask
                   mask="+7 (999) 99-99-999"
                   value={userInfo.phone}
@@ -297,7 +308,7 @@ class PersonalInfo extends Component {
                   </Naked>
                 )}
 
-              {user_logged_id === user_id ? (
+              {user.id === userInfo.id ? (
                 <FormControl >
                   <DatePicker
                     variant='outlined'
@@ -319,7 +330,7 @@ class PersonalInfo extends Component {
           </div>
           <div className="personal-section">
 
-            {user_logged_id !== user_id && !userInfo.status && childrens.length === 0 ?
+            {user.id !== userInfo.id && !userInfo.status && childrens.length === 0 ?
             null :
             <div className="personal-section__header">
               <Typography vazriant='h6' color='primary'>Семья</Typography>
@@ -327,7 +338,7 @@ class PersonalInfo extends Component {
             </div>
             }
 
-            {user_logged_id === user_id ? (
+            {user.id !== userInfo.id ? (
               <FormControl style={{ width: '100%' }}>
                 <InputLabel htmlFor="status">Семейное положение</InputLabel>
                 <Select   
@@ -370,7 +381,7 @@ class PersonalInfo extends Component {
           </div>
           <div className="personal-section">
           
-              {user_logged_id !== user_id && childrens.length === 0 
+              {user.id !== userInfo.id && childrens.length === 0 
               ? null 
               :
               <Fragment>
@@ -384,7 +395,7 @@ class PersonalInfo extends Component {
                     <Children key={childrens[child].id}>
                       <Typography variant='subtitle2'>Имя: {childrens[child].child_name} </Typography>
                       <Typography variant='caption'>{childrens[child].child_birthyear} г.р.</Typography>
-                      {user_logged_id === user_id ?
+                      {user.id !== userInfo.id  ?
                         <Tooltip title="Удалить" placement="right"><Clear onClick={() => this.deleteChild(childrens[child].id)} /></Tooltip>
                       : null}
                     </Children>
@@ -429,13 +440,13 @@ class PersonalInfo extends Component {
               </span>
             </NewChild>) : null}
 
-            {user_logged_id === user_id ? (
+            {user.id !== userInfo.id ? (
               <ChildBtns>
                 <Button variant='contained' color='primary' onClick={newChildInput ? this.addChild : this.prepareChild}>Добавить</Button>
               </ChildBtns>) : null}
           </div>
           <div className="personal-section">
-            {user_logged_id !== user_id && !userInfo.city && !userInfo.disctrict && !userInfo.adress 
+            {user.id !== userInfo.id && !userInfo.city && !userInfo.disctrict && !userInfo.adress 
             ? null :
             <div className="personal-section__header">
               <Typography variant='h6' color='primary'>Контакты</Typography>
@@ -443,7 +454,7 @@ class PersonalInfo extends Component {
             </div>
             }
 
-            {user_logged_id !== user_id && !userInfo.city && !userInfo.disctrict && !userInfo.adress 
+            {user.id !== userInfo.id && !userInfo.city && !userInfo.disctrict && !userInfo.adress 
             ? null :      
               <Fragment>
                 {this.createInput('Родной город', userInfo.city, 'city')}
@@ -454,7 +465,7 @@ class PersonalInfo extends Component {
 
           </div>
           <div className="personal-section">
-            {user_logged_id !== user_id && !userInfo.vuz && !userInfo.fakultet 
+            {user.id !== userInfo.id && !userInfo.vuz && !userInfo.fakultet 
             ? null :
             <div className="personal-section__header">
               <Typography variant='h6' color='primary'>Образование</Typography>
@@ -462,7 +473,7 @@ class PersonalInfo extends Component {
             </div>
             }
 
-            {user_logged_id !== user_id && !userInfo.vuz && !userInfo.fakultet
+            {user.id !== userInfo.id && !userInfo.vuz && !userInfo.fakultet
             ? null :
               <Fragment>
                 {this.createInput('ВУЗ', userInfo.vuz, 'vuz')}
@@ -473,7 +484,7 @@ class PersonalInfo extends Component {
           </div>
           {userInfo.sex === 'мужской' ?
             <div className="personal-section">
-              {user_logged_id !== user_id && !userInfo.army_country && !userInfo.army_type 
+              {user.id !== userInfo.id  && !userInfo.army_country && !userInfo.army_type 
               ? null :
               <div className="personal-section__header">
                 <Typography variant='h6' color='primary'>Служба</Typography>
@@ -481,7 +492,7 @@ class PersonalInfo extends Component {
               </div>
               }
 
-              {user_logged_id !== user_id && !userInfo.army_country && !userInfo.army_type 
+              {user.id !== userInfo.id  && !userInfo.army_country && !userInfo.army_type 
               ? null :
                 <Fragment>
                   {this.createInput('Страна', userInfo.army_country, 'army_country')}
@@ -490,7 +501,7 @@ class PersonalInfo extends Component {
               }
             </div> : null}
 
-          {user_logged_id === user_id ? <Btn><Button type='submit' variant='contained' color='primary' onClick={this.handleSubmit}>Обновить данные</Button></Btn> : null}
+          {user.id !== userInfo.id  ? <Btn><Button type='submit' variant='contained' color='primary' onClick={this.handleSubmit}>Обновить данные</Button></Btn> : null}
         </Form> : <Loader minHeight={400} color='primary' />}
       </Paper >
     )

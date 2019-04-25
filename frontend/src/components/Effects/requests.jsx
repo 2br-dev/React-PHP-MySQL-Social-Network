@@ -9,11 +9,7 @@ export function startTest(id) {
     data: formData,
     processData: false,
     contentType: false,
-    type: 'POST',
-    success: res => {
-      console.log(res)
-    },
-    error: err => console.log(err)
+    type: 'POST'
   });
 }
 
@@ -30,11 +26,7 @@ export function setupResult(data) {
     data: formData,
     processData: false,
     contentType: false,
-    type: 'POST',
-    success: res => {
-      console.log(res)
-    },
-    error: err => console.log(err)
+    type: 'POST'
   });
 }
 
@@ -50,8 +42,7 @@ export function updateResult(data) {
     data: formData,
     processData: false,
     contentType: false,
-    type: 'POST',
-    error: err => console.log(err)
+    type: 'POST'
   });
 }
 
@@ -66,9 +57,7 @@ export function finishTest(data) {
     data: formData,
     processData: false,
     contentType: false,
-    type: 'POST',
-    success: res => console.log(res),
-    error: err => console.log(err)
+    type: 'POST'
   });
 }
 
@@ -103,9 +92,7 @@ export function deleteEvent(id) {
     data: formData,
     processData: false,
     contentType: false,
-    type: 'POST',
-    success: res => console.log(res),
-    error: err => console.log(err)
+    type: 'POST'
   });
 }
 
@@ -119,9 +106,7 @@ export function signUpOnEvent(data) {
     data: formData,
     processData: false,
     contentType: false,
-    type: 'POST',
-    success: res => console.log(res),
-    error: err => console.log(err)
+    type: 'POST'
   });
 }
 
@@ -135,9 +120,7 @@ export function unSignUpOnEvent(data) {
     data: formData,
     processData: false,
     contentType: false,
-    type: 'POST',
-    success: res => console.log(res),
-    error: err => console.log(err)
+    type: 'POST'
   });
 }
 

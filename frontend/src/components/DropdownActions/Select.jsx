@@ -77,7 +77,7 @@ class LongMenu extends React.Component {
           open={open}
           onClose={this.handleClose}
         >
-        {Number(userInfo.id) !== Number(user_logged_id) && this.props.store.user.length > 0 && this.props.store.user[0].admin === '1' ?
+        {Number(userInfo.id) !== Number(user_logged_id) && this.props.store.user.length > 0 && this.props.store.user.admin === '1' ?
           <MenuItem onClick={() => this.prepareToUpdate(userInfo.id)}>
             {userInfo.admin === '1' ? "Разжаловать администратора" : "Сделать администратором"}
           </MenuItem>

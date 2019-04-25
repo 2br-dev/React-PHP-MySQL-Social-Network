@@ -32,7 +32,7 @@ function Message(props) {
     <Container style={ room.user.id !== props.message.user ? { flexDirection: 'row-reverse'} : {}}>
       <Avatar 
         style={ room.user.id !== props.message.user 
-          ? { background: `url(${prodUrl}${user[0].avatar ? user[0].avatar : defaultAvatar}) no-repeat center/cover` } 
+          ? { background: `url(${prodUrl}${user.avatar ? user.avatar : defaultAvatar}) no-repeat center/cover` } 
           : { background: `url(${prodUrl}${room.user.avatar? room.user.avatar : defaultAvatar}) no-repeat center/cover` } 
         }>
       </Avatar>  

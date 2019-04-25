@@ -26,6 +26,7 @@ if (setActivity()) {
 }
 
 // query products
+$user->id = parseUserId();
 $stmt = $user->read();
 $num = $stmt->rowCount();
 
