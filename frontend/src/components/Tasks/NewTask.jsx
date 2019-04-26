@@ -12,17 +12,9 @@ class NewTask extends Component {
   state = {
     selectedDate: null,
     selectedTime: null,
-    users: [],
     multi: [],
     text: '',
     importance: 0
-  }
-
-  componentDidMount = () => {
-    fetch(`${API}/api/user/read.php`)
-      .then(response => response.json())
-      .then(users => this.setState({ users: users.data.filter(user => Number(user.id) !== this.props.user_logged_id) }))
-      .catch(err => console.log(err))
   }
 
   handleChange = name => value => this.setState({ [name]: value });
@@ -42,13 +34,14 @@ class NewTask extends Component {
 
   handleSubmit = () => {
     const { multi, selectedTime, selectedDate, text, importance } = this.state;
+    const { user } = this.props.store;
     const formData = new FormData();
     const self = this;
     let forWho = [];
     let date = new Date();
     multi.forEach(user => forWho.push(`for${user.value}`));
 
-    formData.append('from', this.props.user_logged_id);
+    formData.append('from', user.id);
     formData.append('date', date.toLocaleDateString());
     formData.append('for', forWho.join(','));
     formData.append('time', `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`);
@@ -64,23 +57,18 @@ class NewTask extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: res => {
-        console.log(res);
-        fetch(`${API}/api/tasks/read.php?id=${this.props.user_logged_id}`)
+      success: () => {
+        fetch(`${API}/api/tasks/read.php?id=${user.id}`)
           .then(response => response.json())
           .then(tasks => self.props.onAddNewTask(tasks.data))
           .then(() => self.props.enqueueSnackbar('Задача была поставлена', { variant: 'success' }))
-          .catch(err => console.log(err))
       },
-      error: err => {
-        console.log(err);
-        self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' })
-      }
+      error: () => self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' })
     });
   }
   
   render() {
-    const { users, multi, selectedTime, selectedDate, text } = this.state;
+    const { multi, selectedTime, selectedDate, text } = this.state;
 
     return (
       <Fragment>
@@ -91,7 +79,7 @@ class NewTask extends Component {
             </span>
             <Typography variant='h5'>Новая Задача</Typography>
             <Stepper
-              users={users}
+              users={this.props.users}
               multi={multi}
               text={text}
               selectedTime={selectedTime}
@@ -199,11 +187,8 @@ const Backdrop = styled.div`
   background: rgba(0,0,0,.17);
 `;
 
-export default connect(
-  state => ({ store: state }),
-  dispatch => ({
-    onAddNewTask: (task) => {
-      dispatch({ type: 'ADD_TASK', payload: task })
-    }
+export default connect( state => ({ store: state }),
+  dispatch => ({ 
+    onAddNewTask: (task) => dispatch({ type: 'ADD_TASK', payload: task })
   })
 )(withSnackbar(NewTask));

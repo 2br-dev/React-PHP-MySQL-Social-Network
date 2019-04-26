@@ -11,13 +11,7 @@ import moment from 'moment';
 import Readed from '@material-ui/icons/DoneAll'; */
 
 function Friend(props) {
-  let avatar = '';
-
-  if (window.location.host.includes('localhost') && props.friend.avatar) {
-    avatar = props.friend.avatar.slice(16);
-  } else {
-    avatar = props.friend.avatar;
-  }
+  let avatar = props.friend.avatar;
 
   const cropString = string => {
     if (string.length < 137) return string;

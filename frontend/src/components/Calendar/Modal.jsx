@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import { Paper, Button, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Clear';
 
-export default function ConfirmModal({ deleteAppointment, isOpen, handleClose }) {
+export default function ConfirmModal({ deleteAppointment, isOpened, handleClose }) {
   return (
     <Modal
-      open={isOpen}
+      open={isOpened}
       onClose={handleClose}
       component={
         <Wrapper>

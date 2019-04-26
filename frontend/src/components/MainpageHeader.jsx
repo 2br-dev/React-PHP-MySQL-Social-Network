@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './css/MainpageHeader.css';
 import noPhoto from './img/photos/images.png';
-import { Button, Tooltip } from '@material-ui/core';
 import styled from 'styled-components';
 import defaultBackground from './img/photos/Water image_Dreamstime.jpg';
 import Loader from './Loader/Loader';
-import SettingsIcon from '@material-ui/icons/Settings';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import DropdownActions from './DropdownActions/Dropdown';
 
 function MainpageHeader({ store: { user } }) {
+  // eslint-disable-next-line
+  const [_, forceUpdate] = useState();
+  
   return (  
     <Wrapper>
       {window.innerWidth < 600 && !window.location.pathname.includes('id') ? null :
@@ -29,19 +31,19 @@ function MainpageHeader({ store: { user } }) {
             <div className="person-info__container">
               {user.hasOwnProperty('name') 
                 ?
-                <Tooltip placement="bottom" title='Перейти на страницу профиля'>
-                  <Link to={`/id${user.id}`} style={{ textDecoration: 'none', color: '#000', cursor: 'pointer' }}>
+                <Personal>
+                  <div>
                     <p className="person-info__name">{`${user.name} ${user.surname}`}</p>
                     <p className="person-info__position">{user.position}</p>
-                  </Link>
-                </Tooltip>
+                  </div>  
+                  <DropdownActions />
+                </Personal>
                 :
-                <Loader minHeight={70} color='primary' />}
+                <Loader minHeight={70} color='primary' />}          
             </div>
-            <Button variant="contained" href="logout.php" color="primary">Выйти</Button>
+            <span id='updateUser' style={{ display: 'none'}} onClick={() => forceUpdate(Math.random())}></span>
           </div>
         </div>
-        <Button variant="contained" href="/settings" color="primary">{window.innerWidth > 600 ? 'Персональные данные' : <SettingsIcon />}</Button>
       </header>}
       <Backdrop />
     </Wrapper>
@@ -61,6 +63,9 @@ const Backdrop = styled.div`
   bottom: 0;
   background: rgba(0,0,0,0.10);
   z-index: 1;
+`;
+const Personal = styled.div`
+  display: flex;
 `;
 
 export default connect(

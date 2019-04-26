@@ -86,7 +86,7 @@ const AppointmentContentBase = ({ enqueueSnackbar, onSignup, onUnSignup, store, 
     onSignup(data);
     enqueueSnackbar('Вы записались на мероприятие', { variant: 'success' });
 
-    var closeIcon = document.querySelector('div [role="document"]').querySelector('button');
+    var closeIcon = document.getElementById('openedEvent').parentNode.querySelector('div button:last-child')
     closeIcon.click();
   }
 
@@ -100,7 +100,7 @@ const AppointmentContentBase = ({ enqueueSnackbar, onSignup, onUnSignup, store, 
     onUnSignup(data);
     enqueueSnackbar('Вы отписались от мероприятия', { variant: 'info' });
 
-    var closeIcon = document.querySelector('div [role="document"]').querySelector('button');
+    var closeIcon = document.getElementById('openedEvent').parentNode.querySelector('div button:last-child');
     closeIcon.click();
   }
 
@@ -112,7 +112,7 @@ const AppointmentContentBase = ({ enqueueSnackbar, onSignup, onUnSignup, store, 
   }
 
   return (
-    <div style={{ overflow: 'hidden', paddingBottom: 10 }}>
+    <div style={{ overflow: 'hidden', paddingBottom: 10 }} id='openedEvent'>
       <div style={{ padding: '5px 15px' }}>
         <Typography variant='subtitle2'>Создатель: {userName}</Typography>
         {restProps.appointmentData.max === '0' ?
@@ -148,7 +148,7 @@ const AppointmentContent = connect(state => ({ store: state }),
 }))(withSnackbar(AppointmentContentBase));
 
 const AppointmentsTooltipBase = ({ enqueueSnackbar, onDeleteEvent, style, store, children, ...restProps }) => {
-  const [isOpen, setOpen] = useState(false);
+  const [isOpened, setOpen] = useState(false);
 
   let isUserAppointment = false;
 
@@ -182,9 +182,9 @@ const AppointmentsTooltipBase = ({ enqueueSnackbar, onDeleteEvent, style, store,
       >
         {children}  
       </AppointmentTooltip.Layout>
-      {isOpen ? 
+      {isOpened ? 
         <Modal 
-          isOpen={isOpen}
+          isOpened={isOpened}
           handleClose={handleClose}
           deleteAppointment={deleteAppointment}
         /> 

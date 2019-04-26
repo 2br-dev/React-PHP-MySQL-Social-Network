@@ -79,5 +79,5 @@ usort($data, function ($item1, $item2) {
 if (count($data) > 0) {
   echo json_encode($data);
 } else {
-  echo json_encode(array("message" => "No new feed.", "error" => 1));
+  echo json_encode(array());
 }

@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { Paper, Typography } from '@material-ui/core';
 import { connect } from 'react-redux';
-import Loader from '../Loader/Loader';
 import Comment from './Comment';
 import Like from './Like';
 import News from './News';
@@ -59,7 +58,7 @@ function index({ onReadFeed, store: { feed, unreaded } }) {
     <Fragment>
       <Paper>
         {feed.length === 0 
-          ? <Loader minHeight={370} /> 
+          ? <ThatsIt style={{ height: 400 }} /> 
           : feed.map((item, index) => 
             unreaded.feed > 0  && unreaded.feed === index + 1 ? renderLastViewed(item) : renderFeedItem(item))
         }   

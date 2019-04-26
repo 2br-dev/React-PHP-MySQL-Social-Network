@@ -12,6 +12,7 @@ import SendMessageInput from './SendMessageInput';
 import EditMessageInput from './EditMessageInput';
 import DeleteModal from './DeleteModal';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 class ChatRoom extends Component {
   state = {
@@ -45,11 +46,10 @@ class ChatRoom extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: function (res) {
+      success: res => {
         self.setState({ loading: false });
         if (res.messages) self.props.getMessages(res.messages);      
-      },
-      error: err => console.log(err)
+      }
     });
 
   }
@@ -81,7 +81,6 @@ class ChatRoom extends Component {
       fetch(`${API}/api/message/get_id.php`)
         .then(response => response.json())
         .then(message => localStorage.setItem('message_id', message.message_id))
-        .catch(err => console.log(err))
     }
 
     const formData = new FormData();
@@ -108,15 +107,14 @@ class ChatRoom extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: function(res) {
+      success: () => {
         if (!self.props.store.chats.find(chat => chat.id === message.chat)) {
           self.props.createChat(localStorage.getItem('users'), message.chat, message); 
         }  
         self.props.addMessage(message);
         self.setState({ newMessage: '' })
         self.getMessages();
-      },
-      error: err => console.log(err)
+      }
     });
   }
 
@@ -129,7 +127,6 @@ class ChatRoom extends Component {
     fetch(`${API}/api/message/get_id.php`)
       .then(response => response.json())
       .then(message => this.createChat(user1, user2, message.message_id))
-      .catch(err => console.log(err))
   }
 
   /**
@@ -157,8 +154,7 @@ class ChatRoom extends Component {
         localStorage.setItem('chat_id', res.chat_id);
         localStorage.setItem('users', `id${user1}, id${user2}`);
         self.sendMessage(false);    
-      },
-      error: err => console.log(err)
+      }
     });
   }
 
@@ -183,8 +179,7 @@ class ChatRoom extends Component {
         if (self.props.store.messages.length === 0) self.props.deleteChat(self.props.store.room.chat_id);
         self.closeDelete();
         self.getMessages();
-      },
-      error: err => console.log(err)
+      }
     });
   }
 
@@ -207,24 +202,17 @@ class ChatRoom extends Component {
       contentType: false,
       type: 'POST',
       success: async () => {  
-        self.closeEditing();  
-        await self.getMessages();   
         await self.props.editMessage(self.state.editID, self.state.editText); 
-      },
-      error: err => console.log(err)
+        await self.closeEditing();  
+        await self.getMessages();   
+      }
     });
   }
 
   render() {
     const { loading, editing, deleting } = this.state;
     const { room } = this.props.store;
-
-    let avatar = null;
-    if (room.hasOwnProperty('user') && window.location.host.includes('localhost')) {
-      avatar = room.user.avatar.slice(16);
-    } else if (room.hasOwnProperty('user')) {
-      avatar = room.user.avatar;
-    }
+    let avatar = room.user.avatar;
 
     return (
       <Room>
@@ -233,13 +221,15 @@ class ChatRoom extends Component {
             <Back />
           </Icon>
           {room.hasOwnProperty('user') ?
-          <div className='room-header__user'>
-            <div className='room-header__avatar' style={{ background: `url(${room.user.avatar !== '' ? avatar : defaultAvatar}) no-repeat center/cover`}}></div>
-            <div className='room-header__info'>
-              <Typography variant='subtitle2'>{room.user.name} {room.user.surname}</Typography>
-              <Typography variant='caption'>{room.user.position}</Typography>
+          <Link to={`/id${room.user.id}`}>
+            <div className='room-header__user'>
+              <div className='room-header__avatar' style={{ background: `url(${room.user.avatar !== '' ? avatar : defaultAvatar}) no-repeat center/cover`}}></div>
+                <div className='room-header__info'>
+                  <Typography variant='subtitle2'>{room.user.name} {room.user.surname}</Typography>
+                  <Typography variant='caption'>{room.user.position}</Typography>
+                </div> 
             </div>
-          </div> : null}
+          </Link> : null}
         </RoomHeader>
 
         {loading ? <Loader minHeight={250} color='primary' /> : <Messages 

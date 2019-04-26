@@ -42,7 +42,7 @@ function App({ store: { news }, enqueueSnackbar, onFetchFeed, setUnreadedFeed, o
       fetch(`${API}/api/getFeed.php`)
         .then(response => response.json())
         .then(feed => {
-          if (feed[0].created_at > timestamp) {
+          if (feed.length > 0 && feed[0].created_at > timestamp) {
             if (timestamp) setUnreadedFeed( countNew(feed) );
             onFetchFeed(feed);
             showSnackbar(feed, countNew(feed) );    

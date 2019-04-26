@@ -59,11 +59,11 @@ class SingleNews extends Component {
   // добавляем лайк
   addLike = (id, e) => {
     const actions = document.getElementById('actions-news');
-    const { user } = this.props.store;
     actions.style.pointerEvents = 'none';
-    var self = this;
     e.preventDefault();
+    const { user } = this.props.store;
     const formData = new FormData();
+    var self = this;
     formData.append('id', id);
     formData.append('liked_by', user.id);
     formData.append('created_at', new Date().getTime());
@@ -75,6 +75,7 @@ class SingleNews extends Component {
       contentType: false,
       type: 'POST',
       success: () => {
+        self.props.onAddLike(id, user.id);
         fetch(`${API}/api/news/read_one.php?id=${self.props.singleNewsId}`)
           .then(response => response.json())
           .then(() => self.getAvatars())
@@ -103,6 +104,7 @@ class SingleNews extends Component {
       contentType: false,
       type: 'POST',
       success: () => {
+        self.props.onRemoveLike(id, user.id);
         fetch(`${API}/api/news/read_one.php?id=${self.props.singleNewsId}`)
           .then(response => response.json())
           .then(() => self.getAvatars())
@@ -133,6 +135,8 @@ class SingleNews extends Component {
       contentType: false,
       type: 'POST',
       success: () =>  {
+        self.props.onAddComment(this.props.singleNewsId, user.id);
+        document.getElementById('updateSideNews').click();
         self.setState({ commentText: '' });
         self.fetchComments(self.props.singleNewsId);
         self.props.enqueueSnackbar('Комментарий был добавлен', { variant: 'success' });
@@ -142,20 +146,12 @@ class SingleNews extends Component {
           commentsContainer.scrollTop = commentsContainer.scrollHeight; 
         }, 250);    
       },
-      error: function() {
-        self.props.enqueueSnackbar('Не удалось оставить комментарий', { variant: 'error' });
-      }
+      error: () => self.props.enqueueSnackbar('Не удалось оставить комментарий', { variant: 'error' })
     });
   }
 
-  /**
-  |--------------------------------------------------
-  | Удаление комментария 
-  | arguments: @id 
-  | type: @int
-  |--------------------------------------------------
-  */
   deleteComment = (e, id, news_id) => {
+    const { user } = this.props.store;
     this.setState({ commentsLoading: true });
     var self = this;
     e.preventDefault();
@@ -165,16 +161,15 @@ class SingleNews extends Component {
       data: { id, news_id },
       type: 'POST',
       success: function() {
+        self.props.onRemoveComment(news_id, user.id);
+        document.getElementById('updateSideNews').click();
         self.props.enqueueSnackbar('Комментарий был удален', { variant: 'info' });
         self.fetchComments(self.props.singleNewsId);
         setTimeout(() => self.setState({ commentsLoading: false }), 250);
       },
-      error: function() {
-        self.props.enqueueSnackbar('Не удалось удалить комментарий', { variant: 'error' });
-      }
+      error: () => self.props.enqueueSnackbar('Не удалось удалить комментарий', { variant: 'error' })
     });
   }
-
 
   render() {
     const { closeNews, singleNewsId } = this.props;
@@ -573,4 +568,11 @@ const DelIcon = styled.div`
   }
 `;
 
-export default connect(state => ({ store: state }))(withSnackbar(SingleNews));
+export default connect(state => ({ store: state }),
+  dispatch => ({ 
+    onAddLike: (id, user_id) => dispatch({ type: 'ADD_LIKE', payload: id, user_id }),
+    onRemoveLike: (id, user_id) => dispatch({ type: 'REMOVE_LIKE', payload: id, user_id }),
+    onAddComment: (id, user_id) => dispatch({ type: 'ADD_COMMENT', payload: id, user_id }),
+    onRemoveComment: (id, user_id) => dispatch({ type: 'REMOVE_COMMENT', payload: id, user_id })
+  }),
+)(withSnackbar(SingleNews));

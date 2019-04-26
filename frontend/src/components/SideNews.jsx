@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Typography, Paper, Switch, Button, Tooltip } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Loader from './Loader/Loader';
 
 class SideNews extends Component {
@@ -105,7 +106,7 @@ class SideNews extends Component {
                           <Typography variant='subtitle2'>{item.author}</Typography>
                           <Typography variant='caption'>{item.date}</Typography>
                         </div>
-                        <Typography variant='button' className='news-caption' onClick={() => this.goToSingleNews(item.id)}>
+                        <Typography variant='body1' className='news-caption' onClick={() => this.goToSingleNews(item.id)}>
                           {item.importance === '1' ? <Tooltip title='Важное!' placement="left"><WarningIcon /></Tooltip> : null}
                           {item.title}
                         </Typography>
@@ -132,7 +133,7 @@ class SideNews extends Component {
                           <Typography variant='subtitle2'>{item.author}</Typography>
                           <Typography variant='caption'>{item.date}</Typography>
                         </div>
-                        <Typography variant='button' className='news-caption' onClick={() => this.goToSingleNews(item.id)}>
+                        <Typography variant='body1' className='news-caption' onClick={() => this.goToSingleNews(item.id)}>
                           {item.importance === '1' ? <Tooltip title='Важное!' placement="top-start"><WarningIcon /></Tooltip> : null}
                           {item.title.replace(/&quot;/g, `"`)}
                         </Typography>
@@ -157,10 +158,12 @@ class SideNews extends Component {
               <Button
                 variant='contained'
                 color='primary'
-                onClick={() => { this.props.handleChangeSection('news'); window.scrollTo(0, 0) }}
+                onClick={() => window.scrollTo(0, 0) }
+                component={Link} to="/news"
               >
-                КО ВСЕМ НОВОСТЯМ
+                ко всем новостям
               </Button>
+              <span id='updateSideNews' style={{ display: 'none' }} onClick={() => this.forceUpdate()}></span>
             </News>}
         </Paper>
         <Fragment>

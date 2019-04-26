@@ -16,6 +16,7 @@ export default function reducing(state = [], action) {
       newState = _.concat(newState, currentChat)
       return newState
     case 'EDIT_MESSAGE':
+    console.log(action.payload[0], action.payload[1])
       let editedState = state.filter(chat => chat.message.id !== action.payload[0]);
       let editedMessage = state.find(chat => chat.message.id === action.payload[0]);
       

@@ -13,7 +13,11 @@ import Loader from './Loader/Loader';
 import { DatePicker } from 'material-ui-pickers';
 import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
-import DropdownActions from './DropdownActions/Dropdown';
+import moment from 'moment';
+import Modal from './Modal/Modal';
+import ConfirmStatus from './DropdownActions/ConfirmStatus';
+import Star from '@material-ui/icons/Star';
+import StarBorder from '@material-ui/icons/StarBorder';
 
 var autoSaveTimer = null;
 var pageInterval = null;
@@ -32,7 +36,9 @@ class PersonalInfo extends Component {
       selectedDate: '',
       loadingChild: false,
       isSelectOpened: false,
-      lastUser: null
+      lastUser: null,
+      preparedId: null,
+      open: false
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -76,6 +82,7 @@ class PersonalInfo extends Component {
 
   // динамически обрабатываем изменения полей
   handleChange(event) {
+    document.getElementById('updateUser').click();
     window.clearTimeout(autoSaveTimer);
     // ставим стейт исходя из именя поля и вводимого значения
     let userInfo = { ...this.state.userInfo };
@@ -93,8 +100,10 @@ class PersonalInfo extends Component {
   }
 
   handleChild(event) {
+    let value = event.target.value;
+    if (value.length > 10) value = value.slice(1);
     this.setState({
-      [event.target.name]: event.target.value,
+      [event.target.name]: value,
       nameError: true,
       yearError: true
     })
@@ -102,12 +111,19 @@ class PersonalInfo extends Component {
 
   addChild(e) {
     e.preventDefault();
+    
     if (this.state.childName && this.state.childBirthyear) {
       var self = this;
       const formData = new FormData();
-      formData.append('name', this.state.childName);
-      formData.append('year', this.state.childBirthyear);
-      formData.append('parent', self.props.user_logged_id);
+
+      let child = {
+        child_name: this.state.childName,
+        child_birthyear: this.state.childBirthyear,
+      }
+
+      for (let key in child) {
+        formData.append(key, child[key]);    
+      }
 
       $.ajax({
         url: `${API}/api/child/add.php`,
@@ -115,14 +131,13 @@ class PersonalInfo extends Component {
         processData: false,
         contentType: false,
         type: 'POST',
-        success: function () {
-          self.fetchUserInfo('child');
+        success: res => {
+          child.id = res['MAX(`id`)'];
+          self.props.onAddChild(child);
           self.setState({ newChildInput: false, childBirthyear: '', childName: '' });
           self.props.enqueueSnackbar('Персональные данные были обновлены', { variant: 'success' });
         },
-        error: function() {
-          self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' });
-        }
+        error: () => self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' })
       });
     } else {
       if (this.state.newChildInput) {
@@ -145,26 +160,25 @@ class PersonalInfo extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: function (res) {
-        self.fetchUserInfo('child');
+      success: () => {
+        self.props.onRemoveChild(id);
+        self.forceUpdate();
         self.props.enqueueSnackbar('Персональные данные были обновлены', { variant: 'success' });
-        console.log(res);
       },
-      error: function() {
-        self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' });
-      }
+      error: () => self.props.enqueueSnackbar('Что-то пошло не так, попробуйте обновить страницу', { variant: 'error' })
     });
   }
 
   removeInput = () => this.setState({ newChildInput: false });
 
   handleSubmit(e, dontShow) {
+    const { user } = this.props.store;
     var self = this;
     e.preventDefault();
 
     const formData = new FormData();
 
-    formData.append('id', this.props.user_logged_id);
+    formData.append('id', user.id);
     formData.append('adress', $('input[name="adress"]').val());
     formData.append('army_country', $('input[name="army_country"]').val());
     formData.append('army_type', $('input[name="army_type"]').val());
@@ -247,6 +261,32 @@ class PersonalInfo extends Component {
   listenSelect = () => true;
   closeSelect = () => this.setState({ isSelectOpened: false });
 
+  prepareToUpdate(id) {
+    this.setState({ preparedId: id, open: true });
+  }
+
+  setAdministrator = () => {
+    const formData = new FormData();
+    const self = this;
+    formData.append('id', this.state.preparedId);
+
+    $.ajax({
+      url: `${API}/api/user/setAdministrator.php`,
+      data: formData,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      success: () => {
+        self.handleClose();
+        self.props.enqueueSnackbar('Статус пользователя был успешно сменён', { variant: 'success' })
+        self.fetchUserInfo();
+      },
+      error: () => self.props.enqueueSnackbar('Что-то пошло не так, попробуйте снова', { variant: 'error' })
+    });
+  }
+
+  handleClose = () => this.setState({ open: false, preparedId: null });
+
   render() {
     const { loading, newChildInput, childName, childBirthyear, nameError, yearError } = this.state;
     const { user } = this.props.store;
@@ -268,9 +308,18 @@ class PersonalInfo extends Component {
 
         {!loading ? <Form id="personal-info" action="" method="POST" onSubmit={this.handleSubmit}>
 
-          <DropdownActions userInfo={userInfo} fetchUserInfo={this.fetchUserInfo}/>
-
           <div className="personal-header">
+
+            {user.admin === '1' ?
+              userInfo.admin === '1' ? 
+                <Tooltip title="Разжаловать администратора">
+                  <Star onClick={() => this.prepareToUpdate(userInfo.id)} style={{ position: 'absolute', right: 30, color: '#F9A825', cursor: 'pointer' }} />
+                </Tooltip> : 
+                <Tooltip title="Назначить администратором">
+                  <StarBorder onClick={() => this.prepareToUpdate(userInfo.id)} style={{ position: 'absolute', right: 30, color: 'F9A825', cursor: 'pointer' }} />
+                </Tooltip> 
+            : null}
+
             <div className="personal-header__photo">
               <div style={{ background: `url(${userInfo.avatar ? userInfo.avatar : defaultAvatar}) no-repeat center/cover` }}></div>
             </div>
@@ -338,7 +387,7 @@ class PersonalInfo extends Component {
             </div>
             }
 
-            {user.id !== userInfo.id ? (
+            {user.id === userInfo.id ? (
               <FormControl style={{ width: '100%' }}>
                 <InputLabel htmlFor="status">Семейное положение</InputLabel>
                 <Select   
@@ -381,28 +430,24 @@ class PersonalInfo extends Component {
           </div>
           <div className="personal-section">
           
-              {user.id !== userInfo.id && childrens.length === 0 
-              ? null 
-              :
-              <Fragment>
-                <div className="personal-section__header">
-                  <Typography variant='h6' color='primary'>Дети</Typography>
-                  <hr />
-                </div>
-                {this.state.loadingChild ? <Loader minHeight={120} color='primary' /> :
-                <Childrens>
-                  {Object.keys(childrens).map(child =>
-                    <Children key={childrens[child].id}>
-                      <Typography variant='subtitle2'>Имя: {childrens[child].child_name} </Typography>
-                      <Typography variant='caption'>{childrens[child].child_birthyear} г.р.</Typography>
-                      {user.id !== userInfo.id  ?
-                        <Tooltip title="Удалить" placement="right"><Clear onClick={() => this.deleteChild(childrens[child].id)} /></Tooltip>
-                      : null}
-                    </Children>
-                  )}
-                </Childrens>}
-              </Fragment>
-              }
+            {user.id !== userInfo.id ? null :
+            <Fragment>
+              <div className="personal-section__header">
+                <Typography variant='h6' color='primary'>Дети</Typography>
+                <hr />
+              </div>
+              <Childrens>
+                {Object.keys(childrens).map(child =>
+                  <Children key={childrens[child].id}>
+                    <Typography variant='subtitle2'>Имя: {childrens[child].child_name} </Typography>
+                    <Typography variant='caption'>{childrens[child].child_birthyear} г.р.</Typography>
+                    {user.id === userInfo.id  ?
+                      <Tooltip title="Удалить" placement="right"><Clear onClick={() => this.deleteChild(childrens[child].id)} /></Tooltip>
+                    : null}
+                  </Children>
+                )}
+              </Childrens>
+            </Fragment>}
 
             {newChildInput ? (<NewChild>
               <div>
@@ -419,7 +464,7 @@ class PersonalInfo extends Component {
                 />
                 <TextField
                   label='Год рождения'
-                  value={childBirthyear}
+                  value={childBirthyear || (moment(Date.now()).format('L')).split('.').reverse().join('-')}
                   fullWidth={true}
                   name='childBirthyear'
                   margin='dense'
@@ -440,7 +485,7 @@ class PersonalInfo extends Component {
               </span>
             </NewChild>) : null}
 
-            {user.id !== userInfo.id ? (
+            {user.id === userInfo.id ? (
               <ChildBtns>
                 <Button variant='contained' color='primary' onClick={newChildInput ? this.addChild : this.prepareChild}>Добавить</Button>
               </ChildBtns>) : null}
@@ -501,8 +546,20 @@ class PersonalInfo extends Component {
               }
             </div> : null}
 
-          {user.id !== userInfo.id  ? <Btn><Button type='submit' variant='contained' color='primary' onClick={this.handleSubmit}>Обновить данные</Button></Btn> : null}
+          {user.id === userInfo.id  ? <Btn><Button type='submit' variant='contained' color='primary' onClick={this.handleSubmit}>Обновить данные</Button></Btn> : null}
         </Form> : <Loader minHeight={400} color='primary' />}
+
+
+        {/* Confirm promote modal */}
+        <Modal
+          open={this.state.open}
+          handleClose={this.handleClose.bind(this)}
+          component={<ConfirmStatus
+            setAdministrator={this.setAdministrator}
+            handleClose={this.handleClose.bind(this)}
+            message={userInfo.admin === '1' ? "разжаловать администратора" : `назначить ${userInfo.name} ${userInfo.surname} администратором`}
+          />}
+        />
       </Paper >
     )
   }
@@ -626,11 +683,10 @@ const Naked = styled.div`
   }
 `;
 
-export default connect(
-  state => ({ store: state }),
+export default connect(state => ({ store: state }),
   dispatch => ({
-    updateUser: (field, value) => {
-      dispatch({ type: 'UPDATE_USER', payload: value, field: field })
-    }
+    updateUser: (field, value) => dispatch({ type: 'UPDATE_USER', payload: value, field: field }),
+    onAddChild: child => dispatch({ type: 'ADD_CHILD', payload: child }),
+    onRemoveChild: id => dispatch({ type: 'REMOVE_CHILD', payload: id })
   })
 )(withSnackbar(PersonalInfo));

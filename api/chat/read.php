@@ -55,12 +55,8 @@ if ($num > 0) {
   }
 
   http_response_code(200);
-
-  // make it json format
   echo json_encode(array($chat_arr, 'user_id' => $chat->users));
 } else {
-
-  // tell the user product does not exist
-  echo json_encode(array('noChats' => 1));
+  echo json_encode(array([], 'user_id' => $chat->users));
 }
  

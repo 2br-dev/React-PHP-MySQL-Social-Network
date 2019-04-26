@@ -2,20 +2,22 @@ import React from 'react';
 import styled from 'styled-components';
 import Select from './Select';
 
-export default function Dropdown(props) {
+export default function Dropdown() {
   return (
     <Wrapper>
-      <Select 
-        userInfo={props.userInfo} u
-        ser_logged_id={props.user_logged_id} 
-        fetchUserInfo={props.fetchUserInfo} 
-      />
+      <Select />
     </Wrapper>
   )
 }
 
 const Wrapper = styled.div`
-  position: absolute;
-  right: 10px;
-  top: 10px;
+  > div {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-left: 20px;
+  }
+  button {
+    margin: 0;
+  }
 `;

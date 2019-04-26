@@ -13,11 +13,12 @@ import { connect } from 'react-redux';
 class Task extends React.Component {
 
   getUserNames = (users) => {
+    const { user } = this.props.store;
     let usersId = users.split(',');
     let result = 'Для: ';  
 
     usersId.forEach(id => {
-      if (Number(id.slice(3)) === this.props.user_logged_id) return result += "Вас  ";
+      if (id.slice(3) === user.id) return result += "Вас  ";
       result += `${this.props.users.find(user => user.id === id.slice(3)).name} `;
       result += `${this.props.users.find(user => user.id === id.slice(3)).surname}, `;
     })
@@ -25,9 +26,10 @@ class Task extends React.Component {
   }
 
   getAdresant = (id) => {
+    const { user } = this.props.store;
     let initial = "От: ";
-    // eslint-disable-next-line
-    if (Number(id) === this.props.user_logged_id) return initial += 'Вас';
+
+    if (id === user.id) return initial += 'Вас';
 
     if (this.props.users.length > 0) {
       initial += this.props.users.find(user => user.id === this.props.task.from).name;
@@ -48,10 +50,7 @@ class Task extends React.Component {
         processData: false,
         contentType: false,
         type: 'POST',
-        success: res => {
-          console.log(res);
-          self.props.markTask(id);
-        }
+        success: res => self.props.markTask(id)
       }); 
     }
   }
@@ -60,13 +59,14 @@ class Task extends React.Component {
     const now = moment(new Date()); //todays date
     const end = moment(this.props.task.until_date); // another date
     const difference = moment.duration(end.diff(now))._milliseconds;
+    const { user } = this.props.store;
 
     return (
       <ExpansionPanel onClick={e => this.openTask(e, this.props.task.id, this.props.task.readed)}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant='caption'>
             <Typography variant='subtitle2' style={styles.flex}>
-            {this.props.task.from === this.props.user_logged_id.toString() ? 'Поставлено: ' : 'Получено: ' }
+            {this.props.task.from === user.id ? 'Поставлено: ' : 'Получено: ' }
             {this.props.task.date} в {`${this.props.task.time} `}
               {this.props.task.importance === '1' ? <Tooltip title="Отмечено как 'Важное'" placement="top-start"><Icon><WarningIcon /></Icon></Tooltip> : null}
             </Typography>
@@ -84,7 +84,7 @@ class Task extends React.Component {
             </TaskStatus>
           </Typography>
 
-          {this.props.task.from === this.props.user_logged_id.toString() ?     
+          {this.props.task.from === user.id ?     
             <DeleteIcon onClick={(e) => this.props.handleConfirm(e, this.props.task.id)}>
               <Tooltip title="Удалить" placement="left">
                 <Delete />
@@ -101,7 +101,7 @@ class Task extends React.Component {
               <Typography variant='subtitle2'>Выполнить до: {this.props.task.until_date.split('-').reverse().join('.')}, {this.props.task.until_time}</Typography>
             </div>
     
-            {this.props.task.status === '0' && this.props.task.for.includes(`for${this.props.user_logged_id}`) ?
+            {this.props.task.status === '0' && this.props.task.for.includes(`for${user.id}`) ?
               difference < 0 ?
                 <Tooltip title="Нельзя выполнить просроченную задачу" placement="top-start" leaveDelay={200}>
                   <span><Button disabled={true} variant='contained' color='primary'>Выполнить</Button></span>
@@ -164,13 +164,8 @@ const TaskStatus = styled.span`
   }
 `;
 
-export default connect(
-  state => ({
-    store: state
-  }),
+export default connect(state => ({ store: state }),
   dispatch => ({
-    markTask: (task) => {
-      dispatch({ type: 'READED_TASK', payload: task})
-    }     
+    markTask: (task) => dispatch({ type: 'READED_TASK', payload: task})    
   })
 )(Task);

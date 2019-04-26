@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Paper, Typography, Button } from '@material-ui/core';
+import { Paper, Typography } from '@material-ui/core';
 import Fab from '../Fab/Fab';
 import Modal from '../Modal/Modal';
 import NewTask from './NewTask';
@@ -12,43 +12,45 @@ import ConfirmDelete from './ConfirmDelete';
 import Loader from '../Loader/Loader';
 import { withSnackbar } from 'notistack';
 import ResponsiveHeader from '../ResponsiveHeader/ResponsiveHeader';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import AppBar from '@material-ui/core/AppBar';
 
 class Tasks extends Component {
   state = {
     open: false,
     confirm: false,
     preparedToDelete: null,
-    tasks: [],
     initial: [],
     users: [],
-    disabledButton: 1,
-    loading: true
+    value: 0
   }
   componentDidMount = () => {
-    fetch(`${API}/api/tasks/read.php?id=${this.props.user_logged_id}`)
+    fetch(`${API}/api/tasks/read.php`)
       .then(response => response.json())
-      .then(tasks => this.props.getTasks(tasks.data))
-      .catch(err => console.log(err))
+      .then(tasks => {
+        this.props.getTasks(tasks.data)
+        this.setState({ initial: tasks.data || [] })
+      })
+      .then(() => this.forceUpdate())
 
     fetch(`${API}/api/user/read.php`)
       .then(response => response.json())
       .then(users => this.setState({ users: users.data }))
-      .then(() => this.setState({ loading: false }))
-      .catch(err => console.log(err))
   }
 
+  handleChange = (event, value) => this.setState({ value });
   handleOpen = (e) => this.setState({ open: true });
+  handleClose = () => this.setState({ open: false, confirm: false, preparedToDelete: null });
   handleConfirm = (e,id) => {
     e.stopPropagation();
     this.setState({ confirm: true, preparedToDelete: id });
   }
-  handleClose = () => this.setState({ open: false, confirm: false, preparedToDelete: null });
 
   handleCompleted = (id) => {
     const formData = new FormData();
     const self = this;
     let date = new Date();
-    this.setState({ loading: true })
     const done_date = date.toLocaleDateString();
     const done_time = `${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`;
 
@@ -62,30 +64,23 @@ class Tasks extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: res => {
-        console.log(res);
-        fetch(`${API}/api/tasks/read.php?id=${self.props.user_logged_id}`)
-          .then(response => response.json())
-          .then(tasks => self.setState({ tasks: tasks.data, initial: tasks.data }))
-          .then(() => self.props.enqueueSnackbar('Задача отмечена как "Выполненная"', { variant: 'success' }))
-          .then(() => self.props.markAsCompleted(self.state.tasks))
-          .then(() => this.setState({ loading: false }))
-          .catch(err => console.log(err))
+      success: () => {
+        self.props.enqueueSnackbar('Задача отмечена как "Выполненная"', { variant: 'success' });
+        self.props.markAsCompleted(self.state.tasks);
+        self.forceUpdate();
       },
-      error: err => {
-        console.log(err);
-        self.props.enqueueSnackbar('Что-то пошло не так, попробуйте снова', { variant: 'error' })
-      }
+      error: () => self.props.enqueueSnackbar('Что-то пошло не так, попробуйте снова', { variant: 'error' })
     });
   }
 
   handleFilter = (id, filter) => {
+    const { user } = this.props.store;
     this.setState({ disabledButton: id });
-    let filtered = this.state.initial;
+    let filtered = this.props.store.tasks;
 
     if (filter === 'initial') this.props.onFilter(this.state.initial);
     if (filter === 'transfered') {
-      filtered = filtered.filter(item => Number(item.from) === this.props.user_logged_id);
+      filtered = filtered.filter(item => item.from === user.id);
       this.props.onFilter(filtered);
     }
     if (filter === 'completed') {
@@ -97,7 +92,6 @@ class Tasks extends Component {
   handleDelete = () => {
     const formData = new FormData();
     const self = this;
-    this.setState({ loading: true })
     formData.append('id', this.state.preparedToDelete);
 
     $.ajax({
@@ -106,57 +100,39 @@ class Tasks extends Component {
       processData: false,
       contentType: false,
       type: 'POST',
-      success: res => {
-        console.log(res);
-        fetch(`${API}/api/tasks/read.php?id=${self.props.user_logged_id}`)
-          .then(response => response.json())
-          .then(tasks => self.setState({ tasks: tasks.data || [], initial: tasks.data || [] }))
-          .then(() => self.props.enqueueSnackbar('Задача успешно была удалена', { variant: 'info' }))
-          .then(() => self.props.onDeleteTask(self.state.preparedToDelete))
-          .then(() => self.handleClose())
-          .then(() => this.setState({ loading: false }))
-          .catch(err => console.log(err))
+      success: () => {
+        self.props.enqueueSnackbar('Задача успешно была удалена', { variant: 'info' });
+        self.props.onDeleteTask(self.state.preparedToDelete);
+        self.handleClose();
+        self.forceUpdate();
       },
-      error: err => {
-        console.log(err);
-        self.props.enqueueSnackbar('Что-то пошло не так, попробуйте снова', { variant: 'error' })
-      }
+      error: () => self.props.enqueueSnackbar('Что-то пошло не так, попробуйте снова', { variant: 'error' })
     });
   }
 
   render() {
-    const { open, users, disabledButton } = this.state;
-
-    if (this.state.initial.length === 0) {
-      setTimeout(() => this.setState({ initial: this.props.store.tasks, tasks: this.props.store.tasks }), 0);
-    }
+    const { open, users } = this.state;
+    const { user } = this.props.store;
 
     return (
       <Wrapper> 
         <Paper>
           {window.innerWidth < 600 ? <ResponsiveHeader title='Задачи' /> : null}
-          {!this.state.loading ?
+          {user.hasOwnProperty('name') ?
             <Fragment>
-              <Filters>
-                <Button
-                  onClick={() => this.handleFilter(1, 'initial')}
-                  variant={disabledButton !== 1 ? 'contained' : 'text'}
-                  disabled={disabledButton === 1 ? true : false}>Все задачи</Button>
-                <Button
-                  onClick={() => this.handleFilter(2, 'transfered')}
-                  variant={disabledButton !== 2 ? 'contained' : 'text'}
-                  disabled={disabledButton === 2 ? true : false}
+              <AppBar position="static" color="default">
+                <Tabs
+                  value={this.state.value}
+                  indicatorColor="primary"
+                  textColor="primary"
+                  onChange={this.handleChange}
+                  variant="fullWidth"
                 >
-                  Поставленные
-            </Button>
-                <Button
-                  onClick={() => this.handleFilter(3, 'completed')}
-                  variant={disabledButton !== 3 ? 'contained' : 'text'}
-                  disabled={disabledButton === 3 ? true : false}
-                >
-                  Выполненные
-            </Button>
-              </Filters>
+                  <Tab label="Все задачи" onClick={() => this.handleFilter(1, 'initial')} />
+                  <Tab label="Поставленные" onClick={() => this.handleFilter(2, 'transfered')} />
+                  <Tab label="Выполненные" onClick={() => this.handleFilter(3, 'completed')}/>
+                </Tabs>
+              </AppBar>
               {this.props.store.tasks.length > 0
                 ?
                 this.props.store.tasks.map(task =>
@@ -164,7 +140,6 @@ class Tasks extends Component {
                     key={task.id}
                     task={task}
                     users={users}
-                    user_logged_id={this.props.user_logged_id}
                     handleCompleted={this.handleCompleted}
                     handleConfirm={this.handleConfirm.bind(this)}
                   />)
@@ -176,7 +151,7 @@ class Tasks extends Component {
 
 
         {/* Button to add task */}
-        {this.props.store.user.length > 0 && this.props.store.user.admin === '1' ?
+        {this.props.store.user.admin === '1' ?
         <span onClick={this.handleOpen}><Fab title='Добавить задачу' /></span> : null}
 
         {/* Add new task modal */}
@@ -186,7 +161,7 @@ class Tasks extends Component {
           component={
             <NewTask
               handleClose={this.handleClose.bind(this)}
-              user_logged_id={this.props.user_logged_id}
+              users={users}
             />}
         />
 
@@ -214,31 +189,7 @@ const Wrapper = styled.div`
     font-size: 20px;
   }
 `;
-const Filters = styled.div`
-  height: 60px;
-  display: flex;
-  justify-content: space-around;
-  button {
-    width: 33.3%;
-  }
 
-  @media all and (max-width: 600px) {
-    height: 45px;
-      
-    button {
-      > span {
-        font-size: 10px;
-        color: #757575;
-      }
-    }
-    button:disabled {
-      > span {
-        font-size: 12px;
-        color: #232323;
-      }
-    }
-  }
-`;
 
 export default connect(
   state => ({

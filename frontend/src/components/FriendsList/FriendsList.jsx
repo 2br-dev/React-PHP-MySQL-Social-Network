@@ -114,7 +114,7 @@ const FriendWrapper = styled.div`
   }
   ul {
     padding: 0;
-    padding-bottom: 50px;
+    padding-bottom: 50px !important;
   }
 
   @media all and (max-width: 600px) {
