@@ -48,7 +48,7 @@ class LongMenu extends React.Component {
           <MenuItem component='a' href='/settings'>Персональные данные</MenuItem> 
           <MenuItem component={Link} to='/learnings'>Обучение</MenuItem> 
           <Divider />
-          <MenuItem component='a' to='/logout.php'>Выйти</MenuItem>
+          <MenuItem component='a' href='/logout.php'>Выйти</MenuItem>
         </Menu>
       </div>
     );
