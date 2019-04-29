@@ -5,12 +5,13 @@ import { Scheduler, WeekView, Toolbar, DateNavigator, Appointments, ViewSwitcher
 import { withStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import API from '../functions/API';
-import styled from 'styled-components';
 import NewEvent from './NewEvent';
 import { connect } from 'react-redux';
 import { deleteEvent, signUpOnEvent, unSignUpOnEvent } from '../Effects/requests';
 import { withSnackbar } from 'notistack';
 import Modal from './Modal';
+import Fab from '../Fab/Fab';
+import ResponsiveHeader from '../ResponsiveHeader/ResponsiveHeader';
 
 const style = theme => ({
   todayCell: {
@@ -243,11 +244,13 @@ function Calendar({ onReadEvents, onFetchEvents, store: { user, events, unreaded
 
   return (
     <Fragment>
-      <Paper>
+      {window.innerWidth < 600 ? <ResponsiveHeader title='Календарь' /> : null}
+
+      <Paper style={window.innerWidth < 600 ? { paddingBottom: 40, marginTop: 60 } : {}}>
         {user.admin === '1' ?
-          <CreateEvent>
-            <Button variant='contained' color='secondary' onClick={() => setOpen(true)}>Создать событие</Button>
-          </CreateEvent>   
+          <span onClick={() => setOpen(true)}>
+            <Fab color='primary' title='создать событие' />
+          </span>
         : null}
         <Scheduler
           style={{ height: '100%' }}
@@ -308,15 +311,6 @@ function Calendar({ onReadEvents, onFetchEvents, store: { user, events, unreaded
   );
 }
 
-const CreateEvent = styled.div`
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: auto;
-  width: fit-content;
-  margin-top: 15px;
-  z-index: 50;
-`;
 
 export default connect(
   state => ({ store: state }),

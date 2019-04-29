@@ -10,7 +10,7 @@ function index({  store: { user }} ) {
   return (
     <Fragment>
       <MainpageHeader />
-      <div className="container">
+      <div className="container"> 
         <Header />
         <Nav />
       </div> 

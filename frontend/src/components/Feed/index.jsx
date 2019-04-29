@@ -10,6 +10,7 @@ import Event from './Event';
 import ThatsIt from './ThatsIt';
 import styled from 'styled-components';
 import Circle from '@material-ui/icons/CheckCircle';
+import ResponsiveHeader from '../ResponsiveHeader/ResponsiveHeader';
 
 function index({ onReadFeed, store: { feed, unreaded } }) { 
   useEffect(() => {
@@ -57,6 +58,7 @@ function index({ onReadFeed, store: { feed, unreaded } }) {
   return (
     <Fragment>
       <Paper>
+        {window.innerWidth < 600 ? <ResponsiveHeader title='Уведомления' /> : null}
         {feed.length === 0 
           ? <ThatsIt style={{ height: 400 }} /> 
           : feed.map((item, index) => 

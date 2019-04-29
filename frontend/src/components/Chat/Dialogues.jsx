@@ -191,7 +191,7 @@ const FriendWrapper = styled.div`
   }
 
   @media all and (max-width: 600px) {
-    height: calc(100vh - 55px);
+    height: calc(100vh - 115px);
     ul {
       padding: unset;
       padding-top: 10px;

@@ -18,6 +18,7 @@ import Modal from './Modal/Modal';
 import ConfirmStatus from './DropdownActions/ConfirmStatus';
 import Star from '@material-ui/icons/Star';
 import StarBorder from '@material-ui/icons/StarBorder';
+import ResponsiveHeader from './ResponsiveHeader/ResponsiveHeader';
 
 var autoSaveTimer = null;
 var pageInterval = null;
@@ -305,7 +306,7 @@ class PersonalInfo extends Component {
 
     return (
       <Paper className="personal">
-
+        {window.innerWidth < 600 ? <ResponsiveHeader title={`${userInfo.name} ${userInfo.surname}`} /> : null}
         {!loading ? <Form id="personal-info" action="" method="POST" onSubmit={this.handleSubmit}>
 
           <div className="personal-header">

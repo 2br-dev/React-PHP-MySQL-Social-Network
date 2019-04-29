@@ -291,7 +291,7 @@ const Room = styled.div`
   height: 432px;
 
   @media all and (max-width: 600px) {
-    height: calc(100vh - 55px);
+    height: calc(100vh - 115px);
   }
 `;
 const RoomHeader = styled.div`

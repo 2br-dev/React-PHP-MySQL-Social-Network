@@ -6,6 +6,7 @@ import Loader from '../Loader/Loader';
 import { connect } from 'react-redux';
 import { Paper } from '@material-ui/core';
 import NoChats from './NoChats';
+import ResponsiveHeader from '../ResponsiveHeader/ResponsiveHeader';
 
 class Chat extends Component {
   state = { loading: true }
@@ -36,6 +37,7 @@ class Chat extends Component {
     
     return (
       <Paper>
+        {window.innerWidth < 600 ? <ResponsiveHeader title='Сообщения' margin={2} /> : null}
         {chats.length === 0 ? <NoChats /> : null}
         {!loading 
           ? <Dialogues />

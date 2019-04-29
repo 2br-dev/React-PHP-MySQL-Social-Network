@@ -157,14 +157,14 @@ function NewEvent({ isOpen, handleClose, enqueueSnackbar, user, onAddEvent }) {
               onChange={e => setTitle(e.target.value)}
             />
             <Picker
-              helperText='Назначьте начало мероприятия'
+              helperText={window.innerWidth >= 600 ? 'Начало мероприятие' : 'Начало'}
               date={_startDate}
               setDate={setStart}
               error={emptyStartDate}
               callback={() => setEmptyStartDate(false)}
             />
             <Picker
-              helperText='Назначьте окончание мероприятия'
+              helperText={window.innerWidth >= 600 ? 'Когда заканчивается' : 'Заканчивается'}
               date={_endDate}
               setDate={setEnd}
               error={emptyEndDate}
@@ -256,6 +256,9 @@ const Wrapper = styled.div`
   }
   @media all and (max-width: 600px) {
     width: 100%;
+    & > div {
+      padding: 40px 15px 15px;
+    }
   }
 `;
 const Dialogue = styled.section`

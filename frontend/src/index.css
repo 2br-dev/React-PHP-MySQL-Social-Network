@@ -218,4 +218,16 @@ input[name="password"] {
   .container {
     width: 100%;
   }
+
+  .learnings-container {
+    padding-top: 20px;
+  }
+
+  .swipeable {
+    height: calc(100vh - 268px);
+    max-height: unset !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  } 
 }

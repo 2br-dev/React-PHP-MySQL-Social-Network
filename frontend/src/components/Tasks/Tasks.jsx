@@ -15,6 +15,9 @@ import ResponsiveHeader from '../ResponsiveHeader/ResponsiveHeader';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import AppBar from '@material-ui/core/AppBar';
+import ArrowForward from '@material-ui/icons/ArrowForward';
+import Menu from '@material-ui/icons/Menu';
+import Check from '@material-ui/icons/Check';
 
 var tasksTimeout = null;
 
@@ -141,10 +144,23 @@ class Tasks extends Component {
                   textColor="primary"
                   onChange={this.handleChange}
                   variant="fullWidth"
+                  className='tasks-navigation'
                 >
-                  <Tab label="Все задачи" onClick={() => this.handleFilter(1, 'initial')} />
-                  <Tab label="Поставленные" onClick={() => this.handleFilter(2, 'transfered')} />
-                  <Tab label="Выполненные" onClick={() => this.handleFilter(3, 'completed')}/>
+                  <Tab 
+                    icon={<Menu />} 
+                    label="Все задачи"
+                    onClick={() => this.handleFilter(1, 'initial')} 
+                  />
+                  <Tab 
+                    icon={<ArrowForward />} 
+                    label="Поставленные"
+                    onClick={() => this.handleFilter(2, 'transfered')} 
+                  />
+                  <Tab 
+                    icon={<Check />} 
+                    label= "Выполненные"
+                    onClick={() => this.handleFilter(3, 'completed')} 
+                  />
                 </Tabs>
               </AppBar>
               {this.props.store.tasks.length > 0
@@ -201,6 +217,17 @@ const Wrapper = styled.div`
     opacity: .37;
     height: 300px;
     font-size: 20px;
+  }
+
+  @media all and (max-width: 600px) {
+    .no-tasks {
+      height: calc(100vh - 163px);
+    }
+    .tasks-navigation {
+      & > button > span > span {
+        font-size: 10px;
+      }
+    }
   }
 `;
 

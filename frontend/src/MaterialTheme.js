@@ -62,6 +62,11 @@ const theme = createMuiTheme({
         opacity: '.75'
       }
     },
+    MuiTab: {
+      label: {
+        fontSize: window.innerWidth < 600 ? '8px' : '0.875rem'
+      }
+    }
   },
 });
 

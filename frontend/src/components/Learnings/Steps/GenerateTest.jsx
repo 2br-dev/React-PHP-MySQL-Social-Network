@@ -200,20 +200,24 @@ const Wrapper = styled.div`
     top: 0;
     max-width: 100%;
     border-radius: unset;
-    height: calc(100vh - 55px);
     margin: unset;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     & > div {
       padding: 20px 15px;
       box-shadow: unset;
+      height: calc(100vh - 55px);
+      overflow: scroll;
       & > div {
         > div:first-child {
           padding: 20px 5px;
         }
       }
+      h5 {
+        font-size: 18px;
+      }
     }
     .closeNewTask svg {
-      font-size: 32px;
+      font-size: 24px;
       right: 15px;
     } 
   }

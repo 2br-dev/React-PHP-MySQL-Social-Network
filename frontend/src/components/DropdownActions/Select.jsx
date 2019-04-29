@@ -47,6 +47,9 @@ class LongMenu extends React.Component {
           <Divider />
           <MenuItem component='a' href='/settings'>Персональные данные</MenuItem> 
           <MenuItem component={Link} to='/learnings'>Обучение</MenuItem> 
+          {window.innerWidth < 600 
+            ? <MenuItem component={Link} to='/calendar'>Календарь</MenuItem> 
+            : null }
           <Divider />
           <MenuItem component='a' href='/logout.php'>Выйти</MenuItem>
         </Menu>

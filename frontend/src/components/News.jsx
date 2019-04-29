@@ -317,7 +317,7 @@ class News extends Component {
     
     return (
       <Paper>
-        {window.innerWidth < 600 ? <ResponsiveHeader title='Новости компании' /> : null}
+        {window.innerWidth < 600 ? <ResponsiveHeader title='Новости' /> : null}
         {news.length === 0 
           ? <Loader minHeight={300} color='primary' /> 
           : news.map((item, i) => {

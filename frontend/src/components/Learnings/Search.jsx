@@ -12,7 +12,7 @@ function Search(props) {
         id="outlined-adornment-password"
         variant="outlined"
         type='text'
-        label="Начните вводить имя, фамилию или должность..."
+        label={window.innerWidth >= 600 ? "Начните вводить имя, фамилию или должность..." : 'Имя, фамилия, должность'}
         margin='dense'
         value={props.searchValue}
         onChange={props.handleSearch}

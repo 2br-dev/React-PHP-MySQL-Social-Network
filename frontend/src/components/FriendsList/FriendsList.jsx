@@ -10,6 +10,7 @@ import Loader from '../Loader/Loader';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import NotFound from './NotFound';
+import ResponsiveHeader from '../ResponsiveHeader/ResponsiveHeader';
 
 function FriendList({ onFetchFriends, setOnline, filterFriends, store: { friends }}) {
   const [searchValue, setSearchValue] = useState('');
@@ -82,6 +83,8 @@ function FriendList({ onFetchFriends, setOnline, filterFriends, store: { friends
 
   return (
     <Paper>
+      {window.innerWidth < 600 ? <ResponsiveHeader title='Коллеги' /> : null}
+
       {loading ? <Loader minHeight={370} color='primary' /> 
         :
         <FriendWrapper>

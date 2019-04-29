@@ -318,7 +318,19 @@ const Single = styled.div`
     top: 0;
     max-height: unset;
     border-radius: 0;
-    padding: 30px 15px 15px;
+    padding: 15px 15px 35px;
+    h5 {
+      font-size: 18px;
+    }
+    p {
+      font-size: 16px !important;
+    }
+     div:first-child {
+       top: 10px;
+    }
+    svg {
+      font-size: 24px !important;
+    }
   }
 `;
 
@@ -447,6 +459,11 @@ const Comments = styled.div`
       margin-right: 10px;
     }
   }
+  @media all and (max-width: 600px) {
+    width: calc(100% + 30px) !important;
+    padding: 10px 0px !important;
+    margin-left: -15px !important;
+  }
 `;
 
 const NewComment = styled.div`
@@ -491,7 +508,7 @@ const NewComment = styled.div`
   }
 
   @media all and (max-width: 600px) {
-    margin-left: -15px;
+    margin-left: -15px !important;
     padding: 15px;
     width: calc(100% + 30px);
   }
@@ -565,6 +582,11 @@ const DelIcon = styled.div`
   height: fit-content;
   svg {
     color: rgba(0,0,0,.54);
+  }
+
+  @media all and (max-width: 600px) {
+    right: 15px;
+    top: -20px;
   }
 `;
 

@@ -14,7 +14,7 @@ function MainpageHeader({ store: { user } }) {
   
   return (  
     <Wrapper>
-      {window.innerWidth < 600 && !window.location.pathname.includes('id') ? null :
+      {window.innerWidth < 600 ? null :
       <header className="header" style={{ zIndex: 2, position: 'relative' }}>
         <div className="person">
           {user.length === 0

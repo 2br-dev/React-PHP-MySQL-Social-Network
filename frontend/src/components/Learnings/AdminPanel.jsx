@@ -17,6 +17,8 @@ import Loader from '../Loader/Loader';
 import API from '../functions/API';
 import { withSnackbar } from 'notistack';
 import $ from 'jquery';
+import Done from '@material-ui/icons/Done';
+import Edit from '@material-ui/icons/Edit';
 
 function TabContainer({ children, dir }) {
   return (
@@ -99,13 +101,11 @@ class AdminPanel extends React.Component {
       contentType: false,
       type: 'POST',
       success: res => {
-        console.log(res);
         self.props.onDeleteTest(self.state.preparedToDelete);
         self.setState({ loading: false, preparedToDelete: null });
         self.props.enqueueSnackbar('Тестирование успешно было удалено', { variant: 'info' });
       },
       error: err => {
-        console.log(err);
         self.props.enqueueSnackbar('Что-то пошло не так, попробуйте снова', { variant: 'error' });
       }
     }); 
@@ -125,8 +125,8 @@ class AdminPanel extends React.Component {
             textColor="primary"
             variant="fullWidth"
           >
-            <Tab label="Завершенные" />
-            <Tab label="Созданные" />
+            <Tab label="Завершенные" icon={<Done />} />
+            <Tab label="Созданные" icon={<Edit />} />
           </Tabs>
         </AppBar>
 

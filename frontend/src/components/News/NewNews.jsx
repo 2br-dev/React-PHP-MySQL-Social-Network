@@ -205,6 +205,9 @@ const Icon = styled.div`
   }
   @media all and (max-width: 600px) {
     right: 15px;
+    svg {
+      font-size: 24px !important;
+    }
   }
 `;
 

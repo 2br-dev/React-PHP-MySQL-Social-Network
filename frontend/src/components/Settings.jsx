@@ -16,6 +16,9 @@ if (window.location.pathname === '/settings') {
   $(document.body).css({
     background: 'linear-gradient(to bottom right,#00c5fe,#9de3dc,#0d11b4)'
   })
+  $('#root').css({
+    overflow: 'hidden'
+  })
 }
 
 const styles = {
@@ -24,7 +27,9 @@ const styles = {
     margin: '10px auto',
     position: 'relative',
     padding: window.innerWidth < 600 ? '20px 15px 80px' : '20px 40px 80px',
-    zIndex: 37
+    zIndex: 37,
+    overflow: window.innerWidth < 600 ? 'scroll' : 'auto',
+    maxHeight: window.innerWidth < 600 ? '95vh' : 'unset',
   },
   input: {
     width: '100%',
@@ -34,7 +39,7 @@ const styles = {
     left: 0,
     right: 0,
     width: 120,
-    bottom: 25,
+    bottom: -60,
     margin: 'auto'
   },
   upload: {
@@ -200,7 +205,7 @@ class Settings extends Component {
 
         <Paper style={{ ...styles.default }} elevation={1}>
 
-          <form id="personal-info" action="" method="POST" encType="multipart/form-data">
+          <form id="personal-info" action="" method="POST" encType="multipart/form-data" style={{ position: 'relative' }}>
             {uploadedAvatar ?
               <div style={{ ...styles.avatar, background: `url(${uploadedAvatar}) no-repeat center/cover` }}></div> :
               <div style={{ ...styles.avatar, background: `url(${avatar ? avatar : DefaultAvatar}) no-repeat center/cover` }}></div>}

@@ -16,4 +16,8 @@ const Container = styled.div`
   justify-content: center;
   height: 100px;
   width: 100%;
+  
+  @media all and (max-width: 600px) {
+    height: calc(100vh - 115px);
+  }
 `;

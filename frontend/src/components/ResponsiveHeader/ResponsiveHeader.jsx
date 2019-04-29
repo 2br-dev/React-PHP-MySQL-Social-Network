@@ -1,19 +1,39 @@
 import React from 'react';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
+import UserAvatar from './UserAvatar';
+import Dropdown from '../DropdownActions/Dropdown';
 
-export default function ResponsiveHeader(props) {
+export default function ResponsiveHeader({ title }) {
   return (
     <Wrapper>
-      <Typography variant='h6'>{props.title}</Typography>
+      <UserAvatar />
+      <Typography variant='h6'>{title}</Typography>
+      <Dropdown />
     </Wrapper>
   )
 }
 
 const Wrapper = styled.div`
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); 
-  height: 80px;
-  padding: 36px 20px 15px;
-  font-size: 24px;
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-height: 60px;
+  position: fixed;
+  top: 0;
+  width: 100%;
   background: #fff;
+  z-index: 10;
+
+  h6 {
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  & :last-child {
+    margin: 0;
+    width: 35px;
+  }
 `;
