@@ -212,7 +212,6 @@ class ChatRoom extends Component {
   render() {
     const { loading, editing, deleting } = this.state;
     const { room } = this.props.store;
-    let avatar = room.user.avatar;
 
     return (
       <Room>
@@ -223,7 +222,7 @@ class ChatRoom extends Component {
           {room.hasOwnProperty('user') ?
           <Link to={`/id${room.user.id}`}>
             <div className='room-header__user'>
-              <div className='room-header__avatar' style={{ background: `url(${room.user.avatar !== '' ? avatar : defaultAvatar}) no-repeat center/cover`}}></div>
+              <div className='room-header__avatar' style={{ background: `url(${room.user.avatar !== '' ? room.user.avatar : defaultAvatar}) no-repeat center/cover`}}></div>
                 <div className='room-header__info'>
                   <Typography variant='subtitle2'>{room.user.name} {room.user.surname}</Typography>
                   <Typography variant='caption'>{room.user.position}</Typography>
