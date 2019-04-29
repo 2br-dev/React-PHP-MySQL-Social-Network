@@ -68,5 +68,5 @@ if ($num > 0) {
 } else {
 
     // tell the user no news found
-    echo json_encode(array("message" => "No news found."));
+    echo json_encode(array("records" => []));
 }

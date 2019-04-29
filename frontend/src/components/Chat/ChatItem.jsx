@@ -7,38 +7,38 @@ import Avatar from '@material-ui/core/Avatar';
 import defaultAvatar from '../img/photos/images.png';
 import styled from 'styled-components';
 import moment from 'moment';
-/* import NotReaded from '@material-ui/icons/Done';
-import Readed from '@material-ui/icons/DoneAll'; */
+import { connect} from 'react-redux';
+import Badge from '@material-ui/core/Badge';
 
 function Friend(props) {
-  let avatar = props.friend.avatar;
 
   const cropString = string => {
     if (string.length < 137) return string;
     return `${string.substring(0,137)}...`;
   }
 
-  const getTime = (time, date, readed) => {
+  const getTime = (time, date) => {
     const fromDayStart = moment().startOf('day').format();
     const dateFromNow = moment(date, "DD.MM.YYYY").format();
-   /*  let icon = null;
-
-    readed === '1' ? icon = <Readed /> : icon = <NotReaded />;   */ 
     
-    /**
-    |--------------------------------------------------
-    | здесь проблема с моментом, считает почему с ошибкой на день
-    | внизу заккоментирован правильный ретурн по логике
-    |--------------------------------------------------
-    */
     if (!moment(fromDayStart).isSame(dateFromNow, 'day')) {
-      return <Time>{/* props.friend.id === props.friend.message.user ? icon : null */}<Typography variant="subtitle2" color='primary'>{moment(date, "DD.MM.YYYY").calendar().slice(0,-4)} {time}</Typography></Time>
-      /* return <Time>{icon}<Typography variant="subtitle2" color='primary'>{moment(date).fromNow()}</Typography></Time> */
+      return <Time><Typography variant="subtitle2" color='primary'>{moment(date, "DD.MM.YYYY").calendar().slice(0,-4)} {time}</Typography></Time>
     }
 
     return (
-      <Time>{/* props.friend.id === props.friend.message.user ? icon : null */}<Typography variant="subtitle2" color='primary'>{props.friend.message.time}</Typography></Time>
+      <Time><Typography variant="subtitle2" color='primary'>{props.friend.message.time}</Typography></Time>
     )
+  }
+
+  function isHaveUnreaded(chat) {
+    const { store: { unreaded : { chats }}} = props;
+    const index = chats.findIndex(item => item.chat_id === chat);
+    
+    if (index >= 0) {
+      return chats[index].unreaded; 
+    } else {
+      return null;
+    }
   }
   
   return (
@@ -51,7 +51,7 @@ function Friend(props) {
         <Avatar
           style={{ height: 50, width: 50 }}
           alt={`${props.friend.name} ${props.friend.surname}`}
-          src={props.friend.avatar !== '' ? avatar : defaultAvatar}
+          src={props.friend.avatar !== '' ? props.friend.avatar : defaultAvatar}
         />
       </ListItemAvatar>
       <ListItemText
@@ -68,6 +68,15 @@ function Friend(props) {
               {props.friend.id === props.friend.message.user ? `${props.friend.name} ${props.friend.surname}:` : 'Вы:'}
             </Typography>
             {` — ${cropString(props.friend.message.body)} `} 
+            <Badge 
+              color="secondary" 
+              badgeContent={isHaveUnreaded(props.friend.message.chat)}
+              style={{
+                position: 'absolute',
+                right: 45,
+                top: 45
+              }}  
+            >{null}</Badge>
           </Fragment>
         : null}    
       />
@@ -89,4 +98,7 @@ const MessageHeader = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-export default Friend;
+export default connect(state => ({ store: state }),
+  dispatch => ({
+    onFetchUser: user => dispatch({ type: 'FETCH_USER', payload: user }),
+}))(Friend);

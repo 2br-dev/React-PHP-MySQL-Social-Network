@@ -64,6 +64,34 @@ class Message
         }
     }
 
+    function read_messages() 
+    {
+        $query = "UPDATE " . $this->table_name . "
+        SET readed = :readed
+        WHERE chat = :chat AND user != :user";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        $this->readed = 1;
+        // sanitize
+        $this->readed = htmlspecialchars(strip_tags($this->readed));
+        $this->chat = htmlspecialchars(strip_tags($this->chat));
+        $this->user = htmlspecialchars(strip_tags($this->user));
+
+        // bind new values
+        $stmt->bindParam(':readed', $this->readed);
+        $stmt->bindParam(':chat', $this->chat);
+        $stmt->bindParam(':user', $this->user);
+
+        // execute the query
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
     function readByChat()
     {
         $chat_id = $this->chat;

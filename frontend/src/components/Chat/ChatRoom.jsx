@@ -24,17 +24,42 @@ class ChatRoom extends Component {
     deleteID: null,
     editID: null
   }
+
   interval = null;
+  chatInteral = null;
 
   componentDidMount = () => {
     this.getMessages();
     this.interval = setInterval(() => this.getMessages(), 5000);
+
+    this.chatInteral = setInterval(() => this.readMessages(), 2000);
   }
 
   componentWillUnmount = () => {
     clearInterval(this.interval);
+    clearInterval(this.chatInteral);
   }
   
+  readMessages = () => {
+    const self = this;
+    const formData = new FormData();
+    formData.append('chat_id', this.props.store.room.chat_id); 
+
+    $.ajax({
+      url: `${API}/api/message/set_readed.php`,
+      data: formData,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      success: () => {
+        if (self.props.store.unreaded.chats.find(chat => chat.chat_id === self.props.store.room.chat_id)) {
+          self.props.readChat(self.props.store.room.chat_id);
+          document.getElementById('reloadNavigation').click();
+        }
+      }
+    });
+  }
+
   getMessages = () => {
     const formData = new FormData();
     const self = this;
@@ -51,7 +76,6 @@ class ChatRoom extends Component {
         if (res.messages) self.props.getMessages(res.messages);      
       }
     });
-
   }
 
   handleEdit = (e) => this.setState({ editText: e.target.value });
@@ -114,6 +138,8 @@ class ChatRoom extends Component {
         self.props.addMessage(message);
         self.setState({ newMessage: '' })
         self.getMessages();
+        clearInterval(self.chatInteral);
+        self.chatInteral = setInterval(() => self.readMessages(), 2000);
       }
     });
   }
@@ -231,10 +257,13 @@ class ChatRoom extends Component {
           </Link> : null}
         </RoomHeader>
 
-        {loading ? <Loader minHeight={250} color='primary' /> : <Messages 
-          editMessage={this.editMessage.bind(this)} 
-          handleDelete={this.handleDelete.bind(this)}
-        />}
+        {loading 
+          ? <Loader minHeight={250} color='primary' /> 
+          : <Messages 
+              editMessage={this.editMessage.bind(this)} 
+              handleDelete={this.handleDelete.bind(this)}
+            />
+        }
 
         {editing ? <EditMessageInput 
           closeEditing={this.closeEditing.bind(this)} 
@@ -329,6 +358,9 @@ export default connect(
     },
     deleteChat: (chat_id) => {
       dispatch({ type: 'DELETE_CHAT', payload: chat_id })
+    },
+    readChat: (chat_id) => {
+      dispatch({ type: 'READ_CHAT', payload: chat_id })
     },
   })
 )(ChatRoom);

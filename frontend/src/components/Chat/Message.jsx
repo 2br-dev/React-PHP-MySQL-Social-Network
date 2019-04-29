@@ -3,17 +3,13 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import defaultAvatar from '../img/photos/images.png';
 import { Typography, Tooltip } from '@material-ui/core';
-/* import NotReaded from '@material-ui/icons/Done';
-import Readed from '@material-ui/icons/DoneAll'; */
+import NotReaded from '@material-ui/icons/Done';
+import Readed from '@material-ui/icons/DoneAll';
 import moment from 'moment';
 import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
 
 function Message(props) { 
-  let prodUrl = '';
-  /* if (!window.location.host.includes('localhost')) {
-    prodUrl = `frontend/public/`;
-  }  */
 
   function isToday(date) {
     const fromDayStart = moment().startOf('day').format();
@@ -32,8 +28,8 @@ function Message(props) {
     <Container style={ room.user.id !== props.message.user ? { flexDirection: 'row-reverse'} : {}}>
       <Avatar 
         style={ room.user.id !== props.message.user 
-          ? { background: `url(${prodUrl}${user.avatar ? user.avatar : defaultAvatar}) no-repeat center/cover` } 
-          : { background: `url(${prodUrl}${room.user.avatar? room.user.avatar : defaultAvatar}) no-repeat center/cover` } 
+          ? { background: `url(${user.avatar ? user.avatar : defaultAvatar}) no-repeat center/cover` } 
+          : { background: `url(${room.user.avatar? room.user.avatar : defaultAvatar}) no-repeat center/cover` } 
         }>
       </Avatar>  
       <Body>
@@ -53,7 +49,7 @@ function Message(props) {
         <Typography className='message-time' variant='subtitle2' color='primary'>    
           {isToday(props.message.date)} {props.message.time}
           {props.message.edited === '1' ? ' отредактировано' : null}
-          {/* room.user.id !== props.message.user ? props.message.readed === '1' ? <Readed /> : <NotReaded /> : null */}
+          {room.user.id !== props.message.user ? props.message.readed === '1' ? <Readed /> : <NotReaded /> : null}
         </Typography>
       </Body>  
     </Container>

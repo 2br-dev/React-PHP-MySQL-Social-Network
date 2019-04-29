@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 
 library.add(faComments, faHeart, faEnvelope, faEdit)
 
-function App({ store: { news }, enqueueSnackbar, onFetchFeed, setUnreadedFeed, onFetchNews, onFetchUser }) {
+function App({ enqueueSnackbar, onFetchFeed, setUnreadedFeed, onFetchNews, onFetchUser, onGetNewFeed, setUnreadedMessages, store: { unreaded } }) {
   /**
    * @interval - дефолтные интервал получения данных с запросов
    * @snackbarProps - дефолтные параметры снэкбара
@@ -28,6 +28,32 @@ function App({ store: { news }, enqueueSnackbar, onFetchFeed, setUnreadedFeed, o
     fetch(`${API}/api/user/info.php`)
       .then(response => response.json())
       .then(user => onFetchUser(user))
+  }, [])
+
+
+  /**
+   * получаем непрочитанные сообщения каждые @interval секунд
+  **/
+  useEffect(() => {
+    let initial = true;
+
+    function fetchMessages() {
+      if (initial || window.location.pathname !== '/messages') {
+        fetch(`${API}/api/message/getUnreaded.php`)
+          .then(response => response.json())
+          .then(res => {
+            if (res.unreaded.new > unreaded.messages) {
+              setUnreadedMessages(res.unreaded);
+              reloadNavigation();
+              if (!initial) showSnackbar(res.messages, res.messages.length)
+            }
+            initial = false;
+          })
+      }
+    }
+
+    fetchMessages();
+    setInterval(() => fetchMessages(), interval)
   }, [])
 
   /**
@@ -53,30 +79,6 @@ function App({ store: { news }, enqueueSnackbar, onFetchFeed, setUnreadedFeed, o
       return feed.findIndex(item => item.created_at === timestamp);
     }
 
-    function showSnackbar(feed, times) {
-      for (let i = 0; i < times; i++) {
-        switch (feed[i].type) {
-          case 'news':
-            enqueueSnackbar(`Новость. ${feed[i].name} ${feed[i].surname} — ${feed[i].title}`, snackbarProps);
-            break;
-          case 'likes':
-            enqueueSnackbar(`Пользователю ${feed[i].name} ${feed[i].surname} понравилась ваша запись — ${feed[i].title}`, snackbarProps);
-            break;
-          case 'tasks':
-            enqueueSnackbar(`Новая задача ${feed[i].importance === '1' ? ' c пометкой "Важное" ' : ''} от ${feed[i].name} ${feed[i].surname} — ${feed[i].text}`, snackbarProps);
-            break;
-          case 'messages':
-            enqueueSnackbar(`Новое сообщение от ${feed[i].name} ${feed[i].surname}`, snackbarProps);
-            break;
-          case 'comments':
-            enqueueSnackbar(`Пользователь ${feed[i].name} ${feed[i].surname} — оставил комментарий к вашей записи: ${feed[i].title}`, snackbarProps);
-            break;
-          case 'events':
-            enqueueSnackbar(`Новое событие в календаре — ${feed[i].title}`, snackbarProps);
-            break;
-          default: return Infinity;  
-    }}}
-
     fetchFeed();
     setInterval(() => fetchFeed(), interval)
   }, []);
@@ -101,6 +103,40 @@ function App({ store: { news }, enqueueSnackbar, onFetchFeed, setUnreadedFeed, o
     setInterval(() => fetchNews(), interval)
   }, [])
   
+  function showSnackbar(feed, times) {
+    for (let i = 0; i < times; i++) {
+      switch (feed[i].type) {
+        case 'news':
+          onGetNewFeed('news');
+          reloadNavigation();
+          enqueueSnackbar(`Новость. ${feed[i].name} ${feed[i].surname} — ${feed[i].title}`, snackbarProps);
+          break;
+        case 'likes':
+          enqueueSnackbar(`Пользователю ${feed[i].name} ${feed[i].surname} понравилась ваша запись — ${feed[i].title}`, snackbarProps);
+          break;
+        case 'tasks':
+          onGetNewFeed('tasks');
+          reloadNavigation();
+          enqueueSnackbar(`Новая задача ${feed[i].importance === '1' ? ' c пометкой "Важное" ' : ''} от ${feed[i].name} ${feed[i].surname} — ${feed[i].text}`, snackbarProps);
+          break;
+        case 'messages':
+          enqueueSnackbar(`Новое сообщение от ${feed[i].name} ${feed[i].surname}`, snackbarProps);
+          break;
+        case 'comments':
+          enqueueSnackbar(`Пользователь ${feed[i].name} ${feed[i].surname} — оставил комментарий к вашей записи: ${feed[i].title}`, snackbarProps);
+          break;
+        case 'events':
+          onGetNewFeed('events');
+          reloadNavigation();
+          enqueueSnackbar(`Новое событие в календаре — ${feed[i].title}`, snackbarProps);
+          break;
+        default: return Infinity;  
+  }}}
+  
+  function reloadNavigation() {
+    document.getElementById('reloadNavigation').click();
+  }
+
   return (
     <BrowserRouter>
       <Switch>
@@ -121,7 +157,9 @@ export default connect(state => ({ store: state }),
     onFetchUser: user => dispatch({ type: 'FETCH_USER', payload: user }),
     onFetchFeed: feed => dispatch({ type: 'FETCH_FEED', payload: feed }),
     onFetchNews: news => dispatch({ type: 'FETCH_NEWS', payload: news }),
-    setUnreadedFeed: count => dispatch({ type: 'UNREADED_FEED', payload: count })
+    setUnreadedFeed: count => dispatch({ type: 'UNREADED_FEED', payload: count }),
+    setUnreadedMessages: count => dispatch({ type: 'UNREADED_MESSAGES', payload: count }),
+    onGetNewFeed: type => dispatch({ type: 'NEW_FEED', payload: type }),
 }))(withSnackbar(App));
 
 

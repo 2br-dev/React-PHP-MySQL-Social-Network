@@ -25,13 +25,7 @@ class Chat extends Component {
       success: function (res) {
         self.setState({ loading: false });
 
-        if (res[0].chats) {
-          let result = res[0].chats;
-          result.forEach(item => {
-            item.users = item.users.replace(res.user_id, '').replace(',', '').trim();
-          }) 
-          self.props.getChats(res[0].chats);
-        }
+        if (res[0].chats) self.props.getChats(res[0].chats);
       }
     });
   }

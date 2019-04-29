@@ -220,7 +220,7 @@ const DayScaleCellBase = ({ classes, ...restProps }) => {
 
 const DayScaleCell = withStyles(style, { name: 'DayScaleCell' })(DayScaleCellBase);
 
-function Calendar({ onFetchEvents, store: { user, events } }) {
+function Calendar({ onReadEvents, onFetchEvents, store: { user, events, unreaded } }) {
   const [isOpen, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
@@ -229,6 +229,17 @@ function Calendar({ onFetchEvents, store: { user, events } }) {
       .then(response => response.json())
       .then(events => onFetchEvents(events))
   }, []);
+
+  useEffect(() => {
+    let timeout = null;
+    if (unreaded.events > 0) {
+      timeout = setTimeout(() => {
+        document.querySelector('.eventsBadge span').style.display = 'none';
+        onReadEvents();
+      }, 2000)
+    }
+    return () => window.clearTimeout(timeout)
+  });
 
   return (
     <Fragment>
@@ -316,5 +327,6 @@ export default connect(
     onDeleteEvent: (id) => {
       dispatch({ type: 'DELETE_EVENT', payload: id })
     },
+    onReadEvents: () => dispatch({ type: "READ_EVENTS" }),  
   })
 )(Calendar);

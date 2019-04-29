@@ -16,6 +16,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import AppBar from '@material-ui/core/AppBar';
 
+var tasksTimeout = null;
+
 class Tasks extends Component {
   state = {
     open: false,
@@ -25,7 +27,15 @@ class Tasks extends Component {
     users: [],
     value: 0
   }
+
   componentDidMount = () => {
+    if (this.props.store.unreaded.tasks > 0) {
+      tasksTimeout = setTimeout(() => {
+        document.querySelector('.tasksBadge span').style.display = 'none';
+        this.props.onReadTasks();
+      }, 2000)
+    }
+
     fetch(`${API}/api/tasks/read.php`)
       .then(response => response.json())
       .then(tasks => {
@@ -37,6 +47,10 @@ class Tasks extends Component {
     fetch(`${API}/api/user/read.php`)
       .then(response => response.json())
       .then(users => this.setState({ users: users.data }))
+  }
+
+  componentWillUnmount() {
+    window.clearTimeout(tasksTimeout);
   }
 
   handleChange = (event, value) => this.setState({ value });
@@ -207,6 +221,7 @@ export default connect(
     },
     getTasks: (tasks) => {
       dispatch({ type: 'FETCH_TASKS', payload: tasks })
-    }
+    },
+    onReadTasks: () => dispatch({ type: "READ_TASKS" }),  
   })
 )(withSnackbar(Tasks));

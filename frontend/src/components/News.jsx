@@ -16,6 +16,8 @@ import WarningIcon from '@material-ui/icons/Warning';
 import { withSnackbar } from 'notistack';
 import ResponsiveHeader from './ResponsiveHeader/ResponsiveHeader';
 
+var newsTimeout = null;
+
 class News extends Component {
   constructor(props) {
     super(props);
@@ -44,6 +46,20 @@ class News extends Component {
     this.showNews = this.showNews.bind(this);
     this.changeImportance = this.changeImportance.bind(this)
   }
+
+  componentDidMount() {
+    if (this.props.store.unreaded.news > 0) {
+      newsTimeout = setTimeout(() => {
+        document.querySelector('.newsBadge span').style.display = 'none';
+        this.props.onReadNews();
+      }, 2000)
+    }
+  }
+
+  componentWillUnmount() {
+    window.clearTimeout(newsTimeout);
+  }
+
 
   handleChange = e => this.setState({ [e.target.name]: e.target.value, invalidText: false, invalidTopic: false });
 
@@ -334,7 +350,7 @@ class News extends Component {
 
                   {editing !== item.id ?
                     <Fragment>
-                      <Typography variant='h6'>{item.title.replace(/&quot;/g, `"`)}</Typography>
+                      <Typography variant='h6' style={{ fontSize: '1.1rem', fontWeight: 400 }}>{item.title.replace(/&quot;/g, `"`)}</Typography>
                       <Body><Typography variant='body2'>{item.text.replace(/&quot;/g, `"`)}</Typography></Body>
                     </Fragment>
                     :
@@ -546,5 +562,6 @@ export default connect(state => ({ store: state }),
     onDeleteNews: id => dispatch({ type: 'DELETE_NEWS', payload: id }),
     onAddLike: (id, user_id) => dispatch({ type: 'ADD_LIKE', payload: id, user_id }),
     onRemoveLike: (id, user_id) => dispatch({ type: 'REMOVE_LIKE', payload: id, user_id }),
+    onReadNews: () => dispatch({ type: "READ_NEWS" }),  
   }),
 )(withSnackbar(News));
