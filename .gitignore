@@ -12,3 +12,4 @@ protected/config/db
 .idea
 .vscode
 bugs.txt
+/frontend/node_modules

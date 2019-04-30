@@ -233,4 +233,17 @@ input[name="password"] {
   .settings-avatar {
     margin: 0 auto 35px !important;
   }
+
+  .login-screen-greetings {
+    display: none;
+  }
+  .login-button-container {
+    margin: 0 !important;
+  }
+  .login-screen-container {
+    top: 0 !important;
+  }
+  .form-container {
+    height: calc(100vh - 50px) !important;
+  }
 }
