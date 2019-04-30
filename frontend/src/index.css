@@ -230,4 +230,8 @@ input[name="password"] {
     align-items: center;
     justify-content: center;
   } 
+
+  .settings-avatar {
+    margin: 0 auto 35px !important;
+  }
 }

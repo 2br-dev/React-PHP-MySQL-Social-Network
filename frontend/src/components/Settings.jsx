@@ -13,9 +13,11 @@ import { withSnackbar } from 'notistack';
 import { DatePicker } from 'material-ui-pickers';
 
 if (window.location.pathname === '/settings') {
-  $(document.body).css({
-    background: 'linear-gradient(to bottom right,#00c5fe,#9de3dc,#0d11b4)'
-  })
+  if (window.innerWidth >= 600) {
+    $(document.body).css({
+      background: 'linear-gradient(to bottom right,#00c5fe,#9de3dc,#0d11b4)'
+    })
+  }
   $('#root').css({
     overflow: 'hidden'
   })
@@ -23,13 +25,15 @@ if (window.location.pathname === '/settings') {
 
 const styles = {
   default: {
-    width: window.innerWidth < 600 ? '95%' : 600,
+    width: window.innerWidth < 600 ? '100%%' : 600,
     margin: '10px auto',
     position: 'relative',
     padding: window.innerWidth < 600 ? '20px 15px 80px' : '20px 40px 80px',
     zIndex: 37,
     overflow: window.innerWidth < 600 ? 'scroll' : 'auto',
-    maxHeight: window.innerWidth < 600 ? '95vh' : 'unset',
+    background: window.innerWidth < 600 ? 'transparent' : '#fff',
+    maxHeight: window.innerWidth < 600 ? 'unset' : 'unset',
+    boxShadow: window.innerWidth < 600 ? 'unset' : '0px 1px 3px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12)',
   },
   input: {
     width: '100%',
@@ -47,7 +51,8 @@ const styles = {
     color: 'white',
     margin: 'auto',
     cursor: 'pointer',
-    position: 'relative'
+    position: 'relative',
+    width: window.innerWidth < 600 ? '100%' : 'unset'
   },
   hiddenInput: {
     opacity: 0,
@@ -207,8 +212,8 @@ class Settings extends Component {
 
           <form id="personal-info" action="" method="POST" encType="multipart/form-data" style={{ position: 'relative' }}>
             {uploadedAvatar ?
-              <div style={{ ...styles.avatar, background: `url(${uploadedAvatar}) no-repeat center/cover` }}></div> :
-              <div style={{ ...styles.avatar, background: `url(${avatar ? avatar : DefaultAvatar}) no-repeat center/cover` }}></div>}
+              <div class='settings-avatar' style={{ ...styles.avatar, background: `url(${uploadedAvatar.slice(16)}) no-repeat center/cover` }}></div> :
+              <div class='settings-avatar' style={{ ...styles.avatar, background: `url(${avatar ? avatar.slice(16) : DefaultAvatar}) no-repeat center/cover` }}></div>}
             <Button variant="contained" style={{ ...styles.upload }}>
               Загрузить фото профиля
             <Icon style={{ marginLeft: 10 }}>cloud_upload</Icon>

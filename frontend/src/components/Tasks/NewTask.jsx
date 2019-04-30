@@ -24,8 +24,8 @@ class NewTask extends Component {
   changeImportance = () => this.setState({ importance: !this.state.importance });
   resetAll = () => {
     this.setState({
-      selectedDate: new Date(),
-      selectedTime: new Date(),
+      selectedDate: null,
+      selectedTime: null,
       multi: [],
       text: '',
       importance: 0

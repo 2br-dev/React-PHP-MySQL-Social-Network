@@ -85,6 +85,16 @@ const theme = createMuiTheme({
       colorTextSecondary: {
         position: 'relative'
       }
+    },
+    MuiPickersModal: {
+      dialogRoot: {
+        height: window.innerWidth < 600 ? '100vh' : 'fit-content'
+      }
+    },
+    MuiDialog: {
+      paperScrollPaper : {
+        maxHeight: window.innerWidth < 600 ? 'calc(100vh - 96px)' : 'calc(100% - 96px)'
+      }
     }
   },
 });

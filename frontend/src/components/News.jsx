@@ -15,6 +15,7 @@ import ConfirmDelete from './News/ConfirmDelete';
 import WarningIcon from '@material-ui/icons/Warning';
 import { withSnackbar } from 'notistack';
 import ResponsiveHeader from './ResponsiveHeader/ResponsiveHeader';
+import moment from 'moment';
 
 var newsTimeout = null;
 
@@ -290,14 +291,15 @@ class News extends Component {
       margin-top: ${margin}px;
       svg {
         color: rgba(0,0,0,.15);
-        margin-right: 5px;  
+        margin-right: 8px;  
       }
     `;
     return (
-      <Important>
-        <WarningIcon />
-        <Typography variant='caption'>Отмечено как "Важное"</Typography>            
-      </Important>
+      <Tooltip placement='top' title='Отмечено как важное'>
+        <Important>
+          <WarningIcon />          
+        </Important>
+      </Tooltip>
     )
   }
 
@@ -330,8 +332,9 @@ class News extends Component {
                       ?
                       <Fragment>
                         <Typography variant='caption'>
+                          {this.createImportantBar(0)}
                           <Typography variant='subtitle2'>Вы</Typography>
-                          {item.date}
+                          {moment(Number(item.created_at)).fromNow()}
                         </Typography>
                         <Icon>
                           <Tooltip placement='left' title="Удалить">
@@ -341,12 +344,11 @@ class News extends Component {
                       </Fragment>
                       :
                       <Typography variant='caption'>
+                        {this.createImportantBar(0)}
                         <Typography variant='subtitle2'>{item.author}</Typography>
-                        {item.date}
+                        {moment(Number(item.created_at)).fromNow()}
                       </Typography>}
                   </NewsInfo>
-
-                  {item.importance === '1' ? this.createImportantBar(0) : null}
 
                   {editing !== item.id ?
                     <Fragment>
@@ -467,13 +469,14 @@ const NewsContainer = styled.div`
     transition: .37s ease;
   }
   @media all and (max-width: 600px) {
-    padding: 10px 20px 10px 80px;
+    padding: 10px 10px 10px 70px;
   }
 `;
 const Body = styled.div`
   padding: 10px 15px;
   margin-top: 10px;
-  background: rgba(0,0,0,0.015);
+  background: #fafafa;
+  border-radius: 10px;
 `;
 const NewsInfo = styled.div`
   position: relative;
@@ -484,12 +487,13 @@ const NewsInfo = styled.div`
 
   span {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     h6 {
-      margin-right: 10px;
+      margin-right: 7.5px;
       :after {
-        content: '\00b7';
-        margin-left: 10px;
+        content: '⋆';
+        margin-left: 7.5px;
+        opacity: 0.37;
       }
     }
   }
@@ -502,8 +506,10 @@ const UserAvatar = styled.div`
   width: 80px;
   height: 80px;
   @media all and (max-width: 600px) {
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
+    left: 10px;
+    top: 15px;
   }
 `;
 

@@ -15,8 +15,9 @@ class News
     public $importance;
     public $likes;
     public $liked_by;
-    public $created;
     public $author_id;
+    public $created;
+    public $created_at;
     public $who;
     public $news_id;
 

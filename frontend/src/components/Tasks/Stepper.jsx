@@ -24,7 +24,7 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 2,
   },
   resetContainer: {
-    padding: theme.spacing.unit * 3,
+    padding: window.innerWidth < 600 ? 0 : theme.spacing.unit * 3,
   },
 });
 
@@ -146,7 +146,7 @@ class VerticalLinearStepper extends React.Component {
               color="primary"
               className={classes.button}
             >
-              Поставить ещё задачу
+              {window.innerWidth < 600 ? 'Поставить ещё' : 'Поставить ещё задачу'}
             </Button>
             <Button 
               onClick={this.props.handleClose} 

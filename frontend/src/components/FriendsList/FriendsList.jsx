@@ -92,7 +92,7 @@ function FriendList({ onFetchFriends, setOnline, filterFriends, store: { friends
             handleSearch={handleSearch} 
             searchValue={searchValue}
           />
-          <List>
+          <List style={{ marginTop: 20 }}>
             {friends.map(friend  => 
               <Link 
                 key={friend.id} 

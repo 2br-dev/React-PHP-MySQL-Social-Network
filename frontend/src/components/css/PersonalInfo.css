@@ -92,7 +92,7 @@ input[type=date]::-webkit-inner-spin-button {
 }
 @media all and (max-width: 600px) {
   .personal-header {
-    padding: 20px;
+    padding: 40px 20px 20px;
     flex-direction: column;
   }
   .personal-header__info {
@@ -101,7 +101,11 @@ input[type=date]::-webkit-inner-spin-button {
   }
   .personal-header__photo {
     width: unset;
-    margin: unset;
+    margin-top: unset;
+    margin-right: 20px;
+  }
+  .personal-header__photo > div {
+    margin-bottom: 20px;
   }
   .personal-section {
     padding: 0 15px;

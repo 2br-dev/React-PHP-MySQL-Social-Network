@@ -56,7 +56,8 @@ if ($num > 0) {
             'likes'       => $likes,
             'liked_by'    => $liked_by,
             'comments'    => $comments,
-            'avatar'      => $user_data['avatar']
+            'avatar'      => $user_data['avatar'],
+            'created_at'  => $created_at
         );
 
         array_push($news_arr["records"], $news_item);

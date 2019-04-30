@@ -11,6 +11,8 @@ import CloseIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { withSnackbar } from 'notistack';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 class SingleNews extends Component {
   constructor(props) {
@@ -180,40 +182,47 @@ class SingleNews extends Component {
    
     return (
       <Fragment>
-        <Single  id='single-news'>
+        <Single id='single-news'>
           {loading ? <Loader minHeight={500} color='primary' /> :
             <Fragment>
               <Tooltip placement='left' title='Закрыть'>
                 <Icon><CloseIcon onClick={closeNews} /></Icon>
               </Tooltip>
 
-              <PostHeader>
-                <Avatar style={{ background: `url(${currentNews.avatar ? userAvatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
-                <Typography variant='subtitle2'>{currentNews.author}</Typography>            
-              </PostHeader>
+              <Link to={`/id${currentNews.author_id}`} style={{ textDecoration: 'none' }}>
+                <PostHeader>
+                  <Avatar style={{ background: `url(${currentNews.avatar ? userAvatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
+                  <Typography variant='subtitle2'>{currentNews.author}</Typography>            
+                </PostHeader>
+              </Link>
 
-              {currentNews.importance === '1' ? this.props.createImportantBar(10) : null}
-
-              <Typography variant='h5'>{currentNews.title.replace(/&quot;/g, `"`)}</Typography>
+              <Typography variant='h5' style={{ display: 'flex', alignItems: 'center' }}>
+                <span></span>
+                {currentNews.importance === '1' ? this.props.createImportantBar(0) : null}
+                {currentNews.title.replace(/&quot;/g, `"`)}
+              </Typography>
 
               <PostContent>
                 <Typography variant='body1'>{currentNews.text.replace(/&quot;/g, `"`)}</Typography>
-                <Typography variant='caption'>{currentNews.date}</Typography>
+                <Typography variant='caption'>{moment(Number(currentNews.created_at)).fromNow()}</Typography>
               </PostContent>
 
               <PostLikes>
                 <Typography variant='subtitle2'>{currentNews.likes} {this.props.getNoun(currentNews.likes)} "Нравится"</Typography>
+                <div style={{ maxWidth: '50vw', display: 'flex', overflow: 'overlay' }}>
                 {/* eslint-disable-next-line*/}
                 {likedBy.map((user, i) => {
-
-                  while (i < 7) {
+                  while (i < 5) {
                     return (
                       <Tooltip key={i} title={`${user.name} ${user.surname}`} placement="top">
-                        <Avatar style={{ background: `url(${user.avatar ? user.avatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
+                        <Link to={`/id${user.id}`}>
+                          <Avatar style={{ background: `url(${user.avatar ? user.avatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
+                        </Link>
                       </Tooltip>
                     )
-                  }
+                  }      
                 })}
+                </div>
               </PostLikes>
 
               <PostActions id='actions-news'>
@@ -241,11 +250,12 @@ class SingleNews extends Component {
               </PostActions>
 
               <NewComment>
-                <p className='newcomment-reply'>В ответ <a href={`${window.location.origin}/id${currentNews.id}`}>{currentNews.author}</a></p>
+                <p className='newcomment-reply'>В ответ <Link to={`/id${currentNews.author_id}`}>{currentNews.author}</Link></p>
                 <div className='newcomment-input'>
-                  <Avatar style={{ background: `url(${user.avatar ? user.avatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar>
+                  <Link to={`/id${user.id}`}><Avatar style={{ background: `url(${user.avatar ? user.avatar : DefaultAvatar}) no-repeat center/cover` }}></Avatar></Link>
                   <TextArea>
                     <TextField
+                      style={{ top: 0 }}
                       label='Комментарий'
                       multiline
                       variant='outlined'
@@ -266,7 +276,7 @@ class SingleNews extends Component {
                       <div className='comment-header'>
                         <Avatar style={{ background: `url(${comment.avatar ? comment.avatar : DefaultAvatar}) no-repeat center/cover`, marginTop: 20 }}></Avatar>
                         <Typography variant='subtitle2'>{comment.who}</Typography>
-                        <Typography variant='caption' className='comment-date'>{comment.date}</Typography>
+                        <Typography variant='caption' className='comment-date'>{moment(Number(comment.created_at)).fromNow()}</Typography>
                       </div>
                       <div className='comment-text'>{comment.text}</div>
 
@@ -285,7 +295,7 @@ class SingleNews extends Component {
                     style={{ 
                       opacity: .5,
                       textAlign: 'center',
-                      marginTop: 37
+                      margin: '37px 0'
                     }}
                   >показаны последние комментарии
                   </Typography> 
@@ -327,7 +337,7 @@ const Single = styled.div`
     top: 0;
     max-height: calc(100vh - 55px);
     border-radius: 0;
-    padding: 15px 15px 125px;
+    padding: 15px 15px 80px;
     overflow: scroll;
     h5 {
       font-size: 18px;
@@ -336,7 +346,8 @@ const Single = styled.div`
       font-size: 16px !important;
     }
      div:first-child {
-       top: 10px;
+       top: 18px;
+       color: #f5f5f5;
     }
     svg {
       font-size: 24px !important;
@@ -437,10 +448,6 @@ const Comments = styled.div`
   padding: 15px 30px;
   position: relative;
 
-  :last-child {
-    border-bottom: none;
-  }
-
   :hover {
     background: #f5f8fa;
     transition: .37s ease;
@@ -459,14 +466,16 @@ const Comments = styled.div`
 
   .comment-text {
     padding-left: 45px;
+    padding-bottom: 10px;
   }
 
   .comment-date {
-    margin-left: 10px;
+    margin-left: 7.5px;
     color: #657786;
     :before {
-      content: '\00b7';
-      margin-right: 10px;
+      content: '⋆';
+      margin-right: 7.5px;
+      opacity: 0.37;
     }
   }
   @media all and (max-width: 600px) {
@@ -476,6 +485,9 @@ const Comments = styled.div`
     
     .comment-text {
       padding-left: 50px;
+    }
+    :last-child {
+      border-bottom: 1px solid red;
     }
   }
 `;
@@ -510,6 +522,10 @@ const NewComment = styled.div`
         text-decoration: underline;
       }
     }
+  }
+  
+  a > div {
+    margin-left: 0 !important;
   }
 
   .newcomment-input {
