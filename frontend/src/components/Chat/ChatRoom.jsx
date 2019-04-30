@@ -13,6 +13,7 @@ import EditMessageInput from './EditMessageInput';
 import DeleteModal from './DeleteModal';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import Emoji from '../Emoji/Picker';
 
 class ChatRoom extends Component {
   state = {

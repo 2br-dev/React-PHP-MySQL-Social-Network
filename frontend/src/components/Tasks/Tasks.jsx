@@ -221,7 +221,7 @@ const Wrapper = styled.div`
 
   @media all and (max-width: 600px) {
     .no-tasks {
-      height: calc(100vh - 163px);
+      height: calc(100vh - 190px);
     }
     .tasks-navigation {
       & > button > span > span {

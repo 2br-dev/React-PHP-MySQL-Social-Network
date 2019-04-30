@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import UserAvatar from './UserAvatar';
 import Dropdown from '../DropdownActions/Dropdown';
 
 export default function ResponsiveHeader({ title }) {
+  // eslint-disable-next-line
+  const [_, updateState] = useState(0);
+
   return (
-    <Wrapper>
+    <Wrapper id="updateUser" onClick={() => updateState(Math.random())}>
       <UserAvatar />
       <Typography variant='h6'>{title}</Typography>
       <Dropdown />
@@ -23,7 +26,7 @@ const Wrapper = styled.div`
   max-height: 60px;
   position: fixed;
   top: 0;
-  width: 100%;
+  width: 100vw;
   background: #fff;
   z-index: 10;
 

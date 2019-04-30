@@ -314,11 +314,11 @@ const Single = styled.div`
 
   @media all and (max-width: 600px) {
     width: 100%;
-    height: calc(100vh - 50px);
     top: 0;
-    max-height: unset;
+    max-height: calc(100vh - 56px);
     border-radius: 0;
-    padding: 15px 15px 35px;
+    padding: 15px 15px 45px;
+    overflow: scroll;
     h5 {
       font-size: 18px;
     }

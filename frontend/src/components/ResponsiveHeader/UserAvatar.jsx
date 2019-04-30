@@ -12,7 +12,7 @@ function UserAvatar({ store: { user }}) {
         ? 
           <Link to={`/id${user.id}`}>
             <Avatar 
-              style={{ background: `url(${!user.avatar ? user.avatar : noPhoto}) no-repeat center/cover` }} 
+              style={{ background: `url(${user.avatar ? user.avatar : noPhoto}) no-repeat center/cover` }} 
             />
           </Link>
         : <Loader />}
