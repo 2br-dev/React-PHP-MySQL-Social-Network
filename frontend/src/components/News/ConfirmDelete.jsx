@@ -31,6 +31,7 @@ const Wrapper = styled.div`
   bottom: 0;
   margin: auto;
   outline: none;
+  z-index: 1000;
   & > div {
     height: 100%;
     position: relative;
@@ -39,6 +40,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     z-index: 10;
+    padding-bottom: 15px;
   }
   @media all and (max-width: 600px) {
     width: 100%;

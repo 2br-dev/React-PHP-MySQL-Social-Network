@@ -101,6 +101,9 @@ const Container = styled.div`
     box-shadow: unset;
     border-radius: 0;
     padding-top: 10px;
+    height: fit-content;
+    max-height: 80vh;
+    overflow: auto;
   }
 `;
 const Header = styled.div`
@@ -205,6 +208,7 @@ const Icon = styled.div`
   }
   @media all and (max-width: 600px) {
     right: 15px;
+    top: 20px;
     svg {
       font-size: 24px !important;
     }

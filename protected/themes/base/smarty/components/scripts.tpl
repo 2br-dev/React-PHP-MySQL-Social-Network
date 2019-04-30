@@ -9,7 +9,7 @@
 } 
     {* change this *}
     <script src="/frontend/build/static/js/1.775cb97e.chunk.js"></script>
-    <script src="/frontend/build/static/js/main.a5a48091.chunk.js"></script>
+    <script src="/frontend/build/static/js/main.08a131c6.chunk.js"></script>
     
     <script src="/frontend/build/static/js/runtime~main.229c360f.js"></script>
 </body>

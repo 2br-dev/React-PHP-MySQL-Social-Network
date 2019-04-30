@@ -224,7 +224,6 @@ input[name="password"] {
   }
 
   .swipeable {
-    height: calc(100vh - 268px);
     max-height: unset !important;
     display: flex;
     align-items: center;

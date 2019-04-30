@@ -46,6 +46,7 @@ const Wrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     z-index: 10;
+    padding-bottom: 15px;
   }
   @media all and (max-width: 600px) {
     width: 100%;

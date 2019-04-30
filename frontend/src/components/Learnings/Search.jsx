@@ -39,12 +39,18 @@ const SearchWrapper = styled.div`
   }
 
   @media all and (max-width: 600px) {
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 -1px 3px rgba(0,0,0,0.12) inset, 0 -1px 2px rgba(0,0,0,0.24) inset;
     padding: 10px 20px 12px;
+    margin: 1.5px 0;
     height: 80px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    background: #fafafa;
+    & > div {
+      background: #fff;
+      margin: auto;
+    }
     label {
       line-height: .5;
     }
