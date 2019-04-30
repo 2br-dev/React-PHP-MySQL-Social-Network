@@ -30,8 +30,8 @@ export default function Result({ item }) {
     <EventWrapper>
       <UserAvatar avatar={item.avatar} type={item.type} />
       <EventContent>
-        <Typography variant='subtitle2' color='primary' style={{ marginBottom: 5 }}>{`Новое событие в календаре — ${item.title}`}</Typography>
-        <Typography variant='body1'>{`${moment(item.startDate).calendar()} — ${item.endDate.slice(-5)}`}</Typography>
+        <Typography variant='subtitle2' color='primary'>{`Новое событие в календаре — ${item.title}`}</Typography>
+        <Typography variant='body1' style={{ padding: '10px 15px', background: '#fafafa', borderRadius: 10, margin: '5px 0' }}>{`${moment(item.startDate).calendar()} — ${item.endDate.slice(-5)}`}</Typography>
 
         {item.max !== '0' && isFuture() > 0 ? <Typography variant='caption'>{getRemainingPlaces(item.max, item.signed)}</Typography> : null}
         <Typography variant='caption' style={{ marginTop: 5 }}>
@@ -48,6 +48,10 @@ const EventWrapper = styled.div`
   align-items: center;
   padding: 15px 0;
   border-bottom: 1px solid #f5f5f5;
+  
+  @media all and (max-width: 600px) {
+    align-items: flex-start;
+  }
 `;
 
 const EventContent = styled.div`

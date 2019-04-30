@@ -24,6 +24,10 @@ const LikeWrapper = styled.div`
   align-items: center;
   padding: 15px 0;
   border-bottom: 1px solid #f5f5f5;
+  
+  @media all and (max-width: 600px) {
+    align-items: flex-start;
+  }
 `;
 
 const LikeContent = styled.div`

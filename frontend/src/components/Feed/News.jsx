@@ -33,7 +33,7 @@ export default function News({ item }) {
           {item.importance === '1' ? createImportantBar() : null}
           {`${item.name} ${item.surname} — ${item.title}`}
         </Typography>
-        <Typography variant='body1' style={{ padding: '5px 0' }}>{item.text}</Typography>
+        <Typography variant='body1' style={{ padding: '10px 15px', background: '#fafafa', borderRadius: 10, margin: '5px 0' }}>{item.text}</Typography>
         <Typography variant='caption'>
           <b style={{ fontWeight: 500}}>{moment(Number(item.created_at)).calendar()}</b>
         </Typography>
@@ -47,6 +47,10 @@ const NewsWrapper = styled.div`
   align-items: center;
   padding: 15px 0;
   border-bottom: 1px solid #f5f5f5;
+  
+  @media all and (max-width: 600px) {
+    align-items: flex-start;
+  }
 `;
 
 const NewsContent = styled.div`

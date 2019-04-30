@@ -306,7 +306,7 @@ class PersonalInfo extends Component {
 
     return (
       <Paper className="personal">
-        {window.innerWidth < 600 ? <ResponsiveHeader title={`${userInfo.name} ${userInfo.surname}`} /> : null}
+        {window.innerWidth < 600 ? <ResponsiveHeader name={userInfo.name} surname={userInfo.surname} /> : null}
         {!loading ? <Form id="personal-info" action="" method="POST" onSubmit={this.handleSubmit}>
 
           <div className="personal-header">

@@ -114,7 +114,7 @@ class FriendList extends Component {
           handleSearch={this.handleSearch}
           searchValue={this.searchValue}
         />
-        <List>
+        <List style={{ marginTop: 15 }}>
           {this.state.friends.map(friend =>
             <ChatItem
               openRoom={this.openRoom.bind(this)}
@@ -144,7 +144,7 @@ class FriendList extends Component {
     }
 
     return (
-      <Paper>
+      <Paper style={{ boxShadow: 'none' }}>
         {this.state.loading ?
           <Loader minHeight={370} color='primary' />
           :

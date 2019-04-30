@@ -13,8 +13,10 @@ export default function Result({ item }) {
       <UserAvatar avatar={item.avatar} type={item.type} />
       <ResultContent>
         <Typography variant='subtitle2' color='primary'>Вы прошли тестирование</Typography>
-        <Typography variant='h3' color='primary' style={{ marginTop: 5 }}>{result}</Typography>
-        <Typography variant='caption' style={{ padding: '5px 0' }}>Оставшееся время: {item.estimated_time}</Typography>
+        <div style={{ padding: '10px 15px', background: '#fafafa', borderRadius: 10, margin: '5px 0' }}>
+          <Typography variant='h3' color='primary'>{result}</Typography>
+          <Typography variant='caption'>Оставшееся время: {item.estimated_time}</Typography>
+        </div>
         <Typography variant='caption'>
           <b style={{ fontWeight: 500}}>{moment(Number(item.created_at)).calendar()}</b>&nbsp;
           — &nbsp;
@@ -34,6 +36,10 @@ const ResultWrapper = styled.div`
   align-items: center;
   padding: 15px 0;
   border-bottom: 1px solid #f5f5f5;
+  
+  @media all and (max-width: 600px) {
+    align-items: flex-start;
+  }
 `;
 
 const ResultContent = styled.div`

@@ -39,12 +39,13 @@ const SearchWrapper = styled.div`
   }
 
   @media all and (max-width: 600px) {
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    padding: 10px 20px 12px;
-    height: 80px;
+    box-shadow: 0 -1px 3px rgba(0,0,0,0.12) inset, 0 -1px 2px rgba(0,0,0,0.24) inset;
+    padding: 10px 20px;
+    height: 90px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    background: #f5f5f5;
     label {
       line-height: .5;
     }
@@ -53,6 +54,10 @@ const SearchWrapper = styled.div`
     }
     input::placeholder {
       color: red;
+    }
+    & > div {
+      margin: auto;
+      background: #FFF;
     }
   }
 `;

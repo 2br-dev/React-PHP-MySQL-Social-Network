@@ -72,12 +72,18 @@ const theme = createMuiTheme({
         maxWidth: 'calc(100vw - 50px)'
       }
     },
-    MuiInputBase: {
-      input: {
-        '&::placeholder': {
-          textOverflow: 'ellipsis !important',
-          color: 'blue'
-        }
+    MuiBadge: {
+      root: {
+        position: window.innerWidth < 600 ? 'unset' : 'relative',
+      },
+      badge: {
+        top: window.innerWidth < 600 ? '10px !important' : '19px',
+        right: window.innerWidth < 600 ? '10px !important' : '-5px',
+      }
+    },
+    MuiTypography: {
+      colorTextSecondary: {
+        position: 'relative'
       }
     }
   },

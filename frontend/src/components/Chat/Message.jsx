@@ -92,10 +92,10 @@ const Body = styled.div`
       cursor: pointer;
     }
   }
+
+  @media all and (max-width: 600px) {
+    width: 60%;
+  }
 `;
 
-export default connect(
-  state => ({
-    store: state
-  })
-)(Message);
+export default connect(state => ({ store: state }))(Message);

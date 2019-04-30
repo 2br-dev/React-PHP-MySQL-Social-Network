@@ -44,6 +44,12 @@ const Wrapper = styled.div`
   margin: 15px 25px;
   min-height: 80px;
   position: relative;
+
+  @media all and (max-width: 600px) {
+    margin: 0 15px;
+    min-width: 50px;
+    min-height: 50px;
+  }
 `;
 
 const Badge = styled.div`

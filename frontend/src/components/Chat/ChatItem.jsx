@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -63,7 +63,7 @@ function Friend(props) {
           : null}
         </MessageHeader>}
         secondary={props.friend.message ?
-          <Fragment>
+          <span style={{ paddingRight: 25 }}>
             <Typography component="span" style={{ display: 'inline' }} color="primary">
               {props.friend.id === props.friend.message.user ? `${props.friend.name} ${props.friend.surname}:` : 'Вы:'}
             </Typography>
@@ -73,11 +73,11 @@ function Friend(props) {
               badgeContent={isHaveUnreaded(props.friend.message.chat)}
               style={{
                 position: 'absolute',
-                right: 45,
-                top: 45
+                right: 0,
+                top: 0
               }}  
             >{null}</Badge>
-          </Fragment>
+          </span>
         : null}    
       />
     </ListItem>

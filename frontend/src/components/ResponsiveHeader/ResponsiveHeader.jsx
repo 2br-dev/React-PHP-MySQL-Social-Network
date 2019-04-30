@@ -3,15 +3,21 @@ import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import UserAvatar from './UserAvatar';
 import Dropdown from '../DropdownActions/Dropdown';
+import Loader from '../Loader/Loader';
 
-export default function ResponsiveHeader({ title }) {
+export default function ResponsiveHeader({ name, surname, title }) {
   // eslint-disable-next-line
   const [_, updateState] = useState(0);
 
   return (
     <Wrapper id="updateUser" onClick={() => updateState(Math.random())}>
       <UserAvatar />
-      <Typography variant='h6'>{title}</Typography>
+      {title ?
+        <Typography variant='h6'>{title}</Typography>
+        : name && surname 
+          ? <Typography variant='h6'>{`${name} ${surname}`}</Typography>
+          : <Loader />
+      }
       <Dropdown />
     </Wrapper>
   )
