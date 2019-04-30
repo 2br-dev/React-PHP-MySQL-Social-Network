@@ -71,6 +71,14 @@ const theme = createMuiTheme({
       legend: {
         maxWidth: 'calc(100vw - 50px)'
       }
+    },
+    MuiInputBase: {
+      input: {
+        '&::placeholder': {
+          textOverflow: 'ellipsis !important',
+          color: 'blue'
+        }
+      }
     }
   },
 });

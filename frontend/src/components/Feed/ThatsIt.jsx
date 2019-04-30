@@ -18,6 +18,9 @@ const Container = styled.div`
   width: 100%;
   
   @media all and (max-width: 600px) {
-    height: calc(100vh - 115px);
+    span {
+      font-size: 12px;
+      text-transform: lowercase;
+    }
   }
 `;

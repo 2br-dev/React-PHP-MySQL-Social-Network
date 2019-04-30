@@ -280,6 +280,16 @@ class SingleNews extends Component {
                     </Comments>
                   )
                 })}
+                {thisComments.length > 0 ? 
+                  <Typography variant='caption' 
+                    style={{ 
+                      opacity: .5,
+                      textAlign: 'center',
+                      marginTop: 37
+                    }}
+                  >показаны последние комментарии
+                  </Typography> 
+                : null}
             </Fragment>}
         </Single>
         <Wrapper onClick={closeNews}></Wrapper>
@@ -315,9 +325,9 @@ const Single = styled.div`
   @media all and (max-width: 600px) {
     width: 100%;
     top: 0;
-    max-height: calc(100vh - 56px);
+    max-height: calc(100vh - 55px);
     border-radius: 0;
-    padding: 15px 15px 45px;
+    padding: 15px 15px 125px;
     overflow: scroll;
     h5 {
       font-size: 18px;
@@ -463,6 +473,10 @@ const Comments = styled.div`
     width: calc(100% + 30px) !important;
     padding: 10px 0px !important;
     margin-left: -15px !important;
+    
+    .comment-text {
+      padding-left: 50px;
+    }
   }
 `;
 
@@ -518,6 +532,11 @@ const Avatar = styled.div`
   border-radius: 50%;
   min-height: 30px;
   margin-right: 15px;
+
+  @media all and (max-width: 600px) {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
 `;
 const TextArea = styled.div`
   display: flex;
@@ -564,7 +583,7 @@ const Icon = styled.div`
   }
 
   @media all and (max-width: 600px) {
-    right: 15px;
+    right: 10px;
     top: 25px;
     svg {
       font-size: 32px;
