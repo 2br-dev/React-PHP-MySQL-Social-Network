@@ -322,7 +322,7 @@ class PersonalInfo extends Component {
             : null}
 
             <div className="personal-header__photo">
-              <div style={{ background: `url(${userInfo.avatar ? userInfo.avatar.slice(16) : defaultAvatar}) no-repeat center/cover` }}></div>
+              <div style={{ background: `url(${userInfo.avatar ? userInfo.avatar : defaultAvatar}) no-repeat center/cover` }}></div>
             </div>
             <div className={user.id === userInfo.id ? 'personal-header__info' : null}>
               {user.id === userInfo.id ? (
