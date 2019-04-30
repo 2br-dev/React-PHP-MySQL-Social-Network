@@ -212,8 +212,8 @@ class Settings extends Component {
 
           <form id="personal-info" action="" method="POST" encType="multipart/form-data" style={{ position: 'relative' }}>
             {uploadedAvatar ?
-              <div class='settings-avatar' style={{ ...styles.avatar, background: `url(${uploadedAvatar.slice(16)}) no-repeat center/cover` }}></div> :
-              <div class='settings-avatar' style={{ ...styles.avatar, background: `url(${avatar ? avatar.slice(16) : DefaultAvatar}) no-repeat center/cover` }}></div>}
+              <div class='settings-avatar' style={{ ...styles.avatar, background: `url(${uploadedAvatar}) no-repeat center/cover` }}></div> :
+              <div class='settings-avatar' style={{ ...styles.avatar, background: `url(${avatar ? avatar : DefaultAvatar}) no-repeat center/cover` }}></div>}
             <Button variant="contained" style={{ ...styles.upload }}>
               Загрузить фото профиля
             <Icon style={{ marginLeft: 10 }}>cloud_upload</Icon>
