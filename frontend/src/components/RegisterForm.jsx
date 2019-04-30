@@ -226,7 +226,7 @@ const BtnWrapper = styled.div`
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -160px;
+    bottom: ${window.innerWidth < 600 ? '-160px' : '30px'};
     margin: auto;
     width: fit-content;
     min-width: 199px;
