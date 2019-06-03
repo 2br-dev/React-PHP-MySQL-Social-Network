@@ -6,8 +6,8 @@
   use MiladRahimi\Jwt\Exceptions\TokenParsingException;
 
   function verify() {
-    $jwt = isset($_COOKIE['akv_jwt_token']) ? $_COOKIE['akv_jwt_token'] : '';
-    // $jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjUiLCJkYXRlIjoiMjAxOS0wNC0wNSAwOToyMDoyMSJ9.iBIggrsQt2gdPXfvRxfcgU2TQlVo5Uz9sHBj1kGMqhU";  
+    //$jwt = isset($_COOKIE['akv_jwt_token']) ? $_COOKIE['akv_jwt_token'] : '';
+     $jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjUiLCJkYXRlIjoiMjAxOS0wNC0wNSAwOToyMDoyMSJ9.iBIggrsQt2gdPXfvRxfcgU2TQlVo5Uz9sHBj1kGMqhU";  
     $key = JWT_KEY;
     $verifyer = new HS256($key);
 
@@ -22,8 +22,8 @@
   }
 
   function parseUserId() {
-    $jwt = isset($_COOKIE['akv_jwt_token']) ? $_COOKIE['akv_jwt_token'] : '';
-    // $jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjUiLCJkYXRlIjoiMjAxOS0wNC0wNSAwOToyMDoyMSJ9.iBIggrsQt2gdPXfvRxfcgU2TQlVo5Uz9sHBj1kGMqhU";  
+    //$jwt = isset($_COOKIE['akv_jwt_token']) ? $_COOKIE['akv_jwt_token'] : '';
+     $jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjUiLCJkYXRlIjoiMjAxOS0wNC0wNSAwOToyMDoyMSJ9.iBIggrsQt2gdPXfvRxfcgU2TQlVo5Uz9sHBj1kGMqhU";  
     $key = JWT_KEY;
     $verifyer = new HS256($key);
 

@@ -23,6 +23,7 @@ $news->title = __post('title');
 $news->date = __post('date');
 $news->created_at = __post('created_at');
 $news->importance = __post('importance');
+$news->news_image = __post('newsImage');
 
 if ($news->submitNews()) {
   $news->id = Q("SELECT MAX(`id`) FROM `#_mdd_news` LIMIT 1")->row();

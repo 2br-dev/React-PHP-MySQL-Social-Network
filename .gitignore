@@ -13,3 +13,4 @@ protected/config/db
 .vscode
 bugs.txt
 /frontend/node_modules
+/protected/config/config.db.php

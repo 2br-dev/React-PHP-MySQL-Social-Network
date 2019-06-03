@@ -1,7 +1,8 @@
 let API = '';
 
 if (window.location.host.includes('localhost')) {
-  API = 'http://akvatory.local';
+  /* API = 'http://akvatory.local'; */
+  API = 'http://social';
 } else {
   API = window.location.origin;
 }

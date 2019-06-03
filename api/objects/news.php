@@ -20,6 +20,7 @@ class News
     public $created_at;
     public $who;
     public $news_id;
+    public $news_image;
 
     // constructor with $db as database connection
     public function __construct($db)
@@ -159,7 +160,7 @@ class News
         $query = "INSERT INTO
                     " . $this->table_name . "
                 SET
-                author=:author, date=:date, text=:text, title=:title, created_at=:created_at, importance=:importance, author_id=:author_id";
+                author=:author, date=:date, text=:text, title=:title, created_at=:created_at, importance=:importance, author_id=:author_id, image=:image";
 
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -172,6 +173,7 @@ class News
         $this->title = htmlspecialchars(strip_tags($this->title));
         $this->created_at = htmlspecialchars(strip_tags($this->created_at));
         $this->importance = htmlspecialchars(strip_tags($this->importance));
+        $this->news_image = htmlspecialchars(strip_tags($this->news_image));
 
         // bind values
         $stmt->bindParam(":author", $this->author);
@@ -181,6 +183,7 @@ class News
         $stmt->bindParam(":title", $this->title);
         $stmt->bindParam(":created_at", $this->created_at);
         $stmt->bindParam(":importance", $this->importance);
+        $stmt->bindParam(":image", $this->news_image);
 
         // execute query
         if ($stmt->execute()) {

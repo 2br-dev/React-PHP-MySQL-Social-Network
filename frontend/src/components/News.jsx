@@ -35,6 +35,8 @@ class News extends Component {
       invalidTopic: false,
       confirmDelete: false,
       preparedNewsId: '',
+      hasNewsImage: false,
+      uploadedNewsImage: ''
     }
     this.addLike = this.addLike.bind(this);
     this.removeLike = this.removeLike.bind(this);
@@ -45,7 +47,8 @@ class News extends Component {
     this.editNews = this.editNews.bind(this);
     this.prepareNews = this.prepareNews.bind(this);
     this.showNews = this.showNews.bind(this);
-    this.changeImportance = this.changeImportance.bind(this)
+    this.changeImportance = this.changeImportance.bind(this);
+    this.uploadNewsImage = this.uploadNewsImage.bind(this);
   }
 
   componentDidMount() {
@@ -118,6 +121,40 @@ class News extends Component {
     });
   }
 
+  uploadNewsImage = (file) => {
+    let fd = new FormData();
+    let files = file;
+    let self = this;
+    fd.append('file', files);
+    /* fd.append('id', this.state.singleNewsId); */
+
+    $.ajax({
+      url: `${API}/api/news/uploadImage.php`,
+      type: 'post',
+      data: fd,
+      contentType: false,
+      processData: false,
+      success: function (res) {
+        if (window.location.host.includes('localhost')) {
+          self.setState({ uploadedNewsImage: res.location.slice(15) })
+        } else {
+          self.setState({ uploadedNewsImage: res.location.slice(6) })
+        }
+        console.log(res);
+      },
+    });
+  }
+
+  newsFileSelect = event => {
+    if (event.target.files[0].size < 2 * 1024 * 1024) {
+      this.setState({ hasNewsImage: true })
+      this.uploadNewsImage(event.target.files[0]);
+      this.props.enqueueSnackbar('Фото добавлено', { variant: 'success' });
+    } else {
+      this.props.enqueueSnackbar('Файл слишком большой, размер должен не превышать 2МБ', { variant: 'warning' });
+    }
+  }
+
   submitNews = (e) => {
     const { user } = this.props.store;
     var self = this;
@@ -129,15 +166,16 @@ class News extends Component {
         title: this.state.newNewsTopic,
         text: this.state.newNewsText,
         date: new Date().toJSON().slice(0, 10).replace(/-/g, '.'),
+        newsImage: this.state.hasNewsImage ? this.state.uploadedNewsImage : "",
         created_at: new Date().getTime(),
         importance: this.state.newNewsImportance ? 1 : 0,
         author_id: user.id,
         likes: 0,
         liked_by: '',
         comments: 0,
-        avatar: user.avatar
+        avatar: user.avatar,
       }
-
+      
       for (let key in news) {
         formData.append(key, news[key]);    
       }
@@ -154,7 +192,8 @@ class News extends Component {
           self.setState({ 
             newNews: !self.state.newNews, 
             newNewsText: '', 
-            newNewsTopic: ''
+            newNewsTopic: '',
+            uploadedNewsImage: ''
           });
           self.props.enqueueSnackbar('Добавлена новая новость', { variant: 'success' })
         },
@@ -314,7 +353,7 @@ class News extends Component {
   }
 
   render() {
-    const { invalidText, invalidTopic, newNews, newNewsText, newNewsTopic, editing, singleNews, singleNewsId, newNewsImportance } = this.state;
+    const { invalidText, invalidTopic, newNews, newNewsText, newNewsTopic, editing, singleNews, singleNewsId, newNewsImportance, uploadedNewsImage, hasNewsImage } = this.state;
     const { user, news } = this.props.store;
     
     return (
@@ -350,9 +389,13 @@ class News extends Component {
                       </Typography>}
                   </NewsInfo>
 
-                  {editing !== item.id ?
+                  {editing !== item.id ?                    
                     <Fragment>
                       <Typography variant='h6' style={{ fontSize: '1.1rem', fontWeight: 400 }}>{item.title.replace(/&quot;/g, `"`)}</Typography>
+                      {item.image ? 
+                      <div style={{textAlign: 'center', marginTop: '15px', marginBottom: '15px'}}><img src={`${API}/frontend/${item.image}`}/></div> : null}
+                      
+                      
                       <Body><Typography variant='body2'>{item.text.replace(/&quot;/g, `"`)}</Typography></Body>
                     </Fragment>
                     :
@@ -428,6 +471,9 @@ class News extends Component {
             changeImportance={this.changeImportance}
             newNewsImportance={newNewsImportance}
             closeNews={this.closeNews.bind(this)}
+            newsFileSelect={this.newsFileSelect}
+            uploadedNewsImage={uploadedNewsImage}
+            hasNewsImage={hasNewsImage}
           /> : null}
 
         {singleNews

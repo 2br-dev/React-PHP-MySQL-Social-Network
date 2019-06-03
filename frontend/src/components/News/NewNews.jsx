@@ -5,9 +5,30 @@ import defaultAvatar from '../img/photos/images.png';
 import CloseIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
 import { connect } from 'react-redux';
+import Icon from '@material-ui/core/Icon';
+import API from '../functions/API';
 
-function NewNews({ submitNews, closeNews, newNewsTopic, handleChange, invalidTopic, invalidText, newNewsText, newNewsImportance, changeImportance, store: { user }}) {
+function NewNews({ hasNewsImage, uploadedNewsImage, newsFileSelect, submitNews, closeNews, newNewsTopic, handleChange, invalidTopic, invalidText, newNewsText, newNewsImportance, changeImportance, store: { user }}) {
   let avatar = user.avatar;
+
+  const styles = {
+    upload: {
+      background: '#ef6c00',
+      color: 'white',
+      margin: '20px auto',
+      cursor: 'pointer',
+      position: 'relative',
+      float: 'right',
+      width: window.innerWidth < 600 ? '100%' : 'unset'
+    },
+    hiddenInput: {
+      opacity: 0,
+      position: 'absolute',
+      cursor: 'pointer',
+      left: 0, right: 0, bottom: 0, top: 0
+    },
+  };
+
   return (
     <Fragment>
       <Container>
@@ -15,7 +36,7 @@ function NewNews({ submitNews, closeNews, newNewsTopic, handleChange, invalidTop
           <Typography variant='button'>Новая новость</Typography> 
 
           <Tooltip placement='left' title='Закрыть'>
-            <Icon><CloseIcon onClick={closeNews} /></Icon>
+            <IconClose><CloseIcon onClick={closeNews} /></IconClose>
           </Tooltip>
 
         </Header>
@@ -49,6 +70,21 @@ function NewNews({ submitNews, closeNews, newNewsTopic, handleChange, invalidTop
                 required
               />
             </TextArea>
+            {hasNewsImage ? 
+              <div><image src={`${API}/frontend/${uploadedNewsImage}`}/></div> : 
+            null}
+            <Button variant="contained" style={{ ...styles.upload }}>
+              Загрузить изображение
+            <Icon style={{ marginLeft: 10 }}>cloud_upload</Icon>
+              <input
+                id='newsImage'
+                accept="image/*"
+                style={{ ...styles.hiddenInput }}
+                type="file"
+                name='newsImage'
+                onChange={newsFileSelect}
+              />
+            </Button>
             <Footer>
               <FormControlLabel
                 control={
@@ -197,7 +233,7 @@ const TextArea = styled.div`
     }
   }
 `;
-const Icon = styled.div`
+const IconClose = styled.div`
   cursor: pointer;
   position: absolute;
   top: 15px;
