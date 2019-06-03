@@ -393,7 +393,7 @@ class News extends Component {
                     <Fragment>
                       <Typography variant='h6' style={{ fontSize: '1.1rem', fontWeight: 400 }}>{item.title.replace(/&quot;/g, `"`)}</Typography>
                       {item.image ? 
-                      <div style={{textAlign: 'center', marginTop: '15px', marginBottom: '15px'}}><img src={`${API}/frontend/${item.image}`}/></div> : null}
+                      <div style={{textAlign: 'center', marginTop: '15px', marginBottom: '15px'}}><img src={`${API}/${item.image}`}/></div> : null}
                       
                       
                       <Body><Typography variant='body2'>{item.text.replace(/&quot;/g, `"`)}</Typography></Body>
