@@ -36,12 +36,12 @@ self.__precacheManifest = [
     "url": "/static/media/calibri.b0f61b94.woff"
   },
   {
-    "revision": "4fc5a7297cb1148d7dd1132a2d736795",
-    "url": "/static/media/calibri.4fc5a729.ttf"
-  },
-  {
     "revision": "2a4d815e17eaadddf81877da1a6b981b",
     "url": "/static/media/calibri.2a4d815e.eot"
+  },
+  {
+    "revision": "4fc5a7297cb1148d7dd1132a2d736795",
+    "url": "/static/media/calibri.4fc5a729.ttf"
   },
   {
     "revision": "63e6c0c127c99e902a750e951bfcc346",

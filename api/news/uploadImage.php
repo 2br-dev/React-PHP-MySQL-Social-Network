@@ -69,21 +69,21 @@ if ($uploadOk == 0) {
       case IMAGETYPE_PNG:
          $imageResourceId = imagecreatefrompng($file);
          $targetLayer = $utilities->imageResize($imageResourceId, $sourceProperties[0], $sourceProperties[1]);
-         imagepng($targetLayer, $folderPath . $fileNewName . "_sm." . $ext);
+         imagepng($targetLayer, $folderPath . $fileNewName . "." . $ext);
          break;
 
 
       case IMAGETYPE_GIF:
          $imageResourceId = imagecreatefromgif($file);
          $targetLayer = $utilities->imageResize($imageResourceId, $sourceProperties[0], $sourceProperties[1]);
-         imagegif($targetLayer, $folderPath . $fileNewName . "_sm." . $ext);
+         imagegif($targetLayer, $folderPath . $fileNewName . "." . $ext);
          break;
 
 
       case IMAGETYPE_JPEG:
          $imageResourceId = imagecreatefromjpeg($file);
          $targetLayer = $utilities->imageResize($imageResourceId, $sourceProperties[0], $sourceProperties[1]);
-         imagejpeg($targetLayer, $folderPath . $fileNewName . "_sm." . $ext);
+         imagejpeg($targetLayer, $folderPath . $fileNewName . "." . $ext);
          break;
 
 
@@ -96,7 +96,7 @@ if ($uploadOk == 0) {
 
    move_uploaded_file($file, $folderPath . $fileNewName . "." . $ext);
 
-   echo json_encode(array('location' => $folderPath . $fileNewName . "_sm." . $ext));
+   echo json_encode(array('location' => $folderPath . $fileNewName . "." . $ext));
 
 }
 
