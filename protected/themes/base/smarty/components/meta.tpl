@@ -18,7 +18,7 @@
 	<link rel="home" href="/">
 	<!-- CSS -->
 	<link type="text/css" rel="stylesheet" href="/css/normalize.css" >
-	<link type="text/css" rel="stylesheet" href="/frontend/build/static/css/main.f535ab9d.chunk.css" >
+	<link type="text/css" rel="stylesheet" href="/frontend/build/static/css/main.e185fb63.chunk.css" >
 	<link type="text/css" rel="stylesheet" href="/css/style.css" >	
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" >
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" >

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './css/MainpageHeader.css';
 import noPhoto from './img/photos/images.png';
 import styled from 'styled-components';
-import defaultBackground from './img/photos/Water image_Dreamstime.jpg';
+import defaultBackground from './img/photos/social_header.jpg';
 import Loader from './Loader/Loader';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
