@@ -36,7 +36,9 @@ class News extends Component {
       confirmDelete: false,
       preparedNewsId: '',
       hasNewsImage: false,
-      uploadedNewsImage: ''
+      uploadedNewsImage: '',
+      newsComments: [],
+      loadedComments: false,
     }
     this.addLike = this.addLike.bind(this);
     this.removeLike = this.removeLike.bind(this);
@@ -244,9 +246,17 @@ class News extends Component {
 
     if (this.state.newNewsTopic !== '' && this.state.newNewsText !== '') {
       const formData = new FormData();
-      formData.append('id', id);
-      formData.append('title', this.state.newNewsTopic);
-      formData.append('text', this.state.newNewsText);
+
+      const { newNewsText, newNewsTopic } = this.state;
+      const news = {
+        id: id,
+        title: newNewsTopic,
+        text: newNewsText
+      }
+
+      for (const prop in news) {
+        formData.append(news[prop], prop);
+      }
 
       $.ajax({
         url: `${API}/api/news/edit.php`,
@@ -255,6 +265,7 @@ class News extends Component {
         contentType: false,
         type: 'POST',
         success: () => {
+          self.props.onUpdateNews(news);
           setTimeout(() => self.setState({ editing: '' }), 200);
           self.props.enqueueSnackbar('Новость была изменена', { variant: 'info' });
         },
@@ -336,7 +347,7 @@ class News extends Component {
     return (
       <Tooltip placement='top' title='Отмечено как важное'>
         <Important>
-          <WarningIcon />          
+          <WarningIcon />
         </Important>
       </Tooltip>
     )
@@ -454,6 +465,19 @@ class News extends Component {
                     <Button onClick={() => this.showNews(item.id)} variant='contained' color='primary' style={{ position: 'absolute', right: window.innerWidth > 600 ? 40 : 20 }}>Читать</Button>
                   : null }
                 </Actions>
+                <Typography variant='caption'>Комментарии (5 последних)</Typography>
+                {item.commentsobj.map((comment, j) =>{
+                  return(
+                    <Comments key={j}>
+                      <div className='comment-header'>
+                        <Avatar style={{ background: `url(${comment.who.avatar ? comment.who.avatar : defaultAvatar}) no-repeat center/cover`, marginTop: 20 }}></Avatar>
+                        <Typography variant='subtitle2'>{comment.who.name} {comment.who.surname}</Typography>
+                        <Typography variant='caption' className='comment-date'>{comment.date}</Typography>
+                      </div>
+                      <div className='comment-text'>{comment.text}</div>
+                    </Comments>
+                  )
+                })}                
               </NewsContainer>
             )
           })}
@@ -516,6 +540,69 @@ const NewsContainer = styled.div`
   }
   @media all and (max-width: 600px) {
     padding: 10px 10px 10px 70px;
+  }
+`;
+const Comments = styled.div`
+  margin-left: -30px;
+  border-bottom: 1px solid #e6ecf0;
+  cursor: pointer;
+  padding: 0px 30px 15px 80px;
+  position: relative;
+  border-top: 1px solid #e6ecf0;
+  background: #e6ecf0;
+
+  :hover {
+    background: #f5f8fa;
+    transition: .37s ease;
+  }
+
+  .comment-header {
+    display: flex;
+    align-items: center;
+    
+    div {
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  .comment-text {
+    padding-left: 45px;
+    padding-bottom: 10px;
+  }
+
+  .comment-date {
+    margin-left: 7.5px;
+    color: #657786;
+    :before {
+      content: '⋆';
+      margin-right: 7.5px;
+      opacity: 0.37;
+    }
+  }
+  @media all and (max-width: 600px) {
+    width: calc(100% + 30px) !important;
+    padding: 10px 0px !important;
+    margin-left: -15px !important;
+    
+    .comment-text {
+      padding-left: 50px;
+    }
+    :last-child {
+      border-bottom: 1px solid red;
+    }
+  }
+`;
+const Avatar = styled.div`
+  min-width: 30px;
+  border-radius: 50%;
+  min-height: 30px;
+  margin-right: 15px;
+
+  @media all and (max-width: 600px) {
+    margin-right: 10px;
+    margin-left: 10px;
   }
 `;
 const Body = styled.div`
@@ -612,6 +699,7 @@ export default connect(state => ({ store: state }),
   dispatch => ({ 
     onAddNews: news => dispatch({ type: 'ADD_NEWS', payload: news }),
     onDeleteNews: id => dispatch({ type: 'DELETE_NEWS', payload: id }),
+    onUpdateNews: news => dispatch({type: 'UPDATE_NEWS', payload: news}),
     onAddLike: (id, user_id) => dispatch({ type: 'ADD_LIKE', payload: id, user_id }),
     onRemoveLike: (id, user_id) => dispatch({ type: 'REMOVE_LIKE', payload: id, user_id }),
     onReadNews: () => dispatch({ type: "READ_NEWS" }),  

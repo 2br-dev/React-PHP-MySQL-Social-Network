@@ -2,6 +2,13 @@ export default function reducing(state = [], action) {
   let index = state.findIndex(item => item.id === action.payload);
 
   switch (action.type) {
+    case 'UPDATE_NEWS':
+      const newState = state;
+      let updatedNews = action.payload;
+      let indexUpNews = newState.findIndex(item => item.id === updatedNews.id);
+      newState[indexUpNews].title = updatedNews.title;
+      newState[indexUpNews].text = updatedNews.text;      
+      return newState;
     case 'FETCH_NEWS':
       return [...action.payload]
     case 'DELETE_NEWS':

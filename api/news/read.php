@@ -42,8 +42,12 @@ if ($num > 0) {
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         extract($row);
 
-        $user_data = Q("SELECT `avatar`, `name`, `surname` FROM `#_mdd_users` WHERE `id` = ?s", array($author_id))->row();
+        $user_data = Q("SELECT `id`, `avatar`, `name`, `surname` FROM `#_mdd_users` WHERE `id` = ?s", array($author_id))->row();
         $author = $user_data['name'] . " " . $user_data['surname'];
+        $commentsobj = Q("SELECT `text`, `author_id`, `date` FROM `#_mdd_comments` WHERE `news_id` = ?s ORDER BY `id` DESC LIMIT 5", array($id))->all();
+        foreach ($commentsobj as $key => $value) {
+            $commentsobj[$key]['who'] = Q("SELECT `avatar`, `name`, `surname` FROM `#_mdd_users` WHERE `id` = ?s", array($value['author_id']))->row();
+        }
 
         $news_item = array(
             "id"          => $id,
@@ -58,7 +62,8 @@ if ($num > 0) {
             'comments'    => $comments,
             'avatar'      => $user_data['avatar'],
             'created_at'  => $created_at,
-            'image' => $image
+            'image' => $image,
+            'commentsobj' => $commentsobj
         );
 
         array_push($news_arr["records"], $news_item);

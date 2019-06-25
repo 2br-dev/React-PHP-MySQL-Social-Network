@@ -12,7 +12,7 @@ include_once '../../define.php';
 include_once '../objects/user.php';
 include_once '../../verify.php'; 
 require_once '../../vendor/autoload.php';
-if(!verify()) header('location:/login');
+//if(!verify()) header('location:/login');
 
 $database = new Database();
 $db = $database->getConnection();

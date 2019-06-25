@@ -18,7 +18,7 @@ class ForgetPassword extends Component {
     if (this.state.credentials) {
       const formData = new FormData();
       formData.append('credentials', this.state.credentials);
-
+      console.log(this.state.credentials);
       $.ajax({
         url: `${API}/api/user/forget.php`,
         data: formData,
@@ -42,7 +42,7 @@ class ForgetPassword extends Component {
       });
 
     } else {
-      self.props.enqueueSnackbar('Пожалуйста, введите, логин или пароль', { variant: 'warning' });
+      self.props.enqueueSnackbar('Пожалуйста введите E-mail', { variant: 'warning' });
     }
   }
 

@@ -13,6 +13,7 @@ import EditMessageInput from './EditMessageInput';
 import DeleteModal from './DeleteModal';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import SmilePanel from '../Emoji/Picker';
 
 class ChatRoom extends Component {
   state = {
@@ -22,8 +23,11 @@ class ChatRoom extends Component {
     deleting: false,
     newMessage: '',
     deleteID: null,
-    editID: null
+    editID: null,
+    smilePicker: false,
   }
+
+  //this.emojiClick = this.emojiClick.bind(this);
 
   interval = null;
   chatInteral = null;
@@ -144,6 +148,10 @@ class ChatRoom extends Component {
     });
   }
 
+  showSmilePicker = (e) => {    
+    this.setState({smilePicker: !this.state.smilePicker});
+  }
+
   /**
   |--------------------------------------------------
   | получаем @ID последнего сообщение в базе
@@ -235,8 +243,13 @@ class ChatRoom extends Component {
     });
   }
 
+  emojiClick = (emoji) => {
+    console.log(emoji); 
+    this.setState({newMessage: this.newMessage ? this.newMessage + ' ' + emoji.native + ' ' : emoji.native});   
+  }
+
   render() {
-    const { loading, editing, deleting } = this.state;
+    const { loading, editing, deleting, smilePicker } = this.state;
     const { room } = this.props.store;
 
     return (
@@ -256,6 +269,9 @@ class ChatRoom extends Component {
             </div>
           </Link> : null}
         </RoomHeader>
+        {smilePicker ? <SmilePanel
+          emojiClick = {this.emojiClick.bind(this)}
+        /> : null}
 
         {loading 
           ? <Loader minHeight={250} color='primary' /> 
@@ -270,12 +286,13 @@ class ChatRoom extends Component {
           message={this.state.editText} 
           handleEdit={this.handleEdit.bind(this)}
           submitEdit={this.submitEdit.bind(this)}
-        /> : null}
+        /> : null}        
 
         <SendMessageInput 
           message={this.state.newMessage}
           sendMessage={this.sendMessage} 
           handleNewMessage={this.handleNewMessage}
+          showSmilePicker = {this.showSmilePicker}
         />
 
         {deleting ? <DeleteModal 

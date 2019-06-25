@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Send from '@material-ui/icons/Send';
+import SmileIcon from '@material-ui/icons/SentimentSatisfiedAlt';
 import Tooltip from '@material-ui/core/Tooltip';
 
 export default function SendMessageInput(props) {
@@ -28,8 +29,22 @@ export default function SendMessageInput(props) {
                   <Send />
                 </IconButton>
               </Tooltip>
+            </InputAdornment>            
+          ),
+          startAdornment: (
+            <InputAdornment position="end">
+              <Tooltip title='Смайлы' position='top'>
+                <IconButton
+                  aria-label="Смайлы"
+                  onClick={props.showSmilePicker}
+                >
+                  <SmileIcon />
+                </IconButton>
+              </Tooltip>
             </InputAdornment>
           ),
+            
+          
         }}
       />
     </Container>
