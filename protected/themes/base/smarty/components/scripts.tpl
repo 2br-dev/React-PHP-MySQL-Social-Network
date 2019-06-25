@@ -8,8 +8,8 @@
     ]
 } 
     {* change this *}
-    <script src="/frontend/build/static/js/1.70f954c2.chunk.js"></script>
-    <script src="/frontend/build/static/js/main.2a7acf74.chunk.js"></script>
+    <script src="/frontend/build/static/js/1.17d4f41f.chunk.js"></script>
+    <script src="/frontend/build/static/js/main.3f76ace1.chunk.js"></script>
     
     <script src="/frontend/build/static/js/runtime~main.229c360f.js"></script>
 </body>
