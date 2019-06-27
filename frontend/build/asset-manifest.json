@@ -1,10 +1,18 @@
 {
+<<<<<<< HEAD
   "main.css": "/static/css/main.d8bf74cb.chunk.css",
   "main.js": "/static/js/main.3f76ace1.chunk.js",
   "main.js.map": "/static/js/main.3f76ace1.chunk.js.map",
   "static/css/1.34f8c13e.chunk.css": "/static/css/1.34f8c13e.chunk.css",
   "static/js/1.17d4f41f.chunk.js": "/static/js/1.17d4f41f.chunk.js",
   "static/js/1.17d4f41f.chunk.js.map": "/static/js/1.17d4f41f.chunk.js.map",
+=======
+  "main.css": "/static/css/main.e185fb63.chunk.css",
+  "main.js": "/static/js/main.2a7acf74.chunk.js",
+  "main.js.map": "/static/js/main.2a7acf74.chunk.js.map",
+  "static/js/1.70f954c2.chunk.js": "/static/js/1.70f954c2.chunk.js",
+  "static/js/1.70f954c2.chunk.js.map": "/static/js/1.70f954c2.chunk.js.map",
+>>>>>>> fce1c337a139d380390f67972bb6b4c55e6970ab
   "runtime~main.js": "/static/js/runtime~main.229c360f.js",
   "runtime~main.js.map": "/static/js/runtime~main.229c360f.js.map",
   "static/media/baseline-search-24px.svg": "/static/media/baseline-search-24px.a87eca9e.svg",
@@ -12,9 +20,15 @@
   "static/media/index.css": "/static/media/calibri.4fc5a729.ttf",
   "static/media/MainpageHeader.css": "/static/media/photo_2018-12-20_16-23-55.63e6c0c1.jpg",
   "static/media/social_header.jpg": "/static/media/social_header.cb906871.jpg",
+<<<<<<< HEAD
   "static/css/1.34f8c13e.chunk.css.map": "/static/css/1.34f8c13e.chunk.css.map",
   "static/css/main.d8bf74cb.chunk.css.map": "/static/css/main.d8bf74cb.chunk.css.map",
   "index.html": "/index.html",
   "precache-manifest.13b615805dc98b34d570370938b48a1c.js": "/precache-manifest.13b615805dc98b34d570370938b48a1c.js",
+=======
+  "static/css/main.e185fb63.chunk.css.map": "/static/css/main.e185fb63.chunk.css.map",
+  "index.html": "/index.html",
+  "precache-manifest.aceac6b669e81e67bf1f6558bff0e398.js": "/precache-manifest.aceac6b669e81e67bf1f6558bff0e398.js",
+>>>>>>> fce1c337a139d380390f67972bb6b4c55e6970ab
   "service-worker.js": "/service-worker.js"
 }
