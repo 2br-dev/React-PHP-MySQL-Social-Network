@@ -25,7 +25,7 @@ class Chat extends Component {
       type: 'POST',
       success: function (res) {
         self.setState({ loading: false });
-
+        console.log('OK');
         if (res[0].chats) self.props.getChats(res[0].chats);
       }
     });

@@ -17,7 +17,7 @@ $db = $database->getConnection();
 $message = new Message($db);
 $message->user = 'id' . parseUserId();
 
-$userChats = Q("SELECT `id` FROM db_mdd_chats WHERE users LIKE '%$message->user%'")->all();
+$userChats = Q("SELECT `id` FROM `db_mdd_chats` WHERE `users` LIKE '%$message->user%'")->all();
 
 if (count($userChats > 0)) {
   $unreaded = array(

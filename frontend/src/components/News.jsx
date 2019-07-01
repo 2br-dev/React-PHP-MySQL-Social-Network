@@ -465,7 +465,8 @@ class News extends Component {
                     <Button onClick={() => this.showNews(item.id)} variant='contained' color='primary' style={{ position: 'absolute', right: window.innerWidth > 600 ? 40 : 20 }}>Читать</Button>
                   : null }
                 </Actions>
-                <Typography variant='caption'>Комментарии (5 последних)</Typography>
+                {item.commentsobj.length > 0 ?
+                  <Typography variant='caption'>Комментарии (5 последних)</Typography> : null }
                 {item.commentsobj.map((comment, j) =>{
                   return(
                     <Comments key={j}>
