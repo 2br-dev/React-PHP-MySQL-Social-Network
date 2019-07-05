@@ -40,7 +40,7 @@ function Friend(props) {
       return null;
     }
   }
-  console.log(props.friend)
+ 
   return (    
     <ListItem 
       onClick={() => props.openRoom(props.friend.hasOwnProperty('message') && props.friend.message ? props.friend.message.chat : 0, props.friend)}

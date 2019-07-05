@@ -85,7 +85,7 @@ class FriendList extends Component {
   */
   openRoom = (chat, friend) => {
     if (!this.state.initialAnimation) this.setState({ initialAnimation: true });
-    
+    //console.log(friend)
     if (chat) {
       this.props.openChat(chat, friend);
     } else {
