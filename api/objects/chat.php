@@ -18,7 +18,7 @@ class Chat{
     function read()
     {
         $id = $this->users;
-        $query = "SELECT * FROM  " . $this->table_name . " WHERE `users` LIKE '%$id%'";
+        $query = "SELECT * FROM  " . $this->table_name . " WHERE `users` LIKE '%{$id}%'";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);

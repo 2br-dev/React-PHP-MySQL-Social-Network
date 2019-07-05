@@ -245,7 +245,7 @@ class ChatRoom extends Component {
   render() {
     const { loading, editing, deleting } = this.state;
     const { room } = this.props.store;
-
+    
     return (
       <Room>
         <RoomHeader>

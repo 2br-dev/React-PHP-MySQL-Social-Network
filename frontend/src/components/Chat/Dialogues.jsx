@@ -66,9 +66,9 @@ class FriendList extends Component {
     let friends = this.state.friends;
     chats.forEach(chat => {
       friends.find(friend => {
-        const _chat = chat.users.includes(`id${friend.id}`);
-        if (_chat && _chat.hasOwnProperty('message')) {
-          _chat.message = chat.message;
+        const hasChat = chat.users.includes(`id${friend.id}`);
+        if (hasChat && chat.hasOwnProperty('message')) {
+          friend.message = chat.message;
         }
       })
     });
@@ -85,7 +85,7 @@ class FriendList extends Component {
   */
   openRoom = (chat, friend) => {
     if (!this.state.initialAnimation) this.setState({ initialAnimation: true });
-
+    
     if (chat) {
       this.props.openChat(chat, friend);
     } else {
@@ -120,7 +120,7 @@ class FriendList extends Component {
           searchValue={this.searchValue}
         />
         <List style={{ marginTop: 15 }}>
-          {this.state.friends.map(friend =>
+          {this.state.friends.map(friend =>          
             <ChatItem
               openRoom={this.openRoom.bind(this)}
               key={friend.id}
@@ -139,15 +139,14 @@ class FriendList extends Component {
       return 'translateX(-100%)';
     }
   }
-
-  render() {
+  
+  render() {    
+    const { index, direction, completed, friends } = this.state;
     const { chats } = this.props.store;
-    const { completed, friends, index, direction } = this.state;
-
     if (chats.length > 0 && friends.length > 0 && !completed) {
       this.rebuildList(chats);
     }
-
+    
     return (
       <Paper style={{ boxShadow: 'none' }}>
         {this.state.loading ?

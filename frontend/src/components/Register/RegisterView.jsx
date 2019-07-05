@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { Button } from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -21,6 +21,7 @@ function RegisterView(props){
         loading,
         confirmed,
         handleSubmit,
+        handleChange,
         showPassword,
         isEmailValid
     } = props;
@@ -53,7 +54,9 @@ function RegisterView(props){
               fullWidth
               error={entered && !name}
               margin='dense'
-              {...name}
+              value={name}
+              onChange={handleChange}
+              type='text'              
             />
             <TextField
               label="Фамилия"
@@ -62,7 +65,9 @@ function RegisterView(props){
               fullWidth
               error={entered && !surname}
               margin='dense'
-              {...surname}
+              value={surname}
+              onChange={handleChange}
+              type='text'
             />
             <TextField
               label="Логин или email"
@@ -71,7 +76,8 @@ function RegisterView(props){
               fullWidth
               error={entered && !login}
               margin='dense'
-              {...login}
+              value={login}
+              onChange={handleChange}
             />
 
             <TextField
@@ -81,7 +87,8 @@ function RegisterView(props){
               label="Пароль"
               margin='dense'
               name='password'
-              {...password}
+              value={password}
+              onChange={handleChange}
               error={entered && password.length < 8}
               InputProps={{
                 endAdornment: (
@@ -106,7 +113,8 @@ function RegisterView(props){
               margin='dense'
               type='password'
               error={entered && confirmed.length < 8}
-              {...confirmed}
+              value={confirmed}
+              onChange={handleChange}
             />
 
             {password !== confirmed && confirmed !== '' ? <FormHelperText style={{ color: '#f44336' }}>Пароль должны совпадать</FormHelperText> : null}
@@ -118,7 +126,8 @@ function RegisterView(props){
               fullWidth
               error={entered && !isEmailValid && !email.lentgh}
               margin='dense'
-              {...email}
+              value={email}
+              onChange={handleChange}
             />
             {!isEmailValid && email ? <FormHelperText style={{ color: '#f44336' }}>Пожалуйста, введите настоящий email адрес</FormHelperText> : ''}
 

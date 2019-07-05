@@ -3,7 +3,7 @@ export default function reducing(state = [], action) {
     case 'OPEN_CHAT':
       return {chat_id: action.payload[0], user: action.payload[1]}
     case 'CLOSE_CHAT':
-      return {user: action.payload[1]}
+      return {};
     case 'DELETE_CHAT':
       let initial = state;
       delete initial.chat_id;

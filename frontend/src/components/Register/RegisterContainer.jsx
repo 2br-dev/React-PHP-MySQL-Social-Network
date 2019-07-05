@@ -6,7 +6,7 @@ import RegisterView from './RegisterView'
 
 function registerContainer(props) {
      // Compont's state
-     let [email, setEmail] = useState('');
+     /* let [email, setEmail] = useState({key: value});
      let [login, setLogin] = useState('');
      let [password, setPassword] = useState('');
      let [confirmed, setConfirmed] = useState('');
@@ -15,26 +15,39 @@ function registerContainer(props) {
      let [entered, setEntered] = useState(false);
      let [name, setName] = useState('');
      let [surname, setSurname] = useState('');
-     let [loading, setLoading] = useState(false);
+     let [loading, setLoading] = useState(false); */
+     let [state, setState] = useState({
+       email: '',
+       login: '',
+       password: '',
+       confirmed: '',
+       isEmailValid: '',
+       isPassHidden: false,
+       entered: false,
+       name: '',
+       surname: '',
+       loading: false
+     });
+
+
 
     const validateEmail = email => {
       const regExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      regExp.test(email) ? setIsEmailValid(true) : setIsEmailValid(false);
+      regExp.test(state.email) ? setState({isEmailValid: true}) : setState({isEmailValid: false});
     }
 
     const handleSubmit = e => {
       e.preventDefault();
-      setEntered(true);
-      setLoading(true);
+      setState({entered: true, loading: true});
 
-      if (login &&  surname && name && isEmailValid && password) {
+      if (state.login &&  state.surname && state.name && state.isEmailValid && state.password) {
         const formData = new FormData();
    
-        formData.append('login', login);
-        formData.append('email', email);
-        formData.append('password', password);
-        formData.append('name', name);
-        formData.append('surname', surname);
+        formData.append('login', state.login);
+        formData.append('email', state.email);
+        formData.append('password', state.password);
+        formData.append('name', state.name);
+        formData.append('surname', state.surname);
     
         $.ajax({
           url: `${API}/api/user/register.php`,
@@ -51,7 +64,19 @@ function registerContainer(props) {
                 break;
               case 1:
                 props.enqueueSnackbar('Вы успешно зарегистрировались, как только вашу учетную запись подтвердят - вы сможете начать пользоваться сервисом. Вы получите уведомление по указанной при регистрации почте.', { variant: 'success' });
-                setEmail('');
+                setState({
+                  email: '',
+                  login: '',
+                  name: '',
+                  surname: '',
+                  password: '',
+                  confirmed: '',
+                  isEmailValid: '',
+                  isPassHidden: false,
+                  entered: false,
+                  loading: false
+                })
+                /* setEmail('');
                 setLogin('');
                 setName('');
                 setSurname('');
@@ -60,7 +85,7 @@ function registerContainer(props) {
                 setIsEmailValid('');
                 setIsPassHiden(false);
                 setEntered(false);
-                setLoading(false);
+                setLoading(false); */
                 break;
               case 2:
                 props.enqueueSnackbar('Пользователь с таким логином или email уже существует', { variant: 'warning' });
@@ -78,10 +103,22 @@ function registerContainer(props) {
     }
 
     const showPassword = () => {
-      setIsPassHiden(!isPassHidden);
+      setState({isPassHidden: !(state.isPassHidden)})
     }
 
-    name = useFormInput('');
+    const handleChange = e => {
+      const {name, value} = e.target
+      /* setState(prev => ({
+        ...prev,
+        [name]: value
+      }))    */   
+      setState({
+        ...state,
+        [name]: value
+      })
+   }
+
+    /* name = useFormInput('');
     surname = useFormInput('');
     email = useFormInput('');
     login = useFormInput('');
@@ -108,20 +145,22 @@ function registerContainer(props) {
             onChange: handleChange
         };
     }
-
+ */
+    console.log(state) 
     return(
         <RegisterView 
             handleSubmit = {handleSubmit}
-            entered = {entered}
-            name = {name}
-            surname = {surname}
-            email = {email}
-            password = {password}
-            isPassHidden = {isPassHidden}
+            entered = {state.entered}
+            name = {state.name}
+            surname = {state.surname}
+            email = {state.email}
+            password = {state.password}
+            isPassHidden = {state.isPassHidden}
             showPassword = {showPassword}
-            isEmailValid = {isEmailValid}
-            loading = {loading}
-            confirmed = {confirmed}
+            isEmailValid = {state.isEmailValid}
+            loading = {state.loading}
+            confirmed = {state.confirmed}
+            handleChange = {handleChange}
         />
     );
 }

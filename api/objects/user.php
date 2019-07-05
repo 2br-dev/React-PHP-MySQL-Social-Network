@@ -44,7 +44,7 @@ class User
     function read()
     {
         $id = $this->id;
-        $query = "SELECT * FROM `db_mdd_users` WHERE `approved` = '1' AND `id` != '$id' AND `name` != ''";
+        $query = "SELECT * FROM `db_mdd_users` WHERE `approved` = '1' AND `id` != ".$id." AND `name` != ''";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -351,7 +351,7 @@ class User
 
         $body  = '<h2 style="color:#000000; margin: 0;">Здравствуйте,</h2>';
         $body .= '<p style="color: #444444; font-size: 14px;">Вы получили это письмо, потому что было запрошено восстановление пароля для этого аккаунта.</p>';
-        $body .= '<a href="http://akvatory.local/login/restore?auth=' . $user->code . '">восстановить пароль можете по ссылке</a>';
+        $body .= '<a href="http://службадоставкиводы.рф/login/restore?auth=' . $user->code . '">восстановить пароль можете по ссылке</a>';
         $body .= '<p style="color: #444444; font-size: 14px;">Если вы не запрашивали восстановление, то просто проигнорируйте это письмо.</p>';
         $body .= '<p style="color: #444444; font-size: 14px;">С уважением, <i>Искусственный Интеллект.</i></p>';
 
