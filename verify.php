@@ -7,7 +7,7 @@
 
   function verify() {
     $jwt = isset($_COOKIE['akv_jwt_token']) ? $_COOKIE['akv_jwt_token'] : '';
-    //$jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgiLCJkYXRlIjoiMjAxOS0wNi0xNCAxNToxNToyNyIsImFkbWluIjoiMCJ9.7I_2K8Q96SkRmfjXvuRPojkUJEpWsdx3AzUJjTKGaN0";  
+    //$jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgiLCJkYXRlIjoiMjAxOS0wNi0xNCAxNToxNToyNyIsImFkbWluIjoiMCJ9.7I_2K8Q96SkRmfjXvuRPojkUJEpWsdx3AzUJjTKGaN0";
     $key = JWT_KEY;
     $verifyer = new HS256($key);
 
@@ -23,7 +23,7 @@
 
   function parseUserId() {
     $jwt = isset($_COOKIE['akv_jwt_token']) ? $_COOKIE['akv_jwt_token'] : '';
-    //$jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgiLCJkYXRlIjoiMjAxOS0wNi0xNCAxNToxNToyNyIsImFkbWluIjoiMCJ9.7I_2K8Q96SkRmfjXvuRPojkUJEpWsdx3AzUJjTKGaN0";  
+    //$jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjgiLCJkYXRlIjoiMjAxOS0wNi0xNCAxNToxNToyNyIsImFkbWluIjoiMCJ9.7I_2K8Q96SkRmfjXvuRPojkUJEpWsdx3AzUJjTKGaN0";
     $key = JWT_KEY;
     $verifyer = new HS256($key);
 

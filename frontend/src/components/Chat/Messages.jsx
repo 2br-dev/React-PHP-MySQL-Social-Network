@@ -6,11 +6,6 @@ import styled from 'styled-components';
 
 function Messages(props) {
   const { messages } = props.store;
-  
-  setTimeout(() => {
-    const messageContainer = document.getElementById("messages");
-    if (messages.length !== 0 && messageContainer) messageContainer.scrollTop = messageContainer.scrollHeight; 
-  }, 0);
 
   return (
     <Container id='messages'>

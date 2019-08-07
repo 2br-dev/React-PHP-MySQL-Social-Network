@@ -39,6 +39,7 @@ class News extends Component {
       uploadedNewsImage: '',
       newsComments: [],
       loadedComments: false,
+      commentsobj: []
     }
     this.addLike = this.addLike.bind(this);
     this.removeLike = this.removeLike.bind(this);
@@ -190,6 +191,7 @@ class News extends Component {
         type: 'POST',
         success: res => {
           news.id = res["MAX(`id`)"]
+          news.commentsobj = []
           self.props.onAddNews(news);
           self.setState({ 
             newNews: !self.state.newNews, 
@@ -373,7 +375,7 @@ class News extends Component {
         {news.length === 0 
           ? <Loader minHeight={300} color='primary' /> 
           : news.map((item, i) => {
-            return (  
+            return (
               <NewsContainer key={i} onClick={() => this.showNews(item.id)}>
                 <UserAvatar style={{ background: `url(${item.avatar === '' ? defaultAvatar : item.avatar}) no-repeat center/cover` }} />
                 <div>
@@ -465,20 +467,20 @@ class News extends Component {
                     <Button onClick={() => this.showNews(item.id)} variant='contained' color='primary' style={{ position: 'absolute', right: window.innerWidth > 600 ? 40 : 20 }}>Читать</Button>
                   : null }
                 </Actions>
-                {item.commentsobj.length > 0 ?
-                  <Typography variant='caption'>Комментарии (5 последних)</Typography> : null }
-                {item.commentsobj.map((comment, j) =>{
-                  return(
-                    <Comments key={j}>
-                      <div className='comment-header'>
-                        <Avatar style={{ background: `url(${comment.who.avatar ? comment.who.avatar : defaultAvatar}) no-repeat center/cover`, marginTop: 20 }}></Avatar>
-                        <Typography variant='subtitle2'>{comment.who.name} {comment.who.surname}</Typography>
-                        <Typography variant='caption' className='comment-date'>{comment.date}</Typography>
-                      </div>
-                      <div className='comment-text'>{comment.text}</div>
-                    </Comments>
-                  )
-                })}                
+                {item.commentsobj.length === 0 ? null :
+                  <Typography variant='caption'>Комментарии (5 последних)</Typography>  }
+                    {item.commentsobj.map((comment, j) =>{
+                      return(
+                        <Comments key={j}>
+                          <div className='comment-header'>
+                            <Avatar style={{ background: `url(${comment.who.avatar ? comment.who.avatar : defaultAvatar}) no-repeat center/cover`, marginTop: 20 }}></Avatar>
+                            <Typography variant='subtitle2'>{comment.who.name} {comment.who.surname}</Typography>
+                            <Typography variant='caption' className='comment-date'>{comment.date}</Typography>
+                          </div>
+                          <div className='comment-text'>{comment.text}</div>
+                        </Comments>
+                      )
+                    })}
               </NewsContainer>
             )
           })}

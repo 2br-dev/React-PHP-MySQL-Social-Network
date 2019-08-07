@@ -42,7 +42,7 @@ function RegisterView(props){
             width: 25px !important;
             }
         }`;
-
+    console.log(password)
     return(
         <Fragment>
         <div className="form-container">
@@ -78,6 +78,7 @@ function RegisterView(props){
               margin='dense'
               value={login}
               onChange={handleChange}
+              type="text"
             />
 
             <TextField

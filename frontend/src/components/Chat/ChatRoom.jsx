@@ -13,6 +13,7 @@ import EditMessageInput from './EditMessageInput';
 import DeleteModal from './DeleteModal';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import { withSnackbar } from 'notistack';
 
 class ChatRoom extends Component {
   state = {
@@ -108,42 +109,52 @@ class ChatRoom extends Component {
         .then(response => response.json())
         .then(message => localStorage.setItem('message_id', message.message_id))
     }
+    const self = this;
+    if(self.state.newMessage != ''){
+      const formData = new FormData();      
+      const message = {
+        user: user.id,
+        chat: room.hasOwnProperty('chat_id') ? room.chat_id : localStorage.getItem('chat_id'),
+        body: this.state.newMessage,
+        date: moment().format('L'),
+        time: moment().format('LT'),
+        created_at: new Date().getTime()
+      };
 
-    const formData = new FormData();
-    const self = this; 
-    const message = {
-      user: user.id,
-      chat: room.hasOwnProperty('chat_id') ? room.chat_id : localStorage.getItem('chat_id'),
-      body: this.state.newMessage,
-      date: moment().format('L'),
-      time: moment().format('LT'),
-      created_at: new Date().getTime()
-    };
+      formData.append('chat', message.chat); 
+      formData.append('user', message.user);
+      formData.append('body', message.body); 
+      formData.append('date', message.date); 
+      formData.append('time', message.time); 
+      formData.append('created_at', message.created_at); 
 
-    formData.append('chat', message.chat); 
-    formData.append('user', message.user);
-    formData.append('body', message.body); 
-    formData.append('date', message.date); 
-    formData.append('time', message.time); 
-    formData.append('created_at', message.created_at); 
-
-    $.ajax({
-      url: `${API}/api/message/send.php`,
-      data: formData,
-      processData: false,
-      contentType: false,
-      type: 'POST',
-      success: () => {
-        if (!self.props.store.chats.find(chat => chat.id === message.chat)) {
-          self.props.createChat(localStorage.getItem('users'), message.chat, message); 
-        }  
-        self.props.addMessage(message);
-        self.setState({ newMessage: '' })
-        self.getMessages();
-        clearInterval(self.chatInteral);
-        self.chatInteral = setInterval(() => self.readMessages(), 2000);
-      }
-    });
+      $.ajax({
+        url: `${API}/api/message/send.php`,
+        data: formData,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: () => {
+          if (!self.props.store.chats.find(chat => chat.id === message.chat)) {
+            self.props.createChat(localStorage.getItem('users'), message.chat, message); 
+          }  
+          self.props.addMessage(message);
+          self.setState({ newMessage: '' })
+          self.getMessages();
+          clearInterval(self.chatInteral);
+          const messageContainer = document.getElementById("messages");
+          messageContainer.scrollTop = messageContainer.scrollHeight
+          /* setTimeout(() => {
+            const messageContainer = document.getElementById("messages")
+            if (messages.length !== 0 && messageContainer) messageContainer.scrollTop = messageContainer.scrollHeight - scTop; 
+          }, 0); */
+          self.chatInteral = setInterval(() => self.readMessages(), 2000);
+        }
+      });
+    }
+    else {
+      self.props.enqueueSnackbar('Сообщение не может быть пустым', { variant: 'error' });
+    }
   }
 
   /**
@@ -370,4 +381,4 @@ export default connect(
       dispatch({ type: 'READ_CHAT', payload: chat_id })
     },
   })
-)(ChatRoom);
+)(withSnackbar(ChatRoom));

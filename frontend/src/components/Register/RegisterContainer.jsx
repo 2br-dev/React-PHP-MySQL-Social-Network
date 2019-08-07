@@ -6,16 +6,7 @@ import RegisterView from './RegisterView'
 
 function registerContainer(props) {
      // Compont's state
-     /* let [email, setEmail] = useState({key: value});
-     let [login, setLogin] = useState('');
-     let [password, setPassword] = useState('');
-     let [confirmed, setConfirmed] = useState('');
-     let [isEmailValid, setIsEmailValid] = useState('');
-     let [isPassHidden, setIsPassHiden] = useState(false);
-     let [entered, setEntered] = useState(false);
-     let [name, setName] = useState('');
-     let [surname, setSurname] = useState('');
-     let [loading, setLoading] = useState(false); */
+
      let [state, setState] = useState({
        email: '',
        login: '',
@@ -75,17 +66,7 @@ function registerContainer(props) {
                   isPassHidden: false,
                   entered: false,
                   loading: false
-                })
-                /* setEmail('');
-                setLogin('');
-                setName('');
-                setSurname('');
-                setPassword('');
-                setConfirmed('');
-                setIsEmailValid('');
-                setIsPassHiden(false);
-                setEntered(false);
-                setLoading(false); */
+                });
                 break;
               case 2:
                 props.enqueueSnackbar('Пользователь с таким логином или email уже существует', { variant: 'warning' });
@@ -103,7 +84,8 @@ function registerContainer(props) {
     }
 
     const showPassword = () => {
-      setState({isPassHidden: !(state.isPassHidden)})
+      let isPassHidden = state.isPassHidden
+      setState({isPassHidden: !isPassHidden})
     }
 
     const handleChange = e => {
@@ -116,6 +98,7 @@ function registerContainer(props) {
         ...state,
         [name]: value
       })
+
    }
 
     /* name = useFormInput('');

@@ -1,72 +1,197 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="76b07fb7-14a8-4dbb-950e-2267edffc1b3" name="Default Changelist" comment="" />
+    <list default="true" id="76b07fb7-14a8-4dbb-950e-2267edffc1b3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jsLinters/jshint.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLinters/jshint.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/test.local.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/test.local.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/build/asset-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/build/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/precache-manifest.06e5b13fadf18bc3674bc98b9d55fa12.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/service-worker.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/build/service-worker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/static/css/main.e185fb63.chunk.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/static/css/main.e185fb63.chunk.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/static/js/1.326a96db.chunk.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/static/js/1.326a96db.chunk.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/static/js/main.5fd4745f.chunk.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/build/static/js/main.5fd4745f.chunk.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Chat/ChatRoom.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Chat/ChatRoom.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Chat/Messages.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Chat/Messages.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Login/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Login/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/News.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/News.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/News/NewNews.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/News/NewNews.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Register/RegisterContainer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Register/RegisterContainer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Register/RegisterView.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Register/RegisterView.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/themes/base/smarty/components/meta.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/protected/themes/base/smarty/components/meta.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/protected/themes/base/smarty/components/scripts.tpl" beforeDir="false" afterPath="$PROJECT_DIR$/protected/themes/base/smarty/components/scripts.tpl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/setActivity.php" beforeDir="false" afterPath="$PROJECT_DIR$/setActivity.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/verify.php" beforeDir="false" afterPath="$PROJECT_DIR$/verify.php" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="-1613326210">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="1" />
-          <entry key="project.open.time.3" value="1" />
-          <entry key="project.opened" value="1" />
-        </counts>
-      </usages-collector>
-    </session>
-    <session id="-138078937">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="1" />
-          <entry key="project.open.time.27" value="1" />
-          <entry key="project.opened" value="1" />
-        </counts>
-      </usages-collector>
-    </session>
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution>
+      <executable />
+    </execution>
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="social" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/protected/themes/base/smarty/base.tpl">
+        <entry file="file://$PROJECT_DIR$/frontend/src/App.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="7" column="8" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
+            <state relative-caret-position="447">
+              <caret line="109" column="31" selection-start-line="109" selection-start-column="31" selection-end-line="109" selection-end-column="31" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/news/read.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="481">
+              <caret line="65" column="24" selection-start-line="65" selection-start-column="13" selection-end-line="65" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/src/components/News/NewNews.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="73" column="98" selection-start-line="73" selection-start-column="98" selection-end-line="73" selection-end-column="98" />
+              <folding>
+                <element signature="e#0#40#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/src/components/News.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="263">
+              <caret line="408" column="131" selection-start-line="408" selection-start-column="107" selection-end-line="408" selection-end-column="131" />
+              <folding>
+                <element signature="e#0#51#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/protected/themes/base/smarty/components/meta.tpl">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="20" column="95" selection-start-line="20" selection-start-column="95" selection-end-line="20" selection-end-column="95" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/protected/themes/base/smarty/components/scripts.tpl">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="10" column="59" selection-start-line="10" selection-start-column="59" selection-end-line="10" selection-end-column="59" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/news/submitnews.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="430">
+              <caret line="30" column="30" selection-start-line="30" selection-start-column="30" selection-end-line="30" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/news/addlike.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="357">
+              <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/fonts/opensans/opensans.css">
-          <provider selected="true" editor-type-id="text-editor" />
+        <entry file="file://$PROJECT_DIR$/verify.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="25" column="6" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
+            </state>
+          </provider>
         </entry>
       </file>
     </leaf>
   </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>hasNewsImage</find>
+    </findStrings>
   </component>
-  <component name="NodePackageJsonFileManager">
-    <packageJsonPaths>
-      <path value="$PROJECT_DIR$/apps/libs/lightbox/lightbox2-master/package.json" />
-      <path value="$PROJECT_DIR$/apps/libs/masked-input/package.json" />
-      <path value="$PROJECT_DIR$/apps/libs/slick-1.8.1/package.json" />
-      <path value="$PROJECT_DIR$/apps/libs/wow.js/package.json" />
-      <path value="$PROJECT_DIR$/apps/wysiwyg/froala/package.json" />
-      <path value="$PROJECT_DIR$/protected/app/vendors/kriswallsmith/assetic/package.json" />
-    </packageJsonPaths>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/frontend/src/routes.js" />
+        <option value="$PROJECT_DIR$/frontend/src/components/Login/Login.jsx" />
+        <option value="$PROJECT_DIR$/frontend/src/components/Register/RegisterContainer.jsx" />
+        <option value="$PROJECT_DIR$/frontend/src/components/Register/RegisterView.jsx" />
+        <option value="$PROJECT_DIR$/frontend/src/App.jsx" />
+        <option value="$PROJECT_DIR$/frontend/src/components/News.jsx" />
+        <option value="$PROJECT_DIR$/frontend/src/components/News/NewNews.jsx" />
+        <option value="$PROJECT_DIR$/protected/themes/base/smarty/components/scripts.tpl" />
+        <option value="$PROJECT_DIR$/protected/themes/base/smarty/components/meta.tpl" />
+        <option value="$PROJECT_DIR$/verify.php" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBowerSettings">
+    <node-interpreter value="project" />
+    <bower-package value="" />
+    <bower.json value="" />
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/nikic/fast-route" />
+      <path value="$PROJECT_DIR$/vendor/miladrahimi/php-jwt" />
+      <path value="$PROJECT_DIR$/vendor/emarref/jwt" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/slim/slim" />
+      <path value="$PROJECT_DIR$/vendor/rbdwllr/reallysimplejwt" />
+      <path value="$PROJECT_DIR$/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/vendor/pimple/pimple" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/vendor/container-interop/container-interop" />
+    </include_path>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="468" />
     <option name="y" value="-14" />
     <option name="width" value="871" />
-    <option name="height" value="1037" />
+    <option name="height" value="920" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -77,39 +202,79 @@
         <subPane>
           <expand>
             <path>
-              <item name="alfakuhni.local" type="b2602c69:ProjectViewProjectNode" />
-              <item name="alfakuhni.local" type="462c0819:PsiDirectoryNode" />
+              <item name="social" type="b2602c69:ProjectViewProjectNode" />
+              <item name="social" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="alfakuhni.local" type="b2602c69:ProjectViewProjectNode" />
-              <item name="alfakuhni.local" type="462c0819:PsiDirectoryNode" />
+              <item name="social" type="b2602c69:ProjectViewProjectNode" />
+              <item name="social" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="social" type="b2602c69:ProjectViewProjectNode" />
+              <item name="social" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+              <item name="news" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="social" type="b2602c69:ProjectViewProjectNode" />
+              <item name="social" type="462c0819:PsiDirectoryNode" />
+              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="social" type="b2602c69:ProjectViewProjectNode" />
+              <item name="social" type="462c0819:PsiDirectoryNode" />
+              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="social" type="b2602c69:ProjectViewProjectNode" />
+              <item name="social" type="462c0819:PsiDirectoryNode" />
+              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="social" type="b2602c69:ProjectViewProjectNode" />
+              <item name="social" type="462c0819:PsiDirectoryNode" />
+              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="reducers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="social" type="b2602c69:ProjectViewProjectNode" />
+              <item name="social" type="462c0819:PsiDirectoryNode" />
               <item name="protected" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="alfakuhni.local" type="b2602c69:ProjectViewProjectNode" />
-              <item name="alfakuhni.local" type="462c0819:PsiDirectoryNode" />
+              <item name="social" type="b2602c69:ProjectViewProjectNode" />
+              <item name="social" type="462c0819:PsiDirectoryNode" />
               <item name="protected" type="462c0819:PsiDirectoryNode" />
               <item name="themes" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="alfakuhni.local" type="b2602c69:ProjectViewProjectNode" />
-              <item name="alfakuhni.local" type="462c0819:PsiDirectoryNode" />
+              <item name="social" type="b2602c69:ProjectViewProjectNode" />
+              <item name="social" type="462c0819:PsiDirectoryNode" />
               <item name="protected" type="462c0819:PsiDirectoryNode" />
               <item name="themes" type="462c0819:PsiDirectoryNode" />
               <item name="base" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="alfakuhni.local" type="b2602c69:ProjectViewProjectNode" />
-              <item name="alfakuhni.local" type="462c0819:PsiDirectoryNode" />
+              <item name="social" type="b2602c69:ProjectViewProjectNode" />
+              <item name="social" type="462c0819:PsiDirectoryNode" />
               <item name="protected" type="462c0819:PsiDirectoryNode" />
               <item name="themes" type="462c0819:PsiDirectoryNode" />
               <item name="base" type="462c0819:PsiDirectoryNode" />
               <item name="smarty" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="alfakuhni.local" type="b2602c69:ProjectViewProjectNode" />
-              <item name="alfakuhni.local" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="social" type="b2602c69:ProjectViewProjectNode" />
+              <item name="social" type="462c0819:PsiDirectoryNode" />
+              <item name="protected" type="462c0819:PsiDirectoryNode" />
+              <item name="themes" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="smarty" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -119,9 +284,23 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.jscs" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.jscs" value="project" />
+    <property name="node.js.path.for.package.standard" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.jscs" value="" />
+    <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="Settings.JavaScript.Linters.JSHint" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -147,16 +326,24 @@
       <updated>1541161643679</updated>
       <workItem from="1541161645627" duration="453000" />
       <workItem from="1544709105997" duration="409000" />
+      <workItem from="1562764816713" duration="2336000" />
+      <workItem from="1562782912607" duration="79000" />
+      <workItem from="1563878001439" duration="3273000" />
+      <workItem from="1563954989467" duration="657000" />
+      <workItem from="1564389192182" duration="1404000" />
+      <workItem from="1564406633330" duration="2031000" />
+      <workItem from="1565162538581" duration="11968000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="862000" />
+    <option name="totallyTimeSpent" value="22610000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25647348" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14781491" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -168,8 +355,8 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="10" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.10497981" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -180,26 +367,239 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
-  </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/phpstorm.jar!/resources/html5-schema/html5/sectional.rnc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1027">
-          <caret line="64" column="16" selection-start-line="64" selection-start-column="16" selection-end-line="64" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/lib/phpstorm.jar!/resources/html5-schema/html5/sectional.rnc" />
+    <entry file="file://$PROJECT_DIR$/fonts/opensans/opensans.css" />
     <entry file="file://$PROJECT_DIR$/protected/themes/base/smarty/base.tpl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
+        <state relative-caret-position="119">
           <caret line="7" column="8" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fonts/opensans/opensans.css">
+    <entry file="file://$PROJECT_DIR$/frontend/src/routes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="9" column="16" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/Login/Login.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="31" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/Login/LoginContainer.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/functions/API.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="19" lean-forward="true" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/functions/responsive.js">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/Register/RegisterContainer.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1632">
+          <caret line="100" selection-start-line="100" selection-end-line="100" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/config/database.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/MainPage.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="47" column="28" selection-start-line="47" selection-start-column="19" selection-end-line="47" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/objects/user.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/Register/RegisterView.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="43" column="11" selection-start-line="43" selection-start-column="11" selection-end-line="43" selection-end-column="11" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/SignupForm.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/Chat/Chat.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-51">
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/Chat/ChatItem.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/Tasks/Task.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-102">
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/Tasks/Tasks.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/Navigation/Navigation.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="952">
+          <caret line="92" column="4" selection-start-line="92" selection-start-column="4" selection-end-line="92" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/Header.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/news/read.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="481">
+          <caret line="65" column="24" selection-start-line="65" selection-start-column="13" selection-end-line="65" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/news/addlike.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/App.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="447">
+          <caret line="109" column="31" selection-start-line="109" selection-start-column="31" selection-end-line="109" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/news/submitnews.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="430">
+          <caret line="30" column="30" selection-start-line="30" selection-start-column="30" selection-end-line="30" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/SingleNews.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4352">
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/reducers/news.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/News.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="263">
+          <caret line="408" column="131" selection-start-line="408" selection-start-column="107" selection-end-line="408" selection-end-column="131" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/components/News/NewNews.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="73" column="98" selection-start-line="73" selection-start-column="98" selection-end-line="73" selection-end-column="98" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/themes/base/smarty/components/scripts.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="59" selection-start-line="10" selection-start-column="59" selection-end-line="10" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/protected/themes/base/smarty/components/meta.tpl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="95" selection-start-line="20" selection-start-column="95" selection-end-line="20" selection-end-column="95" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/verify.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="25" column="6" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>

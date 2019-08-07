@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import Icon from '@material-ui/core/Icon';
 import API from '../functions/API';
 
-function NewNews({ hasNewsImage, uploadedNewsImage, newsFileSelect, submitNews, closeNews, newNewsTopic, handleChange, invalidTopic, invalidText, newNewsText, newNewsImportance, changeImportance, store: { user }}) {
+function NewNews({hasNewsImage, uploadedNewsImage, newsFileSelect, submitNews, closeNews, newNewsTopic, handleChange, invalidTopic, invalidText, newNewsText, newNewsImportance, changeImportance, store: { user }}) {
   let avatar = user.avatar;
 
   const styles = {
@@ -71,7 +71,7 @@ function NewNews({ hasNewsImage, uploadedNewsImage, newsFileSelect, submitNews, 
               />
             </TextArea>
             {hasNewsImage ? 
-              <div><image src={`${API}/frontend/${uploadedNewsImage}`}/></div> : 
+              <div style={{textAlign: 'center', paddingTop: 20}}><img style={{maxWidth: 100}} src={`${API}/${uploadedNewsImage}`}/></div> :
             null}
             <Button variant="contained" style={{ ...styles.upload }}>
               Загрузить изображение

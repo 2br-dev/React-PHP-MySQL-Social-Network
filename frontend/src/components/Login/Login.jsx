@@ -3,7 +3,6 @@ import '../css/LoginForms.css';
 import Typography from '@material-ui/core/Typography';
 import Register from '../Register/RegisterContainer';
 import Header from '../Header';
-//import Signup from '../Register/SugnupContainer';
 import BgBubbles from '../BgBubbles';
 
 export default function Login(props){
