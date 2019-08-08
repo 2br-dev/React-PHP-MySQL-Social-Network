@@ -1,5 +1,5 @@
 import MainPage from './components/MainPage';
-import LoginForm from './components/Login/LoginContainer';
+import LoginForm from './components/LoginForm';
 import Approved from './components/Approved';
 import Restore from './components/Restore';
 import Page404 from './components/Page404';

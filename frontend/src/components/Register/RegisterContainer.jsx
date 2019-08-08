@@ -5,7 +5,6 @@ import $ from 'jquery';
 import RegisterView from './RegisterView'
 
 function registerContainer(props) {
-     // Compont's state
 
      let [state, setState] = useState({
        email: '',
@@ -19,8 +18,6 @@ function registerContainer(props) {
        surname: '',
        loading: false
      });
-
-
 
     const validateEmail = email => {
       const regExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

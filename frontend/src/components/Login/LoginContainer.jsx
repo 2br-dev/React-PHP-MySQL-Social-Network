@@ -7,9 +7,9 @@ export default function LoginContainer(){
     setWhichform(!whichForm);
   }
   return(
-    <Login
-      onClick={changeForm}
-      whichForm={whichForm} 
-    />
+      <Login
+          onClick={changeForm}
+          whichForm={whichForm}
+      />
   )
 }

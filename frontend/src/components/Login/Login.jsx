@@ -1,7 +1,8 @@
 import React from 'react';
 import '../css/LoginForms.css';
 import Typography from '@material-ui/core/Typography';
-import Register from '../Register/RegisterContainer';
+import RegisterForm from '../Register/RegisterContainer';
+import LoginForm from '../Login/LoginContainer';
 import Header from '../Header';
 import BgBubbles from '../BgBubbles';
 
@@ -20,7 +21,7 @@ export default function Login(props){
               <Typography variant='button'>Зарегистрироваться</Typography>
             </button>
           </div>              
-          {whichForm ? <Register /> : <Register />}                        
+          {whichForm ? <LoginForm /> : <RegisterForm />}
         </div>
         <BgBubbles /> 
       </div>
