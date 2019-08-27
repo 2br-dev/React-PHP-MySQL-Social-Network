@@ -14,6 +14,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
+import Lightbox from 'lightbox-react';
+import 'lightbox-react/style.css';
+
 class SingleNews extends Component {
   constructor(props) {
     super(props);
@@ -23,7 +26,8 @@ class SingleNews extends Component {
       commentText: '',
       likedBy: [],
       loading: true,
-      commentsLoading: false
+      commentsLoading: false,
+      lightboxIsOpen: false
     }
   }
 
@@ -175,7 +179,7 @@ class SingleNews extends Component {
 
   render() {
     const { closeNews, singleNewsId } = this.props;
-    const { thisComments, commentText, likedBy, loading, commentsLoading } = this.state;
+    const { thisComments, commentText, likedBy, loading, commentsLoading, lightboxIsOpen } = this.state;
     const { user, news } = this.props.store;
     const currentNews = news.find(item => item.id === singleNewsId);
     const userAvatar = currentNews.avatar;
@@ -201,6 +205,17 @@ class SingleNews extends Component {
                 {currentNews.importance === '1' ? this.props.createImportantBar(0) : null}
                 {currentNews.title.replace(/&quot;/g, `"`)}
               </Typography>
+
+              <ImagePost>
+                  <img onClick={() => this.setState({lightboxIsOpen: true})} src={`${API}/${currentNews.image}`} alt={currentNews.title.replace(/&quot;/g, `"`)}/>
+              </ImagePost>
+
+              {lightboxIsOpen && (
+                  <Lightbox
+                      mainSrc={`${API}/${currentNews.image}`}
+                      onCloseRequest={() => this.setState({ lightboxIsOpen: false })}
+                  />
+              )}
 
               <PostContent>
                 <Typography variant='body1'>{currentNews.text.replace(/&quot;/g, `"`)}</Typography>
@@ -622,6 +637,16 @@ const DelIcon = styled.div`
   @media all and (max-width: 600px) {
     right: 15px;
     top: -20px;
+  }
+`;
+
+const ImagePost = styled.div`
+  width: 100%;
+  text-align: center;
+  img {
+    max-width: 100%;
+    margin-top: 15px;
+    cursor: pointer;
   }
 `;
 

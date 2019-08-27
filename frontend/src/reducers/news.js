@@ -7,7 +7,8 @@ export default function reducing(state = [], action) {
       let updatedNews = action.payload;
       let indexUpNews = newState.findIndex(item => item.id === updatedNews.id);
       newState[indexUpNews].title = updatedNews.title;
-      newState[indexUpNews].text = updatedNews.text;      
+      newState[indexUpNews].text = updatedNews.text;
+      newState[indexUpNews].image = updatedNews.image;
       return newState;
     case 'FETCH_NEWS':
       return [...action.payload]

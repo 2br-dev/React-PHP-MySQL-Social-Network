@@ -22,7 +22,9 @@ $news = new News($db);
 // set product id to be deleted
 $news->id = __post('id');
 
-// delete the news
+$news->deleteImage();
+
+//delete the news
 if ($news->delete()) {
 
     // delete comments & likes by news_id

@@ -10,12 +10,17 @@ import { Paper, Button, Typography, TextField, Tooltip } from '@material-ui/core
 import { connect } from 'react-redux';
 import defaultAvatar from './img/photos/images.png';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import MaterialIcon from '@material-ui/core/Icon';
 import Loader from './Loader/Loader';
 import ConfirmDelete from './News/ConfirmDelete';
 import WarningIcon from '@material-ui/icons/Warning';
 import { withSnackbar } from 'notistack';
 import ResponsiveHeader from './ResponsiveHeader/ResponsiveHeader';
 import moment from 'moment';
+
+import Lightbox from 'lightbox-react';
+import 'lightbox-react/style.css';
 
 var newsTimeout = null;
 
@@ -27,6 +32,7 @@ class News extends Component {
       newNewsTopic: '',
       newNewsText: '',
       newNewsImportance: false,
+      newNewsImage: '',
       editing: '',
       singleNews: false,
       singleNewsData: [],
@@ -39,7 +45,11 @@ class News extends Component {
       uploadedNewsImage: '',
       newsComments: [],
       loadedComments: false,
-      commentsobj: []
+      commentsobj: [],
+      lightboxPhotoIndex: 0,
+      lightboxIsOpen: false,
+      reloadNewsImage: false,
+      removeNewsImage: false
     }
     this.addLike = this.addLike.bind(this);
     this.removeLike = this.removeLike.bind(this);
@@ -129,7 +139,6 @@ class News extends Component {
     let files = file;
     let self = this;
     fd.append('file', files);
-    /* fd.append('id', this.state.singleNewsId); */
 
     $.ajax({
       url: `${API}/api/news/uploadImage.php`,
@@ -148,10 +157,40 @@ class News extends Component {
     });
   }
 
+  reloadNewsImage = (file, oldFile) => {
+    let fd = new FormData();
+    let files = file;
+    let oldFiles = oldFile;
+    let self = this;
+    fd.append('file', files);
+    fd.append('oldFile', oldFiles);
+
+    $.ajax({
+      url: `${API}/api/news/reloadImage.php`,
+      type: 'post',
+      data: fd,
+      contentType: false,
+      processData: false,
+      success: function (res) {
+        if (window.location.host.includes('localhost')) {
+          self.setState({newNewsImage: res.location.slice(15) })
+        } else {
+          self.setState({ newNewsImage: res.location.slice(6) })
+        }
+      },
+    });
+  }
+
   newsFileSelect = event => {
     if (event.target.files[0].size < 2 * 1024 * 1024) {
       this.setState({ hasNewsImage: true })
-      this.uploadNewsImage(event.target.files[0]);
+      if(this.state.reloadNewsImage){
+        let oldFile = event.target.getAttribute('data-oldfile');
+        this.reloadNewsImage(event.target.files[0], oldFile);
+      }
+      else {
+        this.uploadNewsImage(event.target.files[0]);
+      }
       this.props.enqueueSnackbar('Фото добавлено', { variant: 'success' });
     } else {
       this.props.enqueueSnackbar('Файл слишком большой, размер должен не превышать 2МБ', { variant: 'warning' });
@@ -234,6 +273,31 @@ class News extends Component {
     });
   };
 
+  removeNewsImage = (id) => {
+    var self = this
+    const fd = new FormData
+    fd.append('id', id)
+
+    const news = {
+      id: id,
+      image: ''
+    }
+
+    $.ajax({
+      url: `${API}/api/news/removeimage.php`,
+      data: fd,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      success: () => {
+        self.props.onUpdateNews(news);
+        self.props.enqueueSnackbar('Изображение удалено', { variant: 'info' });
+        self.setState({ removeNewsImage: true });
+      },
+      error: () => self.props.enqueueSnackbar('Ошибка', { variant: 'error' })
+    });
+  }
+
   prepareNews = id => {
     const { news } = this.props.store;
     let title = news.find(news => news.id === id).title;
@@ -249,15 +313,20 @@ class News extends Component {
     if (this.state.newNewsTopic !== '' && this.state.newNewsText !== '') {
       const formData = new FormData();
 
-      const { newNewsText, newNewsTopic } = this.state;
-      const news = {
+      const { newNewsText, newNewsTopic, newNewsImage } = this.state;
+      const { news } = this.props.store;
+      let image = news.find(news => news.id === id).image;
+
+      const newsItem = {
         id: id,
         title: newNewsTopic,
-        text: newNewsText
+        text: newNewsText,
+        image: this.state.reloadNewsImage ? newNewsImage : image
       }
+      console.log(newsItem);
 
-      for (const prop in news) {
-        formData.append(news[prop], prop);
+      for (const prop in newsItem) {
+        formData.append(prop, newsItem[prop]);
       }
 
       $.ajax({
@@ -267,7 +336,7 @@ class News extends Component {
         contentType: false,
         type: 'POST',
         success: () => {
-          self.props.onUpdateNews(news);
+          self.props.onUpdateNews(newsItem);
           setTimeout(() => self.setState({ editing: '' }), 200);
           self.props.enqueueSnackbar('Новость была изменена', { variant: 'info' });
         },
@@ -366,8 +435,26 @@ class News extends Component {
   }
 
   render() {
-    const { invalidText, invalidTopic, newNews, newNewsText, newNewsTopic, editing, singleNews, singleNewsId, newNewsImportance, uploadedNewsImage, hasNewsImage } = this.state;
+    const { invalidText, invalidTopic, newNews, newNewsText, newNewsTopic, editing, singleNews, singleNewsId, newNewsImportance, uploadedNewsImage, hasNewsImage, lightboxPhotoIndex, lightboxIsOpen } = this.state;
     const { user, news } = this.props.store;
+
+    const styles = {
+      upload: {
+        background: '#ef6c00',
+        color: 'white',
+        margin: '20px auto',
+        cursor: 'pointer',
+        position: 'relative',
+        float: 'right',
+        width: window.innerWidth < 600 ? '100%' : 'unset'
+      },
+      hiddenInput: {
+        opacity: 0,
+        position: 'absolute',
+        cursor: 'pointer',
+        left: 0, right: 0, bottom: 0, top: 0
+      },
+    };
     
     return (
       <Paper>
@@ -376,7 +463,7 @@ class News extends Component {
           ? <Loader minHeight={300} color='primary' /> 
           : news.map((item, i) => {
             return (
-              <NewsContainer key={i} onClick={() => this.showNews(item.id)}>
+              <NewsContainer key={i}>
                 <UserAvatar style={{ background: `url(${item.avatar === '' ? defaultAvatar : item.avatar}) no-repeat center/cover` }} />
                 <div>
                   <NewsInfo>
@@ -404,12 +491,18 @@ class News extends Component {
 
                   {editing !== item.id ?                    
                     <Fragment>
-                      <Typography variant='h6' style={{ fontSize: '1.1rem', fontWeight: 400 }}>{item.title.replace(/&quot;/g, `"`)}</Typography>
+                      <Typography onClick={() => this.showNews(item.id)} variant='h6' style={{ fontSize: '1.1rem', fontWeight: 400 }}>{item.title.replace(/&quot;/g, `"`)}</Typography>
                       {item.image ? 
-                      <div style={{textAlign: 'center', marginTop: '15px', marginBottom: '15px'}}><img src={`${API}/${item.image}`} alt=""/></div> : null}
-                      
-                      
-                      <Body><Typography variant='body2'>{item.text.replace(/&quot;/g, `"`)}</Typography></Body>
+                      <div onClick = {() => this.setState({lightboxIsOpen: true, lightboxPhotoIndex: i})} style={{textAlign: 'center', marginTop: '15px', marginBottom: '15px'}}>
+                        <img style={{maxWidth: '100%'}} src={`${API}/${item.image}`} alt={item.title.replace(/&quot;/g, `"`)}/>
+                      </div> : null}
+                      {lightboxIsOpen && (
+                          <Lightbox
+                              mainSrc={`${API}/${news[lightboxPhotoIndex].image}`}
+                              onCloseRequest={() => this.setState({ lightboxIsOpen: false })}
+                          />
+                      )}
+                      <Body onClick={() => this.showNews(item.id)}><Typography variant='body2'>{item.text.replace(/&quot;/g, `"`)}</Typography></Body>
                     </Fragment>
                     :
                     <form id='edit-news' action={`${API}/api/news/edit.php`} method="POST" onSubmit={(e) => this.editNews(e, item.id)} >
@@ -422,6 +515,37 @@ class News extends Component {
                         type='text'
                         error={this.state.invalidTopic}
                       />
+
+                      {item.image ?
+                        <EditingNewsImage>
+                          {this.state.reloadNewsImage ?
+                              <img style={{maxWidth: '100%'}} src={`${API}/${this.state.newNewsImage}`} /> :
+                              <img style={{maxWidth: '100%'}} src={`${API}/${item.image}`} />
+                          }
+
+                          <EditingNewsImageButtons>
+                            <Icon>
+                              <Tooltip placement='left' title="Удалить картинку">
+                                <DeleteIcon onClick={() => this.removeNewsImage(item.id)}/>
+                              </Tooltip>
+                              <Button variant="contained" style={{ ...styles.upload }}>
+                                Загрузить другое
+                                <MaterialIcon style={{ marginLeft: 10 }}>cloud_upload</MaterialIcon>
+                                <input
+                                    id='newsImage'
+                                    accept="image/*"
+                                    style={{ ...styles.hiddenInput }}
+                                    type="file"
+                                    name='newsImage'
+                                    onClick={() => this.setState({reloadNewsImage: true})}
+                                    onChange={this.newsFileSelect}
+                                    data-oldfile = {item.image}
+                                />
+                              </Button>
+                            </Icon>
+                          </EditingNewsImageButtons>
+                      </EditingNewsImage>: null }
+
                       <TextArea>
                         <TextField
                           label="Текст новости"
@@ -696,6 +820,19 @@ const Icon = styled.div`
   svg {
     color: rgba(0,0,0,0.54);
   }
+`;
+
+const EditingNewsImageButtons = styled.div`
+  position: relative;
+  min-height: 65px;
+  svg {
+    margin-top: 20px;
+    margin-left: 30px;
+  }
+`;
+
+const EditingNewsImage = styled.div`
+  margin-top: 10px;
 `;
 
 export default connect(state => ({ store: state }),

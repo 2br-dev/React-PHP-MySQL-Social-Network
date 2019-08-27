@@ -22,9 +22,10 @@ $db = $database->getConnection();
 $news = new News($db);
  
 // set news property values
-$news->id           = __post('id');
-$news->title       = __post('title');
-$news->text = __post('text');
+$news->id         = __post('id');
+$news->title      = __post('title');
+$news->text       = __post('text');
+$news->news_image = __post('image');
 
 // update the news
 if($news->edit()){
@@ -33,7 +34,7 @@ if($news->edit()){
     // tell the news
     echo json_encode(array("message" => "News was updated.", "result" => 1));
 }
- 
+
 // if unable to update the user, tell the user
 else{
     // set response code - 503 service unavailable

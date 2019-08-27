@@ -155,12 +155,17 @@ class News
 
     function submitNews()
     {
-
         // query to insert record
-        $query = "INSERT INTO
-                    " . $this->table_name . "
-                SET
-                author=:author, date=:date, text=:text, title=:title, created_at=:created_at, importance=:importance, author_id=:author_id, image=:image";
+        $query = "INSERT INTO " . $this->table_name .
+            " SET
+                author=:author, 
+                date=:date, 
+                text=:text, 
+                title=:title, 
+                created_at=:created_at, 
+                importance=:importance, 
+                author_id=:author_id, 
+                image=:image";
 
         // prepare query
         $stmt = $this->conn->prepare($query);
@@ -204,6 +209,67 @@ class News
         // bind id of record to delete
         $stmt->bindParam(1, $this->id);
         // execute query
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Удаление изображения, привязанного к новости
+     */
+    function deleteImage(){
+        $query = "SELECT image FROM " . $this->table_name . " WHERE id = ?";
+        $stmt = $this->conn->prepare($query);
+        $this->id = htmlspecialchars(strip_tags($this->id));
+        $stmt->bindParam(1, $this->id);
+        $stmt->execute();
+        $response = $stmt->fetch(PDO::FETCH_COLUMN);
+        if(!empty($response)){
+            $image = explode('/', $response);
+
+            //The name of the folder.
+            $folder = "../../frontend/public/upload/news/";
+
+            //Get a list of all of the file names in the folder.
+            $files = glob($folder . '*');
+            //Loop through the file list.
+            foreach ($files as $file) {
+                //Make sure that this is a file and not a directory.
+                if (is_file($file)) {
+                    //Use the unlink function to delete the file.
+                    $isset_file_name = explode('/', $file);
+                    if(end($isset_file_name) == end($image)){
+                        unlink($file);
+                    }
+                }
+            }
+        }
+
+        return true;
+
+    }
+
+    /**
+     * Удаление изображение из новости
+     * @return bool
+     */
+    function removeNewsImage(){
+        $this->deleteImage(); // Удаляем картинку
+
+        // Обновляем запись в бд
+        $query = "UPDATE " . $this->table_name . " SET image = :image WHERE id = :id";
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+        // sanitize
+        $this->id = htmlspecialchars(strip_tags($this->id));
+        $empty_img = '';
+
+        // bind new values
+        $stmt->bindParam(':id', $this->id);
+        $stmt->bindParam(':image', $empty_img);
+
+        // execute the query
         if ($stmt->execute()) {
             return true;
         }
@@ -292,12 +358,7 @@ class News
     // update the news
     function edit()
     {
-        $query = "UPDATE " . $this->table_name . "
-                SET
-                    title = :title,
-                    text = :text
-                WHERE
-                    id = :id";
+        $query = "UPDATE " . $this->table_name . " SET title = :title, text = :text, image = :image WHERE id = :id";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -306,11 +367,13 @@ class News
         $this->id = htmlspecialchars(strip_tags($this->id));
         $this->title = htmlspecialchars(strip_tags($this->title));
         $this->text = htmlspecialchars(strip_tags($this->text));
+        $this->news_image = htmlspecialchars(strip_tags($this->news_image));
 
         // bind new values
         $stmt->bindParam(':id', $this->id);
         $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':text', $this->text);
+        $stmt->bindParam(':image', $this->news_image);
 
         // execute the query
         if ($stmt->execute()) {

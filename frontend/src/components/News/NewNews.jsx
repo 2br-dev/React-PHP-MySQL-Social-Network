@@ -71,7 +71,7 @@ function NewNews({hasNewsImage, uploadedNewsImage, newsFileSelect, submitNews, c
               />
             </TextArea>
             {hasNewsImage ? 
-              <div style={{textAlign: 'center', paddingTop: 20}}><img style={{maxWidth: 100}} src={`${API}/${uploadedNewsImage}`}/></div> :
+              <div style={{textAlign: 'center', paddingTop: 20}}><img style={{maxWidth: '70%'}} src={`${API}/${uploadedNewsImage}`}/></div> :
             null}
             <Button variant="contained" style={{ ...styles.upload }}>
               Загрузить изображение

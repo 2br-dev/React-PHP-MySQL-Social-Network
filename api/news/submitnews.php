@@ -25,7 +25,7 @@ $news->created_at = __post('created_at');
 $news->importance = __post('importance');
 $news->news_image = __post('newsImage');
 
-if ($news->submitNews()) {
+if ($news->submitNews()){
   $news->id = Q("SELECT MAX(`id`) FROM `#_mdd_news` LIMIT 1")->row();
   http_response_code(201);
   echo json_encode($news->id);
